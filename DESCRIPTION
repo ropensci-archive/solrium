@@ -1,0 +1,20 @@
+Package: solr
+Title: General purpose R interface to Solr
+Description: This package provides a set of functions for querying and parsing
+    data from Solr endpoints.
+Version: 0.1
+Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
+    email = "myrmecocystus@gmail.com")
+Depends:
+    R (>= 3.0.2)
+License: MIT
+LazyData: true
+Imports:
+    plyr,
+    httr,
+    XML
+Collate:
+    'solr-package.r'
+    'solr_facet.r'
+    'solr_highlight.r'
+    'solr_search.r'
