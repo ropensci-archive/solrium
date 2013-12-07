@@ -15,9 +15,9 @@ LazyData: true
 Imports:
     plyr,
     httr,
-    XML,
-    rjson
+    XML
 Suggests:
+    rjson,
     testthat,
     roxygen2
 Collate:
