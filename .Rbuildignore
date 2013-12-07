@@ -1,4 +1,3 @@
 man-roxygen/
 .travis.yml
-test/test-all.R
 .DS_Store

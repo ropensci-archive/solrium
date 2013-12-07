@@ -102,6 +102,11 @@
   \item{...}{Further args.}
 
   \item{wt}{Data format, json or xml.}
+
+  \item{fq}{Filter query, this does not affect the search,
+  only what gets returned}
+
+  \item{fl}{Fields to return}
 }
 \value{
   A list.

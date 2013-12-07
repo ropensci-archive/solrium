@@ -1,2 +1,2 @@
 library(testthat)
-test_package("solr")
+test_check('solr')
