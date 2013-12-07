@@ -1,5 +1,6 @@
 export(solr_facet)
 export(solr_highlight)
+export(solr_search)
 import(XML)
 import(httr)
 importFrom(plyr,compact)

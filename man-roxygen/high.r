@@ -37,3 +37,5 @@
 #' @param callopts Call options passed on to httr::GET
 #' @param ... Further args.
 #' @param wt Data format, json or xml.
+#' @param fq Filter query, this does not affect the search, only what gets returned
+#' @param fl Fields to return
