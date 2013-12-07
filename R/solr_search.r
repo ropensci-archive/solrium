@@ -7,11 +7,12 @@
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 #' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for 
 #' more information.
+#' @export
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'
 #' key = getOption('PlosApiKey')
 #' 
-#' solr_search(q='*:*', rows=10, url=url, key=key)
+#' solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
 #' 
 #' # Search for word ecology in title and cell in the body
 #' solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5, url=url, key=key)

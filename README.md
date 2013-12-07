@@ -31,11 +31,26 @@ key <- 'key'
 **Search**
 
 ```coffee
-sss
+solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
 ```
 
 ```coffee
-sss
+$response
+$response$numFound
+[1] 855548
+
+$response$start
+[1] 0
+
+$response$docs
+$response$docs[[1]]
+$response$docs[[1]]$id
+[1] "10.1371/journal.pone.0067887/materials_and_methods"
+
+
+$response$docs[[2]]
+$response$docs[[2]]$id
+[1] "10.1371/journal.pone.0010659"
 ```
 
 **Facet**
