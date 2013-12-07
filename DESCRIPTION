@@ -16,8 +16,11 @@ Imports:
     plyr,
     httr,
     XML
+Suggests:
+    testthat,
+    roxygen2
 Collate:
-    'solr-package.r'
     'solr_facet.r'
     'solr_highlight.r'
     'solr_search.r'
+    'solr.r'

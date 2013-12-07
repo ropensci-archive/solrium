@@ -1,3 +1,4 @@
 man-roxygen/
 .travis.yml
 .DS_Store
+travis-tool.sh
