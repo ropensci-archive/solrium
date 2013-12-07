@@ -67,13 +67,15 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
 {
   makemultiargs <- function(x){
     value <- eval(parse(text=x))
-    if(is.na(value)){ NULL } else {
-      if(!is.character(value)){ 
-        value <- as.character(value)
-      } 
-      y <- strsplit(value,",")[[1]]
-      names(y) <- rep(x, length(y))
-      y
+    if(is.null(value)){ NULL } else {
+      if(is.na(value)){ NULL } else {
+        if(!is.character(value)){ 
+          value <- as.character(value)
+        } 
+        y <- strsplit(value,",")[[1]]
+        names(y) <- rep(x, length(y))
+        y
+      }
     }
   }
   todonames <- c("q",  "facet.query",  "facet.field", 
