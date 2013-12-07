@@ -26,22 +26,24 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.bs.chars = NULL, hl.bs.type = NULL, hl.bs.language = NULL, hl.bs.country = NULL, 
      hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL, 
      hl.highlightMultiTerm = NULL, hl.regex.slop = NULL, hl.regex.pattern = NULL, 
-     hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NA, 
-     wt='json', key = NULL, url = NULL, callopts=list())
+     hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NULL, 
+     wt='json', key = NULL, url = NULL, callopts=list(), fl='DOES_NOT_EXIST', fq=NULL)
 {
   args <- compact(list(wt=wt, q=q, start=start, rows=rows, hl='true', hl.fl=hl.fl,
-     hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl='DOES_NOT_EXIST',
+     hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
      hl.mergeContiguous = hl.mergeContiguous, hl.requireFieldMatch = hl.requireFieldMatch, 
      hl.maxAnalyzedChars = hl.maxAnalyzedChars, hl.alternateField = hl.alternateField, 
      hl.maxAlternateFieldLength = hl.maxAlternateFieldLength, hl.preserveMulti = hl.preserveMulti, 
-     hl.maxMultiValuedToExamine = hl.maxMultiValuedToExamine, hl.maxMultiValuedToMatch = hl.maxMultiValuedToMatch, 
+     hl.maxMultiValuedToExamine = hl.maxMultiValuedToExamine, hl.maxMultiValuedToMatch = hl.maxMultiValuedToMatch,
      hl.formatter = hl.formatter, hl.simple.pre = hl.simple.pre, hl.simple.post = hl.simple.post, 
-     hl.fragmenter = hl.fragmenter, hl.fragListBuilder = hl.fragListBuilder, hl.fragmentsBuilder = hl.fragmentsBuilder, 
-     hl.boundaryScanner = hl.boundaryScanner, hl.bs.maxScan = hl.bs.maxScan, hl.bs.chars = hl.bs.chars, 
-     hl.bs.type = hl.bs.type, hl.bs.language = hl.bs.language, hl.bs.country = hl.bs.country, 
-     hl.useFastVectorHighlighter = hl.useFastVectorHighlighter, hl.usePhraseHighlighter = hl.usePhraseHighlighter, 
-     hl.highlightMultiTerm = hl.highlightMultiTerm, hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
-     hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars)) 
+     hl.fragmenter = hl.fragmenter, hl.fragListBuilder = hl.fragListBuilder, 
+     hl.fragmentsBuilder = hl.fragmentsBuilder, hl.boundaryScanner = hl.boundaryScanner,
+     hl.bs.maxScan = hl.bs.maxScan, hl.bs.chars = hl.bs.chars, hl.bs.type = hl.bs.type, 
+     hl.bs.language = hl.bs.language, hl.bs.country = hl.bs.country, 
+     hl.useFastVectorHighlighter = hl.useFastVectorHighlighter, 
+     hl.usePhraseHighlighter = hl.usePhraseHighlighter, hl.highlightMultiTerm = hl.highlightMultiTerm, 
+     hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
+     hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   tt <- GET(url, query = args, callopts)
   stop_for_status(tt)
   out <- content(tt)$highlighting

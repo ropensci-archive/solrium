@@ -1,13 +1,16 @@
 Package: solr
 Title: General purpose R interface to Solr
 Description: This package provides a set of functions for querying and parsing
-    data from Solr endpoints.
+    data from Solr endpoints, including search, faceting, and highlighting.
 Version: 0.1
+Date: 2013-12-06
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 Depends:
     R (>= 3.0.2)
 License: MIT
+URL: https://github.com/ropensci/solr
+BugReports: http://www.github.com/ropensci/solr/issues
 LazyData: true
 Imports:
     plyr,

@@ -20,8 +20,9 @@
     hl.usePhraseHighlighter = NULL,
     hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
     hl.regex.pattern = NULL,
-    hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NA,
-    wt = "json", key = NULL, url = NULL, callopts = list())
+    hl.regex.maxAnalyzedChars = NULL, start = 0,
+    rows = NULL, wt = "json", key = NULL, url = NULL,
+    callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL)
 }
 \arguments{
   \item{hl}{XXXX}

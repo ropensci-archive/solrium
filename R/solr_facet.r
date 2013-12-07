@@ -103,7 +103,10 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   out <- content(tt)
   
   # Facet queries
-  fqout <- out$facet_counts$facet_queries
+#   fqout <- out$facet_counts$facet_queries
+  fqdat <- out$facet_counts$facet_queries
+  fqout <- data.frame(term=names(fqdat), value=do.call(c, fqdat), stringsAsFactors=FALSE)
+  row.names(fqout) <- NULL
   
   # Facet fields
   dflist <- lapply(out$facet_counts$facet_fields, function(x){
@@ -113,10 +116,22 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   })
   
   # Facet dates
-  datesout <- out$facet_counts$facet_dates
+#   datesout <- out$facet_counts$facet_dates
+  datesout <- lapply(out$facet_counts$facet_dates, function(x){
+    x <- x[!names(x) %in% c('gap','start','end')]
+    x <- data.frame(date=names(x), value=do.call(c, x), stringsAsFactors=FALSE)
+    row.names(x) <- NULL
+    x
+  })
   
   # Facet ranges
-  rangesout <- out$facet_counts$facet_ranges
+#   rangesout <- out$facet_counts$facet_ranges
+  rangesout <- lapply(out$facet_counts$facet_ranges, function(x){
+    x <- x[!names(x) %in% c('gap','start','end')]$counts
+    data.frame(do.call(rbind, lapply(seq(1, length(x), by=2), function(y){
+      x[c(y, y+1)]
+    })), stringsAsFactors=FALSE)
+  })
   
   # output
   return( list(facet_queries = replacelen0(fqout), 
