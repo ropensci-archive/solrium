@@ -3,7 +3,7 @@ Title: General purpose R interface to Solr
 Description: This package provides a set of functions for querying and parsing
     data from Solr endpoints, including search, faceting, and highlighting.
 Version: 0.1
-Date: 2013-12-07
+Date: 2013-12-09
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 Depends:

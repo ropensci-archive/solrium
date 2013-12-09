@@ -7,7 +7,7 @@ solr
 
 This package only deals with exracting data from a Solr endpoint, not writing data (pull request or holla if you're interested in writing solr data).
 
-### Information
+### Solr info
 
 + [Solr home page](http://lucene.apache.org/solr/)
 + [Highlighting help](http://wiki.apache.org/solr/HighlightingParameters)
@@ -15,9 +15,21 @@ This package only deals with exracting data from a Solr endpoint, not writing da
 + [Installing Solr on Mac using homebrew](http://ramlev.dk/blog/2012/06/02/install-apache-solr-on-your-mac/)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 
+### Notes
+
+Right now I am sorta forcing `wt=json` (use JSON by default) and parsing JSON only. Does anyone want XML? I can easily add that.
+
 ### Quick start
 
 **Install**
+
+Install dependencies
+
+```coffee
+install.packages(c("rjson","plyr","httr","XML"))
+```
+
+Install solr
 
 ```coffee
 install.packages("devtools")
