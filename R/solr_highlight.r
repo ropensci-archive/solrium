@@ -8,11 +8,19 @@
 #' @references See \url{http://wiki.apache.org/solr/HighlightingParameters} for 
 #' more information on highlighting.
 #' @examples \dontrun{
-#' url <- 'http://api.plos.org/search'
-#' key = getOption('PlosApiKey')
+#' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 #' 
 #' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key)
 #' solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url, key=key)
+#' 
+#' # Raw data back
+#' ## json
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE)
+#' ## xml
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE, wt='xml')
+#' ## parse after getting data back
+#' out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, rows=10, url = url, key=key, raw=TRUE, wt='xml')
+#' solr_parse_high(out, parsetype='df')
 #' }
 #' @export
 
@@ -27,7 +35,8 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL, 
      hl.highlightMultiTerm = NULL, hl.regex.slop = NULL, hl.regex.pattern = NULL, 
      hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NULL, 
-     wt='json', key = NULL, url = NULL, callopts=list(), fl='DOES_NOT_EXIST', fq=NULL)
+     wt='json', raw = FALSE, key = NULL, url = NULL, callopts=list(), 
+     fl='DOES_NOT_EXIST', fq=NULL, parsetype='list')
 {
   args <- compact(list(wt=wt, q=q, start=start, rows=rows, hl='true', hl.fl=hl.fl,
      hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
@@ -46,6 +55,10 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   tt <- GET(url, query = args, callopts)
   stop_for_status(tt)
-  out <- content(tt)$highlighting
-  return( out )
+  out <- content(tt, as="text")
+  class(out) <- "sr_high"
+  attr(out, "wt") <- wt
+  if(raw){ return( out ) } else { return( solr_parse_high(out, parsetype) ) }
+#   out <- content(tt)$highlighting
+#   return( out )
 }

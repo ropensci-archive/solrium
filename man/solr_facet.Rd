@@ -14,8 +14,8 @@
     facet.range.start = NA, facet.range.end = NA,
     facet.range.gap = NA, facet.range.hardend = NA,
     facet.range.other = NA, facet.range.include = NA,
-    start = NA, rows = NA, key = NA, url = NA,
-    callopts = list(), ...)
+    start = NA, rows = NA, key = NA, url = NA, wt = "json",
+    raw = FALSE, callopts = list(), ...)
 }
 \arguments{
   \item{facet}{XXXX}
@@ -80,12 +80,19 @@
 
   \item{url}{URL endpoint}
 
+  \item{wt}{(character) Data format to return. One of xml
+  or json (default).}
+
+  \item{raw}{(logical) If TRUE (default) raw json or xml
+  returned. If FALSE, parsed data returned.}
+
   \item{callopts}{Call options passed on to httr::GET}
 
   \item{...}{Further args.}
 }
 \value{
-  A list.
+  Raw json or xml, or a list of length 4 parsed elements
+  (usually data.frame's).
 }
 \description{
   Do faceted searches, outputing facets only.
@@ -101,8 +108,7 @@
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
-key = getOption('PlosApiKey')
+url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 
 # Facet on a single field
 solr_facet(q='*:*', facet.field='journal', url=url, key=key)
@@ -133,6 +139,16 @@ solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount',
 f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000,
 f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5, f.alm_twitterCount.facet.range.end=1000,
 f.alm_twitterCount.facet.range.gap=10, key=key)
+
+# Get raw json or xml
+solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE) # json
+solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml') # xml
+
+# Get raw data back, and parse later, same as what goes on internally if raw=FALSE (Default)
+out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
+solr_parse_facet(out)
+out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
+solr_parse_facet(out)
 }
 }
 \references{
@@ -141,6 +157,7 @@ f.alm_twitterCount.facet.range.gap=10, key=key)
   for more information on faceting.
 }
 \seealso{
-  \code{\link{solr_search}}, \code{\link{solr_highlight}}
+  \code{\link{solr_search}}, \code{\link{solr_highlight}},
+  \code{\link{solr_parse_facet}}
 }
 

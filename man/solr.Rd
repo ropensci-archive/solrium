@@ -10,10 +10,11 @@
   capability do speak up and/or send a pull request.
 }
 \details{
-  There are currently only three functions:
+  There are currently three main functions:
 
   \describe{ \item{solr_search}{General search}
-  \item{solr_facet}{Faceting}
-  \item{solr_highlight}{Highlighting} }
+  \item{solr_facet}{Faceting only (w/o general search)}
+  \item{solr_highlight}{Highlighting only (w/o general
+  search)} }
 }
 

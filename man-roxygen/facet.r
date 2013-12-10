@@ -29,5 +29,8 @@
 #' @param rows Number of records to return.
 #' @param key API key, if needed.
 #' @param url URL endpoint
+#' @param wt (character) Data format to return. One of xml or json (default). 
+#' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
+#' 		parsed data returned.
 #' @param callopts Call options passed on to httr::GET
 #' @param ... Further args.

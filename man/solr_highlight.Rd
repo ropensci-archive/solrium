@@ -21,8 +21,9 @@
     hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
     hl.regex.pattern = NULL,
     hl.regex.maxAnalyzedChars = NULL, start = 0,
-    rows = NULL, wt = "json", key = NULL, url = NULL,
-    callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL)
+    rows = NULL, wt = "json", raw = FALSE, key = NULL,
+    url = NULL, callopts = list(), fl = "DOES_NOT_EXIST",
+    fq = NULL, parsetype = "list")
 }
 \arguments{
   \item{hl}{XXXX}
@@ -101,7 +102,11 @@
 
   \item{...}{Further args.}
 
-  \item{wt}{Data format, json or xml.}
+  \item{wt}{(character) Data format to return. One of xml
+  or json (default).}
+
+  \item{raw}{(logical) If TRUE (default) raw json or xml
+  returned. If FALSE, parsed data returned.}
 
   \item{fq}{Filter query, this does not affect the search,
   only what gets returned}
@@ -116,11 +121,19 @@
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
-key = getOption('PlosApiKey')
+url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 
 solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key)
 solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url, key=key)
+
+# Raw data back
+## json
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE)
+## xml
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE, wt='xml')
+## parse after getting data back
+out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, rows=10, url = url, key=key, raw=TRUE, wt='xml')
+solr_parse_high(out, parsetype='df')
 }
 }
 \references{

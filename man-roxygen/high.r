@@ -36,6 +36,8 @@
 #' @param url URL endpoint
 #' @param callopts Call options passed on to httr::GET
 #' @param ... Further args.
-#' @param wt Data format, json or xml.
+#' @param wt (character) Data format to return. One of xml or json (default). 
+#' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
+#' 		parsed data returned.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return
