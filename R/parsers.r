@@ -141,5 +141,48 @@ solr_parse.sr_high <- function(input, parsetype='list')
   return( highout )
 }
 
+#' @method solr_parse sr_search
+#' @export
+#' @rdname solr_parse
+solr_parse.sr_search <- function(input, parsetype='list')
+{
+  assert_that(is(input, "sr_search"))
+  wt <- attributes(input)$wt
+  input <- switch(wt, 
+                  xml = xmlParse(input),
+                  json = rjson::fromJSON(input))
+  
+  if(wt=='json'){
+    if(parsetype=='df'){
+      dat <- input$response$docs
+      datout <- data.frame(rbindlist(dat))
+    } else
+    {
+      datout <- input$response$docs
+    }
+  } else
+  {
+    temp <- xpathApply(input, '//doc')
+    tmptmp <- lapply(temp, function(x){
+      tt <- xmlToList(x)
+      uu <- lapply(tt, function(x){
+        u <- x$text[[1]]
+        names(u) <- x$.attrs[[1]]
+        u
+      })
+      names(uu) <- NULL
+      as.list(unlist(uu))
+    })
+    if(parsetype=='df'){
+      datout <- data.frame(rbindlist(tmptmp))
+    } else
+    {
+      datout <- tmptmp
+    }
+  }
+  
+  return( datout )
+}
+
 # small function to replace elements of length 0 with NULL
 replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }

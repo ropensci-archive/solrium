@@ -1,5 +1,6 @@
 S3method(solr_parse,sr_facet)
 S3method(solr_parse,sr_high)
+S3method(solr_parse,sr_search)
 export(is.sr_facet)
 export(is.sr_high)
 export(is.sr_search)

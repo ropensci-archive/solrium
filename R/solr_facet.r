@@ -62,6 +62,13 @@
 #' solr_parse(out)
 #' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
 #' solr_parse(out)
+#' 
+#' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
+#' ## The occurrence endpoint
+#' url="http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+#' solr_facet(q='*:*', facet.field='year', url=url)
+#' solr_facet(q='*:*', facet.field='state_code', url=url)
+#' solr_facet(q='*:*', facet.field='basis_of_record', url=url)
 #' }
 #' @export
 

@@ -6,7 +6,8 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
-  key = NULL, url = NULL, callopts = list())
+  key = NULL, url = NULL, callopts = list(), raw = FALSE,
+  parsetype = "df")
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -114,6 +115,20 @@ solr_search(q='*:*', fl='alm_twitterCount,title', fq='alm_twitterCount:[5 TO 10]
 ## Assign higher boost to title matches than to body matches (compare the two calls)
 solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3, url=url, key=key)
 solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, url=url, key=key)
+
+# Parse data
+out <- solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, raw=TRUE)
+solr_parse(out, 'df')
+## gives sam result
+solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, )
+
+# Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
+## The occurrences endpoint
+url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+solr_search(q='*:*', fl='latitude,longitude,scientific_name', url=url)
+## the species names endpoint
+url2 <- "http://bisonapi.usgs.ornl.gov/solr/species/select"
+solr_search(q='*:*', url=url2, parsetype='list')
 }
 }
 \references{

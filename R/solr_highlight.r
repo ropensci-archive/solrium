@@ -59,6 +59,4 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
   class(out) <- "sr_high"
   attr(out, "wt") <- wt
   if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
-#   out <- content(tt)$highlighting
-#   return( out )
 }

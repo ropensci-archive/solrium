@@ -2,6 +2,7 @@
 \alias{solr_parse}
 \alias{solr_parse.sr_facet}
 \alias{solr_parse.sr_high}
+\alias{solr_parse.sr_search}
 \title{Parse facet data.}
 \usage{
 solr_parse(input, parsetype)
@@ -9,6 +10,8 @@ solr_parse(input, parsetype)
 \method{solr_parse}{sr_facet}(input, parsetype = NULL)
 
 \method{solr_parse}{sr_high}(input, parsetype = "list")
+
+\method{solr_parse}{sr_search}(input, parsetype = "list")
 }
 \arguments{
   \item{input}{Output from solr_facet}
