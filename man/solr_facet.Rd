@@ -2,20 +2,17 @@
 \alias{solr_facet}
 \title{Do faceted searches, outputing facets only.}
 \usage{
-  solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
-    facet.prefix = NA, facet.sort = NA, facet.limit = NA,
-    facet.offset = NA, facet.mincount = NA,
-    facet.missing = NA, facet.method = NA,
-    facet.enum.cache.minDf = NA, facet.threads = NA,
-    facet.date = NA, facet.date.start = NA,
-    facet.date.end = NA, facet.date.gap = NA,
-    facet.date.hardend = NA, facet.date.other = NA,
-    facet.date.include = NA, facet.range = NA,
-    facet.range.start = NA, facet.range.end = NA,
-    facet.range.gap = NA, facet.range.hardend = NA,
-    facet.range.other = NA, facet.range.include = NA,
-    start = NA, rows = NA, key = NA, url = NA, wt = "json",
-    raw = FALSE, callopts = list(), ...)
+solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
+  facet.prefix = NA, facet.sort = NA, facet.limit = NA,
+  facet.offset = NA, facet.mincount = NA, facet.missing = NA,
+  facet.method = NA, facet.enum.cache.minDf = NA, facet.threads = NA,
+  facet.date = NA, facet.date.start = NA, facet.date.end = NA,
+  facet.date.gap = NA, facet.date.hardend = NA, facet.date.other = NA,
+  facet.date.include = NA, facet.range = NA, facet.range.start = NA,
+  facet.range.end = NA, facet.range.gap = NA, facet.range.hardend = NA,
+  facet.range.other = NA, facet.range.include = NA, start = NA,
+  rows = NA, key = NA, url = NA, wt = "json", raw = FALSE,
+  callopts = list(), ...)
 }
 \arguments{
   \item{facet}{XXXX}
@@ -91,20 +88,20 @@
   \item{...}{Further args.}
 }
 \value{
-  Raw json or xml, or a list of length 4 parsed elements
-  (usually data.frame's).
+Raw json or xml, or a list of length 4 parsed elements
+(usually data.frame's).
 }
 \description{
-  Do faceted searches, outputing facets only.
+Do faceted searches, outputing facets only.
 }
 \details{
-  A number of fields can be specified multiple times, in
-  which case you can separate them by commas, like
-  \code{facet.field='journal,subject'}. Those fields are:
-  \itemize{ \item facet.field \item facet.query \item
-  facet.date \item facet.date.other \item
-  facet.date.include \item facet.range \item
-  facet.range.other \item facet.range.include }
+A number of fields can be specified multiple times, in
+which case you can separate them by commas, like
+\code{facet.field='journal,subject'}. Those fields are:
+\itemize{ \item facet.field \item facet.query \item
+facet.date \item facet.date.other \item facet.date.include
+\item facet.range \item facet.range.other \item
+facet.range.include }
 }
 \examples{
 \dontrun{
@@ -146,18 +143,17 @@ solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
 
 # Get raw data back, and parse later, same as what goes on internally if raw=FALSE (Default)
 out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
-solr_parse_facet(out)
+solr_parse(out)
 out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
-solr_parse_facet(out)
+solr_parse(out)
 }
 }
 \references{
-  See
-  \url{http://wiki.apache.org/solr/SimpleFacetParameters}
-  for more information on faceting.
+See \url{http://wiki.apache.org/solr/SimpleFacetParameters}
+for more information on faceting.
 }
 \seealso{
-  \code{\link{solr_search}}, \code{\link{solr_highlight}},
-  \code{\link{solr_parse_facet}}
+\code{\link{solr_search}}, \code{\link{solr_highlight}},
+\code{\link{solr_parse}}
 }
 

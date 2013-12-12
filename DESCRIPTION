@@ -23,10 +23,3 @@ Imports:
 Suggests:
     testthat,
     roxygen2
-Collate:
-    'solr_facet.r'
-    'solr_highlight.r'
-    'solr_search.r'
-    'solr.r'
-    'parsers.r'
-    'classes.r'

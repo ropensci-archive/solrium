@@ -2,12 +2,11 @@
 \alias{solr_search}
 \title{Solr search.}
 \usage{
-  solr_search(q = "*:*", sort = NULL, start = 0,
-    rows = NULL, pageDoc = NULL, pageScore = NULL,
-    fq = NULL, fl = NULL, defType = NULL,
-    timeAllowed = NULL, qt = NULL, wt = "json", NOW = NULL,
-    TZ = NULL, echoHandler = NULL, echoParams = NULL,
-    key = NULL, url = NULL, callopts = list())
+solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
+  pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
+  defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
+  NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
+  key = NULL, url = NULL, callopts = list())
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -81,10 +80,10 @@
   \item{callopts}{Call options passed on to httr::GET}
 }
 \value{
-  A list.
+A list.
 }
 \description{
-  Solr search.
+Solr search.
 }
 \examples{
 \dontrun{
@@ -118,11 +117,10 @@ solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, url
 }
 }
 \references{
-  See
-  \url{http://wiki.apache.org/solr/#Search_and_Indexing}
-  for more information.
+See \url{http://wiki.apache.org/solr/#Search_and_Indexing}
+for more information.
 }
 \seealso{
-  \code{\link{solr_highlight}}, \code{\link{solr_facet}}
+\code{\link{solr_highlight}}, \code{\link{solr_facet}}
 }
 

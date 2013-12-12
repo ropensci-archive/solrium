@@ -41,3 +41,4 @@
 #' 		parsed data returned.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return
+#' @param parsetype One of list of df (data.frame)

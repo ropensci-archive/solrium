@@ -20,7 +20,7 @@
 #' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE, wt='xml')
 #' ## parse after getting data back
 #' out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, rows=10, url = url, key=key, raw=TRUE, wt='xml')
-#' solr_parse_high(out, parsetype='df')
+#' solr_parse(out, parsetype='df')
 #' }
 #' @export
 
@@ -58,7 +58,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
   out <- content(tt, as="text")
   class(out) <- "sr_high"
   attr(out, "wt") <- wt
-  if(raw){ return( out ) } else { return( solr_parse_high(out, parsetype) ) }
+  if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
 #   out <- content(tt)$highlighting
 #   return( out )
 }

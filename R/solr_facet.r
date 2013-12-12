@@ -17,7 +17,7 @@
 #'  \item facet.range.other
 #'  \item facet.range.include
 #' }
-#' @seealso \code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse_facet}}
+#' @seealso \code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse}}
 #' @references See \url{http://wiki.apache.org/solr/SimpleFacetParameters} for 
 #' more information on faceting.
 #' @examples \dontrun{
@@ -59,9 +59,9 @@
 #' 
 #' # Get raw data back, and parse later, same as what goes on internally if raw=FALSE (Default)
 #' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
-#' solr_parse_facet(out)
+#' solr_parse(out)
 #' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
-#' solr_parse_facet(out)
+#' solr_parse(out)
 #' }
 #' @export
 
@@ -114,5 +114,5 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   out <- content(tt, as="text")
   class(out) <- "sr_facet"
   attr(out, "wt") <- wt
-  if(raw){ return( out ) } else { solr_parse_facet(out) }
+  if(raw){ return( out ) } else { solr_parse(out) }
 }

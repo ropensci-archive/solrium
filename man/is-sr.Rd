@@ -4,17 +4,20 @@
 \alias{is.sr_search}
 \title{Test for sr_facet class}
 \usage{
-  is.sr_facet(x)
+is.sr_facet(x)
 
-  is.sr_high(x)
+is.sr_high(x)
 
-  is.sr_search(x)
+is.sr_search(x)
+}
+\arguments{
+  \item{x}{Input}
 }
 \description{
-  Test for sr_facet class
+Test for sr_facet class
 
-  Test for sr_high class
+Test for sr_high class
 
-  Test for sr_search class
+Test for sr_search class
 }
 

@@ -2,28 +2,22 @@
 \alias{solr_highlight}
 \title{Do highlighting searches, outputing highlight only.}
 \usage{
-  solr_highlight(q, hl.fl = NULL, hl.snippets = NULL,
-    hl.fragsize = NULL, hl.q = NULL,
-    hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL,
-    hl.maxAnalyzedChars = NULL, hl.alternateField = NULL,
-    hl.maxAlternateFieldLength = NULL,
-    hl.preserveMulti = NULL,
-    hl.maxMultiValuedToExamine = NULL,
-    hl.maxMultiValuedToMatch = NULL, hl.formatter = NULL,
-    hl.simple.pre = NULL, hl.simple.post = NULL,
-    hl.fragmenter = NULL, hl.fragListBuilder = NULL,
-    hl.fragmentsBuilder = NULL, hl.boundaryScanner = NULL,
-    hl.bs.maxScan = NULL, hl.bs.chars = NULL,
-    hl.bs.type = NULL, hl.bs.language = NULL,
-    hl.bs.country = NULL,
-    hl.useFastVectorHighlighter = NULL,
-    hl.usePhraseHighlighter = NULL,
-    hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
-    hl.regex.pattern = NULL,
-    hl.regex.maxAnalyzedChars = NULL, start = 0,
-    rows = NULL, wt = "json", raw = FALSE, key = NULL,
-    url = NULL, callopts = list(), fl = "DOES_NOT_EXIST",
-    fq = NULL, parsetype = "list")
+solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
+  hl.q = NULL, hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL,
+  hl.maxAnalyzedChars = NULL, hl.alternateField = NULL,
+  hl.maxAlternateFieldLength = NULL, hl.preserveMulti = NULL,
+  hl.maxMultiValuedToExamine = NULL, hl.maxMultiValuedToMatch = NULL,
+  hl.formatter = NULL, hl.simple.pre = NULL, hl.simple.post = NULL,
+  hl.fragmenter = NULL, hl.fragListBuilder = NULL,
+  hl.fragmentsBuilder = NULL, hl.boundaryScanner = NULL,
+  hl.bs.maxScan = NULL, hl.bs.chars = NULL, hl.bs.type = NULL,
+  hl.bs.language = NULL, hl.bs.country = NULL,
+  hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL,
+  hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
+  hl.regex.pattern = NULL, hl.regex.maxAnalyzedChars = NULL, start = 0,
+  rows = NULL, wt = "json", raw = FALSE, key = NULL, url = NULL,
+  callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL,
+  parsetype = "list")
 }
 \arguments{
   \item{hl}{XXXX}
@@ -112,12 +106,14 @@
   only what gets returned}
 
   \item{fl}{Fields to return}
+
+  \item{parsetype}{One of list of df (data.frame)}
 }
 \value{
-  A list.
+A list.
 }
 \description{
-  Do highlighting searches, outputing highlight only.
+Do highlighting searches, outputing highlight only.
 }
 \examples{
 \dontrun{
@@ -133,15 +129,15 @@ solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw
 solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE, wt='xml')
 ## parse after getting data back
 out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, rows=10, url = url, key=key, raw=TRUE, wt='xml')
-solr_parse_high(out, parsetype='df')
+solr_parse(out, parsetype='df')
 }
 }
 \references{
-  See
-  \url{http://wiki.apache.org/solr/HighlightingParameters}
-  for more information on highlighting.
+See
+\url{http://wiki.apache.org/solr/HighlightingParameters}
+for more information on highlighting.
 }
 \seealso{
-  \code{\link{solr_search}}, \code{\link{solr_facet}}
+\code{\link{solr_search}}, \code{\link{solr_facet}}
 }
 

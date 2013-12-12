@@ -1,5 +1,6 @@
 #' Test for sr_facet class
 #' @export
+#' @param x Input
 #' @rdname is-sr
 is.sr_facet <- function(x) inherits(x, "sr_facet")
 

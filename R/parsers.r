@@ -2,13 +2,21 @@
 #' 
 #' @import XML rjson assertthat data.table
 #' @param input Output from solr_facet
+#' @param parsetype One of 'list' or 'df' (data.frame)
 #' @details This is the parser used internally in solr_facet, but if you output raw 
 #' data from solr_facet using raw=TRUE, then you can use this function to parse that
 #' data (a sr_facet S3 object) after the fact to a list of data.frame's for easier 
 #' consumption. The data format type is detected from the attribute "wt" on the 
 #' sr_facet object.
 #' @export
-solr_parse_facet <- function(input)
+solr_parse <- function(input, parsetype){
+  UseMethod("solr_parse")
+}
+
+#' @method solr_parse sr_facet
+#' @export
+#' @rdname solr_parse
+solr_parse.sr_facet <- function(input, parsetype=NULL)
 {
   assert_that(is(input, "sr_facet"))
   wt <- attributes(input)$wt
@@ -80,17 +88,10 @@ solr_parse_facet <- function(input)
                facet_ranges = replacelen0(rangesout)) )
 }
 
-#' Parse highlight data.
-#' 
-#' @import XML rjson assertthat data.table
-#' @param input Output from solr_facet
-#' @details This is the parser used internally in solr_facet, but if you output raw 
-#' data from solr_facet using raw=TRUE, then you can use this function to parse that
-#' data (a sr_facet S3 object) after the fact to a list of data.frame's for easier 
-#' consumption. The data format type is detected from the attribute "wt" on the 
-#' sr_facet object.
+#' @method solr_parse sr_high
 #' @export
-solr_parse_high <- function(input, parsetype='list')
+#' @rdname solr_parse
+solr_parse.sr_high <- function(input, parsetype='list')
 {
   assert_that(is(input, "sr_high"))
   wt <- attributes(input)$wt
