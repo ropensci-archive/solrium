@@ -15,10 +15,6 @@ This package only deals with exracting data from a Solr endpoint, not writing da
 + [Installing Solr on Mac using homebrew](http://ramlev.dk/blog/2012/06/02/install-apache-solr-on-your-mac/)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 
-### Notes
-
-Right now I am sorta forcing `wt=json` (use JSON by default) and parsing JSON only. Does anyone want XML? I can easily add that.
-
 ### Quick start
 
 **Install**
@@ -201,3 +197,33 @@ attr(,"wt")
 *PLOS Search API*
 
 Most of the examples above use the PLOS search API... :)
+
+
+Please report any issues or bugs](https://github.com/ropensci/solr/issues).
+
+License: CC0
+
+This package is part of the [rOpenSci](http://ropensci.org/packages) project.
+
+To cite package `solr` in publications use:
+
+```coffee
+To cite package ‘solr’ in publications use:
+
+  Scott Chamberlain (2013). solr: General purpose R interface to Solr. R package version 0.0.5.
+  https://github.com/ropensci/solr
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {solr: General purpose R interface to Solr},
+    author = {Scott Chamberlain},
+    year = {2013},
+    note = {R package version 0.0.5},
+    url = {https://github.com/ropensci/solr},
+  }
+```
+
+Get citation information for `solr` in R doing `citation(package = 'solr')`
+
+[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
