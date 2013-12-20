@@ -1,22 +1,26 @@
-#' Parse facet data.
+#' Parse raw data from solr_search, solr_facet, or solr_highlight.
+#' 
+#' See details.
 #' 
 #' @import XML rjson assertthat data.table
 #' @param input Output from solr_facet
 #' @param parsetype One of 'list' or 'df' (data.frame)
+#' @param concat Character to conactenate strings by, e.g,. ',' (character). Used
+#' in solr_parse.sr_search only.
 #' @details This is the parser used internally in solr_facet, but if you output raw 
 #' data from solr_facet using raw=TRUE, then you can use this function to parse that
 #' data (a sr_facet S3 object) after the fact to a list of data.frame's for easier 
 #' consumption. The data format type is detected from the attribute "wt" on the 
 #' sr_facet object.
 #' @export
-solr_parse <- function(input, parsetype){
+solr_parse <- function(input, parsetype, concat){
   UseMethod("solr_parse")
 }
 
 #' @method solr_parse sr_facet
 #' @export
 #' @rdname solr_parse
-solr_parse.sr_facet <- function(input, parsetype=NULL)
+solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
 {
   assert_that(is(input, "sr_facet"))
   wt <- attributes(input)$wt
@@ -91,7 +95,7 @@ solr_parse.sr_facet <- function(input, parsetype=NULL)
 #' @method solr_parse sr_high
 #' @export
 #' @rdname solr_parse
-solr_parse.sr_high <- function(input, parsetype='list')
+solr_parse.sr_high <- function(input, parsetype='list', concat=',')
 {
   assert_that(is(input, "sr_high"))
   wt <- attributes(input)$wt
@@ -144,7 +148,7 @@ solr_parse.sr_high <- function(input, parsetype='list')
 #' @method solr_parse sr_search
 #' @export
 #' @rdname solr_parse
-solr_parse.sr_search <- function(input, parsetype='list')
+solr_parse.sr_search <- function(input, parsetype='list', concat=',')
 {
   assert_that(is(input, "sr_search"))
   wt <- attributes(input)$wt
@@ -155,7 +159,14 @@ solr_parse.sr_search <- function(input, parsetype='list')
   if(wt=='json'){
     if(parsetype=='df'){
       dat <- input$response$docs
-      datout <- data.frame(rbindlist(dat))
+      dat2 <- lapply(dat, function(x){
+        lapply(x, function(y){
+          if(length(y) > 1){
+            paste(y, collapse=concat)
+          } else { y  }
+        })
+      })
+      datout <- data.frame(rbindlist(dat2))
     } else
     {
       datout <- input$response$docs
@@ -165,9 +176,9 @@ solr_parse.sr_search <- function(input, parsetype='list')
     temp <- xpathApply(input, '//doc')
     tmptmp <- lapply(temp, function(x){
       tt <- xmlToList(x)
-      uu <- lapply(tt, function(x){
-        u <- x$text[[1]]
-        names(u) <- x$.attrs[[1]]
+      uu <- lapply(tt, function(y){
+        u <- y$text[[1]]
+        names(u) <- y$.attrs[[1]]
         u
       })
       names(uu) <- NULL

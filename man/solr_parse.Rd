@@ -5,18 +5,21 @@
 \alias{solr_parse.sr_search}
 \title{Parse facet data.}
 \usage{
-solr_parse(input, parsetype)
+solr_parse(input, parsetype, concat)
 
-\method{solr_parse}{sr_facet}(input, parsetype = NULL)
+\method{solr_parse}{sr_facet}(input, parsetype = NULL, concat = ",")
 
-\method{solr_parse}{sr_high}(input, parsetype = "list")
+\method{solr_parse}{sr_high}(input, parsetype = "list", concat = ",")
 
-\method{solr_parse}{sr_search}(input, parsetype = "list")
+\method{solr_parse}{sr_search}(input, parsetype = "list", concat = ",")
 }
 \arguments{
   \item{input}{Output from solr_facet}
 
   \item{parsetype}{One of 'list' or 'df' (data.frame)}
+
+  \item{concat}{Character to conactenate strings by, e.g,.
+  ',' (character)}
 }
 \description{
 Parse facet data.

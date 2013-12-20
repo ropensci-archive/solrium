@@ -9,8 +9,7 @@
 #' more information.
 #' @export
 #' @examples \dontrun{
-#' url <- 'http://api.plos.org/search'
-#' key = getOption('PlosApiKey')
+#' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 #' 
 #' solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
 #' 
@@ -37,16 +36,17 @@
 #' solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3, url=url, key=key)
 #' solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, url=url, key=key)
 #' 
-#' # Parse data
+#' # Parse data, using the USGS BISON API
+#' url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
 #' out <- solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, raw=TRUE)
 #' solr_parse(out, 'df')
-#' ## gives sam result
-#' solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, )
+#' ## gives the same result
+#' solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url)
+#' 
+#' ## You can choose how to combine elements longer than length 1
+#' solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, parsetype='df', concat=';')
 #' 
 #' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
-#' ## The occurrences endpoint
-#' url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-#' solr_search(q='*:*', fl='latitude,longitude,scientific_name', url=url)
 #' ## the species names endpoint
 #' url2 <- "http://bisonapi.usgs.ornl.gov/solr/species/select"
 #' solr_search(q='*:*', url=url2, parsetype='list')
@@ -55,7 +55,7 @@
 solr_search<- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL, 
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
-  url = NULL, callopts=list(), raw=FALSE, parsetype='df')
+  url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',')
 {
   args <- compact(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
                        pageScore=pageScore, fq=fq, fl=fl, defType=defType, 
@@ -67,5 +67,5 @@ solr_search<- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   out <- content(tt, as="text")
   class(out) <- "sr_search"
   attr(out, "wt") <- wt
-  if(raw){ return( out ) } else { solr_parse(out, parsetype) }
+  if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
 }

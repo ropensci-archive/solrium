@@ -7,7 +7,7 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, url = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df")
+  parsetype = "df", concat = ",")
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -79,6 +79,17 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   \item{key}{API key, if needed.}
 
   \item{callopts}{Call options passed on to httr::GET}
+
+  \item{raw}{(logical) If TRUE, returns raw data in format
+  specified by wt param}
+
+  \item{parsetype}{(character) One of 'list' or 'df'}
+
+  \item{concat}{(character) Character to concatenate
+  elements of longer than length 1. Note that this only
+  works reliably when data format is json (wt='json'). The
+  parsing is more complicated in XML format, but you can do
+  that on your own.}
 }
 \value{
 A list.
@@ -88,8 +99,7 @@ Solr search.
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
-key = getOption('PlosApiKey')
+url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 
 solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
 
@@ -116,16 +126,17 @@ solr_search(q='*:*', fl='alm_twitterCount,title', fq='alm_twitterCount:[5 TO 10]
 solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3, url=url, key=key)
 solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, url=url, key=key)
 
-# Parse data
+# Parse data, using the USGS BISON API
+url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
 out <- solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, raw=TRUE)
 solr_parse(out, 'df')
-## gives sam result
-solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, )
+## gives the same result
+solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url)
+
+## You can choose how to combine elements longer than length 1
+solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, parsetype='df', concat=';')
 
 # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
-## The occurrences endpoint
-url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q='*:*', fl='latitude,longitude,scientific_name', url=url)
 ## the species names endpoint
 url2 <- "http://bisonapi.usgs.ornl.gov/solr/species/select"
 solr_search(q='*:*', url=url2, parsetype='list')
