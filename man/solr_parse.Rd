@@ -2,8 +2,10 @@
 \alias{solr_parse}
 \alias{solr_parse.sr_facet}
 \alias{solr_parse.sr_high}
+\alias{solr_parse.sr_mlt}
 \alias{solr_parse.sr_search}
-\title{Parse facet data.}
+\alias{solr_parse.sr_stats}
+\title{Parse raw data from solr_search, solr_facet, or solr_highlight.}
 \usage{
 solr_parse(input, parsetype, concat)
 
@@ -12,6 +14,10 @@ solr_parse(input, parsetype, concat)
 \method{solr_parse}{sr_high}(input, parsetype = "list", concat = ",")
 
 \method{solr_parse}{sr_search}(input, parsetype = "list", concat = ",")
+
+\method{solr_parse}{sr_mlt}(input, parsetype = "list", concat = ",")
+
+\method{solr_parse}{sr_stats}(input, parsetype = "list", concat = ",")
 }
 \arguments{
   \item{input}{Output from solr_facet}
@@ -19,10 +25,10 @@ solr_parse(input, parsetype, concat)
   \item{parsetype}{One of 'list' or 'df' (data.frame)}
 
   \item{concat}{Character to conactenate strings by, e.g,.
-  ',' (character)}
+  ',' (character). Used in solr_parse.sr_search only.}
 }
 \description{
-Parse facet data.
+See details.
 }
 \details{
 This is the parser used internally in solr_facet, but if

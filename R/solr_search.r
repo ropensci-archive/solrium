@@ -3,7 +3,7 @@
 #' @import httr XML
 #' @importFrom plyr compact
 #' @template search
-#' @return A list.
+#' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 #' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for 
 #' more information.

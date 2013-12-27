@@ -92,7 +92,7 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   that on your own.}
 }
 \value{
-A list.
+XML, JSON, a list, or data.frame
 }
 \description{
 Solr search.

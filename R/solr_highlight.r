@@ -2,8 +2,8 @@
 #' 
 #' @import httr XML
 #' @importFrom plyr compact
-#' @template high
-#' @return A list.
+#' @template mlt
+#' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_search}}, \code{\link{solr_facet}}
 #' @references See \url{http://wiki.apache.org/solr/HighlightingParameters} for 
 #' more information on highlighting.

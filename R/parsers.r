@@ -195,5 +195,162 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
   return( datout )
 }
 
+#' @method solr_parse sr_mlt
+#' @export
+#' @rdname solr_parse
+solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
+{
+  assert_that(is(input, "sr_mlt"))
+  wt <- attributes(input)$wt
+  input <- switch(wt, 
+                  xml = xmlParse(input),
+                  json = rjson::fromJSON(input))
+  
+  if(wt=='json'){
+    if(parsetype=='df'){
+      res <- input$response
+      reslist <- lapply(res$docs, function(y){
+        lapply(y, function(z){
+          if(length(z) > 1){
+            paste(z, collapse=concat)
+          } else { z  }
+        })
+      })
+      resdat <- data.frame(rbindlist(lapply(reslist, data.frame)))
+      
+      dat <- input$moreLikeThis
+      dat2 <- lapply(dat, function(x){
+        lapply(x$docs, function(y){
+          lapply(y, function(z){
+            if(length(z) > 1){
+              paste(z, collapse=concat)
+            } else { z  }
+          })
+        })
+      })
+      foo <- function(x) data.frame(rbindlist(x))
+      datmlt <- do.call(rbind, lapply(dat2, foo))
+      row.names(datmlt) <- NULL
+      datout <- list(docs=resdat, mlt=datmlt)
+    } else
+    {
+      datout <- input$moreLikeThis
+    }
+  } else
+  {
+    res <- xpathApply(input, '//result[@name="response"]//doc')
+    resdat <- rbindlist(lapply(res, function(x){
+      tmp <- xmlChildren(x)
+      tmp2 <- sapply(tmp, xmlValue)
+      names2 <- sapply(tmp, xmlGetAttr, name="name")
+      names(tmp2) <- names2
+      as.list(tmp2)
+    }))
+    
+    temp <- xpathApply(input, '//doc')
+    tmptmp <- lapply(temp, function(x){
+      tt <- xmlToList(x)
+      uu <- lapply(tt, function(y){
+        u <- y$text[[1]]
+        names(u) <- y$.attrs[[1]]
+        u
+      })
+      names(uu) <- NULL
+      as.list(unlist(uu))
+    })
+    if(parsetype=='df'){
+      datout <- data.frame(rbindlist(tmptmp))
+    } else
+    {
+      datout <- tmptmp
+    }
+  }
+  
+  return( datout )
+}
+
+#' @method solr_parse sr_stats
+#' @export
+#' @rdname solr_parse
+solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
+{
+  assert_that(is(input, "sr_stats"))
+  wt <- attributes(input)$wt
+  input <- switch(wt, 
+                  xml = xmlParse(input),
+                  json = rjson::fromJSON(input))
+  
+  if(wt=='json'){
+    if(parsetype=='df'){
+      dat <- input$stats$stats_fields
+      if(length(dat)==1){
+        datout <- data.frame(dat[[1]][!names(dat[[1]]) %in% 'facets'])
+      } else {
+        dat2 <- lapply(dat, function(x){
+          data.frame(x[!names(x) %in% 'facets'])
+        })
+        dat_reg <- do.call(rbind, dat2)
+        
+        # facets
+        dat_facet <- lapply(dat, function(x){
+          facetted <- x[names(x) %in% 'facets'][[1]]
+          if(length(facetted) == 1){
+            df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
+            df <- data.frame(df, row.names(df))
+            names(df)[ncol(df)] <- names(facetted)
+          } else {
+            df <- lapply(facetted, function(z){
+              dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
+              dd <- data.frame(dd, row.names(dd))
+              row.names(dd) <- NULL
+              names(dd)[ncol(dd)] <- "facet_field"
+              dd
+            })
+          }
+        })
+        datout <- list(data=dat_reg, facet=dat_facet)
+      }
+    } else
+    {
+      datout <- input$stats$stats_fields
+    }
+  } else
+  {
+    temp <- xpathApply(input, '//lst/lst[@name="stats_fields"]/lst')
+    if(parsetype=='df'){
+      # w/o facets
+      dat_reg <- data.frame(rbindlist(lapply(temp, function(h){
+        tt <- xmlChildren(h)
+        uu <- tt[!names(tt) %in% 'lst']
+        vals <- sapply(uu, xmlValue)
+        names2 <- sapply(uu, xmlGetAttr, name="name")
+        names(vals) <- names2
+        data.frame(rbind(vals))
+      })))
+      # just facets
+      dat_facet <- lapply(temp, function(e){
+        tt <- xmlChildren(e)
+        uu <- tt[names(tt) %in% 'lst']
+        lapply(xmlChildren(uu$lst), function(f){
+          data.frame(rbindlist(lapply(xmlChildren(f), function(g){
+            ttt <- xmlChildren(g)
+            uuu <- ttt[!names(ttt) %in% 'lst']
+            vals <- sapply(uuu, xmlValue)
+            names2 <- sapply(uuu, xmlGetAttr, name="name")
+            names(vals) <- names2
+            data.frame(rbind(vals))
+          })))
+        })
+      })
+      datout <- list(data=dat_reg, facet=dat_facet)
+    } else
+    {
+      datout <- temp
+    }
+  }
+  
+  return( datout )
+}
+
 # small function to replace elements of length 0 with NULL
 replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }
