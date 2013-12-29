@@ -53,7 +53,8 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   \item{fq}{Filter query, this does not affect the search,
   only what gets returned}
 
-  \item{fl}{Fields to return}
+  \item{fl}{Fields to return. We force 'id' to be returned
+  so that there is a unique identifier with each record.}
 
   \item{concat}{(character) Character to concatenate
   elements of longer than length 1. Note that this only
@@ -88,19 +89,20 @@ Solr "more like this" search
 \dontrun{
 url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 
-solr_mlt(q='*:*', mlt.count=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='score', url=url, key=key)
+solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', url=url, key=key, fq="doc_type:full")
 solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', url=url, key=key)
+solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, url=url, key=key)
+solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, key=key)
 
-# Search for word ecology in title and cell in the body
-solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='title', rows=5, url=url, key=key)
+# get raw data, and parse later if needed
+out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key, raw=TRUE, wt="xml")
+library(XML)
+xmlParse(out)
+solr_parse(out, "df")
 }
 }
 \references{
 See \url{http://wiki.apache.org/solr/MoreLikeThis} for more
 information.
-}
-\seealso{
-\code{\link{solr_highlight}}, \code{\link{solr_facet}},
-\code{\link{solr_search}}
 }
 

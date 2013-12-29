@@ -14,6 +14,12 @@
 #' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', url=url, key=key)
 #' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, url=url, key=key)
 #' solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, key=key)
+#' 
+#' # get raw data, and parse later if needed
+#' out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key, raw=TRUE, wt="xml")
+#' library(XML)
+#' xmlParse(out)
+#' solr_parse(out, "df")
 #' }
 
 solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL, 

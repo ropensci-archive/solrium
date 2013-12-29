@@ -63,7 +63,8 @@ solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
   \item{fq}{Filter query, this does not affect the search,
   only what gets returned}
 
-  \item{fl}{Fields to return}
+  \item{fl}{Fields to return. We force 'id' to be returned
+  so that there is a unique identifier with each record.}
 
   \item{concat}{(character) Character to concatenate
   elements of longer than length 1. Note that this only

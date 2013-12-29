@@ -47,7 +47,17 @@ solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.
 solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key)
 
 # Get raw data, then parse later if you feel like it
+## json
 out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key, raw=TRUE)
+library(rjson)
+fromJSON(out)
+solr_parse(out) # list
+solr_parse(out, 'df') # data.frame
+
+## xml
+out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key, raw=TRUE, wt="xml")
+library(XML)
+xmlParse(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 

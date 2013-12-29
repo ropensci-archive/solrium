@@ -312,7 +312,24 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
       }
     } else
     {
-      datout <- input$stats$stats_fields
+      dat <- input$stats$stats_fields
+      # w/o facets
+      dat_reg <- lapply(dat, function(x){
+        x[!names(x) %in% 'facets']
+      })
+      # just facets
+      dat_facet <- lapply(dat, function(x){
+        facetted <- x[names(x) %in% 'facets'][[1]]
+        if(length(facetted) == 1){
+          lapply(facetted[[1]], function(z) z[!names(z) %in% 'facets'])
+        } else {
+          df <- lapply(facetted, function(z){
+            lapply(z, function(zz) zz[!names(zz) %in% 'facets'])
+          })
+        }
+      })
+      
+      datout <- list(data=dat_reg, facet=dat_facet)
     }
   } else
   {
@@ -345,7 +362,42 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
       datout <- list(data=dat_reg, facet=dat_facet)
     } else
     {
-      datout <- temp
+      dat_reg <- lapply(temp, function(h){
+        title <- xmlAttrs(h)[[1]]
+        tt <- xmlChildren(h)
+        uu <- tt[!names(tt) %in% 'lst']
+        vals <- sapply(uu, xmlValue)
+        names2 <- sapply(uu, xmlGetAttr, name="name")
+        names(vals) <- names2
+        ss <- list(x=as.list(vals))
+        names(ss) <- title
+        ss
+      })
+      # just facets
+      dat_facet <- lapply(temp, function(e){
+        title1 <- xmlAttrs(e)[[1]]
+        tt <- xmlChildren(e)
+        uu <- tt[names(tt) %in% 'lst']
+        ssss <- lapply(xmlChildren(uu$lst), function(f){
+          title2 <- xmlAttrs(f)[[1]]
+          sss <- lapply(xmlChildren(f), function(g){
+            title3 <- xmlAttrs(g)[[1]]
+            ttt <- xmlChildren(g)
+            uuu <- ttt[!names(ttt) %in% 'lst']
+            vals <- sapply(uuu, xmlValue)
+            names2 <- sapply(uuu, xmlGetAttr, name="name")
+            names(vals) <- names2
+            ss <- list(x=as.list(vals))
+            names(ss) <- eval(title3)
+            ss
+          })
+          names(sss) <- rep(eval(title2), length(names(sss)))
+          sss
+        })
+        names(ssss) <- rep(eval(title1), length(names(ssss)))
+        ssss
+      })
+      datout <- list(data=dat_reg, facet=dat_facet)
     }
   }
   
