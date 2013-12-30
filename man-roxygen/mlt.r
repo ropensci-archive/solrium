@@ -22,3 +22,34 @@
 #' @param start Record to start at, default to beginning.
 #' @param rows Number of records to return. Defaults to 10.
 #' @param wt Data type returned, defaults to 'json'
+
+# hl.fl
+# hl.snippets
+# hl.fragsize
+# hl.q
+# hl.mergeContiguous
+# hl.requireFieldMatch
+# hl.maxAnalyzedChars
+# hl.alternateField
+# hl.maxAlternateFieldLength
+# hl.preserveMulti
+# hl.maxMultiValuedToExamine
+# hl.maxMultiValuedToMatch
+# hl.formatter
+# hl.simple.pre
+# hl.simple.post
+# hl.fragmenter
+# hl.fragListBuilder
+# hl.fragmentsBuilder
+# hl.boundaryScanner
+# hl.bs.maxScan
+# hl.bs.chars
+# hl.bs.type
+# hl.bs.language
+# hl.bs.country
+# hl.useFastVectorHighlighter
+# hl.usePhraseHighlighter
+# hl.highlightMultiTerm
+# hl.regex.slop
+# hl.regex.pattern
+# hl.regex.maxAnalyzedChars

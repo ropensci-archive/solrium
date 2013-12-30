@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  \usepackage[vmargin=1in,hmargin=1in]{geometry}
+</head>
+<body>
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Solr vignette}
+-->
+
+<h1 id="local-setup-of-solr-and-querying-using-solr-r-package-on-mac-osx">Local setup of Solr and querying using solr R package, on Mac OSX</h1>
+<p><strong>A general purpose R interface to <a href="http://lucene.apache.org/solr/">Solr</a></strong></p>
+<p>This package only deals with exracting data from a Solr endpoint, not writing data (pull request or holla if you're interested in writing solr data).</p>
+<h3 id="solr-info">Solr info</h3>
+<ul>
+<li><a href="http://lucene.apache.org/solr/">Solr home page</a></li>
+<li><a href="http://wiki.apache.org/solr/HighlightingParameters">Highlighting help</a></li>
+<li><a href="http://wiki.apache.org/solr/SimpleFacetParameters">Faceting help</a></li>
+<li><a href="http://ramlev.dk/blog/2012/06/02/install-apache-solr-on-your-mac/">Installing Solr on Mac using homebrew</a></li>
+<li><a href="http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/">Install and Setup SOLR in OSX, including running Solr</a></li>
+</ul>
+<h3 id="quick-start">Quick start</h3>
+<p><strong>Install</strong></p>
+<p>Install dependencies</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;rjson&quot;</span>, <span class="st">&quot;plyr&quot;</span>, <span class="st">&quot;httr&quot;</span>, <span class="st">&quot;XML&quot;</span>, <span class="st">&quot;data.table&quot;</span>, <span class="st">&quot;assertthat&quot;</span>))</code></pre>
+<p>Install solr</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
+<span class="kw">library</span>(devtools)
+<span class="kw">install_github</span>(<span class="st">&quot;ropensci/solr&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(solr)</code></pre>
+<p><strong>Define stuff</strong> Your base url and a key (if needed). This example should work. You do need to pass a key to the Public Library of Science search API, but it apparently doesn't need to be a real one.</p>
+<pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;http://api.plos.org/search&quot;</span>
+key &lt;-<span class="st"> &quot;key&quot;</span></code></pre>
+<p><strong>Search</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solr_search</span>(<span class="dt">q =</span> <span class="st">&quot;*:*&quot;</span>, <span class="dt">rows =</span> <span class="dv">2</span>, <span class="dt">fl =</span> <span class="st">&quot;id&quot;</span>, <span class="dt">url =</span> url, <span class="dt">key =</span> key)</code></pre>
+<pre><code>##                             id
+## 1 10.1371/journal.pone.0025014
+## 2 10.1371/journal.pone.0055525</code></pre>
+<p><strong>Facet</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solr_facet</span>(<span class="dt">q =</span> <span class="st">&quot;*:*&quot;</span>, <span class="dt">facet.field =</span> <span class="st">&quot;journal&quot;</span>, <span class="dt">facet.query =</span> <span class="st">&quot;cell,bird&quot;</span>, <span class="dt">url =</span> url, 
+    <span class="dt">key =</span> key)</code></pre>
+<pre><code>## $facet_queries
+##   term value
+## 1 cell 79476
+## 2 bird  7965
+## 
+## $facet_fields
+## $facet_fields$journal
+##                                  X1     X2
+## 1                          plos one 663280
+## 2                     plos genetics  33284
+## 3                    plos pathogens  29244
+## 4        plos computational biology  24845
+## 5                      plos biology  23926
+## 6  plos neglected tropical diseases  18781
+## 7                     plos medicine  17031
+## 8              plos clinical trials    521
+## 9                      plos medicin      9
+## 10                 plos collections      5
+## 
+## 
+## $facet_dates
+## NULL
+## 
+## $facet_ranges
+## NULL</code></pre>
+<p><strong>Highlight</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solr_highlight</span>(<span class="dt">q =</span> <span class="st">&quot;alcohol&quot;</span>, <span class="dt">hl.fl =</span> <span class="st">&quot;abstract&quot;</span>, <span class="dt">rows =</span> <span class="dv">2</span>, <span class="dt">url =</span> url, <span class="dt">key =</span> key)</code></pre>
+<pre><code>## $`10.1371/journal.pmed.0040151`
+## $`10.1371/journal.pmed.0040151`$abstract
+## [1] &quot;Background: &lt;em&gt;Alcohol&lt;/em&gt; consumption causes an estimated 4% of the global disease burden, prompting&quot;
+## 
+## 
+## $`10.1371/journal.pone.0027752`
+## $`10.1371/journal.pone.0027752`$abstract
+## [1] &quot;Background: The negative influences of &lt;em&gt;alcohol&lt;/em&gt; on TB management with regard to delays in seeking&quot;</code></pre>
+<p><strong>Stats</strong></p>
+<pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">solr_stats</span>(<span class="dt">q =</span> <span class="st">&quot;ecology&quot;</span>, <span class="dt">stats.field =</span> <span class="st">&quot;counter_total_all,alm_twitterCount&quot;</span>, 
+    <span class="dt">stats.facet =</span> <span class="st">&quot;journal,volume&quot;</span>, <span class="dt">url =</span> url, <span class="dt">key =</span> key)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">out$data</code></pre>
+<pre><code>##                   min    max count missing      sum sumOfSquares     mean
+## counter_total_all   0 291798 18090       0 58248156    9.639e+11 3219.909
+## alm_twitterCount    0   1288 18090       0    56281    7.406e+06    3.111
+##                    stddev
+## counter_total_all 6551.12
+## alm_twitterCount    19.99</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">out$facet</code></pre>
+<pre><code>## $counter_total_all
+## $counter_total_all$journal
+##    min    max count missing      sum sumOfSquares  mean stddev
+## 1    0  37364   404       0  2067577    1.767e+10  5118   4193
+## 2    0  42118   529       0  3035262    2.790e+10  5738   4456
+## 3    0 291798 13909       0 35301226    5.395e+11  2538   5688
+## 4 4168   8060     2       0    12228    8.234e+07  6114   2752
+## 5    0  82757   208       0  2158539    4.224e+10 10378   9789
+## 6 1083 156837   746       0  8466420    2.151e+11 11349  12638
+## 7    0  53230   365       0  1885392    1.917e+10  5165   5089
+## 8    0 156975   676       0  2144469    3.551e+10  3172   6521
+##                        facet_field
+## 1                   plos pathogens
+## 2                    plos genetics
+## 3                         plos one
+## 4             plos clinical trials
+## 5                    plos medicine
+## 6                     plos biology
+## 7       plos computational biology
+## 8 plos neglected tropical diseases
+## 
+## $counter_total_all$volume
+##     min    max count missing      sum sumOfSquares  mean stddev
+## 1   816 107405   741       0  5068779    9.137e+10  6840   8754
+## 2  1132  85278   482       0  3949081    7.702e+10  8193   9636
+## 3  1372 108353    81       0  1065357    3.599e+10 13153  16573
+## 4     0  59941    71       0   708999    1.306e+10  9986   9246
+## 5     0 178757  4823       0 12104091    1.717e+11  2510   5414
+## 6   505 156975  2946       0  9871464    1.220e+11  3351   5495
+## 7   470  73727  1538       0  7245872    8.175e+10  4711   5566
+## 8   493 291798  1010       0  6224943    1.807e+11  6163  11877
+## 9     0 156837   354       0  1880616    4.070e+10  5312   9327
+## 10    0 149871  5983       0  9502785    1.356e+11  1588   4489
+## 11 1147  66540    61       0   626169    1.393e+10 10265  11180
+##    facet_field
+## 1            3
+## 2            2
+## 3            1
+## 4           10
+## 5            7
+## 6            6
+## 7            5
+## 8            4
+## 9            9
+## 10           8
+## 11          11
+## 
+## 
+## $alm_twitterCount
+## $alm_twitterCount$journal
+##   min  max count missing   sum sumOfSquares  mean stddev
+## 1   0   73   404       0  1172        30074 2.901  8.136
+## 2   0   48   529       0  1146        19558 2.166  5.687
+## 3   0  733 13909       0 38274      4148472 2.752 17.050
+## 4   0    3     2       0     3            9 1.500  2.121
+## 5   0  201   208       0  1568       138226 7.538 24.711
+## 6   0 1288   746       0  4975      2034243 6.669 51.827
+## 7   0  102   365       0  1081        35411 2.962  9.407
+## 8   0  784   676       0  1711       625745 2.531 30.342
+##                        facet_field
+## 1                   plos pathogens
+## 2                    plos genetics
+## 3                         plos one
+## 4             plos clinical trials
+## 5                    plos medicine
+## 6                     plos biology
+## 7       plos computational biology
+## 8 plos neglected tropical diseases
+## 
+## $alm_twitterCount$volume
+##    min  max count missing   sum sumOfSquares    mean  stddev facet_field
+## 1    0   17   741       0   292         2136  0.3941   1.653           3
+## 2    0   35   482       0   256         3778  0.5311   2.752           2
+## 3    0   28    81       0    80         1582  0.9877   4.334           1
+## 4    0  201    71       0  1735       140243 24.4366  37.387          10
+## 5    0  733  4823       0 16890      1547170  3.5020  17.567           7
+## 6    0  784  2946       0  2634       750518  0.8941  15.939           6
+## 7    0  110  1538       0  1004        38182  0.6528   4.941           5
+## 8    0  142  1010       0   472        25576  0.4673   5.013           4
+## 9    0  150   354       0  2871       112269  8.1102  15.877           9
+## 10   0  727  5983       0 26011      2785113  4.3475  21.135           8
+## 11   1 1288    61       0  4036      1998982 66.1639 169.899          11</code></pre>
+<p><strong>More like this</strong></p>
+<p><code>solr_mlt</code> is a function to return similar documents to the one</p>
+<pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">solr_mlt</span>(<span class="dt">q =</span> <span class="st">&quot;title:</span><span class="ch">\&quot;</span><span class="st">ecology</span><span class="ch">\&quot;</span><span class="st"> AND body:</span><span class="ch">\&quot;</span><span class="st">cell</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="dt">mlt.fl =</span> <span class="st">&quot;title&quot;</span>, 
+    <span class="dt">mlt.mindf =</span> <span class="dv">1</span>, <span class="dt">mlt.mintf =</span> <span class="dv">1</span>, <span class="dt">fl =</span> <span class="st">&quot;counter_total_all&quot;</span>, <span class="dt">rows =</span> <span class="dv">5</span>, <span class="dt">url =</span> url, 
+    <span class="dt">key =</span> key)
+out$docs</code></pre>
+<pre><code>##                             id counter_total_all
+## 1 10.1371/journal.pbio.0020440             15977
+## 2 10.1371/journal.pone.0040117              1589
+## 3 10.1371/journal.pone.0072525               635
+## 4 10.1371/journal.ppat.1002320              4612
+## 5 10.1371/journal.pone.0015143             11003</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">out$mlt</code></pre>
+<pre><code>##                              id counter_total_all
+## 1  10.1371/journal.pone.0035964              2247
+## 2  10.1371/journal.pone.0003259              1693
+## 3  10.1371/journal.pone.0068814              3953
+## 4  10.1371/journal.pbio.0020148             11186
+## 5  10.1371/journal.pbio.0030105              2761
+## 6  10.1371/journal.pone.0069352               647
+## 7  10.1371/journal.pone.0014065              3311
+## 8  10.1371/journal.pone.0035502              1757
+## 9  10.1371/journal.pone.0078369               455
+## 10 10.1371/journal.pone.0048646              1357
+## 11 10.1371/journal.pone.0060766               831
+## 12 10.1371/journal.pcbi.1002928              6051
+## 13 10.1371/journal.pcbi.0020144             11556
+## 14 10.1371/journal.pcbi.1000350              7925
+## 15 10.1371/journal.pone.0068714              1363
+## 16 10.1371/journal.pbio.1001332             12315
+## 17 10.1371/journal.ppat.1000222              9901
+## 18 10.1371/journal.pone.0052612              1223
+## 19 10.1371/journal.pntd.0001693              2402
+## 20 10.1371/journal.pntd.0001283              3505
+## 21 10.1371/journal.pbio.1001702              1576
+## 22 10.1371/journal.pone.0008413              5687
+## 23 10.1371/journal.pone.0014451              4823
+## 24 10.1371/journal.ppat.1003500              2212
+## 25 10.1371/journal.pone.0035348              5200</code></pre>
+<p><strong>Parsing</strong></p>
+<p><code>solr_parse</code> is a general purpose parser function with extension methods <code>solr_parse.sr_search</code>, <code>solr_parse.sr_facet</code>, and <code>solr_parse.sr_high</code>, for parsing <code>solr_search</code>, <code>solr_facet</code>, and <code>solr_highlight</code> function output, respectively. <code>solr_parse</code> is used internally within those three functions (<code>solr_search</code>, <code>solr_facet</code>, <code>solr_highlight</code>) to do parsing. You can optionally get back raw <code>json</code> or <code>xml</code> from <code>solr_search</code>, <code>solr_facet</code>, and <code>solr_highlight</code> setting parameter <code>raw=TRUE</code>, and then parsing after the fact with <code>solr_parse</code>. All you need to know is <code>solr_parse</code> can parse</p>
+<p>For example:</p>
+<pre class="sourceCode r"><code class="sourceCode r">(out &lt;-<span class="st"> </span><span class="kw">solr_highlight</span>(<span class="dt">q =</span> <span class="st">&quot;alcohol&quot;</span>, <span class="dt">hl.fl =</span> <span class="st">&quot;abstract&quot;</span>, <span class="dt">rows =</span> <span class="dv">2</span>, <span class="dt">url =</span> url, 
+    <span class="dt">key =</span> key, <span class="dt">raw =</span> <span class="ot">TRUE</span>))</code></pre>
+<pre><code>## [1] &quot;{\&quot;response\&quot;:{\&quot;numFound\&quot;:11203,\&quot;start\&quot;:0,\&quot;docs\&quot;:[{},{}]},\&quot;highlighting\&quot;:{\&quot;10.1371/journal.pmed.0040151\&quot;:{\&quot;abstract\&quot;:[\&quot;Background: &lt;em&gt;Alcohol&lt;/em&gt; consumption causes an estimated 4% of the global disease burden, prompting\&quot;]},\&quot;10.1371/journal.pone.0027752\&quot;:{\&quot;abstract\&quot;:[\&quot;Background: The negative influences of &lt;em&gt;alcohol&lt;/em&gt; on TB management with regard to delays in seeking\&quot;]}}}\n&quot;
+## attr(,&quot;class&quot;)
+## [1] &quot;sr_high&quot;
+## attr(,&quot;wt&quot;)
+## [1] &quot;json&quot;</code></pre>
+<p>Then parse</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solr_parse</span>(out, <span class="st">&quot;df&quot;</span>)</code></pre>
+<pre><code>##                          names
+## 1 10.1371/journal.pmed.0040151
+## 2 10.1371/journal.pone.0027752
+##                                                                                                    abstract
+## 1   Background: &lt;em&gt;Alcohol&lt;/em&gt; consumption causes an estimated 4% of the global disease burden, prompting
+## 2 Background: The negative influences of &lt;em&gt;alcohol&lt;/em&gt; on TB management with regard to delays in seeking</code></pre>
+<p><strong>Using specific data sources</strong></p>
+<p><em>USGS BISON service</em></p>
+<p>The occurrences service</p>
+<pre class="sourceCode r"><code class="sourceCode r">url2 &lt;-<span class="st"> &quot;http://bisonapi.usgs.ornl.gov/solr/occurrences/select&quot;</span>
+<span class="kw">solr_search</span>(<span class="dt">q =</span> <span class="st">&quot;*:*&quot;</span>, <span class="dt">fl =</span> <span class="st">&quot;latitude,longitude,scientific_name&quot;</span>, <span class="dt">url =</span> url2)</code></pre>
+<pre><code>##    longitude latitude        scientific_name
+## 1     -75.12    40.23 Catostomus commersonii
+## 2     -75.12    40.23  Ambloplites rupestris
+## 3     -75.12    40.23      Anguilla rostrata
+## 4     -75.12    40.23      Anguilla rostrata
+## 5     -75.12    40.23 Catostomus commersonii
+## 6     -75.12    40.23  Ambloplites rupestris
+## 7     -75.12    40.23      Lepomis cyanellus
+## 8     -75.12    40.23      Lepomis cyanellus
+## 9     -75.12    40.23     Fundulus diaphanus
+## 10    -75.12    40.23    Etheostoma olmstedi</code></pre>
+<p>The species names service</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">solr_search</span>(<span class="dt">q =</span> <span class="st">&quot;*:*&quot;</span>, <span class="dt">url =</span> url2, <span class="dt">raw =</span> <span class="ot">TRUE</span>)</code></pre>
+<pre><code>## [1] &quot;{\&quot;responseHeader\&quot;:{\&quot;status\&quot;:0,\&quot;QTime\&quot;:509},\&quot;response\&quot;:{\&quot;numFound\&quot;:111109690,\&quot;start\&quot;:0,\&quot;docs\&quot;:[{\&quot;occurrence_date\&quot;:\&quot;2000-07-13\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230375\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;553273\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2000,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Catostomus commersonii\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2008-08-06\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230376\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;168097\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2008,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Ambloplites rupestris\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2000-07-13\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230377\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;161127\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2000,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Anguilla rostrata\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2000-07-13\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230378\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;161127\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2000,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Anguilla rostrata\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2003-08-20\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230379\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;553273\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2003,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Catostomus commersonii\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2007-09-05\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230380\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;168097\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2007,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Ambloplites rupestris\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2003-08-20\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230381\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;168132\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2003,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Lepomis cyanellus\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2003-08-20\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230382\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;168132\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2003,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Lepomis cyanellus\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2002-08-20\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230383\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;165646\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2002,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Fundulus diaphanus\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;},{\&quot;occurrence_date\&quot;:\&quot;2000-07-13\&quot;,\&quot;provider_id\&quot;:440,\&quot;resource\&quot;:\&quot;USGS NAWQA BioData Fish Dataset\&quot;,\&quot;provider\&quot;:\&quot;BISON\&quot;,\&quot;pointPath_s\&quot;:\&quot;/-75.119616,40.22927456/observation\&quot;,\&quot;state_code\&quot;:\&quot;Pennsylvania\&quot;,\&quot;basis_of_record\&quot;:\&quot;observation\&quot;,\&quot;id\&quot;:\&quot;1805230384\&quot;,\&quot;iso_country_code\&quot;:\&quot;US\&quot;,\&quot;taxon_id\&quot;:\&quot;168360\&quot;,\&quot;collector\&quot;:\&quot;USGS\&quot;,\&quot;resource_id_s\&quot;:\&quot;100000\&quot;,\&quot;latlon_s\&quot;:\&quot;-75.119616,40.22927456\&quot;,\&quot;longitude\&quot;:-75.11961,\&quot;year\&quot;:2000,\&quot;latitude\&quot;:40.229275,\&quot;scientific_name\&quot;:\&quot;Etheostoma olmstedi\&quot;,\&quot;county\&quot;:\&quot;42017\&quot;}]}}&quot;
+## attr(,&quot;class&quot;)
+## [1] &quot;sr_search&quot;
+## attr(,&quot;wt&quot;)
+## [1] &quot;json&quot;</code></pre>
+<p><em>PLOS Search API</em></p>
+<p>Most of the examples above use the PLOS search API... :)</p>
+<p><a href="https://github.com/ropensci/solr/issues">Please report any issues or bugs</a>.</p>
+</body>
+</html>

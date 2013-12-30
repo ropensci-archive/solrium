@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  \usepackage[vmargin=1in,hmargin=1in]{geometry}
+</head>
+<body>
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Local Solr setup}
+-->
+
+<h1 id="local-setup-of-solr-and-querying-using-solr-r-package-on-mac-osx">Local setup of Solr and querying using solr R package, on Mac OSX</h1>
+<p><em>This material is based on this blog post: http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/</em></p>
+<ol style="list-style-type: decimal">
+<li>If you don't have homebrew installed, install homebrew by doing ``. If you have homebrew skip to step 2.</li>
+<li>Install solr by doing <code>brew install solr</code>. This installed solr v.4.5.1</li>
+<li>Navigate in your terminal to an example Solr database: <code>cd /usr/local/Cellar/solr/4.5.1/libexec/example/</code></li>
+<li>Start solr: <code>java -jar start.jar</code></li>
+<li>Navigate in your browser to <a href="http://localhost:8983/solr/#/">http://localhost:8983/solr/#/</a></li>
+<li>Navigate in your terminal to <code>cd /usr/local/Cellar/solr/4.5.1/libexec/example/exampledocs/</code>, then execute <code>./post.sh vidcard.xml</code> in that directory. This inserts some data into the example database.</li>
+</ol>
+<p>Try this query in your browser: (http://localhost:8983/solr/select?q=<em>:</em>&amp;wt=json)[http://localhost:8983/solr/select?q=<em>:</em>&amp;wt=json]</p>
+<p>And we can now use the <code>solr</code> R package to query the Solr database to get raw JSON data:</p>
+<pre class="sourceCode coffee"><code class="sourceCode coffee">url <span class="kw">&lt;-</span> <span class="st">&#39;http://localhost:8983/solr/select&#39;</span>
+solr_search<span class="kw">(</span>q<span class="kw">=</span><span class="st">&#39;*:*&#39;</span><span class="kw">,</span> url<span class="kw">=</span>url<span class="kw">,</span> raw<span class="kw">=</span>TRUE<span class="kw">)</span></code></pre>
+<pre class="sourceCode coffee"><code class="sourceCode coffee"><span class="kw">[</span><span class="dv">1</span><span class="kw">]</span> <span class="st">&quot;{\&quot;responseHeader\&quot;:{\&quot;status\&quot;:0,\&quot;QTime\&quot;:1,\&quot;params\&quot;:{\&quot;start\&quot;:\&quot;0\&quot;,\&quot;q\&quot;:\&quot;*:*\&quot;,\&quot;wt\&quot;:\&quot;json\&quot;}},\&quot;response\&quot;:{\&quot;numFound\&quot;:2,\&quot;start\&quot;:0,\&quot;docs\&quot;:[{\&quot;id\&quot;:\&quot;EN7800GTX/2DHTV/256M\&quot;,\&quot;name\&quot;:\&quot;ASUS Extreme N7800GTX/2DHTV (256 MB)\&quot;,\&quot;manu\&quot;:\&quot;ASUS Computer Inc.\&quot;,\&quot;manu_id_s\&quot;:\&quot;asus\&quot;,\&quot;cat\&quot;:[\&quot;electronics\&quot;,\&quot;graphics card\&quot;],\&quot;features\&quot;:[\&quot;NVIDIA GeForce 7800 GTX GPU/VPU clocked at 486MHz\&quot;,\&quot;256MB GDDR3 Memory clocked at 1.35GHz\&quot;,\&quot;PCI Express x16\&quot;,\&quot;Dual DVI connectors, HDTV out, video input\&quot;,\&quot;OpenGL 2.0, DirectX 9.0\&quot;],\&quot;weight\&quot;:16.0,\&quot;price\&quot;:479.95,\&quot;price_c\&quot;:\&quot;479.95,USD\&quot;,\&quot;popularity\&quot;:7,\&quot;store\&quot;:\&quot;40.7143,-74.006\&quot;,\&quot;inStock\&quot;:false,\&quot;manufacturedate_dt\&quot;:\&quot;2006-02-13T00:00:00Z\&quot;,\&quot;_version_\&quot;:1455773551158099968},{\&quot;id\&quot;:\&quot;100-435805\&quot;,\&quot;name\&quot;:\&quot;ATI Radeon X1900 XTX 512 MB PCIE Video Card\&quot;,\&quot;manu\&quot;:\&quot;ATI Technologies\&quot;,\&quot;manu_id_s\&quot;:\&quot;ati\&quot;,\&quot;cat\&quot;:[\&quot;electronics\&quot;,\&quot;graphics card\&quot;],\&quot;features\&quot;:[\&quot;ATI RADEON X1900 GPU/VPU clocked at 650MHz\&quot;,\&quot;512MB GDDR3 SDRAM clocked at 1.55GHz\&quot;,\&quot;PCI Express x16\&quot;,\&quot;dual DVI, HDTV, svideo, composite out\&quot;,\&quot;OpenGL 2.0, DirectX 9.0\&quot;],\&quot;weight\&quot;:48.0,\&quot;price\&quot;:649.99,\&quot;price_c\&quot;:\&quot;649.99,USD\&quot;,\&quot;popularity\&quot;:7,\&quot;inStock\&quot;:false,\&quot;manufacturedate_dt\&quot;:\&quot;2006-02-13T00:00:00Z\&quot;,\&quot;store\&quot;:\&quot;40.7143,-74.006\&quot;,\&quot;_version_\&quot;:1455773551214723072}]}}\n&quot;</span>
+attr<span class="kw">(,</span><span class="st">&quot;class&quot;</span><span class="kw">)</span>
+<span class="kw">[</span><span class="dv">1</span><span class="kw">]</span> <span class="st">&quot;sr_search&quot;</span>
+attr<span class="kw">(,</span><span class="st">&quot;wt&quot;</span><span class="kw">)</span>
+<span class="kw">[</span><span class="dv">1</span><span class="kw">]</span> <span class="st">&quot;json&quot;</span></code></pre>
+<p>Or parsed data to a data.frame (just looking at a few columns for brevity):</p>
+<pre class="sourceCode coffee"><code class="sourceCode coffee">solr_search<span class="kw">(</span>q<span class="kw">=</span><span class="st">&#39;*:*&#39;</span><span class="kw">,</span> url<span class="kw">=</span>url<span class="kw">)[,</span>c<span class="kw">(</span><span class="dv">1</span><span class="kw">:</span><span class="dv">3</span><span class="kw">)]</span></code></pre>
+<pre class="sourceCode coffee"><code class="sourceCode coffee">                    id                                        name               manu
+<span class="dv">1</span> EN7800GTX<span class="st">/2DHTV/</span>256M        ASUS Extreme N7800GTX<span class="kw">/</span>2DHTV <span class="kw">(</span><span class="dv">256</span> MB<span class="kw">)</span> ASUS Computer Inc<span class="kw">.</span>
+<span class="dv">2</span>           <span class="dv">100-435805</span> ATI Radeon X1900 XTX <span class="dv">512</span> MB PCIE Video Card   ATI Technologies</code></pre>
+<h1 id="local-setup-of-solr-on-windows-and-linux">Local setup of Solr on Windows and Linux</h1>
+<p>I'm a Mac user, so I'm not too familiar with Windows and Linux, but will get to this soon, or send a pull request with instructions in this file.</p>
+</body>
+</html>
