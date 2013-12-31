@@ -43,3 +43,4 @@
 #' @param concat (character) Character to concatenate elements of longer than length 1. 
 #' Note that this only works reliably when data format is json (wt='json'). The parsing
 #' is more complicated in XML format, but you can do that on your own.
+#' @param ... Further args.

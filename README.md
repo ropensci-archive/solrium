@@ -12,6 +12,8 @@ This package only deals with exracting data from a Solr endpoint, not writing da
 + [Solr home page](http://lucene.apache.org/solr/)
 + [Highlighting help](http://wiki.apache.org/solr/HighlightingParameters)
 + [Faceting help](http://wiki.apache.org/solr/SimpleFacetParameters)
++ [Solr stats](http://wiki.apache.org/solr/StatsComponent)
++ ['More like this' searches](http://wiki.apache.org/solr/MoreLikeThis)
 + [Installing Solr on Mac using homebrew](http://ramlev.dk/blog/2012/06/02/install-apache-solr-on-your-mac/)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 
@@ -269,6 +271,56 @@ solr_parse(out, 'df')
 2 Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking
 ```
 
+**Advanced: Function Queries**
+
+Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to stort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"
+
+```coffee
+solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"', 
+  rows=5, fl='id,title', fq='doc_type:full', url=url, key=key)
+```
+
+```coffee
+                            id                                                                                                         title
+1 10.1371/journal.pmed.0020124                                                                Why Most Published Research Findings Are False
+2 10.1371/journal.pone.0046362            The Power of Kawaii: Viewing Cute Images Promotes a Careful Behavior and Narrows Attentional Focus
+3 10.1371/journal.pntd.0001969 An In-Depth Analysis of a Piece of Shit: Distribution of Schistosoma mansoni and Hookworm Eggs in Human Stool
+4 10.1371/journal.pone.0069841                                       Facebook Use Predicts Declines in Subjective Well-Being in Young Adults
+5 10.1371/journal.pbio.1001535                                                                An Introduction to Social Media for Scientists
+```
+
+Here, we search for the papers with the most citations
+
+```coffee
+solr_search(q='_val_:"max(counter_total_all)"', 
+    rows=5, fl='id,counter_total_all', fq='doc_type:full', url=url, key=key)
+```
+
+```coffee
+                            id counter_total_all
+1 10.1371/journal.pmed.0020124            778105
+2 10.1371/journal.pmed.0050045            299271
+3 10.1371/journal.pone.0007595            291798
+4 10.1371/journal.pone.0044864            234084
+5 10.1371/journal.pone.0033288            200577
+```
+
+Or with the most tweets
+
+```coffee
+solr_search(q='_val_:"max(alm_twitterCount)"', 
+    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', url=url, key=key)
+```
+
+```coffee
+                           id alm_twitterCount
+1 10.1371/journal.pbio.1001535             1288
+2 10.1371/journal.pone.0046362             1012
+3 10.1371/journal.pmed.0020124              953
+4 10.1371/journal.pntd.0001969              784
+5 10.1371/journal.pone.0040259              733
+```
+
 **Using specific data sources**
 
 *USGS BISON service*
@@ -312,6 +364,7 @@ attr(,"wt")
 
 Most of the examples above use the PLOS search API... :)
 
+### Meta
 
 Please report any issues or bugs](https://github.com/ropensci/solr/issues).
 
