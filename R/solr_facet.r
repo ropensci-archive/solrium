@@ -4,19 +4,6 @@
 #' @importFrom plyr compact
 #' @template facet
 #' @return Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).
-#' @details 
-#' A number of fields can be specified multiple times, in which case you can separate
-#' them by commas, like \code{facet.field='journal,subject'}. Those fields are:
-#' \itemize{
-#'  \item facet.field
-#'  \item facet.query
-#'  \item facet.date
-#'  \item facet.date.other
-#'  \item facet.date.include
-#'  \item facet.range
-#'  \item facet.range.other
-#'  \item facet.range.include
-#' }
 #' @seealso \code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse}}
 #' @references See \url{http://wiki.apache.org/solr/SimpleFacetParameters} for 
 #' more information on faceting.

@@ -12,22 +12,15 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
 
-  \item{start}{Record to start at, default to beginning.}
-
-  \item{rows}{Number of records to return. Defaults to 10.}
-
   \item{sort}{Field to sort on. You can specify ascending
   (e.g., score desc) or descending (e.g., score asc), sort
   by two fields (e.g., score desc, price asc), or sort by a
   function (e.g., sum(x_f, y_f) desc, which sorts by the
   sum of x_f and y_f in a descending order).}
 
-  \item{fq}{Filter query, this does not affect the search,
-  only what gets returned}
+  \item{start}{Record to start at, default to beginning.}
 
-  \item{fl}{Fields to return}
-
-  \item{wt}{Data type returned, defaults to 'json'}
+  \item{rows}{Number of records to return. Defaults to 10.}
 
   \item{pageDoc}{If you expect to be paging deeply into the
   results (say beyond page 10, assuming rows=10) and you
@@ -43,6 +36,11 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
 
   \item{pageScore}{See pageDoc notes.}
 
+  \item{fq}{Filter query, this does not affect the search,
+  only what gets returned}
+
+  \item{fl}{Fields to return}
+
   \item{defType}{Specify the query parser to use with this
   request.}
 
@@ -53,6 +51,8 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   (if there are any).}
 
   \item{qt}{Which query handler used.}
+
+  \item{wt}{Data type returned, defaults to 'json'}
 
   \item{NOW}{Set a fixed time for evaluating Date based
   expresions}
@@ -74,9 +74,9 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   or implicit because of the request handler configuration.
   }}
 
-  \item{url}{URL endpoint.}
-
   \item{key}{API key, if needed.}
+
+  \item{url}{URL endpoint.}
 
   \item{callopts}{Call options passed on to httr::GET}
 

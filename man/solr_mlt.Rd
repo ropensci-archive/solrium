@@ -12,6 +12,9 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
 
+  \item{fq}{Filter query, this does not affect the search,
+  only what gets returned}
+
   \item{mlt.count}{The number of similar documents to
   return for each result. Default is 5.}
 
@@ -50,21 +53,18 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   same format as that used in DisMaxQParserPlugin. These
   fields must also be specified in mlt.fl.}
 
-  \item{fq}{Filter query, this does not affect the search,
-  only what gets returned}
-
   \item{fl}{Fields to return. We force 'id' to be returned
   so that there is a unique identifier with each record.}
 
-  \item{concat}{(character) Character to concatenate
-  elements of longer than length 1. Note that this only
-  works reliably when data format is json (wt='json'). The
-  parsing is more complicated in XML format, but you can do
-  that on your own.}
+  \item{wt}{Data type returned, defaults to 'json'}
 
-  \item{url}{URL endpoint.}
+  \item{start}{Record to start at, default to beginning.}
+
+  \item{rows}{Number of records to return. Defaults to 10.}
 
   \item{key}{API key, if needed.}
+
+  \item{url}{URL endpoint.}
 
   \item{callopts}{Call options passed on to httr::GET}
 
@@ -73,11 +73,11 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
 
   \item{parsetype}{(character) One of 'list' or 'df'}
 
-  \item{start}{Record to start at, default to beginning.}
-
-  \item{rows}{Number of records to return. Defaults to 10.}
-
-  \item{wt}{Data type returned, defaults to 'json'}
+  \item{concat}{(character) Character to concatenate
+  elements of longer than length 1. Note that this only
+  works reliably when data format is json (wt='json'). The
+  parsing is more complicated in XML format, but you can do
+  that on your own.}
 }
 \value{
 XML, JSON, a list, or data.frame

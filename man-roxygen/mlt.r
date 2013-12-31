@@ -1,4 +1,5 @@
 #' @param q Query terms, defaults to '*:*', or everything.
+#' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param mlt.count The number of similar documents to return for each result. Default is 5.
 #' @param mlt.fl The fields to use for similarity. NOTE: if possible these should have a stored TermVector DEFAULT_FIELD_NAMES = new String[] {"contents"}
 #' @param mlt.mintf Minimum Term Frequency - the frequency below which terms will be ignored in the source doc. DEFAULT_MIN_TERM_FREQ = 2
@@ -9,47 +10,15 @@
 #' @param mlt.maxntp maximum number of tokens to parse in each example doc field that is not stored with TermVector support. DEFAULT_MAX_NUM_TOKENS_PARSED = 5000
 #' @param mlt.boost [true/false] set if the query will be boosted by the interesting term relevance. DEFAULT_BOOST = false
 #' @param mlt.qf Query fields and their boosts using the same format as that used in DisMaxQParserPlugin. These fields must also be specified in mlt.fl.
-#' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return. We force 'id' to be returned so that there is a unique identifier with each record.
-#' @param concat (character) Character to concatenate elements of longer than length 1. 
-#' Note that this only works reliably when data format is json (wt='json'). The parsing
-#' is more complicated in XML format, but you can do that on your own.
-#' @param url URL endpoint.
+#' @param wt Data type returned, defaults to 'json'
+#' @param start Record to start at, default to beginning.
+#' @param rows Number of records to return. Defaults to 10.
 #' @param key API key, if needed.
+#' @param url URL endpoint.
 #' @param callopts Call options passed on to httr::GET
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param parsetype (character) One of 'list' or 'df'
-#' @param start Record to start at, default to beginning.
-#' @param rows Number of records to return. Defaults to 10.
-#' @param wt Data type returned, defaults to 'json'
-
-# hl.fl
-# hl.snippets
-# hl.fragsize
-# hl.q
-# hl.mergeContiguous
-# hl.requireFieldMatch
-# hl.maxAnalyzedChars
-# hl.alternateField
-# hl.maxAlternateFieldLength
-# hl.preserveMulti
-# hl.maxMultiValuedToExamine
-# hl.maxMultiValuedToMatch
-# hl.formatter
-# hl.simple.pre
-# hl.simple.post
-# hl.fragmenter
-# hl.fragListBuilder
-# hl.fragmentsBuilder
-# hl.boundaryScanner
-# hl.bs.maxScan
-# hl.bs.chars
-# hl.bs.type
-# hl.bs.language
-# hl.bs.country
-# hl.useFastVectorHighlighter
-# hl.usePhraseHighlighter
-# hl.highlightMultiTerm
-# hl.regex.slop
-# hl.regex.pattern
-# hl.regex.maxAnalyzedChars
+#' @param concat (character) Character to concatenate elements of longer than length 1. 
+#' Note that this only works reliably when data format is json (wt='json'). The parsing
+#' is more complicated in XML format, but you can do that on your own.

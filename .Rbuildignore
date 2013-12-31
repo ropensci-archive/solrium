@@ -4,3 +4,5 @@ man-roxygen/
 travis-tool.sh
 vignettes/margins.sty
 Makefile
+tests/test-all.R
+inst/stuff/

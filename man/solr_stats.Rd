@@ -15,9 +15,15 @@ solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
   \item{stats.facet}{You can not facet on multi-valued
   fields.}
 
-  \item{url}{URL endpoint.}
+  \item{wt}{Data type returned, defaults to 'json'}
+
+  \item{start}{Record to start at, default to beginning.}
+
+  \item{rows}{Number of records to return. Defaults to 10.}
 
   \item{key}{API key, if needed.}
+
+  \item{url}{URL endpoint.}
 
   \item{callopts}{Call options passed on to httr::GET}
 
@@ -25,12 +31,6 @@ solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
   specified by wt param}
 
   \item{parsetype}{(character) One of 'list' or 'df'}
-
-  \item{start}{Record to start at, default to beginning.}
-
-  \item{rows}{Number of records to return. Defaults to 10.}
-
-  \item{wt}{Data type returned, defaults to 'json'}
 }
 \value{
 XML, JSON, a list, or data.frame
