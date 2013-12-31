@@ -42,20 +42,25 @@ Get Solr stats.
 \dontrun{
 url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 solr_stats(q='science', stats.field='counter_total_all', url=url, key=key, raw=TRUE)
-solr_stats(q='title:"ecology" AND body:"cell"', stats.field='counter_total_all,alm_twitterCount', url=url, key=key)
-solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal', url=url, key=key)
-solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key)
+solr_stats(q='title:"ecology" AND body:"cell"',
+   stats.field='counter_total_all,alm_twitterCount', url=url, key=key)
+solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
+   stats.facet='journal', url=url, key=key)
+solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
+   stats.facet='journal,volume', url=url, key=key)
 
 # Get raw data, then parse later if you feel like it
 ## json
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key, raw=TRUE)
+out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
+   stats.facet='journal,volume', url=url, key=key, raw=TRUE)
 library(rjson)
 fromJSON(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 ## xml
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key, raw=TRUE, wt="xml")
+out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
+   stats.facet='journal,volume', url=url, key=key, raw=TRUE, wt="xml")
 library(XML)
 xmlParse(out)
 solr_parse(out) # list
@@ -63,7 +68,8 @@ solr_parse(out, 'df') # data.frame
 
 # Get verbose http call information
 library(httr)
-solr_stats(q='ecology', stats.field='alm_twitterCount', url=url, key=key, callopts=verbose())
+solr_stats(q='ecology', stats.field='alm_twitterCount', url=url, key=key,
+   callopts=verbose())
 }
 }
 \references{

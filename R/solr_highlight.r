@@ -15,11 +15,14 @@
 #' 
 #' # Raw data back
 #' ## json
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE)
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, 
+#'    raw=TRUE)
 #' ## xml
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, raw=TRUE, wt='xml')
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, 
+#'    raw=TRUE, wt='xml')
 #' ## parse after getting data back
-#' out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, rows=10, url = url, key=key, raw=TRUE, wt='xml')
+#' out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, 
+#'    rows=10, url = url, key=key, raw=TRUE, wt='xml')
 #' solr_parse(out, parsetype='df')
 #' }
 #' @export

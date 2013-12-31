@@ -29,12 +29,15 @@
 #' 
 #' # Range searches
 #' ## Search for articles with Twitter count between 5 and 10
-#' solr_search(q='*:*', fl='alm_twitterCount,title', fq='alm_twitterCount:[5 TO 10]', rows=3, url=url, key=key)
+#' solr_search(q='*:*', fl='alm_twitterCount,title', fq='alm_twitterCount:[5 TO 10]', 
+#' rows=3, url=url, key=key)
 #' 
 #' # Boosts
 #' ## Assign higher boost to title matches than to body matches (compare the two calls)
-#' solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3, url=url, key=key)
-#' solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, url=url, key=key)
+#' solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3, 
+#'    url=url, key=key)
+#' solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, 
+#'    url=url, key=key)
 #' 
 #' # Parse data, using the USGS BISON API
 #' url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
@@ -44,7 +47,8 @@
 #' solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url)
 #' 
 #' ## You can choose how to combine elements longer than length 1
-#' solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, parsetype='df', concat=';')
+#' solr_search(q='*:*', fl='scientific_name,latitude,longitude', url=url, 
+#'    parsetype='df', concat=';')
 #' 
 #' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
 #' ## the species names endpoint

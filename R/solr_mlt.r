@@ -10,13 +10,17 @@
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
 #' 
-#' solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', url=url, key=key, fq="doc_type:full")
-#' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', url=url, key=key)
-#' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, url=url, key=key)
+#' solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', url=url, key=key, 
+#'    fq="doc_type:full")
+#' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', 
+#'    url=url, key=key)
+#' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, 
+#'    fl='counter_total_all', rows=5, url=url, key=key)
 #' solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, key=key)
 #' 
 #' # get raw data, and parse later if needed
-#' out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key, raw=TRUE, wt="xml")
+#' out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key, 
+#'    raw=TRUE, wt="xml")
 #' library(XML)
 #' xmlParse(out)
 #' solr_parse(out, "df")

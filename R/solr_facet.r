@@ -50,17 +50,21 @@
 #' # Range faceting with > 1 field, different settings
 #' solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount', 
 #' f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000, 
-#' f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5, f.alm_twitterCount.facet.range.end=1000, 
-#' f.alm_twitterCount.facet.range.gap=10, key=key)
+#' f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5, 
+#' f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10, key=key)
 #' 
 #' # Get raw json or xml
-#' solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE) # json
-#' solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml') # xml
+#' ## json
+#' solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
+#' ## xml
+#' solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
 #' 
-#' # Get raw data back, and parse later, same as what goes on internally if raw=FALSE (Default)
+#' # Get raw data back, and parse later, same as what goes on internally if 
+#' # raw=FALSE (Default)
 #' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
 #' solr_parse(out)
-#' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
+#' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, 
+#'    wt='xml')
 #' solr_parse(out)
 #' 
 #' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
