@@ -24,4 +24,5 @@ Imports:
     rjson
 Suggests:
     testthat,
-    roxygen2
+    roxygen2,
+    knitr
