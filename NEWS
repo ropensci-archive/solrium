@@ -3,4 +3,11 @@ rplos 0.1.0
 
 NEW FEATURES 
 
+* Added function solr_group(), and started parser, to do grouping searches.
+
+rplos 0.1.0
+===============
+
+NEW FEATURES 
+
 * released to CRAN

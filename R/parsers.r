@@ -404,5 +404,88 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
   return( datout )
 }
 
+#' @method solr_parse sr_group
+#' @export
+#' @rdname solr_parse
+solr_parse.sr_group <- function(input, parsetype='list', concat=',')
+{
+  assert_that(is(input, "sr_group"))
+  wt <- attributes(input)$wt
+  input <- switch(wt, 
+                  xml = xmlParse(input),
+                  json = rjson::fromJSON(input))
+  
+  if(wt=='json'){
+    if(parsetype=='df'){
+      if(names(input) == 'response'){
+        datout <- cbind(data.frame(numFound=input[[1]]$numFound, 
+                                   start=input[[1]]$start),
+                        data.frame(rbindlist(input[[1]]$docs)))
+      } else
+      {
+        dat <- input$grouped
+        if(length(dat)==1){
+          if('groups' %in% names(dat[[1]])){
+            datout <- dat[[1]]$groups
+            datout <- data.frame(rbindlist(lapply(datout, function(x){
+              df <- data.frame(groupValue=ifelse(is.null(x$groupValue),"none",x$groupValue), 
+                               numFound=x$doclist$numFound,
+                               start=x$doclist$start)
+              cbind(df, data.frame(rbindlist(
+                lapply(x$doclist$docs, function(z){
+                  lapply(z, function(zz){
+                    if(length(zz) > 1){
+                      paste(zz, collapse=concat)
+                    } else { zz }
+                  })
+                })
+              )))
+            })), stringsAsFactors=FALSE)
+          } else
+          {
+            datout <- cbind(data.frame(numFound=dat[[1]]$doclist$numFound, 
+                                       start=dat[[1]]$doclist$start),
+                            data.frame(rbindlist(dat[[1]]$doclist$docs))
+            )
+          }
+        } else {
+          if('groups' %in% names(dat[[1]])){
+            datout <- lapply(dat, function(y){
+              y <- y$groups
+              data.frame(rbindlist(lapply(y, function(x){
+                df <- data.frame(groupValue=ifelse(is.null(x$groupValue),"none",x$groupValue), 
+                                 numFound=x$doclist$numFound, 
+                                 start=x$doclist$start)
+                cbind(df, data.frame(rbindlist(x$doclist$docs)))
+              })), stringsAsFactors=FALSE)
+            })
+          } else
+          {
+            datout <- data.frame(rbindlist(lapply(dat, function(x){
+              df <- data.frame(numFound=x$doclist$numFound, 
+                               start=x$doclist$start)
+              cbind(df, data.frame(rbindlist(x$doclist$docs)))
+            })), stringsAsFactors=FALSE)
+          }
+        }
+      }
+    } else
+    {
+      datout <- input$grouped
+    }
+  } else
+  {
+    temp <- xpathApply(input, '//lst/lst[@name="grouped"]/lst')
+    if(parsetype=='df'){
+      datout <- "not done yet"
+    } else
+    {
+      datout <- "not done yet"
+    }
+  }
+  
+  return( datout )
+}
+
 # small function to replace elements of length 0 with NULL
 replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }

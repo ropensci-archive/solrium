@@ -1,0 +1,84 @@
+#' Solr grouped search.
+#' 
+#' @import httr XML
+#' @importFrom plyr compact
+#' @template group
+#' @return XML, JSON, a list, or data.frame
+#' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
+#' @references See \url{http://wiki.apache.org/solr/FieldCollapsing} for more 
+#' information.
+#' @export
+#' @examples \dontrun{
+#' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
+#' 
+#' # Basic group query
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url, key=key)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type', url=url, key=key)
+#' 
+#' # Different ways to sort (notice diff btw sort of group.sort)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url, key=key)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount', 
+#'    group.sort='alm_twitterCount desc', url=url, key=key)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount', 
+#'    sort='score', group.sort='alm_twitterCount desc', url=url, key=key)
+#' 
+#' # Two group.field values
+#' out <- solr_group(q='ecology', group.field='journal,article_type', group.limit=3, fl='id', url=url, key=key, raw=TRUE)
+#' solr_parse(out)
+#' solr_parse(out, 'df')
+#' 
+#' # Get two groups, one with alm_twitterCount of 0-10, and another group with 10 to infinity
+#' solr_group(q='ecology', group.limit=3, fl='id,alm_twitterCount', 
+#'  group.query='alm_twitterCount:[0 TO 10],alm_twitterCount:[10 TO *]', 
+#'  url=url, key=key)
+#'  
+#' # Use of group.format and group.simple. 
+#' ## The raw data structure of these two calls are slightly different, but 
+#' ## the parsing inside the function outputs the same results. You can of course
+#' ## set raw=TRUE to get back what the data actually look like
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', 
+#'    group.format='simple', url=url, key=key)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', 
+#'    group.format='simple', group.main='true', url=url, key=key)
+#' }
+
+solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
+  wt='json', key = NA, group.field = NA, group.limit = NA, group.offset = NA, 
+  group.sort = NA, group.main = NA, group.ngroups = NA, group.truncate = NA, 
+  group.facet = NA, group.cache.percent = NA, group.query = NA, url = NA, 
+  callopts=list(), raw=FALSE, parsetype='df', concat=',', ...)
+{
+  makemultiargs <- function(x){
+    value <- eval(parse(text=x))
+    if(is.null(value)){ NULL } else {
+      if(is.na(value)){ NULL } else {
+        if(!is.character(value)){ 
+          value <- as.character(value)
+        } 
+        y <- strsplit(value,",")[[1]]
+        names(y) <- rep(x, length(y))
+        y
+      }
+    }
+  }
+  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'fq', 'fl', 'wt', 
+                 'group.limit', 'group.offset', 'group.sort', 'group.sort',
+                 'group.main', 'group.ngroups', 'group.truncate', 'group.facet',
+                 'group.cache.percent', 'group.cache.percent')
+  outlist <- list()
+  for(i in seq_along(todonames)){
+    outlist[[i]] <- makemultiargs(todonames[[i]])
+  }
+  args <- as.list(unlist(compact(outlist)))
+  args$group <- 'true'
+ 
+  # additional parameters
+  args <- c(args, list(...))
+  
+  tt <- GET(url, query = args, callopts)
+  stop_for_status(tt)
+  out <- content(tt, as="text")
+  class(out) <- "sr_group"
+  attr(out, "wt") <- wt
+  if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
+}

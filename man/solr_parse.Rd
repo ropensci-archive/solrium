@@ -1,6 +1,7 @@
 \name{solr_parse}
 \alias{solr_parse}
 \alias{solr_parse.sr_facet}
+\alias{solr_parse.sr_group}
 \alias{solr_parse.sr_high}
 \alias{solr_parse.sr_mlt}
 \alias{solr_parse.sr_search}
@@ -18,6 +19,8 @@ solr_parse(input, parsetype, concat)
 \method{solr_parse}{sr_mlt}(input, parsetype = "list", concat = ",")
 
 \method{solr_parse}{sr_stats}(input, parsetype = "list", concat = ",")
+
+\method{solr_parse}{sr_group}(input, parsetype = "list", concat = ",")
 }
 \arguments{
   \item{input}{Output from solr_facet}
