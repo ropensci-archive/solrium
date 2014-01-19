@@ -47,8 +47,8 @@
 
 solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   wt='json', key = NA, group.field = NA, group.limit = NA, group.offset = NA, 
-  group.sort = NA, group.main = NA, group.ngroups = NA, group.truncate = NA, 
-  group.facet = NA, group.cache.percent = NA, group.query = NA, group.format = NA,
+  group.sort = NA, group.main = NA, group.ngroups = NA, 
+  group.cache.percent = NA, group.query = NA, group.format = NA,
   group.func = NA, url = NA, callopts=list(), raw=FALSE, parsetype='df', 
   concat=',', ...)
 {
@@ -71,7 +71,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   }
   todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 'fq', 'fl', 'wt', 
                  'group.limit', 'group.offset', 'group.sort', 'group.sort', 'group.format',
-                 'group.func', 'group.main', 'group.ngroups', 'group.truncate', 'group.facet',
+                 'group.func', 'group.main', 'group.ngroups', 
                  'group.cache.percent', 'group.cache.percent')
   outlist <- list()
   for(i in seq_along(todonames)){

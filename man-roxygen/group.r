@@ -33,17 +33,6 @@
 #' to true on a sharded environment, all the documents that belong to the same group 
 #' have to be located in the same shard, otherwise the count will be incorrect. If you 
 #' are using SolrCloud, consider using "custom hashing"
-#' @param group.truncate (logical) If true, facet counts are based on the most relevant 
-#' document of each group matching the query. Same applies for StatsComponent. Default 
-#' is false. <!> Solr3.4 Supported from Solr 3.4 and up.
-#' @param group.facet (logical) Ihether to compute grouped facets for the field facets
-#' specified in facet.field parameters. Grouped facets are computed based on the first 
-#' specified group. Just like normal field faceting, fields shouldn't be tokenized 
-#' (otherwise counts are computed for each token). Grouped faceting supports single 
-#' and multivalued fields. Default is false. <!> Solr4.0 WARNING: If this parameter is 
-#' set to true on a sharded environment, all the documents that belong to the same group 
-#' have to be located in the same shard, otherwise the count will be incorrect. If you 
-#' are using SolrCloud, consider using "custom hashing"
 #' @param group.cache.percent [0-100] If > 0 enables grouping cache. Grouping is executed 
 #' actual two searches. This option caches the second search. A value of 0 disables 
 #' grouping caching. Default is 0. Tests have shown that this cache only improves search 
