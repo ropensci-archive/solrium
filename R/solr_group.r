@@ -39,7 +39,9 @@
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', 
 #'    group.format='simple', url=url, key=key)
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', 
-#'    group.format='simple', group.main='true', url=url, key=key)
+#'    group.format='grouped', url=url, key=key)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', 
+#'    group.format='grouped', group.main='true', url=url, key=key)
 #' }
 
 solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
@@ -63,8 +65,8 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
     }
   }
   todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'fq', 'fl', 'wt', 
-                 'group.limit', 'group.offset', 'group.sort', 'group.sort',
-                 'group.main', 'group.ngroups', 'group.truncate', 'group.facet',
+                 'group.limit', 'group.offset', 'group.sort', 'group.sort', 'group.format',
+                 'group.func', 'group.main', 'group.ngroups', 'group.truncate', 'group.facet',
                  'group.cache.percent', 'group.cache.percent')
   outlist <- list()
   for(i in seq_along(todonames)){
