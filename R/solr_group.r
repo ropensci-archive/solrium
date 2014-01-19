@@ -16,11 +16,12 @@
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type', url=url, key=key)
 #' 
 #' # Different ways to sort (notice diff btw sort of group.sort)
+#' # note that you can only sort on a field if you return that field
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url, key=key)
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount', 
 #'    group.sort='alm_twitterCount desc', url=url, key=key)
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount', 
-#'    sort='score', group.sort='alm_twitterCount desc', url=url, key=key)
+#'    sort='score asc', group.sort='alm_twitterCount desc', url=url, key=key)
 #' 
 #' # Two group.field values
 #' out <- solr_group(q='ecology', group.field='journal,article_type', group.limit=3, fl='id', url=url, key=key, raw=TRUE)
@@ -64,7 +65,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
       }
     }
   }
-  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'fq', 'fl', 'wt', 
+  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 'fq', 'fl', 'wt', 
                  'group.limit', 'group.offset', 'group.sort', 'group.sort', 'group.format',
                  'group.func', 'group.main', 'group.ngroups', 'group.truncate', 'group.facet',
                  'group.cache.percent', 'group.cache.percent')

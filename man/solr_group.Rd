@@ -52,14 +52,13 @@ solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   \item{group.offset}{[number] The offset into the document
   list of each group.}
 
-  \item{sort}{[sortspec] How to sort the groups relative to
-  each other. For example, sort=popularity desc will cause
-  the groups to be sorted according to the highest
-  popularity doc in each group. Defaults to "score desc".}
+  \item{sort}{How to sort the groups relative to each
+  other. For example, sort=popularity desc will cause the
+  groups to be sorted according to the highest popularity
+  doc in each group. Defaults to "score desc".}
 
-  \item{group.sort}{[sortspec] How to sort documents within
-  a single group. Defaults to the same value as the sort
-  parameter.}
+  \item{group.sort}{How to sort documents within a single
+  group. Defaults to the same value as the sort parameter.}
 
   \item{group.format}{One of grouped or simple. If simple,
   the grouped documents are presented in a single flat
@@ -136,11 +135,12 @@ solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type', url=url, key=key)
 
 # Different ways to sort (notice diff btw sort of group.sort)
+# note that you can only sort on a field if you return that field
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url, key=key)
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount',
    group.sort='alm_twitterCount desc', url=url, key=key)
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount',
-   sort='score', group.sort='alm_twitterCount desc', url=url, key=key)
+   sort='score asc', group.sort='alm_twitterCount desc', url=url, key=key)
 
 # Two group.field values
 out <- solr_group(q='ecology', group.field='journal,article_type', group.limit=3, fl='id', url=url, key=key, raw=TRUE)
@@ -159,7 +159,9 @@ solr_group(q='ecology', group.limit=3, fl='id,alm_twitterCount',
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score',
    group.format='simple', url=url, key=key)
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score',
-   group.format='simple', group.main='true', url=url, key=key)
+   group.format='grouped', url=url, key=key)
+solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score',
+   group.format='grouped', group.main='true', url=url, key=key)
 }
 }
 \references{

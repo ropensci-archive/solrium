@@ -18,10 +18,10 @@
 #' @param group.limit [number] The number of results (documents) to return for each 
 #' group. Defaults to 1.
 #' @param group.offset [number] The offset into the document list of each group.
-#' @param sort [sortspec] How to sort the groups relative to each other. For example, 
+#' @param sort How to sort the groups relative to each other. For example, 
 #' sort=popularity desc will cause the groups to be sorted according to the highest 
 #' popularity doc in each group. Defaults to "score desc".
-#' @param group.sort [sortspec] How to sort documents within a single group. Defaults 
+#' @param group.sort How to sort documents within a single group. Defaults 
 #' to the same value as the sort parameter.
 #' @param group.format One of grouped or simple. If simple, the grouped documents are 
 #' presented in a single flat list. The start and rows parameters refer to numbers of 
