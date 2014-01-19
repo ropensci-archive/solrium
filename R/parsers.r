@@ -169,7 +169,8 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
       datout <- data.frame(rbindlist(dat2))
     } else
     {
-      datout <- input$response$docs
+#       datout <- input$response$docs
+      datout <- input
     }
   } else
   {

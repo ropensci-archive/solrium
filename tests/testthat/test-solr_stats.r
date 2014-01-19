@@ -20,7 +20,7 @@ test_that("solr_stats returns the correct dimensions", {
   expect_that(length(d$data$alm_twitterCount), equals(8))
   expect_that(length(e$facet$alm_twitterCount), equals(2))
   expect_that(length(e$facet$alm_twitterCount$volume), equals(9))
-  expect_that(length(e$facet$alm_twitterCount$volume$missing), equals(11))
+  expect_that(length(e$facet$alm_twitterCount$volume$missing), equals(12))
 })
 
 test_that("solr_stats returns the correct classes", {

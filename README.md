@@ -70,19 +70,30 @@ $response$docs[[2]]$id
 ```
 
 **Search grouped data**
-```coffee
+
 Most recent publication by journal
 
-$ solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', url=url, key=key)
+```coffee
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', url=url, key=key)
+```
+
+```coffee
                   groupValue numFound start     publication_date score
 1                   plos one   676409     0 2014-01-16T00:00:00Z     1
 2                       none    62518     0 2012-10-23T00:00:00Z     1
 3             plos pathogens    29623     0 2014-01-16T00:00:00Z     1
 4 plos computational biology    25093     0 2014-01-16T00:00:00Z     1
 5              plos genetics    33698     0 2014-01-16T00:00:00Z     
+```
 
 First publication by journal
-$ solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", url=url, key=key)
+
+```coffee
+solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", url=url, key=key)
+```
+
+
+```coffee
                          groupValue numFound start     publication_date score
 1                          plos one   676409     0 2006-12-01T00:00:00Z     1
 2                              none    57574     0 2012-07-17T00:00:00Z     1
@@ -94,24 +105,34 @@ $ solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publicat
 8                     plos medicine    17118     0 2004-09-07T00:00:00Z     1
 9              plos clinical trials      521     0 2006-04-21T00:00:00Z     1
 10                     plos medicin        9     0 2012-04-17T00:00:00Z     1
-
+```
 
 Search group query : Last 3 publications of 2013.  
-$ solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', url=url, key=key)
+
+```coffee
+solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', url=url, key=key)
+```
+
+```coffee
   numFound start     publication_date
 1   299130     0 2013-12-31T00:00:00Z
 2   299130     0 2013-12-31T00:00:00Z
 3   299130     0 2013-12-31T00:00:00Z
+```
 
 Search group with format simple 
-$ solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', url=url, key=key)
+
+```coffee
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', url=url, key=key)
+```
+
+```coffee
   numFound start                          journal     publication_date
 1   889099     0                         PLoS ONE 2014-01-17T00:00:00Z
 2   889099     0                         PLoS ONE 2014-01-17T00:00:00Z
 3   889099     0                         PLoS ONE 2014-01-17T00:00:00Z
 4   889099     0 PLoS Neglected Tropical Diseases 2014-01-16T00:00:00Z
 5   889099     0 PLoS Neglected Tropical Diseases 2014-01-16T00:00:00Z
-
 ```
 
 
