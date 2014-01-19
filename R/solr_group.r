@@ -45,8 +45,9 @@
 solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   wt='json', key = NA, group.field = NA, group.limit = NA, group.offset = NA, 
   group.sort = NA, group.main = NA, group.ngroups = NA, group.truncate = NA, 
-  group.facet = NA, group.cache.percent = NA, group.query = NA, url = NA, 
-  callopts=list(), raw=FALSE, parsetype='df', concat=',', ...)
+  group.facet = NA, group.cache.percent = NA, group.query = NA, group.format = NA,
+  group.func = NA, url = NA, callopts=list(), raw=FALSE, parsetype='df', 
+  concat=',', ...)
 {
   makemultiargs <- function(x){
     value <- eval(parse(text=x))

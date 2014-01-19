@@ -6,11 +6,15 @@ solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   fl = NA, wt = "json", key = NA, group.field = NA, group.limit = NA,
   group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.truncate = NA, group.facet = NA,
-  group.cache.percent = NA, group.query = NA, url = NA,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",", ...)
+  group.cache.percent = NA, group.query = NA, group.format = NA,
+  group.func = NA, url = NA, callopts = list(), raw = FALSE,
+  parsetype = "df", concat = ",", ...)
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
+
+  \item{fq}{Filter query, this does not affect the search,
+  only what gets returned}
 
   \item{fl}{Fields to return}
 
