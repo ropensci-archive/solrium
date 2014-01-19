@@ -41,6 +41,10 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      wt='json', raw = FALSE, key = NULL, url = NULL, callopts=list(), 
      fl='DOES_NOT_EXIST', fq=NULL, parsetype='list')
 {
+  if(is.null(url)){
+    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+  }
+  
   args <- compact(list(wt=wt, q=q, start=start, rows=rows, hl='true', hl.fl=hl.fl,
      hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
      hl.mergeContiguous = hl.mergeContiguous, hl.requireFieldMatch = hl.requireFieldMatch, 

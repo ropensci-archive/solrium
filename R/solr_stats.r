@@ -45,6 +45,10 @@
 solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', start=0,
   rows=0, key = NULL, url = NULL, callopts=list(), raw=FALSE, parsetype='df')
 {
+  if(is.null(url)){
+    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+  }
+  
   makemultiargs <- function(x){
     value <- eval(parse(text=x))
     if(is.null(value)){ NULL } else {

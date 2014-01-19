@@ -31,6 +31,10 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
   mlt.boost=NULL, mlt.qf=NULL, fl=NULL, wt='json', start=0, rows=NULL, key = NULL, 
   url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',')
 {
+  if(is.null(url)){
+    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+  }
+  
   flsplit <- strsplit(fl, ",")[[1]]
   if(any(grepl('id', flsplit))){
     fl2 <- fl

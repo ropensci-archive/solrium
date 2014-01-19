@@ -52,6 +52,10 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   group.func = NA, url = NA, callopts=list(), raw=FALSE, parsetype='df', 
   concat=',', ...)
 {
+  if(is.na(url)){
+    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+  }
+    
   makemultiargs <- function(x){
     value <- eval(parse(text=x))
     if(is.null(value)){ NULL } else {

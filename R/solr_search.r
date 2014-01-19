@@ -85,6 +85,10 @@ solr_search<- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
   url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ...)
 {
+  if(is.null(url)){
+    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+  }
+  
   args <- compact(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
                        pageScore=pageScore, fq=fq, fl=fl, defType=defType, 
                        timeAllowed=timeAllowed, qt=qt, wt=wt, NOW=NOW, TZ=TZ,

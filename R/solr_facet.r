@@ -73,6 +73,10 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
    facet.range.include = NA, start=NA, rows=NA, key=NA, url=NA, wt='json',
    raw=FALSE, callopts=list(), ...)
 {
+  if(is.na(url)){
+    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+  }
+  
   makemultiargs <- function(x){
     value <- eval(parse(text=x))
     if(is.null(value)){ NULL } else {
