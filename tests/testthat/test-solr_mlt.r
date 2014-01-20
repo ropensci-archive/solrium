@@ -15,13 +15,13 @@ outdf <- solr_parse(out, "df")
 
 test_that("solr_mlt returns the correct dimensions", {
   expect_that(dim(a$docs), equals(c(10,2)))
-  expect_that(dim(a$mlt), equals(c(16,1)))
+  expect_that(length(a$mlt), equals(10))
   
 #   expect_that(dim(b$docs), equals(c(2,2)))
 #   expect_that(dim(b$mlt), equals(c(10,2)))
   
   expect_that(dim(c$docs), equals(c(5,2)))
-  expect_that(dim(c$mlt), equals(c(25,2)))
+  expect_that(length(c$mlt), equals(5))
   
   expect_that(length(outxml), equals(1))
   expect_that(dim(outdf), equals(c(12,2)))

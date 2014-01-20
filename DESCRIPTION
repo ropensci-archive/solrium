@@ -4,7 +4,7 @@ Description: This package provides a set of functions for querying and parsing
     data from Solr endpoints (local and remote), including search, faceting,
     highlighting, stats, and 'more like this'.
 Version: 0.1.1
-Date: 2014-01-11
+Date: 2014-01-19
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 Depends:
@@ -19,7 +19,6 @@ Imports:
     plyr,
     httr,
     XML,
-    data.table,
     assertthat,
     rjson
 Suggests:

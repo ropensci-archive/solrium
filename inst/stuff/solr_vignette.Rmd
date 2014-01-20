@@ -25,7 +25,7 @@ This package only deals with exracting data from a Solr endpoint, not writing da
 Install dependencies
 
 ```{r, eval=FALSE}
-install.packages(c("rjson","plyr","httr","XML","data.table","assertthat"))
+install.packages(c("rjson","plyr","httr","XML","assertthat"))
 ```
 
 Install solr

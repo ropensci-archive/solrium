@@ -99,9 +99,9 @@ solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, key=key)
 
 # get raw data, and parse later if needed
 out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key,
-   raw=TRUE, wt="xml")
-library(XML)
-xmlParse(out)
+   raw=TRUE)
+library(rjson)
+fromJSON(out)
 solr_parse(out, "df")
 }
 }

@@ -2,7 +2,8 @@
 #' 
 #' See details.
 #' 
-#' @import XML rjson assertthat data.table
+#' @import XML rjson assertthat
+#' @importFrom plyr rbind.fill
 #' @param input Output from solr_facet
 #' @param parsetype One of 'list' or 'df' (data.frame)
 #' @param concat Character to conactenate strings by, e.g,. ',' (character). Used
@@ -31,7 +32,12 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
   # Facet queries
   if(wt=='json'){
     fqdat <- input$facet_counts$facet_queries
-    fqout <- data.frame(term=names(fqdat), value=do.call(c, fqdat), stringsAsFactors=FALSE)
+    if(length(fqdat)==0){
+      fqout <- NULL
+    } else
+    {
+      fqout <- data.frame(term=names(fqdat), value=do.call(c, fqdat), stringsAsFactors=FALSE)      
+    }
     row.names(fqout) <- NULL
   } else
   {
@@ -51,7 +57,7 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
     nodes <- xpathApply(input, '//lst[@name="facet_fields"]//lst')
     parselist <- function(x){
       tmp <- xmlToList(x)
-      data.frame(rbindlist(tmp[!names(tmp) %in% ".attrs"]))
+      do.call(rbind.fill, lapply(tmp[!names(tmp) %in% ".attrs"], data.frame, stringsAsFactors=FALSE))
     }
     ffout <- lapply(nodes, parselist)
     names(ffout) <- sapply(nodes, xmlAttrs)
@@ -59,12 +65,17 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
   
   # Facet dates
   if(wt=='json'){
-    datesout <- lapply(input$facet_counts$facet_dates, function(x){
-      x <- x[!names(x) %in% c('gap','start','end')]
-      x <- data.frame(date=names(x), value=do.call(c, x), stringsAsFactors=FALSE)
-      row.names(x) <- NULL
-      x
-    })
+    if(length(input$facet_counts$facet_dates)==0){
+      datesout <- NULL
+    } else
+    {
+      datesout <- lapply(input$facet_counts$facet_dates, function(x){
+        x <- x[!names(x) %in% c('gap','start','end')]
+        x <- data.frame(date=names(x), value=do.call(c, x), stringsAsFactors=FALSE)
+        row.names(x) <- NULL
+        x
+      })
+    }
   } else
   {
     nodes <- xpathApply(input, '//lst[@name="facet_dates"]//int')
@@ -73,12 +84,17 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
   
   # Facet ranges
   if(wt=='json'){
-    rangesout <- lapply(input$facet_counts$facet_ranges, function(x){
-      x <- x[!names(x) %in% c('gap','start','end')]$counts
-      data.frame(do.call(rbind, lapply(seq(1, length(x), by=2), function(y){
-        x[c(y, y+1)]
-      })), stringsAsFactors=FALSE)
-    })
+    if(length(input$facet_counts$facet_ranges)==0){
+      rangesout <- NULL
+    } else
+    {
+      rangesout <- lapply(input$facet_counts$facet_ranges, function(x){
+        x <- x[!names(x) %in% c('gap','start','end')]$counts
+        data.frame(do.call(rbind, lapply(seq(1, length(x), by=2), function(y){
+          x[c(y, y+1)]
+        })), stringsAsFactors=FALSE)
+      })
+    }
   } else
   {
     nodes <- xpathApply(input, '//lst[@name="facet_ranges"]//int')
@@ -128,7 +144,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',')
       ))
     })
     if(parsetype=='df'){
-      highout <- data.frame(rbindlist(tmptmp))
+      highout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
 #       dois <- xpathApply(input, '//lst[@name="highlighting"]//lst')
 #       dois <- sapply(dois, function(x) xmlAttrs(x)['name'], USE.NAMES=FALSE)
 #       nodes <- xpathApply(input, '//arr')
@@ -166,7 +182,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
           } else { y  }
         })
       })
-      datout <- data.frame(rbindlist(dat2))
+      datout <- do.call(rbind.fill, lapply(dat2, data.frame, stringsAsFactors=FALSE))
     } else
     {
 #       datout <- input$response$docs
@@ -186,7 +202,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
       as.list(unlist(uu))
     })
     if(parsetype=='df'){
-      datout <- data.frame(rbindlist(tmptmp))
+      datout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
     } else
     {
       datout <- tmptmp
@@ -217,7 +233,8 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
           } else { z  }
         })
       })
-      resdat <- data.frame(rbindlist(lapply(reslist, data.frame)))
+      resdat <- data.frame(do.call(rbind.fill, lapply(reslist, data.frame)), 
+                           stringsAsFactors=FALSE)
       
       dat <- input$moreLikeThis
       dat2 <- lapply(dat, function(x){
@@ -229,9 +246,21 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
           })
         })
       })
-      foo <- function(x) data.frame(rbindlist(x))
-      datmlt <- do.call(rbind, lapply(dat2, foo))
-      row.names(datmlt) <- NULL
+      
+      datmlt <- list()
+      for(i in seq_along(dat)){
+        datmlt[[names(dat[i])]] <- 
+        do.call(rbind.fill, lapply(dat[[i]]$docs, function(y){
+          data.frame(lapply(y, function(z){
+            if(length(z) > 1){
+              paste(z, collapse=concat)
+            } else { z  }
+          }), stringsAsFactors=FALSE)
+        }))
+      }
+      
+#       datmlt <- do.call(rbind.fill, lapply(dat2, data.frame, stringsAsFactors=FALSE))
+#       row.names(datmlt) <- NULL
       datout <- list(docs=resdat, mlt=datmlt)
     } else
     {
@@ -240,12 +269,12 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
   } else
   {
     res <- xpathApply(input, '//result[@name="response"]//doc')
-    resdat <- rbindlist(lapply(res, function(x){
+    resdat <- do.call(rbind.fill, lapply(res, function(x){
       tmp <- xmlChildren(x)
       tmp2 <- sapply(tmp, xmlValue)
       names2 <- sapply(tmp, xmlGetAttr, name="name")
       names(tmp2) <- names2
-      as.list(tmp2)
+      data.frame(as.list(tmp2), stringsAsFactors=FALSE)
     }))
     
     temp <- xpathApply(input, '//doc')
@@ -259,8 +288,9 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
       names(uu) <- NULL
       as.list(unlist(uu))
     })
+    
     if(parsetype=='df'){
-      datout <- data.frame(rbindlist(tmptmp))
+      datout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
     } else
     {
       datout <- tmptmp
@@ -337,27 +367,27 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
     temp <- xpathApply(input, '//lst/lst[@name="stats_fields"]/lst')
     if(parsetype=='df'){
       # w/o facets
-      dat_reg <- data.frame(rbindlist(lapply(temp, function(h){
+      dat_reg <- do.call(rbind.fill, lapply(temp, function(h){
         tt <- xmlChildren(h)
         uu <- tt[!names(tt) %in% 'lst']
         vals <- sapply(uu, xmlValue)
         names2 <- sapply(uu, xmlGetAttr, name="name")
         names(vals) <- names2
-        data.frame(rbind(vals))
-      })))
+        data.frame(rbind(vals), stringsAsFactors=FALSE)
+      }))
       # just facets
       dat_facet <- lapply(temp, function(e){
         tt <- xmlChildren(e)
         uu <- tt[names(tt) %in% 'lst']
         lapply(xmlChildren(uu$lst), function(f){
-          data.frame(rbindlist(lapply(xmlChildren(f), function(g){
+          do.call(rbind.fill, lapply(xmlChildren(f), function(g){
             ttt <- xmlChildren(g)
             uuu <- ttt[!names(ttt) %in% 'lst']
             vals <- sapply(uuu, xmlValue)
             names2 <- sapply(uuu, xmlGetAttr, name="name")
             names(vals) <- names2
-            data.frame(rbind(vals))
-          })))
+            data.frame(rbind(vals), stringsAsFactors=FALSE)
+          }))
         })
       })
       datout <- list(data=dat_reg, facet=dat_facet)
@@ -421,52 +451,51 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
       if(names(input) == 'response'){
         datout <- cbind(data.frame(numFound=input[[1]]$numFound, 
                                    start=input[[1]]$start),
-                        data.frame(rbindlist(input[[1]]$docs)))
+                        do.call(rbind.fill, lapply(input[[1]]$docs, data.frame, stringsAsFactors=FALSE)))
       } else
       {
         dat <- input$grouped
         if(length(dat)==1){
           if('groups' %in% names(dat[[1]])){
             datout <- dat[[1]]$groups
-            datout <- data.frame(rbindlist(lapply(datout, function(x){
+            datout <- do.call(rbind.fill, lapply(datout, function(x){
               df <- data.frame(groupValue=ifelse(is.null(x$groupValue),"none",x$groupValue), 
                                numFound=x$doclist$numFound,
                                start=x$doclist$start)
-              cbind(df, data.frame(rbindlist(
+              cbind(df, do.call(rbind.fill,
                 lapply(x$doclist$docs, function(z){
-                  lapply(z, function(zz){
+                  data.frame(lapply(z, function(zz){
                     if(length(zz) > 1){
                       paste(zz, collapse=concat)
                     } else { zz }
-                  })
+                  }), stringsAsFactors=FALSE)
                 })
-              )))
-            })), stringsAsFactors=FALSE)
+              ))
+            }))
           } else
           {
             datout <- cbind(data.frame(numFound=dat[[1]]$doclist$numFound, 
                                        start=dat[[1]]$doclist$start),
-                            data.frame(rbindlist(dat[[1]]$doclist$docs))
-            )
+                            do.call(rbind.fill, lapply(dat[[1]]$doclist$docs, data.frame, stringsAsFactors=FALSE)))
           }
         } else {
           if('groups' %in% names(dat[[1]])){
             datout <- lapply(dat, function(y){
               y <- y$groups
-              data.frame(rbindlist(lapply(y, function(x){
+              do.call(rbind.fill, lapply(y, function(x){
                 df <- data.frame(groupValue=ifelse(is.null(x$groupValue),"none",x$groupValue), 
                                  numFound=x$doclist$numFound, 
-                                 start=x$doclist$start)
-                cbind(df, data.frame(rbindlist(x$doclist$docs)))
-              })), stringsAsFactors=FALSE)
+                                 start=x$doclist$start, stringsAsFactors=FALSE)
+                cbind(df, do.call(rbind.fill, lapply(x$doclist$docs, data.frame, stringsAsFactors=FALSE)))
+              }))
             })
           } else
           {
-            datout <- data.frame(rbindlist(lapply(dat, function(x){
+            datout <- do.call(rbind.fill, lapply(dat, function(x){
               df <- data.frame(numFound=x$doclist$numFound, 
-                               start=x$doclist$start)
-              cbind(df, data.frame(rbindlist(x$doclist$docs)))
-            })), stringsAsFactors=FALSE)
+                               start=x$doclist$start, stringsAsFactors=FALSE)
+              cbind(df, do.call(rbind.fill, lapply(x$doclist$docs, data.frame, stringsAsFactors=FALSE)))
+            }))
           }
         }
       }

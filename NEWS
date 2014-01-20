@@ -3,7 +3,7 @@ rplos 0.1.1
 
 NEW FEATURES 
 
-* Added function solr_group(), and started parser, to do grouping searches.
+* Added function solr_group(), and started group parser, to do grouping searches.
 
 rplos 0.1.0
 ===============
