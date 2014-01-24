@@ -71,6 +71,7 @@ solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', s
   args$stats <- 'true'
   
   tt <- GET(url, query = args, callopts)
+  message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_stats"

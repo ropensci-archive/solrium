@@ -61,6 +61,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   tt <- GET(url, query = args, callopts)
+  message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_high"

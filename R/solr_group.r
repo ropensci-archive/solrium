@@ -84,6 +84,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   args <- c(args, list(...))
   
   tt <- GET(url, query = args, callopts)
+  message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_group"

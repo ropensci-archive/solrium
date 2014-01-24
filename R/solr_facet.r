@@ -112,6 +112,7 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
 
   # API call, and return data
   tt <- GET(url, query=args, callopts)
+  message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_facet"
