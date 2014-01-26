@@ -4,14 +4,14 @@ context("solr_group")
 url <- 'http://api.plos.org/search'
 key = getOption('PlosApiKey')
 
-a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url, key=key)
+a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url, key=key, verbose=FALSE)
 b <- solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount', 
-   group.sort='alm_twitterCount desc', url=url, key=key)
-out <- solr_group(q='ecology', group.field='journal,article_type', group.limit=3, fl='id', url=url, key=key, raw=TRUE)
+   group.sort='alm_twitterCount desc', url=url, key=key, verbose=FALSE)
+out <- solr_group(q='ecology', group.field='journal,article_type', group.limit=3, fl='id', url=url, key=key, raw=TRUE, verbose=FALSE)
 c <- out
 d <- solr_parse(out, 'df')
 e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', 
-                group.format='grouped', group.main='true', url=url, key=key)
+                group.format='grouped', group.main='true', url=url, key=key, verbose=FALSE)
 
 library(rjson)
 f <- fromJSON(out)

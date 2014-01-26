@@ -4,8 +4,8 @@ context("solr_highlight")
 url <- 'http://api.plos.org/search'
 key = getOption('PlosApiKey')
 
-a <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key)
-b <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url, key=key)
+a <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, verbose=FALSE)
+b <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url, key=key, verbose=FALSE)
 
 test_that("solr_highlight returns the correct dimensions", {
   expect_that(length(a), equals(10))

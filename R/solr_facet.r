@@ -71,7 +71,7 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
    facet.date.include = NA,facet.range = NA,facet.range.start = NA,facet.range.end = NA,
    facet.range.gap = NA,facet.range.hardend = NA,facet.range.other = NA,
    facet.range.include = NA, start=NA, rows=NA, key=NA, url=NA, wt='json',
-   raw=FALSE, callopts=list(), ...)
+   raw=FALSE, callopts=list(), verbose=TRUE, ...)
 {
   if(is.na(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
@@ -112,7 +112,7 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
 
   # API call, and return data
   tt <- GET(url, query=args, callopts)
-  message(URLdecode(tt$url))
+  if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_facet"

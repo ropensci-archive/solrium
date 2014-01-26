@@ -29,7 +29,7 @@
 solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL, 
   mlt.mindf=NULL, mlt.minwl=NULL, mlt.maxwl=NULL, mlt.maxqt=NULL, mlt.maxntp=NULL, 
   mlt.boost=NULL, mlt.qf=NULL, fl=NULL, wt='json', start=0, rows=NULL, key = NULL, 
-  url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',')
+  url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', verbose=TRUE)
 {
   if(is.null(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
@@ -48,7 +48,7 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
     mlt.boost=mlt.boost, mlt.qf=mlt.qf, start=start, rows=rows, wt=wt))
   
   tt <- GET(url, query = args, callopts)
-  message(URLdecode(tt$url))
+  if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_mlt"

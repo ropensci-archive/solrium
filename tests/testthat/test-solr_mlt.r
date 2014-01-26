@@ -4,11 +4,11 @@ context("solr_mlt")
 url <- 'http://api.plos.org/search'
 key = getOption('PlosApiKey')
 
-a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', url=url, key=key, fq="doc_type:full")
+a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', url=url, key=key, fq="doc_type:full", verbose=FALSE)
 # b <- solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', url=url, key=key)
-c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, key=key)
+c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, key=key, verbose=FALSE)
 
-out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key, raw=TRUE, wt="xml")
+out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, key=key, raw=TRUE, wt="xml", verbose=FALSE)
 library(XML)
 outxml <- xmlParse(out)
 outdf <- solr_parse(out, "df")

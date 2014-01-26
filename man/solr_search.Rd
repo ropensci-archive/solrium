@@ -7,7 +7,7 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, url = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df", concat = ",", ...)
+  parsetype = "df", concat = ",", ..., verbose = TRUE)
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -90,6 +90,9 @@ solr_search(q = "*:*", sort = NULL, start = 0, rows = NULL,
   works reliably when data format is json (wt='json'). The
   parsing is more complicated in XML format, but you can do
   that on your own.}
+
+  \item{verbose}{If TRUE (default) the url call used
+  printed to console.}
 
   \item{...}{Further args.}
 }

@@ -96,6 +96,7 @@
 #' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
 #' 		parsed data returned.
 #' @param callopts Call options passed on to httr::GET
+#' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... Further args, usually per field arguments for faceting.
 #' @details 
 #' A number of fields can be specified multiple times, in which case you can separate

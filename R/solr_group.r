@@ -50,7 +50,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   group.sort = NA, group.main = NA, group.ngroups = NA, 
   group.cache.percent = NA, group.query = NA, group.format = NA,
   group.func = NA, url = NA, callopts=list(), raw=FALSE, parsetype='df', 
-  concat=',', ...)
+  concat=',', verbose=TRUE, ...)
 {
   if(is.na(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
@@ -86,7 +86,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   args <- c(args, list(...))
   
   tt <- GET(url, query = args, callopts)
-  message(URLdecode(tt$url))
+  if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_group"

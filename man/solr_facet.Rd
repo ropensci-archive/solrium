@@ -12,7 +12,7 @@ solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
   facet.range.end = NA, facet.range.gap = NA, facet.range.hardend = NA,
   facet.range.other = NA, facet.range.include = NA, start = NA,
   rows = NA, key = NA, url = NA, wt = "json", raw = FALSE,
-  callopts = list(), ...)
+  callopts = list(), verbose = TRUE, ...)
 }
 \arguments{
   \item{q}{Query terms. See examples.}
@@ -181,6 +181,9 @@ solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
   returned. If FALSE, parsed data returned.}
 
   \item{callopts}{Call options passed on to httr::GET}
+
+  \item{verbose}{If TRUE (default) the url call used
+  printed to console.}
 
   \item{...}{Further args, usually per field arguments for
   faceting.}

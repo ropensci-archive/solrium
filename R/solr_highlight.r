@@ -39,7 +39,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.highlightMultiTerm = NULL, hl.regex.slop = NULL, hl.regex.pattern = NULL, 
      hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NULL, 
      wt='json', raw = FALSE, key = NULL, url = NULL, callopts=list(), 
-     fl='DOES_NOT_EXIST', fq=NULL, parsetype='list')
+     fl='DOES_NOT_EXIST', fq=NULL, parsetype='list', verbose=TRUE)
 {
   if(is.null(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
@@ -61,7 +61,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   tt <- GET(url, query = args, callopts)
-  message(URLdecode(tt$url))
+  if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_high"

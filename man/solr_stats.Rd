@@ -4,7 +4,7 @@
 \usage{
 solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
   wt = "json", start = 0, rows = 0, key = NULL, url = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df")
+  callopts = list(), raw = FALSE, parsetype = "df", verbose = TRUE)
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -31,6 +31,9 @@ solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
   specified by wt param}
 
   \item{parsetype}{(character) One of 'list' or 'df'}
+
+  \item{verbose}{If TRUE (default) the url call used
+  printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame

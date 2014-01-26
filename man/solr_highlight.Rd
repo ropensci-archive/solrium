@@ -17,7 +17,7 @@ solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
   hl.regex.pattern = NULL, hl.regex.maxAnalyzedChars = NULL, start = 0,
   rows = NULL, wt = "json", raw = FALSE, key = NULL, url = NULL,
   callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL,
-  parsetype = "list")
+  parsetype = "list", verbose = TRUE)
 }
 \arguments{
   \item{q}{Query terms. See examples.}
@@ -227,6 +227,9 @@ solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
   only what gets returned}
 
   \item{parsetype}{One of list of df (data.frame)}
+
+  \item{verbose}{If TRUE (default) the url call used
+  printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame

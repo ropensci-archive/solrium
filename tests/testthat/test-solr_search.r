@@ -4,8 +4,8 @@ context("solr_search")
 url <- 'http://api.plos.org/search'
 key = getOption('PlosApiKey')
 
-a <- solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
-b <- solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5, url=url, key=key)
+a <- solr_search(q='*:*', rows=2, fl='id', url=url, key=key, verbose=FALSE)
+b <- solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5, url=url, key=key, verbose=FALSE)
 
 test_that("solr_search returns the correct dimensions in the data.frame", {
   expect_that(length(a), equals(1))

@@ -83,7 +83,7 @@
 solr_search<- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL, 
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
-  url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ...)
+  url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE)
 {
   if(is.null(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
@@ -98,7 +98,7 @@ solr_search<- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   args <- c(args, list(...))
   
   tt <- GET(url, query = args, callopts)
-  message(URLdecode(tt$url))
+  if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_search"

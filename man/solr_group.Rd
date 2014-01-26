@@ -7,7 +7,7 @@ solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.cache.percent = NA, group.query = NA,
   group.format = NA, group.func = NA, url = NA, callopts = list(),
-  raw = FALSE, parsetype = "df", concat = ",", ...)
+  raw = FALSE, parsetype = "df", concat = ",", verbose = TRUE, ...)
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -97,6 +97,9 @@ solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   works reliably when data format is json (wt='json'). The
   parsing is more complicated in XML format, but you can do
   that on your own.}
+
+  \item{verbose}{If TRUE (default) the url call used
+  printed to console.}
 
   \item{...}{Further args.}
 }

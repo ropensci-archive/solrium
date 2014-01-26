@@ -9,3 +9,4 @@
 #' @param callopts Call options passed on to httr::GET
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param parsetype (character) One of 'list' or 'df'
+#' @param verbose If TRUE (default) the url call used printed to console.

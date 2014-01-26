@@ -43,7 +43,7 @@
 #' }
 
 solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', start=0,
-  rows=0, key = NULL, url = NULL, callopts=list(), raw=FALSE, parsetype='df')
+  rows=0, key = NULL, url = NULL, callopts=list(), raw=FALSE, parsetype='df', verbose=TRUE)
 {
   if(is.null(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
@@ -71,7 +71,7 @@ solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', s
   args$stats <- 'true'
   
   tt <- GET(url, query = args, callopts)
-  message(URLdecode(tt$url))
+  if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
   class(out) <- "sr_stats"

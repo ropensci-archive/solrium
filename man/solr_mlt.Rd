@@ -7,7 +7,7 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   mlt.maxwl = NULL, mlt.maxqt = NULL, mlt.maxntp = NULL,
   mlt.boost = NULL, mlt.qf = NULL, fl = NULL, wt = "json", start = 0,
   rows = NULL, key = NULL, url = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df", concat = ",")
+  parsetype = "df", concat = ",", verbose = TRUE)
 }
 \arguments{
   \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -78,6 +78,9 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   works reliably when data format is json (wt='json'). The
   parsing is more complicated in XML format, but you can do
   that on your own.}
+
+  \item{verbose}{If TRUE (default) the url call used
+  printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
