@@ -15,7 +15,7 @@ outdf <- solr_parse(out, "df")
 
 test_that("solr_mlt returns the correct dimensions", {
   expect_that(dim(a$docs), equals(c(10,2)))
-  expect_that(length(a$mlt), equals(9))
+  expect_that(length(a$mlt), equals(10))
   
 #   expect_that(dim(b$docs), equals(c(2,2)))
 #   expect_that(dim(b$mlt), equals(c(10,2)))
