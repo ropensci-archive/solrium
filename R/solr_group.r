@@ -69,9 +69,9 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
       }
     }
   }
-  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 'fq', 'fl', 'wt', 
-                 'group.limit', 'group.offset', 'group.sort', 'group.sort', 'group.format',
-                 'group.func', 'group.main', 'group.ngroups', 
+  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 'fq', 'wt', 
+                 'group.limit', 'group.offset', 'group.sort', 'group.sort', 
+                 'group.format', 'group.func', 'group.main', 'group.ngroups', 
                  'group.cache.percent', 'group.cache.percent')
   outlist <- list()
   for(i in seq_along(todonames)){
@@ -79,6 +79,8 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   }
   args <- as.list(unlist(compact(outlist)))
   args$group <- 'true'
+  if(!is.na(fl))
+    args$fl <- fl
  
   # additional parameters
   args <- c(args, list(...))
