@@ -2,11 +2,10 @@
 context("solr_stats")
 
 url <- 'http://api.plos.org/search'
-key = 'key'
 
-a <- solr_stats(q='science', stats.field='counter_total_all', url=url, key=key, raw=TRUE, verbose=FALSE)
-b <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key, verbose=FALSE)
-c <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key, raw=TRUE, verbose=FALSE)
+a <- solr_stats(q='science', stats.field='counter_total_all', url=url, raw=TRUE, verbose=FALSE)
+b <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, verbose=FALSE)
+c <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, raw=TRUE, verbose=FALSE)
 d <- solr_parse(c) # list
 e <- solr_parse(c, 'df') # data.frame
 

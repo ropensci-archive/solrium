@@ -10,19 +10,19 @@
 #' more information on Solr stats.
 #' @export
 #' @examples \dontrun{
-#' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
-#' solr_stats(q='science', stats.field='counter_total_all', url=url, key=key, raw=TRUE)
+#' url <- 'http://api.plos.org/search'
+#' solr_stats(q='science', stats.field='counter_total_all', url=url, raw=TRUE)
 #' solr_stats(q='title:"ecology" AND body:"cell"', 
-#'    stats.field='counter_total_all,alm_twitterCount', url=url, key=key)
+#'    stats.field='counter_total_all,alm_twitterCount', url=url)
 #' solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal', url=url, key=key)
+#'    stats.facet='journal', url=url)
 #' solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal,volume', url=url, key=key)
+#'    stats.facet='journal,volume', url=url)
 #' 
 #' # Get raw data, then parse later if you feel like it
 #' ## json
 #' out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal,volume', url=url, key=key, raw=TRUE)
+#'    stats.facet='journal,volume', url=url, raw=TRUE)
 #' library(rjson)
 #' fromJSON(out)
 #' solr_parse(out) # list
@@ -30,7 +30,7 @@
 #' 
 #' ## xml
 #' out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal,volume', url=url, key=key, raw=TRUE, wt="xml")
+#'    stats.facet='journal,volume', url=url, raw=TRUE, wt="xml")
 #' library(XML)
 #' xmlParse(out)
 #' solr_parse(out) # list
@@ -38,7 +38,7 @@
 #' 
 #' # Get verbose http call information
 #' library(httr)
-#' solr_stats(q='ecology', stats.field='alm_twitterCount', url=url, key=key, 
+#' solr_stats(q='ecology', stats.field='alm_twitterCount', url=url, 
 #'    callopts=verbose())
 #' }
 

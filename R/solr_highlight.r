@@ -8,21 +8,21 @@
 #' @references See \url{http://wiki.apache.org/solr/HighlightingParameters} for 
 #' more information on highlighting.
 #' @examples \dontrun{
-#' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
+#' url <- 'http://api.plos.org/search'
 #' 
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key)
-#' solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url, key=key)
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url)
+#' solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url)
 #' 
 #' # Raw data back
 #' ## json
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, 
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, 
 #'    raw=TRUE)
 #' ## xml
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, key=key, 
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, 
 #'    raw=TRUE, wt='xml')
 #' ## parse after getting data back
 #' out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, 
-#'    rows=10, url = url, key=key, raw=TRUE, wt='xml')
+#'    rows=10, url = url, raw=TRUE, wt='xml')
 #' solr_parse(out, parsetype='df')
 #' }
 #' @export

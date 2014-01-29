@@ -8,49 +8,49 @@
 #' @references See \url{http://wiki.apache.org/solr/SimpleFacetParameters} for 
 #' more information on faceting.
 #' @examples \dontrun{
-#' url <- 'http://api.plos.org/search'; key = getOption('PlosApiKey')
+#' url <- 'http://api.plos.org/search'
 #' 
 #' # Facet on a single field
-#' solr_facet(q='*:*', facet.field='journal', url=url, key=key)
+#' solr_facet(q='*:*', facet.field='journal', url=url)
 #' 
 #' # Facet on multiple fields
-#' solr_facet(q='alcohol', facet.field='journal,subject', url=url, key=key)
+#' solr_facet(q='alcohol', facet.field='journal,subject', url=url)
 #' 
 #' # Using mincount
-#' solr_facet(q='alcohol', facet.field='journal', facet.mincount='500', url=url, key=key)
+#' solr_facet(q='alcohol', facet.field='journal', facet.mincount='500', url=url)
 #' 
 #' # Using facet.query to get counts
-#' solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', url=url, key=key)
+#' solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', url=url)
 #' 
 #' # Date faceting
 #' solr_facet(q='*:*', url=url, facet.date='publication_date', 
-#' facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY', key=key)
+#' facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY')
 #' 
 #' # Range faceting
 #' solr_facet(q='*:*', url=url, facet.range='counter_total_all', 
-#' facet.range.start=5, facet.range.end=1000, facet.range.gap=10, key=key)
+#' facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 #' 
 #' # Range faceting with > 1 field, same settings
 #' solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount', 
-#' facet.range.start=5, facet.range.end=1000, facet.range.gap=10, key=key)
+#' facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 #' 
 #' # Range faceting with > 1 field, different settings
 #' solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount', 
 #' f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000, 
 #' f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5, 
-#' f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10, key=key)
+#' f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10)
 #' 
 #' # Get raw json or xml
 #' ## json
-#' solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
+#' solr_facet(q='*:*', facet.field='journal', url=url, raw=TRUE)
 #' ## xml
-#' solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, wt='xml')
+#' solr_facet(q='*:*', facet.field='journal', url=url, raw=TRUE, wt='xml')
 #' 
 #' # Get raw data back, and parse later, same as what goes on internally if 
 #' # raw=FALSE (Default)
-#' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE)
+#' out <- solr_facet(q='*:*', facet.field='journal', url=url, raw=TRUE)
 #' solr_parse(out)
-#' out <- solr_facet(q='*:*', facet.field='journal', url=url, key=key, raw=TRUE, 
+#' out <- solr_facet(q='*:*', facet.field='journal', url=url, raw=TRUE, 
 #'    wt='xml')
 #' solr_parse(out)
 #' 
