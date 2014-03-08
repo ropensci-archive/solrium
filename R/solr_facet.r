@@ -7,6 +7,7 @@
 #' @seealso \code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse}}
 #' @references See \url{http://wiki.apache.org/solr/SimpleFacetParameters} for 
 #' more information on faceting.
+#' @export
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'
 #' 
@@ -14,13 +15,13 @@
 #' solr_facet(q='*:*', facet.field='journal', url=url)
 #' 
 #' # Facet on multiple fields
-#' solr_facet(q='alcohol', facet.field='journal,subject', url=url)
+#' solr_facet(q='alcohol', facet.field=c('journal','subject'), url=url)
 #' 
 #' # Using mincount
 #' solr_facet(q='alcohol', facet.field='journal', facet.mincount='500', url=url)
 #' 
 #' # Using facet.query to get counts
-#' solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', url=url)
+#' solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'), url=url)
 #' 
 #' # Date faceting
 #' solr_facet(q='*:*', url=url, facet.date='publication_date', 
@@ -31,11 +32,11 @@
 #' facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 #' 
 #' # Range faceting with > 1 field, same settings
-#' solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount', 
+#' solr_facet(q='*:*', url=url, facet.range=c('counter_total_all','alm_twitterCount'), 
 #' facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 #' 
 #' # Range faceting with > 1 field, different settings
-#' solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount', 
+#' solr_facet(q='*:*', url=url, facet.range=c('counter_total_all','alm_twitterCount'), 
 #' f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000, 
 #' f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5, 
 #' f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10)
@@ -61,7 +62,6 @@
 #' solr_facet(q='*:*', facet.field='state_code', url=url)
 #' solr_facet(q='*:*', facet.field='basis_of_record', url=url)
 #' }
-#' @export
 
 solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
    facet.prefix = NA,facet.sort = NA,facet.limit = NA,facet.offset = NA,
@@ -76,17 +76,16 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   if(is.na(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
-  
   makemultiargs <- function(x){
     value <- eval(parse(text=x))
-    if(is.null(value)){ NULL } else {
-      if(is.na(value)){ NULL } else {
-        if(!is.character(value)){ 
+    if( length(value) == 0 ){ NULL } else {
+      if( any(sapply(value, is.na)) ){ NULL } else {
+        if( !is.character(value) ){ 
           value <- as.character(value)
         } 
-        y <- strsplit(value,",")[[1]]
-        names(y) <- rep(x, length(y))
-        y
+        #         y <- strsplit(value,",")[[1]]
+        names(value) <- rep(x, length(value))
+        value
       }
     }
   }

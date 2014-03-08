@@ -119,31 +119,31 @@ solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type',
 
 # Different ways to sort (notice diff btw sort of group.sort)
 # note that you can only sort on a field if you return that field
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', url=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount',
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), url=url)
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
    group.sort='alm_twitterCount desc', url=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score,alm_twitterCount',
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
    sort='score asc', group.sort='alm_twitterCount desc', url=url)
 
 # Two group.field values
-out <- solr_group(q='ecology', group.field='journal,article_type', group.limit=3, fl='id', url=url, raw=TRUE)
+out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', url=url, raw=TRUE)
 solr_parse(out)
 solr_parse(out, 'df')
 
 # Get two groups, one with alm_twitterCount of 0-10, and another group with 10 to infinity
-solr_group(q='ecology', group.limit=3, fl='id,alm_twitterCount',
- group.query='alm_twitterCount:[0 TO 10],alm_twitterCount:[10 TO *]',
+solr_group(q='ecology', group.limit=3, fl=c('id','alm_twitterCount'),
+ group.query=c('alm_twitterCount:[0 TO 10]','alm_twitterCount:[10 TO *]'),
  url=url)
 
 # Use of group.format and group.simple.
 ## The raw data structure of these two calls are slightly different, but
 ## the parsing inside the function outputs the same results. You can of course
 ## set raw=TRUE to get back what the data actually look like
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score',
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
    group.format='simple', url=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score',
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
    group.format='grouped', url=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score',
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
    group.format='grouped', group.main='true', url=url)
 }
 }

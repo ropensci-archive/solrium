@@ -105,7 +105,6 @@ Solr search.
 \examples{
 \dontrun{
 url <- 'http://api.plos.org/search'
-
 solr_all(q='*:*', rows=2, fl='id', url=url)
 }
 }

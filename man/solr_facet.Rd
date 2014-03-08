@@ -320,13 +320,13 @@ url <- 'http://api.plos.org/search'
 solr_facet(q='*:*', facet.field='journal', url=url)
 
 # Facet on multiple fields
-solr_facet(q='alcohol', facet.field='journal,subject', url=url)
+solr_facet(q='alcohol', facet.field=c('journal','subject'), url=url)
 
 # Using mincount
 solr_facet(q='alcohol', facet.field='journal', facet.mincount='500', url=url)
 
 # Using facet.query to get counts
-solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', url=url)
+solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'), url=url)
 
 # Date faceting
 solr_facet(q='*:*', url=url, facet.date='publication_date',
@@ -337,11 +337,11 @@ solr_facet(q='*:*', url=url, facet.range='counter_total_all',
 facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 
 # Range faceting with > 1 field, same settings
-solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount',
+solr_facet(q='*:*', url=url, facet.range=c('counter_total_all','alm_twitterCount'),
 facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 
 # Range faceting with > 1 field, different settings
-solr_facet(q='*:*', url=url, facet.range='counter_total_all,alm_twitterCount',
+solr_facet(q='*:*', url=url, facet.range=c('counter_total_all','alm_twitterCount'),
 f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000,
 f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5,
 f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10)
