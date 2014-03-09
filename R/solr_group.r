@@ -55,45 +55,13 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   if(is.na(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
-    
-#   makemultiargs <- function(x){
-#     value <- eval(parse(text=x))
-#     if(is.null(value)){ NULL } else {
-#       if(is.na(value)){ NULL } else {
-#         if(!is.character(value)){ 
-#           value <- as.character(value)
-#         } 
-#         y <- strsplit(value,",")[[1]]
-#         names(y) <- rep(x, length(y))
-#         y
-#       }
-#     }
-#   }
-  makemultiargs <- function(x){
-    value <- eval(parse(text=x))
-    if( length(value) == 0 ){ NULL } else {
-      if( any(sapply(value, is.na)) ){ NULL } else {
-        if( !is.character(value) ){ 
-          value <- as.character(value)
-        } 
-        #         y <- strsplit(value,",")[[1]]
-        names(value) <- rep(x, length(value))
-        value
-      }
-    }
-  }
-  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 'fq', 'wt', 
-                 'group.limit', 'group.offset', 'group.sort', 'group.sort', 
-                 'group.format', 'group.func', 'group.main', 'group.ngroups', 
-                 'group.cache.percent', 'group.cache.percent', 'fl')
-  outlist <- list()
-  for(i in seq_along(todonames)){
-    outlist[[i]] <- makemultiargs(todonames[[i]])
-  }
-  args <- as.list(unlist(compact(outlist)))
+
+  todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 
+    'fq', 'wt', 'group.limit', 'group.offset', 'group.sort', 'group.sort', 
+    'group.format', 'group.func', 'group.main', 'group.ngroups',
+    'group.cache.percent', 'group.cache.percent', 'fl')
+  args <- collectargs(todonames)
   args$group <- 'true'
-#   if(!is.na(fl))
-#     args$fl <- fl
  
   # additional parameters
   args <- c(args, list(...))

@@ -76,19 +76,7 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   if(is.na(url)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
-  makemultiargs <- function(x){
-    value <- eval(parse(text=x))
-    if( length(value) == 0 ){ NULL } else {
-      if( any(sapply(value, is.na)) ){ NULL } else {
-        if( !is.character(value) ){ 
-          value <- as.character(value)
-        } 
-        #         y <- strsplit(value,",")[[1]]
-        names(value) <- rep(x, length(value))
-        value
-      }
-    }
-  }
+
   todonames <- c("q",  "facet.query",  "facet.field", 
      "facet.prefix", "facet.sort", "facet.limit", "facet.offset", 
      "facet.mincount", "facet.missing", "facet.method", "facet.enum.cache.minDf", 
@@ -97,12 +85,7 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
      "facet.date.include", "facet.range", "facet.range.start", "facet.range.end", 
      "facet.range.gap", "facet.range.hardend", "facet.range.other", 
      "facet.range.include",  "start",  "rows",  "key", "wt")
-  
-  outlist <- list()
-  for(i in seq_along(todonames)){
-    outlist[[i]] <- makemultiargs(todonames[[i]])
-  }
-  args <- as.list(unlist(compact(outlist)))
+  args <- collectargs(todonames)
   args$fl <- 'DOES_NOT_EXIST'
   args$facet <- 'true'
   

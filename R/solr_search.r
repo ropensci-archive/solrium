@@ -80,7 +80,7 @@
 #'    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', url=url) 
 #' }
 
-solr_search<- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
+solr_search <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL, 
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
   url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE)
