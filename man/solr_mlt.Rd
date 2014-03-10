@@ -99,6 +99,8 @@ solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twit
 solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1,
    fl='counter_total_all', rows=5, url=url)
 solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url)
+solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5, url=url)
+solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5, url=url)
 
 # get raw data, and parse later if needed
 out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url,

@@ -17,6 +17,8 @@
 #' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, 
 #'    fl='counter_total_all', rows=5, url=url)
 #' solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url)
+#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5, url=url)
+#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5, url=url)
 #' 
 #' # get raw data, and parse later if needed
 #' out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, 
@@ -35,12 +37,12 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
-  flsplit <- strsplit(fl, ",")[[1]]
-  if(any(grepl('id', flsplit))){
-    fl2 <- fl
+  fl_str <- paste0(fl, collapse = ",")
+  if(any(grepl('id', fl))){
+    fl2 <- fl_str
   } else
   {
-    fl2 <- sprintf('id,%s',fl)
+    fl2 <- sprintf('id,%s',fl_str)
   }
   args <- compact(list(q=q, fq=fq, mlt='true', fl=fl2, mlt.count=mlt.count, mlt.fl=mlt.fl, 
     mlt.mintf=mlt.mintf, mlt.mindf=mlt.mindf, mlt.minwl=mlt.minwl, 
