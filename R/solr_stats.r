@@ -13,24 +13,24 @@
 #' url <- 'http://api.plos.org/search'
 #' solr_stats(q='science', stats.field='counter_total_all', url=url, raw=TRUE)
 #' solr_stats(q='title:"ecology" AND body:"cell"', 
-#'    stats.field='counter_total_all,alm_twitterCount', url=url)
-#' solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
+#'    stats.field=c('counter_total_all','alm_twitterCount'), url=url)
+#' solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
 #'    stats.facet='journal', url=url)
-#' solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal,volume', url=url)
+#' solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
+#'    stats.facet=c('journal','volume'), url=url)
 #' 
 #' # Get raw data, then parse later if you feel like it
 #' ## json
-#' out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal,volume', url=url, raw=TRUE)
+#' out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
+#'    stats.facet=c('journal','volume'), url=url, raw=TRUE)
 #' library(rjson)
 #' fromJSON(out)
 #' solr_parse(out) # list
 #' solr_parse(out, 'df') # data.frame
 #' 
 #' ## xml
-#' out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', 
-#'    stats.facet='journal,volume', url=url, raw=TRUE, wt="xml")
+#' out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
+#'    stats.facet=c('journal','volume'), url=url, raw=TRUE, wt="xml")
 #' library(XML)
 #' xmlParse(out)
 #' solr_parse(out) # list
@@ -49,25 +49,8 @@ solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', s
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
-  makemultiargs <- function(x){
-    value <- eval(parse(text=x))
-    if(is.null(value)){ NULL } else {
-      if(is.na(value)){ NULL } else {
-        if(!is.character(value)){ 
-          value <- as.character(value)
-        } 
-        y <- strsplit(value,",")[[1]]
-        names(y) <- rep(x, length(y))
-        y
-      }
-    }
-  }
   todonames <- c("q", "stats.field", "stats.facet", "start", "rows", "key", "wt")
-  outlist <- list()
-  for(i in seq_along(todonames)){
-    outlist[[i]] <- makemultiargs(todonames[[i]])
-  }
-  args <- as.list(unlist(compact(outlist)))
+  args <- collectargs(todonames)
   args$stats <- 'true'
   
   tt <- GET(url, query = args, callopts)

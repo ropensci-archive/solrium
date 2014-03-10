@@ -46,24 +46,24 @@ Get Solr stats.
 url <- 'http://api.plos.org/search'
 solr_stats(q='science', stats.field='counter_total_all', url=url, raw=TRUE)
 solr_stats(q='title:"ecology" AND body:"cell"',
-   stats.field='counter_total_all,alm_twitterCount', url=url)
-solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
+   stats.field=c('counter_total_all','alm_twitterCount'), url=url)
+solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
    stats.facet='journal', url=url)
-solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
-   stats.facet='journal,volume', url=url)
+solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet=c('journal','volume'), url=url)
 
 # Get raw data, then parse later if you feel like it
 ## json
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
-   stats.facet='journal,volume', url=url, raw=TRUE)
+out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet=c('journal','volume'), url=url, raw=TRUE)
 library(rjson)
 fromJSON(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 ## xml
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount',
-   stats.facet='journal,volume', url=url, raw=TRUE, wt="xml")
+out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet=c('journal','volume'), url=url, raw=TRUE, wt="xml")
 library(XML)
 xmlParse(out)
 solr_parse(out) # list
