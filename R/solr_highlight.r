@@ -2,6 +2,7 @@
 #' 
 #' @import httr XML
 #' @importFrom plyr compact
+#' @export
 #' @template high
 #' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_search}}, \code{\link{solr_facet}}
@@ -11,7 +12,7 @@
 #' url <- 'http://api.plos.org/search'
 #' 
 #' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url)
-#' solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url)
+#' solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, url = url)
 #' 
 #' # Raw data back
 #' ## json
@@ -21,11 +22,10 @@
 #' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, 
 #'    raw=TRUE, wt='xml')
 #' ## parse after getting data back
-#' out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30, 
+#' out <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30, 
 #'    rows=10, url = url, raw=TRUE, wt='xml')
 #' solr_parse(out, parsetype='df')
 #' }
-#' @export
 
 solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
      hl.q = NULL, hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL, 
@@ -45,7 +45,8 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
-  args <- compact(list(wt=wt, q=q, start=start, rows=rows, hl='true', hl.fl=hl.fl,
+  if(!is.null(hl.fl)) names(hl.fl) <- rep("hl.fl", length(hl.fl))
+  args <- compact(list(wt=wt, q=q, start=start, rows=rows, hl='true',
      hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
      hl.mergeContiguous = hl.mergeContiguous, hl.requireFieldMatch = hl.requireFieldMatch, 
      hl.maxAnalyzedChars = hl.maxAnalyzedChars, hl.alternateField = hl.alternateField, 
@@ -60,6 +61,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.usePhraseHighlighter = hl.usePhraseHighlighter, hl.highlightMultiTerm = hl.highlightMultiTerm, 
      hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
+  args <- c(args, hl.fl)
   tt <- GET(url, query = args, callopts)
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)

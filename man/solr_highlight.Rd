@@ -242,7 +242,7 @@ Do highlighting searches, outputing highlight only.
 url <- 'http://api.plos.org/search'
 
 solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url)
-solr_highlight(q='alcohol', hl.fl = 'abstract,title', rows=3, url = url)
+solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, url = url)
 
 # Raw data back
 ## json
@@ -252,7 +252,7 @@ solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url,
 solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url,
    raw=TRUE, wt='xml')
 ## parse after getting data back
-out <- solr_highlight(q='alcohol', hl.fl = 'abstract,title', hl.fragsize=30,
+out <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30,
    rows=10, url = url, raw=TRUE, wt='xml')
 solr_parse(out, parsetype='df')
 }

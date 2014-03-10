@@ -1,11 +1,14 @@
-rplos 0.1.1
+solr 0.1.3
 ===============
 
 NEW FEATURES 
 
 * Added function solr_group(), and started group parser, to do grouping searches.
+* Fixed solr_* functions so that you pass in many fields as a vector e.g., (`c('field1','field')`), rather than as a comma-separated string e.g., `'field1,field'` (#22).
+* Added a message to each solr_* function to print HTTP uri. Can be suppressed with `verbose=FALSE`. 
+* Started solr_all function to try to integrate all things into one function, as everthing is just parameters passed to the same URL - we'll see how useful though.
 
-rplos 0.1.0
+solr 0.1.0
 ===============
 
 NEW FEATURES 
