@@ -50,25 +50,25 @@ key <- 'key'
 **Search**
 
 ```{r}
-solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
+solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
 ```
 
 **Facet**
 
 ```{r}
-solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', url=url, key=key)
+solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'), base=url, key=key)
 ```
 
 **Highlight**
 
 ```{r}
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, url = url, key=key)
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
 ```
 
 **Stats**
 
 ```{r}
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key)
+out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), base=url, key=key)
 ```
 
 ```{r}
@@ -84,7 +84,7 @@ out$facet
 `solr_mlt` is a function to return similar documents to the one 
 
 ```{r}
-out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, url=url, key=key)
+out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
 out$docs
 ```
 
@@ -99,7 +99,7 @@ out$mlt
 For example:
 
 ```{r}
-(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, url = url, key=key, raw=TRUE))
+(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
 ```
 
 Then parse
@@ -116,13 +116,13 @@ The occurrences service
 
 ```{r}
 url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q='*:*', fl='latitude,longitude,scientific_name', url=url2)
+solr_search(q='*:*', fl=c('latitude','longitude','scientific_name'), base=url2)
 ```
 
 The species names service
 
 ```{r}
-solr_search(q='*:*', url=url2, raw=TRUE)
+solr_search(q='*:*', base=url2, raw=TRUE)
 ```
 
 *PLOS Search API*

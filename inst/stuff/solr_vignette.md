@@ -26,7 +26,7 @@ Install dependencies
 
 
 ```r
-install.packages(c("rjson", "plyr", "httr", "XML", "data.table", "assertthat"))
+install.packages(c("rjson", "plyr", "httr", "XML", "assertthat"))
 ```
 
 
@@ -59,13 +59,17 @@ key <- "key"
 
 
 ```r
-solr_search(q = "*:*", rows = 2, fl = "id", url = url, key = key)
+solr_search(q = "*:*", rows = 2, fl = "id", base = url, key = key)
+```
+
+```
+## http://api.plos.org/search?q=*:*&start=0&rows=2&wt=json&fl=id
 ```
 
 ```
 ##                             id
-## 1 10.1371/journal.pone.0025014
-## 2 10.1371/journal.pone.0055525
+## 1 10.1371/journal.pone.0060627
+## 2 10.1371/journal.pbio.0000080
 ```
 
 
@@ -73,26 +77,30 @@ solr_search(q = "*:*", rows = 2, fl = "id", url = url, key = key)
 
 
 ```r
-solr_facet(q = "*:*", facet.field = "journal", facet.query = "cell,bird", url = url, 
-    key = key)
+solr_facet(q = "*:*", facet.field = "journal", facet.query = c("cell", 
+    "bird"), base = url, key = key)
+```
+
+```
+## http://api.plos.org/search?q=*:*&facet.query=cell&facet.query=bird&facet.field=journal&key=key&wt=json&fl=DOES_NOT_EXIST&facet=true
 ```
 
 ```
 ## $facet_queries
 ##   term value
-## 1 cell 79476
-## 2 bird  7965
+## 1 cell 85941
+## 2 bird  8588
 ## 
 ## $facet_fields
 ## $facet_fields$journal
 ##                                  X1     X2
-## 1                          plos one 663280
-## 2                     plos genetics  33284
-## 3                    plos pathogens  29244
-## 4        plos computational biology  24845
-## 5                      plos biology  23926
-## 6  plos neglected tropical diseases  18781
-## 7                     plos medicine  17031
+## 1                          plos one 742824
+## 2                     plos genetics  35463
+## 3                    plos pathogens  31152
+## 4        plos computational biology  26016
+## 5                      plos biology  24699
+## 6  plos neglected tropical diseases  20115
+## 7                     plos medicine  17444
 ## 8              plos clinical trials    521
 ## 9                      plos medicin      9
 ## 10                 plos collections      5
@@ -110,7 +118,11 @@ solr_facet(q = "*:*", facet.field = "journal", facet.query = "cell,bird", url = 
 
 
 ```r
-solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, url = url, key = key)
+solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, base = url, key = key)
+```
+
+```
+## http://api.plos.org/search?wt=json&q=alcohol&start=0&rows=2&hl=true&fl=DOES_NOT_EXIST&hl.fl=abstract
 ```
 
 ```
@@ -129,8 +141,12 @@ solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, url = url, key = key
 
 
 ```r
-out <- solr_stats(q = "ecology", stats.field = "counter_total_all,alm_twitterCount", 
-    stats.facet = "journal,volume", url = url, key = key)
+out <- solr_stats(q = "ecology", stats.field = c("counter_total_all", "alm_twitterCount"), 
+    stats.facet = c("journal", "volume"), base = url, key = key)
+```
+
+```
+## http://api.plos.org/search?q=ecology&stats.field=counter_total_all&stats.field=alm_twitterCount&stats.facet=journal&stats.facet=volume&start=0&rows=0&key=key&wt=json&stats=true
 ```
 
 
@@ -141,11 +157,11 @@ out$data
 
 ```
 ##                   min    max count missing      sum sumOfSquares     mean
-## counter_total_all   0 291798 18090       0 58248156    9.639e+11 3219.909
-## alm_twitterCount    0   1288 18090       0    56281    7.406e+06    3.111
+## counter_total_all   0 297294 19679       0 64851389    1.097e+12 3295.462
+## alm_twitterCount    0   1446 19679       0    71992    1.011e+07    3.658
 ##                    stddev
-## counter_total_all 6551.12
-## alm_twitterCount    19.99
+## counter_total_all 6699.81
+## alm_twitterCount    22.37
 ```
 
 
@@ -158,42 +174,43 @@ out$facet
 ## $counter_total_all
 ## $counter_total_all$journal
 ##    min    max count missing      sum sumOfSquares  mean stddev
-## 1    0  37364   404       0  2067577    1.767e+10  5118   4193
-## 2    0  42118   529       0  3035262    2.790e+10  5738   4456
-## 3    0 291798 13909       0 35301226    5.395e+11  2538   5688
-## 4 4168   8060     2       0    12228    8.234e+07  6114   2752
-## 5    0  82757   208       0  2158539    4.224e+10 10378   9789
-## 6 1083 156837   746       0  8466420    2.151e+11 11349  12638
-## 7    0  53230   365       0  1885392    1.917e+10  5165   5089
-## 8    0 156975   676       0  2144469    3.551e+10  3172   6521
+## 1    0  39085   427       0  2285267    2.027e+10  5352   4343
+## 2    0  43592   557       0  3336132    3.196e+10  5989   4642
+## 3    0 297294 15379       0 40023738    6.223e+11  2602   5804
+## 4 4638   8607     2       0    13245    9.559e+07  6622   2807
+## 5  513  85165   213       0  2361321    5.359e+10 11086  11371
+## 6  768  57904   378       0  2071231    2.359e+10  5479   5698
+## 7  574 168945   758       0  8871519    2.341e+11 11704  13116
+## 8    0 164090   714       0  2394341    3.951e+10  3353   6645
 ##                        facet_field
 ## 1                   plos pathogens
 ## 2                    plos genetics
 ## 3                         plos one
 ## 4             plos clinical trials
 ## 5                    plos medicine
-## 6                     plos biology
-## 7       plos computational biology
+## 6       plos computational biology
+## 7                     plos biology
 ## 8 plos neglected tropical diseases
 ## 
 ## $counter_total_all$volume
 ##     min    max count missing      sum sumOfSquares  mean stddev
-## 1   816 107405   741       0  5068779    9.137e+10  6840   8754
-## 2  1132  85278   482       0  3949081    7.702e+10  8193   9636
-## 3  1372 108353    81       0  1065357    3.599e+10 13153  16573
-## 4     0  59941    71       0   708999    1.306e+10  9986   9246
-## 5     0 178757  4823       0 12104091    1.717e+11  2510   5414
-## 6   505 156975  2946       0  9871464    1.220e+11  3351   5495
-## 7   470  73727  1538       0  7245872    8.175e+10  4711   5566
-## 8   493 291798  1010       0  6224943    1.807e+11  6163  11877
-## 9     0 156837   354       0  1880616    4.070e+10  5312   9327
-## 10    0 149871  5983       0  9502785    1.356e+11  1588   4489
-## 11 1147  66540    61       0   626169    1.393e+10 10265  11180
+## 1   859 108653   741       0  5231098    9.622e+10  7060   8951
+## 2  1159  86761   482       0  4062160    8.123e+10  8428   9885
+## 3     0  82673   136       0   991749    2.279e+10  7292  10736
+## 4  1391 111334    81       0  1088239    3.765e+10 13435  16965
+## 5     0 179433  4825       0 13328457    1.883e+11  2762   5604
+## 6     0 164090  2948       0 10560418    1.396e+11  3582   5876
+## 7     0  74838  1539       0  7624055    8.949e+10  4954   5799
+## 8   513 297294  1010       0  6467119    1.909e+11  6403  12172
+## 9     0 168945  1709       0  3117421    6.074e+10  1824   5677
+## 10    0 188324  6131       0 11597343    1.716e+11  1892   4941
+## 11  610  74895    66       0   714981    1.722e+10 10833  12076
+## 12  574  33078    11       0    68349    1.241e+09  6214   9036
 ##    facet_field
 ## 1            3
 ## 2            2
-## 3            1
-## 4           10
+## 3           10
+## 4            1
 ## 5            7
 ## 6            6
 ## 7            5
@@ -201,42 +218,44 @@ out$facet
 ## 9            9
 ## 10           8
 ## 11          11
+## 12          12
 ## 
 ## 
 ## $alm_twitterCount
 ## $alm_twitterCount$journal
-##   min  max count missing   sum sumOfSquares  mean stddev
-## 1   0   73   404       0  1172        30074 2.901  8.136
-## 2   0   48   529       0  1146        19558 2.166  5.687
-## 3   0  733 13909       0 38274      4148472 2.752 17.050
-## 4   0    3     2       0     3            9 1.500  2.121
-## 5   0  201   208       0  1568       138226 7.538 24.711
-## 6   0 1288   746       0  4975      2034243 6.669 51.827
-## 7   0  102   365       0  1081        35411 2.962  9.407
-## 8   0  784   676       0  1711       625745 2.531 30.342
+##   min  max count missing   sum sumOfSquares   mean stddev
+## 1   0   74   427       0  1387        35947  3.248  8.591
+## 2   0  141   557       0  1648        49984  2.959  9.007
+## 3   0  781 15379       0 50416      5548300  3.278 18.710
+## 4   0    3     2       0     3            9  1.500  2.121
+## 5   0  524   213       0  2370       439366 11.127 44.137
+## 6   0  104   378       0  1224        39048  3.238  9.647
+## 7   0 1446   758       0  6591      2966605  8.695 61.993
+## 8   0  800   714       0  1937       654019  2.713 30.165
 ##                        facet_field
 ## 1                   plos pathogens
 ## 2                    plos genetics
 ## 3                         plos one
 ## 4             plos clinical trials
 ## 5                    plos medicine
-## 6                     plos biology
-## 7       plos computational biology
+## 6       plos computational biology
+## 7                     plos biology
 ## 8 plos neglected tropical diseases
 ## 
 ## $alm_twitterCount$volume
 ##    min  max count missing   sum sumOfSquares    mean  stddev facet_field
-## 1    0   17   741       0   292         2136  0.3941   1.653           3
-## 2    0   35   482       0   256         3778  0.5311   2.752           2
-## 3    0   28    81       0    80         1582  0.9877   4.334           1
-## 4    0  201    71       0  1735       140243 24.4366  37.387          10
-## 5    0  733  4823       0 16890      1547170  3.5020  17.567           7
-## 6    0  784  2946       0  2634       750518  0.8941  15.939           6
-## 7    0  110  1538       0  1004        38182  0.6528   4.941           5
-## 8    0  142  1010       0   472        25576  0.4673   5.013           4
-## 9    0  150   354       0  2871       112269  8.1102  15.877           9
-## 10   0  727  5983       0 26011      2785113  4.3475  21.135           8
-## 11   1 1288    61       0  4036      1998982 66.1639 169.899          11
+## 1    0   29   741       0   342         3146  0.4615   2.009           3
+## 2    0   36   482       0   282         4512  0.5851   3.006           2
+## 3    0  524   136       0  2981       456107 21.9191  53.801          10
+## 4    0   28    81       0    87         1655  1.0741   4.418           1
+## 5    0  781  4825       0 17405      1696211  3.6073  18.401           7
+## 6    0  800  2948       0  2904       820122  0.9851  16.653           6
+## 7    0  111  1539       0  1142        43334  0.7420   5.256           5
+## 8    0  151  1010       0   533        28965  0.5277   5.332           4
+## 9    0  307  1709       0 11031       696865  6.4547  19.139           9
+## 10   0  767  6131       0 29602      3428324  4.8282  23.151           8
+## 11   1 1446    66       0  4602      2504276 69.7273 183.277          11
+## 12   7  630    11       0  1081       430679 98.2727 180.124          12
 ```
 
 
@@ -247,18 +266,25 @@ out$facet
 
 ```r
 out <- solr_mlt(q = "title:\"ecology\" AND body:\"cell\"", mlt.fl = "title", 
-    mlt.mindf = 1, mlt.mintf = 1, fl = "counter_total_all", rows = 5, url = url, 
+    mlt.mindf = 1, mlt.mintf = 1, fl = "counter_total_all", rows = 5, base = url, 
     key = key)
+```
+
+```
+## http://api.plos.org/search?q=title:"ecology" AND body:"cell"&mlt=true&fl=id,counter_total_all&mlt.fl=title&mlt.mintf=1&mlt.mindf=1&start=0&rows=5&wt=json
+```
+
+```r
 out$docs
 ```
 
 ```
 ##                             id counter_total_all
-## 1 10.1371/journal.pbio.0020440             15977
-## 2 10.1371/journal.pone.0040117              1589
-## 3 10.1371/journal.pone.0072525               635
-## 4 10.1371/journal.ppat.1002320              4612
-## 5 10.1371/journal.pone.0015143             11003
+## 1 10.1371/journal.pbio.1001805               574
+## 2 10.1371/journal.pbio.0020440             16114
+## 3 10.1371/journal.pone.0087217              1095
+## 4 10.1371/journal.pone.0040117              1754
+## 5 10.1371/journal.pone.0072525               714
 ```
 
 
@@ -268,32 +294,45 @@ out$mlt
 ```
 
 ```
-##                              id counter_total_all
-## 1  10.1371/journal.pone.0035964              2247
-## 2  10.1371/journal.pone.0003259              1693
-## 3  10.1371/journal.pone.0068814              3953
-## 4  10.1371/journal.pbio.0020148             11186
-## 5  10.1371/journal.pbio.0030105              2761
-## 6  10.1371/journal.pone.0069352               647
-## 7  10.1371/journal.pone.0014065              3311
-## 8  10.1371/journal.pone.0035502              1757
-## 9  10.1371/journal.pone.0078369               455
-## 10 10.1371/journal.pone.0048646              1357
-## 11 10.1371/journal.pone.0060766               831
-## 12 10.1371/journal.pcbi.1002928              6051
-## 13 10.1371/journal.pcbi.0020144             11556
-## 14 10.1371/journal.pcbi.1000350              7925
-## 15 10.1371/journal.pone.0068714              1363
-## 16 10.1371/journal.pbio.1001332             12315
-## 17 10.1371/journal.ppat.1000222              9901
-## 18 10.1371/journal.pone.0052612              1223
-## 19 10.1371/journal.pntd.0001693              2402
-## 20 10.1371/journal.pntd.0001283              3505
-## 21 10.1371/journal.pbio.1001702              1576
-## 22 10.1371/journal.pone.0008413              5687
-## 23 10.1371/journal.pone.0014451              4823
-## 24 10.1371/journal.ppat.1003500              2212
-## 25 10.1371/journal.pone.0035348              5200
+## $`10.1371/journal.pbio.1001805`
+##                             id counter_total_all
+## 1 10.1371/journal.pone.0082578               573
+## 2 10.1371/journal.pone.0087380               291
+## 3 10.1371/journal.pcbi.1003408              2521
+## 4 10.1371/journal.pcbi.1002915              4132
+## 5 10.1371/journal.pcbi.1002652              2110
+## 
+## $`10.1371/journal.pbio.0020440`
+##                             id counter_total_all
+## 1 10.1371/journal.pone.0035964              2660
+## 2 10.1371/journal.pone.0003259              1728
+## 3 10.1371/journal.pone.0068814              4539
+## 4 10.1371/journal.pbio.0020215              4274
+## 5 10.1371/journal.pbio.0020148             11359
+## 
+## $`10.1371/journal.pone.0087217`
+##                             id counter_total_all
+## 1 10.1371/journal.pcbi.0020092             13333
+## 2 10.1371/journal.pone.0063375               988
+## 3 10.1371/journal.pcbi.1000986              2650
+## 4 10.1371/journal.pntd.0000694              1806
+## 5 10.1371/journal.pone.0015143             11368
+## 
+## $`10.1371/journal.pone.0040117`
+##                             id counter_total_all
+## 1 10.1371/journal.pone.0069352               946
+## 2 10.1371/journal.pone.0014065              3501
+## 3 10.1371/journal.pone.0035502              2009
+## 4 10.1371/journal.pone.0078369               980
+## 5 10.1371/journal.pone.0084920               653
+## 
+## $`10.1371/journal.pone.0072525`
+##                             id counter_total_all
+## 1 10.1371/journal.pone.0060766               914
+## 2 10.1371/journal.pcbi.1002928              6369
+## 3 10.1371/journal.pcbi.0020144             11857
+## 4 10.1371/journal.pcbi.1000350              8200
+## 5 10.1371/journal.pone.0068714              2164
 ```
 
 
@@ -305,12 +344,16 @@ For example:
 
 
 ```r
-(out <- solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, url = url, 
+(out <- solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, base = url, 
     key = key, raw = TRUE))
 ```
 
 ```
-## [1] "{\"response\":{\"numFound\":11203,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
+## http://api.plos.org/search?wt=json&q=alcohol&start=0&rows=2&hl=true&fl=DOES_NOT_EXIST&hl.fl=abstract
+```
+
+```
+## [1] "{\"response\":{\"numFound\":12306,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
 ## attr(,"class")
 ## [1] "sr_high"
 ## attr(,"wt")
@@ -344,21 +387,15 @@ The occurrences service
 
 ```r
 url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q = "*:*", fl = "latitude,longitude,scientific_name", url = url2)
+solr_search(q = "*:*", fl = c("latitude", "longitude", "scientific_name"), base = url2)
 ```
 
 ```
-##    longitude latitude        scientific_name
-## 1     -75.12    40.23 Catostomus commersonii
-## 2     -75.12    40.23  Ambloplites rupestris
-## 3     -75.12    40.23      Anguilla rostrata
-## 4     -75.12    40.23      Anguilla rostrata
-## 5     -75.12    40.23 Catostomus commersonii
-## 6     -75.12    40.23  Ambloplites rupestris
-## 7     -75.12    40.23      Lepomis cyanellus
-## 8     -75.12    40.23      Lepomis cyanellus
-## 9     -75.12    40.23     Fundulus diaphanus
-## 10    -75.12    40.23    Etheostoma olmstedi
+## http://bisonapi.usgs.ornl.gov/solr/occurrences/select?q=*:*&start=0&wt=json&fl=latitude&fl=longitude&fl=scientific_name
+```
+
+```
+## data frame with 0 columns and 0 rows
 ```
 
 
@@ -366,11 +403,15 @@ The species names service
 
 
 ```r
-solr_search(q = "*:*", url = url2, raw = TRUE)
+solr_search(q = "*:*", base = url2, raw = TRUE)
 ```
 
 ```
-## [1] "{\"responseHeader\":{\"status\":0,\"QTime\":509},\"response\":{\"numFound\":111109690,\"start\":0,\"docs\":[{\"occurrence_date\":\"2000-07-13\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230375\",\"iso_country_code\":\"US\",\"taxon_id\":\"553273\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2000,\"latitude\":40.229275,\"scientific_name\":\"Catostomus commersonii\",\"county\":\"42017\"},{\"occurrence_date\":\"2008-08-06\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230376\",\"iso_country_code\":\"US\",\"taxon_id\":\"168097\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2008,\"latitude\":40.229275,\"scientific_name\":\"Ambloplites rupestris\",\"county\":\"42017\"},{\"occurrence_date\":\"2000-07-13\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230377\",\"iso_country_code\":\"US\",\"taxon_id\":\"161127\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2000,\"latitude\":40.229275,\"scientific_name\":\"Anguilla rostrata\",\"county\":\"42017\"},{\"occurrence_date\":\"2000-07-13\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230378\",\"iso_country_code\":\"US\",\"taxon_id\":\"161127\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2000,\"latitude\":40.229275,\"scientific_name\":\"Anguilla rostrata\",\"county\":\"42017\"},{\"occurrence_date\":\"2003-08-20\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230379\",\"iso_country_code\":\"US\",\"taxon_id\":\"553273\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2003,\"latitude\":40.229275,\"scientific_name\":\"Catostomus commersonii\",\"county\":\"42017\"},{\"occurrence_date\":\"2007-09-05\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230380\",\"iso_country_code\":\"US\",\"taxon_id\":\"168097\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2007,\"latitude\":40.229275,\"scientific_name\":\"Ambloplites rupestris\",\"county\":\"42017\"},{\"occurrence_date\":\"2003-08-20\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230381\",\"iso_country_code\":\"US\",\"taxon_id\":\"168132\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2003,\"latitude\":40.229275,\"scientific_name\":\"Lepomis cyanellus\",\"county\":\"42017\"},{\"occurrence_date\":\"2003-08-20\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230382\",\"iso_country_code\":\"US\",\"taxon_id\":\"168132\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2003,\"latitude\":40.229275,\"scientific_name\":\"Lepomis cyanellus\",\"county\":\"42017\"},{\"occurrence_date\":\"2002-08-20\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230383\",\"iso_country_code\":\"US\",\"taxon_id\":\"165646\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2002,\"latitude\":40.229275,\"scientific_name\":\"Fundulus diaphanus\",\"county\":\"42017\"},{\"occurrence_date\":\"2000-07-13\",\"provider_id\":440,\"resource\":\"USGS NAWQA BioData Fish Dataset\",\"provider\":\"BISON\",\"pointPath_s\":\"/-75.119616,40.22927456/observation\",\"state_code\":\"Pennsylvania\",\"basis_of_record\":\"observation\",\"id\":\"1805230384\",\"iso_country_code\":\"US\",\"taxon_id\":\"168360\",\"collector\":\"USGS\",\"resource_id_s\":\"100000\",\"latlon_s\":\"-75.119616,40.22927456\",\"longitude\":-75.11961,\"year\":2000,\"latitude\":40.229275,\"scientific_name\":\"Etheostoma olmstedi\",\"county\":\"42017\"}]}}"
+## http://bisonapi.usgs.ornl.gov/solr/occurrences/select?q=*:*&start=0&wt=json
+```
+
+```
+## [1] "{\"responseHeader\":{\"status\":0,\"QTime\":1033},\"response\":{\"numFound\":126357352,\"start\":0,\"docs\":[{\"occurrence_date\":\"2010-05-24\",\"computedCountyFips\":\"47177\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"603897864\",\"pointPath\":\"/-85.6654,35.763/observation\",\"computedStateFips\":\"47\",\"latlon\":\"-85.6654,35.763\",\"decimalLongitude\":-85.6654,\"year\":2010,\"decimalLatitude\":35.763,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082956873732},{\"occurrence_date\":\"2011-06-26\",\"computedCountyFips\":\"49049\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605504828\",\"pointPath\":\"/-111.712,40.2209/observation\",\"computedStateFips\":\"49\",\"latlon\":\"-111.712,40.2209\",\"decimalLongitude\":-111.712,\"year\":2011,\"decimalLatitude\":40.2209,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082956873733},{\"occurrence_date\":\"2010-04-20\",\"computedCountyFips\":\"12087\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"603442794\",\"pointPath\":\"/-82.8699,24.6344/observation\",\"computedStateFips\":\"12\",\"latlon\":\"-82.8699,24.6344\",\"decimalLongitude\":-82.8699,\"year\":2010,\"decimalLatitude\":24.6344,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922304},{\"occurrence_date\":\"2011-06-10\",\"computedCountyFips\":\"49049\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605555013\",\"pointPath\":\"/-111.712,40.2209/observation\",\"computedStateFips\":\"49\",\"latlon\":\"-111.712,40.2209\",\"decimalLongitude\":-111.712,\"year\":2011,\"decimalLatitude\":40.2209,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922305},{\"occurrence_date\":\"2011-08-23\",\"computedCountyFips\":\"13177\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605682780\",\"pointPath\":\"/-84.1318,31.6293/observation\",\"computedStateFips\":\"13\",\"latlon\":\"-84.1318,31.6293\",\"decimalLongitude\":-84.1318,\"year\":2011,\"decimalLatitude\":31.6293,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922306},{\"occurrence_date\":\"1990-07-15\",\"computedCountyFips\":\"53001\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602637801\",\"pointPath\":\"/-118.688,47.172/observation\",\"computedStateFips\":\"53\",\"latlon\":\"-118.688,47.172\",\"decimalLongitude\":-118.688,\"year\":1990,\"decimalLatitude\":47.172,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922307},{\"occurrence_date\":\"2003-06-13\",\"computedCountyFips\":\"55071\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602990500\",\"pointPath\":\"/-87.6502,44.0928/observation\",\"computedStateFips\":\"55\",\"latlon\":\"-87.6502,44.0928\",\"decimalLongitude\":-87.6502,\"year\":2003,\"decimalLatitude\":44.0928,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922308},{\"occurrence_date\":\"2011-06-22\",\"computedCountyFips\":\"49049\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605214567\",\"pointPath\":\"/-111.712,40.2209/observation\",\"computedStateFips\":\"49\",\"latlon\":\"-111.712,40.2209\",\"decimalLongitude\":-111.712,\"year\":2011,\"decimalLatitude\":40.2209,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922309},{\"occurrence_date\":\"2003-07-18\",\"computedCountyFips\":\"55071\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602990492\",\"pointPath\":\"/-87.6502,44.0928/observation\",\"computedStateFips\":\"55\",\"latlon\":\"-87.6502,44.0928\",\"decimalLongitude\":-87.6502,\"year\":2003,\"decimalLatitude\":44.0928,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922310},{\"occurrence_date\":\"1993-05-28\",\"computedCountyFips\":\"41025\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602526464\",\"pointPath\":\"/-118.434,42.9384/observation\",\"computedStateFips\":\"41\",\"latlon\":\"-118.434,42.9384\",\"decimalLongitude\":-118.434,\"year\":1993,\"decimalLatitude\":42.9384,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082958970880}]}}\n"
 ## attr(,"class")
 ## [1] "sr_search"
 ## attr(,"wt")
