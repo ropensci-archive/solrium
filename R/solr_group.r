@@ -24,7 +24,8 @@
 #'    sort='score asc', group.sort='alm_twitterCount desc', base=url)
 #' 
 #' # Two group.field values
-#' out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', base=url, raw=TRUE)
+#' out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', 
+#'    base=url, raw=TRUE)
 #' solr_parse(out)
 #' solr_parse(out, 'df')
 #' 

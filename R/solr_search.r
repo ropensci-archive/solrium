@@ -41,7 +41,8 @@
 #' 
 #' # Parse data, using the USGS BISON API
 #' url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-#' out <- solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), base=url, raw=TRUE)
+#' out <- solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), 
+#'    base=url, raw=TRUE)
 #' solr_parse(out, 'df')
 #' ## gives the same result
 #' solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), base=url)
