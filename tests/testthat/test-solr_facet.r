@@ -3,8 +3,8 @@ context("solr_facet")
 
 url <- 'http://api.plos.org/search'
 
-a <- solr_facet(q='*:*', facet.field='journal', url=url, verbose=FALSE)
-b <- solr_facet(q='*:*', url=url, facet.date='publication_date', facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY', verbose=FALSE)
+a <- solr_facet(q='*:*', facet.field='journal', base=url, verbose=FALSE)
+b <- solr_facet(q='*:*', base=url, facet.date='publication_date', facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY', verbose=FALSE)
 
 test_that("solr_facet returns the correct dimensions in the data.frame", {
   expect_that(length(a), equals(4))

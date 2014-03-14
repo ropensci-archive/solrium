@@ -3,11 +3,11 @@ context("solr_mlt")
 
 url <- 'http://api.plos.org/search'
 
-a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', url=url, fq="doc_type:full", verbose=FALSE)
-# b <- solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', url=url, key=key)
-c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, url=url, verbose=FALSE)
+a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', base=url, fq="doc_type:full", verbose=FALSE)
+# b <- solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', base=url, key=key)
+c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, base=url, verbose=FALSE)
 
-out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, url=url, raw=TRUE, wt="xml", verbose=FALSE)
+out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, base=url, raw=TRUE, wt="xml", verbose=FALSE)
 library(XML)
 outxml <- xmlParse(out)
 outdf <- solr_parse(out, "df")

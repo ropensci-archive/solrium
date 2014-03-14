@@ -47,7 +47,7 @@ key <- 'key'
 **Search**
 
 ```coffee
-solr_search(q='*:*', rows=2, fl='id', url=url, key=key)
+solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
 ```
 
 ```coffee
@@ -74,7 +74,7 @@ $response$docs[[2]]$id
 Most recent publication by journal
 
 ```coffee
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', url=url, key=key)
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', base=url, key=key)
 ```
 
 ```coffee
@@ -89,7 +89,7 @@ solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='pu
 First publication by journal
 
 ```coffee
-solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", url=url, key=key)
+solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", base=url, key=key)
 ```
 
 
@@ -110,7 +110,7 @@ solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publicatio
 Search group query : Last 3 publications of 2013.  
 
 ```coffee
-solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', url=url, key=key)
+solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', base=url, key=key)
 ```
 
 ```coffee
@@ -123,7 +123,7 @@ solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-
 Search group with format simple 
 
 ```coffee
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', url=url, key=key)
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', base=url, key=key)
 ```
 
 ```coffee
@@ -139,7 +139,7 @@ solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='pu
 **Facet**
 
 ```coffee
-solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', url=url, key=key)
+solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, key=key)
 ```
 
 ```coffee
@@ -176,7 +176,7 @@ NULL
 **Highlight**
 
 ```coffee
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, url = url, key=key)
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
 ```
 
 ```coffee
@@ -192,7 +192,7 @@ $`10.1371/journal.pone.0027752`$abstract
 **Stats**
 
 ```coffee
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', url=url, key=key)
+out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', base=url, key=key)
 ```
 
 ```coffee
@@ -265,7 +265,7 @@ $alm_twitterCount$volume
 `solr_mlt` is a function to return similar documents to the one 
 
 ```coffee
-out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, url=url, key=key)
+out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
 out$docs
                             id counter_total_all
 1 10.1371/journal.pbio.0020440             15977
@@ -313,7 +313,7 @@ out$mlt
 For example:
 
 ```coffee
-(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, url = url, key=key, raw=TRUE))
+(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
 ```
 
 ```coffee
@@ -345,7 +345,7 @@ Function Queries allow you to query on actual numeric fields in the SOLR databas
 
 ```coffee
 solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"', 
-  rows=5, fl='id,title', fq='doc_type:full', url=url, key=key)
+  rows=5, fl='id,title', fq='doc_type:full', base=url, key=key)
 ```
 
 ```coffee
@@ -361,7 +361,7 @@ Here, we search for the papers with the most citations
 
 ```coffee
 solr_search(q='_val_:"max(counter_total_all)"', 
-    rows=5, fl='id,counter_total_all', fq='doc_type:full', url=url, key=key)
+    rows=5, fl='id,counter_total_all', fq='doc_type:full', base=url, key=key)
 ```
 
 ```coffee
@@ -377,7 +377,7 @@ Or with the most tweets
 
 ```coffee
 solr_search(q='_val_:"max(alm_twitterCount)"', 
-    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', url=url, key=key)
+    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', base=url, key=key)
 ```
 
 ```coffee
@@ -397,7 +397,7 @@ The occurrences service
 
 ```coffee
 url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q='*:*', fl='latitude,longitude,scientific_name', url=url)
+solr_search(q='*:*', fl='latitude,longitude,scientific_name', base=url)
 ```
 
 ```coffee
@@ -417,7 +417,7 @@ solr_search(q='*:*', fl='latitude,longitude,scientific_name', url=url)
 The species names service
 
 ```coffee
-solr_search(q='*:*', url=url2, raw=TRUE)
+solr_search(q='*:*', base=url2, raw=TRUE)
 ```
 
 ```coffee
@@ -455,7 +455,7 @@ A BibTeX entry for LaTeX users is
     author = {Scott Chamberlain},
     year = {2013},
     note = {R package version 0.0.5},
-    url = {https://github.com/ropensci/solr},
+    base = {https://github.com/ropensci/solr},
   }
 ```
 
