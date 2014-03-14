@@ -11,19 +11,19 @@
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'
 #' 
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url)
-#' solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, url = url)
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url)
+#' solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, base = url)
 #' 
 #' # Raw data back
 #' ## json
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, 
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url, 
 #'    raw=TRUE)
 #' ## xml
-#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, url = url, 
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url, 
 #'    raw=TRUE, wt='xml')
 #' ## parse after getting data back
 #' out <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30, 
-#'    rows=10, url = url, raw=TRUE, wt='xml')
+#'    rows=10, base = url, raw=TRUE, wt='xml')
 #' solr_parse(out, parsetype='df')
 #' }
 
@@ -38,10 +38,10 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL, 
      hl.highlightMultiTerm = NULL, hl.regex.slop = NULL, hl.regex.pattern = NULL, 
      hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NULL, 
-     wt='json', raw = FALSE, key = NULL, url = NULL, callopts=list(), 
+     wt='json', raw = FALSE, key = NULL, base = NULL, callopts=list(), 
      fl='DOES_NOT_EXIST', fq=NULL, parsetype='list', verbose=TRUE)
 {
-  if(is.null(url)){
+  if(is.null(base)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
@@ -62,7 +62,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   args <- c(args, hl.fl)
-  tt <- GET(url, query = args, callopts)
+  tt <- GET(base, query = args, callopts)
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")

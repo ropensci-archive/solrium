@@ -1,3 +1,11 @@
+solr 0.1.4
+===============
+
+NEW FEATURES 
+
+* Removed R version dependency in DESCRIPTION file, didn't seem to be a reason for it, (#25).
+* Removed redundant code from multiple functions to single functions in zzz.r file.
+
 solr 0.1.3
 ===============
 

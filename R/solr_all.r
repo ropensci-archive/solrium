@@ -10,15 +10,15 @@
 #' @export
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'
-#' solr_all(q='*:*', rows=2, fl='id', url=url)
+#' solr_all(q='*:*', rows=2, fl='id', base=url)
 #' }
 
 solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL, 
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
-  url = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE)
+  base = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE)
 {
-  if(is.null(url)){
+  if(is.null(base)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
@@ -30,7 +30,7 @@ solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   # additional parameters
   args <- c(args, list(...))
   
-  tt <- GET(url, query = args, callopts)
+  tt <- GET(base, query = args, callopts)
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")

@@ -1,7 +1,7 @@
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return
-#' @param url URL endpoint.
+#' @param base URL endpoint.
 #' @param wt Data type returned, defaults to 'json'
 #' @param key API key, if needed.
 #' @param group.field [fieldname] Group based on the unique values of a field. The 

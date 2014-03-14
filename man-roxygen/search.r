@@ -36,7 +36,7 @@
 #'  by the client, or implicit because of the request handler configuration.
 #' }
 #' @param key API key, if needed.
-#' @param url URL endpoint.
+#' @param base URL endpoint.
 #' @param callopts Call options passed on to httr::GET
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param parsetype (character) One of 'list' or 'df'

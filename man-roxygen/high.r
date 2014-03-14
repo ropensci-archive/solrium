@@ -107,7 +107,7 @@
 #' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
 #' 		parsed data returned.
 #' @param key API key, if needed.
-#' @param url URL endpoint
+#' @param base URL endpoint
 #' @param callopts Call options passed on to httr::GET
 #' @param fl Fields to return
 #' @param fq Filter query, this does not affect the search, only what gets returned
