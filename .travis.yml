@@ -16,6 +16,4 @@ on_failure:
   - ./travis-tool.sh dump_logs
 
 notifications:
-  hipchat:
-    rooms:
-      secure: eGzfkc/s7CKiOrBLqjU2vzM0pOId98+PLYKiCMHXSRBPWQiIMoJricM55LtcA7rxvMJu1Wg9lU0l2G8qvZ5b2UJEWImcVMQxiZPXNxXBLLT8yrClZmwrhqS9J0KgjUaE3AVR14QZBNavcltD8fVPCv7b7LjQyppG4SnJTBLIsEE=
+ slack: ropensci:wh30e1MP9Am3wXb2wJx1ZRFi
