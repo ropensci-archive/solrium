@@ -5,12 +5,10 @@
 #' @template search
 #' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
-#' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for 
-#' more information.
+#' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
 #' @export
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'
-#' 
 #' solr_search(q='*:*', rows=2, fl='id', base=url)
 #' 
 #' # Search for word ecology in title and cell in the body

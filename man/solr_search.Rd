@@ -91,7 +91,6 @@ Solr search.
 \examples{
 \dontrun{
 url <- 'http://api.plos.org/search'
-
 solr_search(q='*:*', rows=2, fl='id', base=url)
 
 # Search for word ecology in title and cell in the body
@@ -163,8 +162,7 @@ solr_search(q='_val_:"max(alm_twitterCount)"',
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for
-more information.
+See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
 }
 \seealso{
 \code{\link{solr_highlight}}, \code{\link{solr_facet}}
