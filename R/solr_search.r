@@ -81,7 +81,7 @@
 #'    rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full', base=url) 
 #' }
 
-solr_search <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
+solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL, 
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL, 
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
   base = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE)
@@ -91,6 +91,7 @@ solr_search <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   }
   
   if(!is.null(fl)) names(fl) <- rep("fl", length(fl))
+  
   args <- compact(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
       pageScore=pageScore, fq=fq, defType=defType, 
       timeAllowed=timeAllowed, qt=qt, wt=wt, NOW=NOW, TZ=TZ,
@@ -99,6 +100,9 @@ solr_search <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   
   # additional parameters
   args <- c(args, list(...))
+  if('query' %in% names(args)){
+    args <- args[!names(args) %in% "q"]
+  }
   
   tt <- GET(base, query = args, callopts)
   if(verbose) message(URLdecode(tt$url))
