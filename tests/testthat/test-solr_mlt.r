@@ -8,13 +8,12 @@ a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', base=url, fq=
 c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, base=url, verbose=FALSE)
 
 out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, base=url, raw=TRUE, wt="xml", verbose=FALSE)
-library(XML)
+library("XML")
 outxml <- xmlParse(out)
 outdf <- solr_parse(out, "df")
 
 test_that("solr_mlt returns the correct dimensions", {
   expect_that(dim(a$docs), equals(c(10,2)))
-  expect_equal(length(a$mlt), 10)
   
 #   expect_that(dim(b$docs), equals(c(2,2)))
 #   expect_that(dim(b$mlt), equals(c(10,2)))
