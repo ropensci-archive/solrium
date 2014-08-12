@@ -2,6 +2,7 @@ solr
 =======
 
 [![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
+[![Build status](https://ci.appveyor.com/api/projects/status/ytgtb62gsgf5hddi/branch/master)](https://ci.appveyor.com/project/sckott/solr/branch/master)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
@@ -83,7 +84,7 @@ solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='pu
 2                       none    62518     0 2012-10-23T00:00:00Z     1
 3             plos pathogens    29623     0 2014-01-16T00:00:00Z     1
 4 plos computational biology    25093     0 2014-01-16T00:00:00Z     1
-5              plos genetics    33698     0 2014-01-16T00:00:00Z     
+5              plos genetics    33698     0 2014-01-16T00:00:00Z
 ```
 
 First publication by journal
@@ -120,7 +121,7 @@ solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-
 3   299130     0 2013-12-31T00:00:00Z
 ```
 
-Search group with format simple 
+Search group with format simple
 
 ```coffee
 solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', base=url, key=key)
@@ -262,7 +263,7 @@ $alm_twitterCount$volume
 
 **More like this**
 
-`solr_mlt` is a function to return similar documents to the one 
+`solr_mlt` is a function to return similar documents to the one
 
 ```coffee
 out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
@@ -308,7 +309,7 @@ out$mlt
 
 **Parsing**
 
-`solr_parse` is a general purpose parser function with extension methods `solr_parse.sr_search`, `solr_parse.sr_facet`, and `solr_parse.sr_high`, for parsing `solr_search`, `solr_facet`, and `solr_highlight` function output, respectively. `solr_parse` is used internally within those three functions (`solr_search`, `solr_facet`, `solr_highlight`) to do parsing. You can optionally get back raw `json` or `xml` from `solr_search`, `solr_facet`, and `solr_highlight` setting parameter `raw=TRUE`, and then parsing after the fact with `solr_parse`. All you need to know is `solr_parse` can parse 
+`solr_parse` is a general purpose parser function with extension methods `solr_parse.sr_search`, `solr_parse.sr_facet`, and `solr_parse.sr_high`, for parsing `solr_search`, `solr_facet`, and `solr_highlight` function output, respectively. `solr_parse` is used internally within those three functions (`solr_search`, `solr_facet`, `solr_highlight`) to do parsing. You can optionally get back raw `json` or `xml` from `solr_search`, `solr_facet`, and `solr_highlight` setting parameter `raw=TRUE`, and then parsing after the fact with `solr_parse`. All you need to know is `solr_parse` can parse
 
 For example:
 
@@ -344,7 +345,7 @@ solr_parse(out, 'df')
 Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to stort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"
 
 ```coffee
-solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"', 
+solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
   rows=5, fl='id,title', fq='doc_type:full', base=url, key=key)
 ```
 
@@ -360,7 +361,7 @@ solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
 Here, we search for the papers with the most citations
 
 ```coffee
-solr_search(q='_val_:"max(counter_total_all)"', 
+solr_search(q='_val_:"max(counter_total_all)"',
     rows=5, fl='id,counter_total_all', fq='doc_type:full', base=url, key=key)
 ```
 
@@ -376,7 +377,7 @@ solr_search(q='_val_:"max(counter_total_all)"',
 Or with the most tweets
 
 ```coffee
-solr_search(q='_val_:"max(alm_twitterCount)"', 
+solr_search(q='_val_:"max(alm_twitterCount)"',
     rows=5, fl='id,alm_twitterCount', fq='doc_type:full', base=url, key=key)
 ```
 
