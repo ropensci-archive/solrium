@@ -3,7 +3,7 @@
 %\VignetteIndexEntry{Local Solr setup}
 -->
 
-Local setup of Solr and querying using solr R package, on Mac OSX
+Local Solr setup
 ======
 
 *This material is based on this blog post: http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/*

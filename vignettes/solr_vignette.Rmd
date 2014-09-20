@@ -1,9 +1,9 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Solr vignette}
+%\VignetteIndexEntry{solr vignette}
 -->
 
-Local setup of Solr and querying using solr R package, on Mac OSX
+solr vignette
 ======
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
@@ -26,9 +26,8 @@ Install dependencies
 
 
 ```r
-install.packages(c("rjson", "plyr", "httr", "XML", "assertthat"))
+install.packages(c("rjson","plyr","httr","XML","assertthat"))
 ```
-
 
 Install solr
 
@@ -40,45 +39,40 @@ install_github("ropensci/solr")
 ```
 
 
-
 ```r
 library(solr)
 ```
-
 
 **Define stuff** Your base url and a key (if needed). This example should work. You do need to pass a key to the Public Library of Science search API, but it apparently doesn't need to be a real one.
 
 
 ```r
-url <- "http://api.plos.org/search"
-key <- "key"
+url <- 'http://api.plos.org/search'
+key <- 'key'
 ```
-
 
 **Search**
 
 
 ```r
-solr_search(q = "*:*", rows = 2, fl = "id", base = url, key = key)
+solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
 ```
 
 ```
-## http://api.plos.org/search?q=*:*&start=0&rows=2&wt=json&fl=id
+## http://api.plos.org/search?q=*:*&rows=2&wt=json&fl=id
 ```
 
 ```
-##                             id
-## 1 10.1371/journal.pone.0060627
-## 2 10.1371/journal.pbio.0000080
+##                                   id
+## 1       10.1371/journal.pone.0067462
+## 2 10.1371/journal.pone.0067462/title
 ```
-
 
 **Facet**
 
 
 ```r
-solr_facet(q = "*:*", facet.field = "journal", facet.query = c("cell", 
-    "bird"), base = url, key = key)
+solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'), base=url, key=key)
 ```
 
 ```
@@ -88,22 +82,22 @@ solr_facet(q = "*:*", facet.field = "journal", facet.query = c("cell",
 ```
 ## $facet_queries
 ##   term value
-## 1 cell 85941
-## 2 bird  8588
+## 1 cell 98474
+## 2 bird  9884
 ## 
 ## $facet_fields
 ## $facet_fields$journal
 ##                                  X1     X2
-## 1                          plos one 742824
-## 2                     plos genetics  35463
-## 3                    plos pathogens  31152
-## 4        plos computational biology  26016
-## 5                      plos biology  24699
-## 6  plos neglected tropical diseases  20115
-## 7                     plos medicine  17444
+## 1                          plos one 882064
+## 2                     plos genetics  39058
+## 3                    plos pathogens  34452
+## 4        plos computational biology  28934
+## 5                      plos biology  25764
+## 6  plos neglected tropical diseases  23765
+## 7                     plos medicine  18180
 ## 8              plos clinical trials    521
-## 9                      plos medicin      9
-## 10                 plos collections      5
+## 9                  plos collections     10
+## 10                     plos medicin      9
 ## 
 ## 
 ## $facet_dates
@@ -113,12 +107,11 @@ solr_facet(q = "*:*", facet.field = "journal", facet.query = c("cell",
 ## NULL
 ```
 
-
 **Highlight**
 
 
 ```r
-solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, base = url, key = key)
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
 ```
 
 ```
@@ -136,13 +129,11 @@ solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, base = url, key = ke
 ## [1] "Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking"
 ```
 
-
 **Stats**
 
 
 ```r
-out <- solr_stats(q = "ecology", stats.field = c("counter_total_all", "alm_twitterCount"), 
-    stats.facet = c("journal", "volume"), base = url, key = key)
+out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), base=url, key=key)
 ```
 
 ```
@@ -150,20 +141,18 @@ out <- solr_stats(q = "ecology", stats.field = c("counter_total_all", "alm_twitt
 ```
 
 
-
 ```r
 out$data
 ```
 
 ```
-##                   min    max count missing      sum sumOfSquares     mean
-## counter_total_all   0 297294 19679       0 64851389    1.097e+12 3295.462
-## alm_twitterCount    0   1446 19679       0    71992    1.011e+07    3.658
-##                    stddev
-## counter_total_all 6699.81
-## alm_twitterCount    22.37
+##                   min    max count missing      sum sumOfSquares mean
+## counter_total_all   0 309638 23113       0 81884468    1.489e+12 3543
+## alm_twitterCount    0      0 23113       0        0    0.000e+00    0
+##                   stddev
+## counter_total_all   7203
+## alm_twitterCount       0
 ```
-
 
 
 ```r
@@ -174,43 +163,45 @@ out$facet
 ## $counter_total_all
 ## $counter_total_all$journal
 ##    min    max count missing      sum sumOfSquares  mean stddev
-## 1    0  39085   427       0  2285267    2.027e+10  5352   4343
-## 2    0  43592   557       0  3336132    3.196e+10  5989   4642
-## 3    0 297294 15379       0 40023738    6.223e+11  2602   5804
-## 4 4638   8607     2       0    13245    9.559e+07  6622   2807
-## 5  513  85165   213       0  2361321    5.359e+10 11086  11371
-## 6  768  57904   378       0  2071231    2.359e+10  5479   5698
-## 7  574 168945   758       0  8871519    2.341e+11 11704  13116
-## 8    0 164090   714       0  2394341    3.951e+10  3353   6645
+## 1    0      0     1       0        0    0.000e+00     0      0
+## 2    0  42773   474       0  2885195    2.830e+10  6087   4766
+## 3    0  47925   612       0  4090571    4.379e+10  6684   5188
+## 4    0 309638 18452       0 52363620    8.907e+11  2838   6342
+## 5 5505   9690     2       0    15195    1.242e+08  7598   2959
+## 6  547  91978   225       0  2732864    6.812e+10 12146  12486
+## 7  576 198640   794       0  9913287    2.854e+11 12485  14274
+## 8    0 116988   436       0  2582299    4.153e+10  5923   7766
+## 9    0 175006   866       0  3150653    4.917e+10  3638   6602
 ##                        facet_field
-## 1                   plos pathogens
-## 2                    plos genetics
-## 3                         plos one
-## 4             plos clinical trials
-## 5                    plos medicine
-## 6       plos computational biology
+## 1                 plos collections
+## 2                   plos pathogens
+## 3                    plos genetics
+## 4                         plos one
+## 5             plos clinical trials
+## 6                    plos medicine
 ## 7                     plos biology
-## 8 plos neglected tropical diseases
+## 8       plos computational biology
+## 9 plos neglected tropical diseases
 ## 
 ## $counter_total_all$volume
 ##     min    max count missing      sum sumOfSquares  mean stddev
-## 1   859 108653   741       0  5231098    9.622e+10  7060   8951
-## 2  1159  86761   482       0  4062160    8.123e+10  8428   9885
-## 3     0  82673   136       0   991749    2.279e+10  7292  10736
-## 4  1391 111334    81       0  1088239    3.765e+10 13435  16965
-## 5     0 179433  4825       0 13328457    1.883e+11  2762   5604
-## 6     0 164090  2948       0 10560418    1.396e+11  3582   5876
-## 7     0  74838  1539       0  7624055    8.949e+10  4954   5799
-## 8   513 297294  1010       0  6467119    1.909e+11  6403  12172
-## 9     0 168945  1709       0  3117421    6.074e+10  1824   5677
-## 10    0 188324  6131       0 11597343    1.716e+11  1892   4941
-## 11  610  74895    66       0   714981    1.722e+10 10833  12076
-## 12  574  33078    11       0    68349    1.241e+09  6214   9036
+## 1   954 111543   741       0  5619619    1.088e+11  7584   9455
+## 2  1233  91978   482       0  4334710    9.231e+10  8993  10529
+## 3     0 121127    82       0  1147071    4.262e+10 13989  18112
+## 4     0  88678   295       0  1796960    3.449e+10  6091   8948
+## 5     0 180861  4825       0 15945062    2.293e+11  3305   6051
+## 6     0 185873  2948       0 12035676    1.745e+11  4083   6523
+## 7     0  77788  1539       0  8464255    1.100e+11  5500   6424
+## 8   547 309638  1010       0  7041915    2.168e+11  6972  12892
+## 9     0 198640  4782       0  8438481    1.971e+11  1765   6173
+## 10    0 251648  6284       0 15730408    2.514e+11  2503   5809
+## 11  729  92764    78       0   949374    2.570e+10 12171  13552
+## 12  576  55617    47       0   380937    6.072e+09  8105   8055
 ##    facet_field
 ## 1            3
 ## 2            2
-## 3           10
-## 4            1
+## 3            1
+## 4           10
 ## 5            7
 ## 6            6
 ## 7            5
@@ -223,41 +214,42 @@ out$facet
 ## 
 ## $alm_twitterCount
 ## $alm_twitterCount$journal
-##   min  max count missing   sum sumOfSquares   mean stddev
-## 1   0   74   427       0  1387        35947  3.248  8.591
-## 2   0  141   557       0  1648        49984  2.959  9.007
-## 3   0  781 15379       0 50416      5548300  3.278 18.710
-## 4   0    3     2       0     3            9  1.500  2.121
-## 5   0  524   213       0  2370       439366 11.127 44.137
-## 6   0  104   378       0  1224        39048  3.238  9.647
-## 7   0 1446   758       0  6591      2966605  8.695 61.993
-## 8   0  800   714       0  1937       654019  2.713 30.165
+##   min max count missing sum sumOfSquares mean stddev
+## 1   0   0     1       0   0            0    0      0
+## 2   0   0   474       0   0            0    0      0
+## 3   0   0   612       0   0            0    0      0
+## 4   0   0 18452       0   0            0    0      0
+## 5   0   0     2       0   0            0    0      0
+## 6   0   0   225       0   0            0    0      0
+## 7   0   0   794       0   0            0    0      0
+## 8   0   0   436       0   0            0    0      0
+## 9   0   0   866       0   0            0    0      0
 ##                        facet_field
-## 1                   plos pathogens
-## 2                    plos genetics
-## 3                         plos one
-## 4             plos clinical trials
-## 5                    plos medicine
-## 6       plos computational biology
+## 1                 plos collections
+## 2                   plos pathogens
+## 3                    plos genetics
+## 4                         plos one
+## 5             plos clinical trials
+## 6                    plos medicine
 ## 7                     plos biology
-## 8 plos neglected tropical diseases
+## 8       plos computational biology
+## 9 plos neglected tropical diseases
 ## 
 ## $alm_twitterCount$volume
-##    min  max count missing   sum sumOfSquares    mean  stddev facet_field
-## 1    0   29   741       0   342         3146  0.4615   2.009           3
-## 2    0   36   482       0   282         4512  0.5851   3.006           2
-## 3    0  524   136       0  2981       456107 21.9191  53.801          10
-## 4    0   28    81       0    87         1655  1.0741   4.418           1
-## 5    0  781  4825       0 17405      1696211  3.6073  18.401           7
-## 6    0  800  2948       0  2904       820122  0.9851  16.653           6
-## 7    0  111  1539       0  1142        43334  0.7420   5.256           5
-## 8    0  151  1010       0   533        28965  0.5277   5.332           4
-## 9    0  307  1709       0 11031       696865  6.4547  19.139           9
-## 10   0  767  6131       0 29602      3428324  4.8282  23.151           8
-## 11   1 1446    66       0  4602      2504276 69.7273 183.277          11
-## 12   7  630    11       0  1081       430679 98.2727 180.124          12
+##    min max count missing sum sumOfSquares mean stddev facet_field
+## 1    0   0   741       0   0            0    0      0           3
+## 2    0   0   482       0   0            0    0      0           2
+## 3    0   0    82       0   0            0    0      0           1
+## 4    0   0   295       0   0            0    0      0          10
+## 5    0   0  4825       0   0            0    0      0           7
+## 6    0   0  2948       0   0            0    0      0           6
+## 7    0   0  1539       0   0            0    0      0           5
+## 8    0   0  1010       0   0            0    0      0           4
+## 9    0   0  4782       0   0            0    0      0           9
+## 10   0   0  6284       0   0            0    0      0           8
+## 11   0   0    78       0   0            0    0      0          11
+## 12   0   0    47       0   0            0    0      0          12
 ```
-
 
 **More like this**
 
@@ -265,9 +257,7 @@ out$facet
 
 
 ```r
-out <- solr_mlt(q = "title:\"ecology\" AND body:\"cell\"", mlt.fl = "title", 
-    mlt.mindf = 1, mlt.mintf = 1, fl = "counter_total_all", rows = 5, base = url, 
-    key = key)
+out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
 ```
 
 ```
@@ -280,13 +270,12 @@ out$docs
 
 ```
 ##                             id counter_total_all
-## 1 10.1371/journal.pbio.1001805               574
-## 2 10.1371/journal.pbio.0020440             16114
-## 3 10.1371/journal.pone.0087217              1095
-## 4 10.1371/journal.pone.0040117              1754
-## 5 10.1371/journal.pone.0072525               714
+## 1 10.1371/journal.pbio.1001805              9414
+## 2 10.1371/journal.pbio.0020440             16445
+## 3 10.1371/journal.pone.0087217              2512
+## 4 10.1371/journal.pone.0040117              2324
+## 5 10.1371/journal.pone.0072525               999
 ```
-
 
 
 ```r
@@ -296,45 +285,50 @@ out$mlt
 ```
 ## $`10.1371/journal.pbio.1001805`
 ##                             id counter_total_all
-## 1 10.1371/journal.pone.0082578               573
-## 2 10.1371/journal.pone.0087380               291
-## 3 10.1371/journal.pcbi.1003408              2521
-## 4 10.1371/journal.pcbi.1002915              4132
-## 5 10.1371/journal.pcbi.1002652              2110
+## 1 10.1371/journal.pone.0082578              1177
+## 2 10.1371/journal.pone.0098876               735
+## 3 10.1371/journal.pone.0102159               318
+## 4 10.1371/journal.pone.0076063              1883
+## 5 10.1371/journal.pone.0087380               776
 ## 
 ## $`10.1371/journal.pbio.0020440`
 ##                             id counter_total_all
-## 1 10.1371/journal.pone.0035964              2660
-## 2 10.1371/journal.pone.0003259              1728
-## 3 10.1371/journal.pone.0068814              4539
-## 4 10.1371/journal.pbio.0020215              4274
-## 5 10.1371/journal.pbio.0020148             11359
+## 1 10.1371/journal.pone.0035964              3203
+## 2 10.1371/journal.pone.0102679              1242
+## 3 10.1371/journal.pone.0003259              1785
+## 4 10.1371/journal.pone.0101568              1058
+## 5 10.1371/journal.pone.0068814              5497
 ## 
 ## $`10.1371/journal.pone.0087217`
 ##                             id counter_total_all
-## 1 10.1371/journal.pcbi.0020092             13333
-## 2 10.1371/journal.pone.0063375               988
-## 3 10.1371/journal.pcbi.1000986              2650
-## 4 10.1371/journal.pntd.0000694              1806
-## 5 10.1371/journal.pone.0015143             11368
+## 1 10.1371/journal.pcbi.0020092             14412
+## 2 10.1371/journal.pone.0063375              1279
+## 3 10.1371/journal.pcbi.1000986              2757
+## 4 10.1371/journal.pone.0034096              2310
+## 5 10.1371/journal.pone.0015143             12424
 ## 
 ## $`10.1371/journal.pone.0040117`
-##                             id counter_total_all
-## 1 10.1371/journal.pone.0069352               946
-## 2 10.1371/journal.pone.0014065              3501
-## 3 10.1371/journal.pone.0035502              2009
-## 4 10.1371/journal.pone.0078369               980
-## 5 10.1371/journal.pone.0084920               653
+##                                                        id
+## 1                            10.1371/journal.pone.0069352
+## 2                            10.1371/journal.pone.0035502
+## 3                            10.1371/journal.pone.0014065
+## 4                            10.1371/journal.pone.0078369
+## 5 10.1371/annotation/8b818c15-3fe0-4e56-9be2-e44fd1ed3fae
+##   counter_total_all
+## 1              1501
+## 2              2516
+## 3              3832
+## 4              1955
+## 5                 0
 ## 
 ## $`10.1371/journal.pone.0072525`
 ##                             id counter_total_all
-## 1 10.1371/journal.pone.0060766               914
-## 2 10.1371/journal.pcbi.1002928              6369
-## 3 10.1371/journal.pcbi.0020144             11857
-## 4 10.1371/journal.pcbi.1000350              8200
-## 5 10.1371/journal.pone.0068714              2164
+## 1 10.1371/journal.pone.0060766              1308
+## 2 10.1371/journal.pcbi.1002928              7066
+## 3 10.1371/journal.pcbi.1000350              8615
+## 4 10.1371/journal.pcbi.0020144             12517
+## 5 10.1371/journal.pone.0068714              3338
 ```
-
 
 **Parsing**
 
@@ -344,8 +338,7 @@ For example:
 
 
 ```r
-(out <- solr_highlight(q = "alcohol", hl.fl = "abstract", rows = 2, base = url, 
-    key = key, raw = TRUE))
+(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
 ```
 
 ```
@@ -353,19 +346,18 @@ For example:
 ```
 
 ```
-## [1] "{\"response\":{\"numFound\":12306,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
+## [1] "{\"response\":{\"numFound\":14529,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
 ## attr(,"class")
 ## [1] "sr_high"
 ## attr(,"wt")
 ## [1] "json"
 ```
 
-
 Then parse
 
 
 ```r
-solr_parse(out, "df")
+solr_parse(out, 'df')
 ```
 
 ```
@@ -377,7 +369,6 @@ solr_parse(out, "df")
 ## 2 Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking
 ```
 
-
 **Using specific data sources**
 
 *USGS BISON service*
@@ -387,37 +378,35 @@ The occurrences service
 
 ```r
 url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q = "*:*", fl = c("latitude", "longitude", "scientific_name"), base = url2)
+solr_search(q='*:*', fl=c('latitude','longitude','scientific_name'), base=url2)
 ```
 
 ```
-## http://bisonapi.usgs.ornl.gov/solr/occurrences/select?q=*:*&start=0&wt=json&fl=latitude&fl=longitude&fl=scientific_name
+## http://bisonapi.usgs.ornl.gov/solr/occurrences/select?q=*:*&wt=json&fl=latitude&fl=longitude&fl=scientific_name
 ```
 
 ```
 ## data frame with 0 columns and 0 rows
 ```
 
-
 The species names service
 
 
 ```r
-solr_search(q = "*:*", base = url2, raw = TRUE)
+solr_search(q='*:*', base=url2, raw=TRUE)
 ```
 
 ```
-## http://bisonapi.usgs.ornl.gov/solr/occurrences/select?q=*:*&start=0&wt=json
+## http://bisonapi.usgs.ornl.gov/solr/occurrences/select?q=*:*&wt=json
 ```
 
 ```
-## [1] "{\"responseHeader\":{\"status\":0,\"QTime\":1033},\"response\":{\"numFound\":126357352,\"start\":0,\"docs\":[{\"occurrence_date\":\"2010-05-24\",\"computedCountyFips\":\"47177\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"603897864\",\"pointPath\":\"/-85.6654,35.763/observation\",\"computedStateFips\":\"47\",\"latlon\":\"-85.6654,35.763\",\"decimalLongitude\":-85.6654,\"year\":2010,\"decimalLatitude\":35.763,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082956873732},{\"occurrence_date\":\"2011-06-26\",\"computedCountyFips\":\"49049\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605504828\",\"pointPath\":\"/-111.712,40.2209/observation\",\"computedStateFips\":\"49\",\"latlon\":\"-111.712,40.2209\",\"decimalLongitude\":-111.712,\"year\":2011,\"decimalLatitude\":40.2209,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082956873733},{\"occurrence_date\":\"2010-04-20\",\"computedCountyFips\":\"12087\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"603442794\",\"pointPath\":\"/-82.8699,24.6344/observation\",\"computedStateFips\":\"12\",\"latlon\":\"-82.8699,24.6344\",\"decimalLongitude\":-82.8699,\"year\":2010,\"decimalLatitude\":24.6344,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922304},{\"occurrence_date\":\"2011-06-10\",\"computedCountyFips\":\"49049\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605555013\",\"pointPath\":\"/-111.712,40.2209/observation\",\"computedStateFips\":\"49\",\"latlon\":\"-111.712,40.2209\",\"decimalLongitude\":-111.712,\"year\":2011,\"decimalLatitude\":40.2209,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922305},{\"occurrence_date\":\"2011-08-23\",\"computedCountyFips\":\"13177\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605682780\",\"pointPath\":\"/-84.1318,31.6293/observation\",\"computedStateFips\":\"13\",\"latlon\":\"-84.1318,31.6293\",\"decimalLongitude\":-84.1318,\"year\":2011,\"decimalLatitude\":31.6293,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922306},{\"occurrence_date\":\"1990-07-15\",\"computedCountyFips\":\"53001\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602637801\",\"pointPath\":\"/-118.688,47.172/observation\",\"computedStateFips\":\"53\",\"latlon\":\"-118.688,47.172\",\"decimalLongitude\":-118.688,\"year\":1990,\"decimalLatitude\":47.172,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922307},{\"occurrence_date\":\"2003-06-13\",\"computedCountyFips\":\"55071\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602990500\",\"pointPath\":\"/-87.6502,44.0928/observation\",\"computedStateFips\":\"55\",\"latlon\":\"-87.6502,44.0928\",\"decimalLongitude\":-87.6502,\"year\":2003,\"decimalLatitude\":44.0928,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922308},{\"occurrence_date\":\"2011-06-22\",\"computedCountyFips\":\"49049\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"605214567\",\"pointPath\":\"/-111.712,40.2209/observation\",\"computedStateFips\":\"49\",\"latlon\":\"-111.712,40.2209\",\"decimalLongitude\":-111.712,\"year\":2011,\"decimalLatitude\":40.2209,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922309},{\"occurrence_date\":\"2003-07-18\",\"computedCountyFips\":\"55071\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602990492\",\"pointPath\":\"/-87.6502,44.0928/observation\",\"computedStateFips\":\"55\",\"latlon\":\"-87.6502,44.0928\",\"decimalLongitude\":-87.6502,\"year\":2003,\"decimalLatitude\":44.0928,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082957922310},{\"occurrence_date\":\"1993-05-28\",\"computedCountyFips\":\"41025\",\"BISONProviderID\":602,\"TSNs\":[\"178279\"],\"BISONResourceID\":\"602,43\",\"basisOfRecord\":\"observation\",\"iso_country_code\":[\"US\"],\"occurrenceID\":\"602526464\",\"pointPath\":\"/-118.434,42.9384/observation\",\"computedStateFips\":\"41\",\"latlon\":\"-118.434,42.9384\",\"decimalLongitude\":-118.434,\"year\":1993,\"decimalLatitude\":42.9384,\"scientificName\":\"Tyrannus tyrannus\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178277-178278-178279-\",\"_version_\":1457241082958970880}]}}\n"
+## [1] "{\"responseHeader\":{\"status\":0,\"QTime\":2782},\"response\":{\"numFound\":168063755,\"start\":0,\"docs\":[{\"computedCountyFips\":\"16027\",\"providerID\":602,\"catalogNumber\":\"OBS101299944\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-116.55315,43.53494\",\"calculatedState\":\"Idaho\",\"decimalLongitude\":-116.55315,\"year\":2010,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Canyon County\",\"pointPath\":\"/-116.55315,43.53494/observation\",\"computedStateFips\":\"16\",\"providedCounty\":\"Canyon\",\"kingdom\":\"Animalia\",\"decimalLatitude\":43.53494,\"occurrenceID\":\"576630651\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2010-11-13T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Idaho\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095511007236},{\"computedCountyFips\":\"20163\",\"providerID\":602,\"catalogNumber\":\"OBS153056407\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-99.31812,39.3988\",\"calculatedState\":\"Kansas\",\"decimalLongitude\":-99.31812,\"year\":2012,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Rooks County\",\"pointPath\":\"/-99.31812,39.3988/observation\",\"computedStateFips\":\"20\",\"providedCounty\":\"Rooks\",\"kingdom\":\"Animalia\",\"decimalLatitude\":39.3988,\"occurrenceID\":\"820777443\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2012-05-15T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Kansas\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095512055808},{\"computedCountyFips\":\"39095\",\"providerID\":602,\"catalogNumber\":\"OBS89980032\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-83.23742,41.64981\",\"calculatedState\":\"Ohio\",\"decimalLongitude\":-83.23742,\"year\":2010,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Lucas County\",\"pointPath\":\"/-83.23742,41.64981/observation\",\"computedStateFips\":\"39\",\"providedCounty\":\"Lucas\",\"kingdom\":\"Animalia\",\"decimalLatitude\":41.64981,\"occurrenceID\":\"273879609\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2010-04-17T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Ohio\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095512055809},{\"computedCountyFips\":\"24005\",\"providerID\":602,\"catalogNumber\":\"OBS52292507\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-76.36528,39.24874\",\"calculatedState\":\"Maryland\",\"decimalLongitude\":-76.36528,\"year\":1983,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Baltimore County\",\"pointPath\":\"/-76.36528,39.24874/observation\",\"computedStateFips\":\"24\",\"providedCounty\":\"Baltimore\",\"kingdom\":\"Animalia\",\"decimalLatitude\":39.24874,\"occurrenceID\":\"575555258\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"1983-09-05T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Maryland\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095512055810},{\"computedCountyFips\":\"39093\",\"providerID\":602,\"catalogNumber\":\"OBS76741209\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-82.04889,41.39448\",\"calculatedState\":\"Ohio\",\"decimalLongitude\":-82.04889,\"year\":2008,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Lorain County\",\"pointPath\":\"/-82.04889,41.39448/observation\",\"computedStateFips\":\"39\",\"providedCounty\":\"Lorain\",\"kingdom\":\"Animalia\",\"decimalLatitude\":41.39448,\"occurrenceID\":\"272999782\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2008-08-30T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Ohio\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095513104384},{\"computedCountyFips\":\"42069\",\"providerID\":602,\"catalogNumber\":\"OBS96855953\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-75.73191,41.48545\",\"calculatedState\":\"Pennsylvania\",\"decimalLongitude\":-75.73191,\"year\":2010,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Lackawanna County\",\"pointPath\":\"/-75.73191,41.48545/observation\",\"computedStateFips\":\"42\",\"providedCounty\":\"Lackawanna\",\"kingdom\":\"Animalia\",\"decimalLatitude\":41.48545,\"occurrenceID\":\"576920771\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2010-08-14T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Pennsylvania\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095513104385},{\"computedCountyFips\":\"48363\",\"providerID\":602,\"catalogNumber\":\"OBS168043612\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-98.36886,32.63366\",\"calculatedState\":\"Texas\",\"decimalLongitude\":-98.36886,\"year\":2012,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Palo Pinto County\",\"pointPath\":\"/-98.36886,32.63366/observation\",\"computedStateFips\":\"48\",\"providedCounty\":\"Palo Pinto\",\"kingdom\":\"Animalia\",\"decimalLatitude\":32.63366,\"occurrenceID\":\"820788710\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2012-10-30T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Texas\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095513104386},{\"computedCountyFips\":\"17031\",\"providerID\":602,\"catalogNumber\":\"OBS70671059\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-87.75948,41.53685\",\"calculatedState\":\"Illinois\",\"decimalLongitude\":-87.75948,\"year\":2009,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Cook County\",\"pointPath\":\"/-87.75948,41.53685/observation\",\"computedStateFips\":\"17\",\"providedCounty\":\"Cook\",\"kingdom\":\"Animalia\",\"decimalLatitude\":41.53685,\"occurrenceID\":\"273716486\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2009-05-21T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Illinois\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095513104387},{\"computedCountyFips\":\"20117\",\"providerID\":602,\"catalogNumber\":\"OBS95755244\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-96.59008,39.65117\",\"calculatedState\":\"Kansas\",\"decimalLongitude\":-96.59008,\"year\":2008,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Marshall County\",\"pointPath\":\"/-96.59008,39.65117/observation\",\"computedStateFips\":\"20\",\"providedCounty\":\"Marshall\",\"kingdom\":\"Animalia\",\"decimalLatitude\":39.65117,\"occurrenceID\":\"576012967\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2008-08-03T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Kansas\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095513104388},{\"computedCountyFips\":\"17031\",\"providerID\":602,\"catalogNumber\":\"OBS74126241\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Ardea herodias\",\"latlon\":\"-87.60807,41.66977\",\"calculatedState\":\"Illinois\",\"decimalLongitude\":-87.60807,\"year\":2009,\"ITIStsn\":\"174773\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174670-174771-823967-174772-174773-\",\"TSNs\":[\"174773\"],\"calculatedCounty\":\"Cook County\",\"pointPath\":\"/-87.60807,41.66977/observation\",\"computedStateFips\":\"17\",\"providedCounty\":\"Cook\",\"kingdom\":\"Animalia\",\"decimalLatitude\":41.66977,\"occurrenceID\":\"270910937\",\"providedScientificName\":\"Ardea herodias Linnaeus, 1758\",\"eventDate\":\"2009-08-23T00:00Z\",\"ownerInstitutionCollectionCode\":\"eBird\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Illinois\",\"ITIScommonName\":\"Garza morena;Grand Héron;Great Blue Heron\",\"scientificName\":\"Ardea herodias\",\"institutionID\":\"http://www.birds.cornell.edu\",\"_version_\":1478443095514152960}]}}\n"
 ## attr(,"class")
 ## [1] "sr_search"
 ## attr(,"wt")
 ## [1] "json"
 ```
-
 
 *PLOS Search API*
 

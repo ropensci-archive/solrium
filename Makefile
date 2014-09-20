@@ -1,11 +1,13 @@
-all: move pandoc rmd2md reducepdf
+all: move rmd2md
 
-vignettes: 
+vign:
 	cd inst/stuff;\
-	Rscript -e 'library(knitr); knit("solr_localsetup.Rmd"); knit("solr_vignette.Rmd")'
+	Rscript --vanilla -e 'library(knitr); knit("solr_localsetup.Rmd"); knit("solr_vignette.Rmd")'
 
 move:
-	cp inst/stuff/solr_* vignettes
+	cd inst/stuff;\
+	cp solr_localsetup.md ../../vignettes;\
+	cp solr_vignette.md ../../vignettes
 
 pandoc:
 	cd vignettes;\
@@ -16,8 +18,8 @@ pandoc:
 
 rmd2md:
 	cd vignettes;\
-	cp solr_vignette.md solr_vignette.Rmd;\
-	cp solr_localsetup.md solr_localsetup.Rmd
+	mv solr_vignette.md solr_vignette.Rmd;\
+	mv solr_localsetup.md solr_localsetup.Rmd
 
 reducepdf:
 	Rscript -e 'tools::compactPDF("vignettes/solr_vignette.pdf", gs_quality = "ebook")';\

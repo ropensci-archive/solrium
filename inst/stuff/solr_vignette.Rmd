@@ -1,9 +1,9 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Solr vignette}
+%\VignetteIndexEntry{solr vignette}
 -->
 
-Local setup of Solr and querying using solr R package, on Mac OSX
+solr vignette
 ======
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
