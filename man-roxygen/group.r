@@ -46,3 +46,4 @@
 #' is more complicated in XML format, but you can do that on your own.
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... Further args.
+#' 
