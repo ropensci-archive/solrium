@@ -20,7 +20,7 @@ test_that("solr_search returns the correct dimensions in the data.frame", {
   expect_that(dim(b), equals(c(27,6)))
   expect_that(length(c), equals(1))
   expect_that(length(d), equals(2))
-  expect_that(dim(d$article_type), equals(c(27,4)))
+  expect_that(dim(d$article_type), equals(c(28,4)))
   expect_that(dim(e), equals(c(10,4)))
   expect_that(length(f), equals(1))
   expect_that(length(f$grouped), equals(2))
