@@ -27,7 +27,7 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, FALSE))
+                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   # Facet queries
   if(wt=='json'){
@@ -117,7 +117,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',')
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, FALSE))
+                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   if(wt=='json'){
     if(parsetype=='df'){
@@ -170,7 +170,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
   wt <- attributes(input)$wt
   input <- switch(wt,
     xml = xmlParse(input),
-    json = jsonlite::fromJSON(input, FALSE),
+    json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE),
     csv = read.table(text = input, sep = ",", stringsAsFactors = FALSE, header = TRUE)
   )
 
@@ -225,7 +225,7 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, FALSE))
+                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   if(wt=='json'){
     if(parsetype=='df'){
@@ -313,7 +313,7 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, FALSE))
+                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   if(wt=='json'){
     if(parsetype=='df'){
@@ -448,7 +448,7 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, FALSE))
+                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   if(wt=='json'){
     if(parsetype=='df'){
@@ -520,6 +520,3 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
 
   return( datout )
 }
-
-# small function to replace elements of length 0 with NULL
-replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }

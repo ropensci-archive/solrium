@@ -31,3 +31,6 @@ solr_GET <- function(base, args, callopts, verbose){
   stop_for_status(tt)
   content(tt, as="text")
 }
+
+# small function to replace elements of length 0 with NULL
+replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }

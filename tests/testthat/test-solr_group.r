@@ -12,7 +12,7 @@ d <- solr_parse(out, 'df')
 e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
                 group.format='grouped', group.main='true', base=url, verbose=FALSE)
 
-library('jsonlite')
+suppressPackageStartupMessages(library('jsonlite', quietly = TRUE))
 f <- jsonlite::fromJSON(out, FALSE)
 
 test_that("solr_search returns the correct dimensions in the data.frame", {
