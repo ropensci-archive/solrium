@@ -23,7 +23,7 @@
 #' ## json
 #' out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
 #'    stats.facet=c('journal','volume'), base=url, raw=TRUE)
-#' library(rjson)
+#' library(jsonlite)
 #' fromJSON(out)
 #' solr_parse(out) # list
 #' solr_parse(out, 'df') # data.frame

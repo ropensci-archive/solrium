@@ -16,7 +16,7 @@ Imports:
     httr,
     XML,
     assertthat,
-    rjson
+    jsonlite
 Suggests:
     testthat,
     roxygen2,

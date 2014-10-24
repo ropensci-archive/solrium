@@ -23,7 +23,7 @@
 #' # get raw data, and parse later if needed
 #' out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, base=url, 
 #'    raw=TRUE)
-#' library(rjson)
+#' library(jsonlite)
 #' fromJSON(out)
 #' solr_parse(out, "df")
 #' }
