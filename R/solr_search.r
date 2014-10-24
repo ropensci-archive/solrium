@@ -82,6 +82,14 @@
 #' url <- 'http://api.plos.org/search'
 #' solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url, wt="csv")
 #' solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url)
+#' 
+#' ## Searching Europeana
+#' ### They don't return the expected Solr output, so we can get raw data, then parse separately
+#' url <- 'http://europeana.eu/api/v2/search.json'
+#' key <- getOption("europeana_api_key")
+#' dat <- solr_search(query='*:*', rows=5, base=url, wskey = key, raw=TRUE)
+#' library('jsonlite')
+#' head( jsonlite::fromJSON(dat)$items )
 #' }
 
 solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL, 
