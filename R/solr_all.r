@@ -1,4 +1,4 @@
-#' Solr search.
+#' All purpose function to do search, faceting, grouping, mlt, etc.
 #' 
 #' @import httr XML
 #' @importFrom plyr compact
@@ -11,6 +11,7 @@
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'
 #' solr_all(q='*:*', rows=2, fl='id', base=url)
+#' solr_all(q='*:*', rows=2, fl='id', base=url, facet="true", facet.field="journal")
 #' }
 
 solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL, 
