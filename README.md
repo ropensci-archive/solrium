@@ -26,7 +26,7 @@ This package only deals with extracting data from a Solr endpoint, not writing d
 Install dependencies
 
 ```coffee
-install.packages(c("rjson","plyr","httr","XML","data.table","assertthat"))
+install.packages(c("jsonlite","plyr","httr","XML","data.table","assertthat"))
 ```
 
 Install solr

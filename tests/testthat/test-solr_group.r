@@ -4,16 +4,16 @@ context("solr_group")
 url <- 'http://api.plos.org/search'
 
 a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url, verbose=FALSE)
-b <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'), 
+b <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
    group.sort='alm_twitterCount desc', base=url, verbose=FALSE)
 out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', base=url, raw=TRUE, verbose=FALSE)
 c <- out
 d <- solr_parse(out, 'df')
-e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), 
+e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
                 group.format='grouped', group.main='true', base=url, verbose=FALSE)
 
-library('rjson')
-f <- fromJSON(out)
+library('jsonlite')
+f <- jsonlite::fromJSON(out, FALSE)
 
 test_that("solr_search returns the correct dimensions in the data.frame", {
   expect_that(dim(a), equals(c(27,5)))
