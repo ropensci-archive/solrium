@@ -15,10 +15,10 @@ test_that("solr_highlight returns the correct dimensions", {
 
 test_that("solr_highlight returns the correct classes", {
   expect_is(a, "list")
-  expect_is(a[[1]]$abstract, "character")
+  expect_is(a[[1]]$abstract, "list")
   
   expect_is(b, "list")
   expect_is(b[[1]], "list")
-  expect_is(b[[1]]$abstract, "character")
-  expect_is(b[[1]]$title, "character")
+  expect_is(b[[1]]$abstract[[1]], "character")
+  expect_is(b[[1]]$title[[1]], "character")
 })
