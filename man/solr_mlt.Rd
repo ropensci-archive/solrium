@@ -97,9 +97,6 @@ out=solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, base=url,
 library(jsonlite)
 fromJSON(out)
 solr_parse(out, "df")
-
-
-solr_mlt(q = "ecology", mlt.fl='title', mlt.count=5, fl=c('doi','title'), base="http://search.datacite.org/api")
 }
 }
 \references{
