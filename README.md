@@ -435,31 +435,8 @@ Most of the examples above use the PLOS search API... :)
 
 ### Meta
 
-Please report any issues or bugs](https://github.com/ropensci/solr/issues).
-
-License: CC0
-
-This package is part of the [rOpenSci](http://ropensci.org/packages) project.
-
-To cite package `solr` in publications use:
-
-```coffee
-To cite package ‘solr’ in publications use:
-
-  Scott Chamberlain (2013). solr: General purpose R interface to Solr. R package version 0.0.5.
-  https://github.com/ropensci/solr
-
-A BibTeX entry for LaTeX users is
-
-  @Manual{,
-    title = {solr: General purpose R interface to Solr},
-    author = {Scott Chamberlain},
-    year = {2013},
-    note = {R package version 0.0.5},
-    base = {https://github.com/ropensci/solr},
-  }
-```
-
-Get citation information for `solr` in R doing `citation(package = 'solr')`
+* Please report any issues or bugs](https://github.com/ropensci/solr/issues).
+* License: CC0
+* Get citation information for `solr` in R doing `citation(package = 'solr')`
 
 [![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
