@@ -53,7 +53,6 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
-  class(out) <- "sr_mlt"
-  attr(out, "wt") <- wt
+  out <- structure(out, class="sr_mlt", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
 }

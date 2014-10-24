@@ -71,7 +71,6 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
-  class(out) <- "sr_group"
-  attr(out, "wt") <- wt
+  out <- structure(out, class="sr_group", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
 }

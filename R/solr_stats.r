@@ -57,7 +57,6 @@ solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', s
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
-  class(out) <- "sr_stats"
-  attr(out, "wt") <- wt
+  out <- structure(out, class="sr_stats", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype) }
 }

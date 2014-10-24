@@ -35,7 +35,6 @@ solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
-  class(out) <- "sr_search"
-  attr(out, "wt") <- wt
+  out <- structure(out, class="sr_search", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
 }

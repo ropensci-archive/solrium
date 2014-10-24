@@ -66,7 +66,6 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   out <- content(tt, as="text")
-  class(out) <- "sr_high"
-  attr(out, "wt") <- wt
+  out <- structure(out, class="sr_high", wt=wt)
   if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
 }
