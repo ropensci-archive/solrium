@@ -23,3 +23,11 @@ collectargs <- function(x){
   }
   as.list(unlist(compact(outlist)))
 }
+
+# GET helper fxn
+solr_GET <- function(base, args, callopts, verbose){
+  tt <- GET(base, query = args, callopts)
+  if(verbose) message(URLdecode(tt$url))
+  stop_for_status(tt)
+  content(tt, as="text")
+}

@@ -67,10 +67,6 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   # additional parameters
   args <- c(args, list(...))
   
-  tt <- GET(base, query = args, callopts)
-  if(verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  out <- content(tt, as="text")
-  out <- structure(out, class="sr_group", wt=wt)
+  out <- structure(solr_GET(base, args, callopts, verbose), class="sr_group", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
 }

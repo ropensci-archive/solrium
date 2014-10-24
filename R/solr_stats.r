@@ -53,10 +53,6 @@ solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', s
   args <- collectargs(todonames)
   args$stats <- 'true'
   
-  tt <- GET(base, query = args, callopts)
-  if(verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  out <- content(tt, as="text")
-  out <- structure(out, class="sr_stats", wt=wt)
+  out <- structure(solr_GET(base, args, callopts, verbose), class="sr_stats", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype) }
 }

@@ -101,11 +101,7 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   if('query' %in% names(args)){
     args <- args[!names(args) %in% "q"]
   }
-  
-  tt <- GET(base, query = args, callopts)
-  if(verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  out <- content(tt, as="text")
-  out <- structure(out, class="sr_search", wt=wt)
+
+  out <- structure(solr_GET(base, args, callopts, verbose), class="sr_search", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
 }

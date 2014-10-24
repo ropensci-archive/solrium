@@ -62,10 +62,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.slop = hl.regex.slop, hl.regex.pattern = hl.regex.pattern, 
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   args <- c(args, hl.fl)
-  tt <- GET(base, query = args, callopts)
-  if(verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  out <- content(tt, as="text")
-  out <- structure(out, class="sr_high", wt=wt)
+  
+  out <- structure(solr_GET(base, args, callopts, verbose), class="sr_high", wt=wt)
   if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
 }
