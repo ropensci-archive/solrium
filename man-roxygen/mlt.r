@@ -21,9 +21,9 @@
 #' DisMaxQParserPlugin. These fields must also be specified in mlt.fl.
 #' @param fl Fields to return. We force 'id' to be returned so that there is a unique identifier 
 #' with each record.
-#' @param wt (character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json, 
+#' @param wt (character) Data type returned, defaults to 'json'. One of json or xml. If json, 
 #' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-#' parse. If csv, uses \code{\link{read.table}} to parse.
+#' parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.
 #' @param start Record to start at, default to beginning.
 #' @param rows Number of records to return. Defaults to 10.
 #' @param key API key, if needed.

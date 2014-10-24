@@ -25,9 +25,9 @@ popularity doc in each group. Defaults to "score desc".}
 
 \item{fl}{Fields to return}
 
-\item{wt}{(character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json,
+\item{wt}{(character) Data type returned, defaults to 'json'. One of json or xml. If json,
 uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
-parse. If csv, uses \code{\link{read.table}} to parse.}
+parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.}
 
 \item{key}{API key, if needed.}
 

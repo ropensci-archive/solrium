@@ -2,9 +2,9 @@
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return
 #' @param base URL endpoint.
-#' @param wt (character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json, 
+#' @param wt (character) Data type returned, defaults to 'json'. One of json or xml. If json, 
 #' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-#' parse. If csv, uses \code{\link{read.table}} to parse.
+#' parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.
 #' @param key API key, if needed.
 #' @param group.field [fieldname] Group based on the unique values of a field. The 
 #' field must currently be single-valued and must be either indexed, or be another 

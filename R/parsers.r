@@ -179,9 +179,10 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
       dat <- input$response$docs
       dat2 <- lapply(dat, function(x){
         lapply(x, function(y){
-          if(length(y) > 1){
+          tmp <- if(length(y) > 1){
             paste(y, collapse=concat)
           } else { y  }
+          if(is(y, "list")) unlist(tmp) else tmp
         })
       })
       datout <- do.call(rbind.fill, lapply(dat2, data.frame, stringsAsFactors=FALSE))

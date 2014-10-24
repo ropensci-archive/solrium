@@ -159,9 +159,9 @@ Default: 10000. This parameter makes sense for the original Highlighter only.}
 
 \item{rows}{Number of records to return.}
 
-\item{wt}{(character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json,
+\item{wt}{(character) Data type returned, defaults to 'json'. One of json or xml. If json,
 uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
-parse. If csv, uses \code{\link{read.table}} to parse.}
+parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.}
 
 \item{raw}{(logical) If TRUE (default) raw json or xml returned. If FALSE,
 parsed data returned.}
