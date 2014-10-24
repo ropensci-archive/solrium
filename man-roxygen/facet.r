@@ -92,7 +92,9 @@
 #' @param rows Number of records to return.
 #' @param key API key, if needed.
 #' @param base URL endpoint
-#' @param wt (character) Data format to return. One of xml or json (default).
+#' @param wt (character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json, 
+#' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
+#' parse. If csv, uses \code{\link{read.table}} to parse.
 #' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
 #' 		parsed data returned.
 #' @param callopts Call options passed on to httr::GET

@@ -169,8 +169,10 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
   assert_that(is(input, "sr_search"))
   wt <- attributes(input)$wt
   input <- switch(wt,
-                  xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, FALSE))
+    xml = xmlParse(input),
+    json = jsonlite::fromJSON(input, FALSE),
+    csv = read.table(text = input, sep = ",", stringsAsFactors = FALSE, header = TRUE)
+  )
 
   if(wt=='json'){
     if(parsetype=='df'){
@@ -188,8 +190,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
 #       datout <- input$response$docs
       datout <- input
     }
-  } else
-  {
+  } else if(wt=="xml") {
     temp <- xpathApply(input, '//doc')
     tmptmp <- lapply(temp, function(x){
       tt <- xmlToList(x)
@@ -207,6 +208,8 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
     {
       datout <- tmptmp
     }
+  } else {
+    datout <- input
   }
 
   return( datout )

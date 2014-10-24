@@ -45,7 +45,9 @@ mean no time restriction. Partial results may be returned (if there are any).}
 
 \item{qt}{Which query handler used.}
 
-\item{wt}{Data type returned, defaults to 'json'}
+\item{wt}{(character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json,
+uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
+parse. If csv, uses \code{\link{read.table}} to parse.}
 
 \item{NOW}{Set a fixed time for evaluating Date based expresions}
 
@@ -159,6 +161,11 @@ solr_search(q='_val_:"max(counter_total_all)"',
 ## papers with most tweets
 solr_search(q='_val_:"max(alm_twitterCount)"',
    rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full', base=url)
+
+## using wt = csv
+url <- 'http://api.plos.org/search'
+solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url, wt="csv")
+solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url)
 }
 }
 \references{

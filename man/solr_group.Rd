@@ -25,7 +25,9 @@ popularity doc in each group. Defaults to "score desc".}
 
 \item{fl}{Fields to return}
 
-\item{wt}{Data type returned, defaults to 'json'}
+\item{wt}{(character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json,
+uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
+parse. If csv, uses \code{\link{read.table}} to parse.}
 
 \item{key}{API key, if needed.}
 

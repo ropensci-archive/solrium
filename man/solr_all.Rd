@@ -45,7 +45,9 @@ mean no time restriction. Partial results may be returned (if there are any).}
 
 \item{qt}{Which query handler used.}
 
-\item{wt}{Data type returned, defaults to 'json'}
+\item{wt}{(character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json,
+uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
+parse. If csv, uses \code{\link{read.table}} to parse.}
 
 \item{NOW}{Set a fixed time for evaluating Date based expresions}
 
@@ -93,6 +95,9 @@ All purpose function to do search, faceting, grouping, mlt, etc.
 url <- 'http://api.plos.org/search'
 solr_all(q='*:*', rows=2, fl='id', base=url)
 solr_all(q='*:*', rows=2, fl='id', base=url, facet="true", facet.field="journal")
+
+## using wt = csv
+solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url, wt="csv")
 }
 }
 \references{
