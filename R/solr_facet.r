@@ -1,7 +1,6 @@
 #' Do faceted searches, outputing facets only.
 #' 
 #' @import httr XML
-#' @importFrom plyr compact
 #' @template facet
 #' @return Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).
 #' @seealso \code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse}}

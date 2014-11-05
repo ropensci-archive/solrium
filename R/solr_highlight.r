@@ -1,7 +1,6 @@
 #' Do highlighting searches, outputing highlight only.
 #' 
 #' @import httr XML
-#' @importFrom plyr compact
 #' @export
 #' @template high
 #' @return XML, JSON, a list, or data.frame
@@ -46,7 +45,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
   }
   
   if(!is.null(hl.fl)) names(hl.fl) <- rep("hl.fl", length(hl.fl))
-  args <- compact(list(wt=wt, q=q, start=start, rows=rows, hl='true',
+  args <- sc(list(wt=wt, q=q, start=start, rows=rows, hl='true',
      hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
      hl.mergeContiguous = hl.mergeContiguous, hl.requireFieldMatch = hl.requireFieldMatch, 
      hl.maxAnalyzedChars = hl.maxAnalyzedChars, hl.alternateField = hl.alternateField, 

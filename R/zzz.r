@@ -21,7 +21,7 @@ collectargs <- function(x){
   for(i in seq_along(x)){
     outlist[[i]] <- makemultiargs(x[[i]])
   }
-  as.list(unlist(compact(outlist)))
+  as.list(unlist(sc(outlist)))
 }
 
 # GET helper fxn
@@ -34,3 +34,5 @@ solr_GET <- function(base, args, callopts, verbose){
 
 # small function to replace elements of length 0 with NULL
 replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }
+
+sc <- function (l) Filter(Negate(is.null), l)

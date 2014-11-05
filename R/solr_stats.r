@@ -1,7 +1,6 @@
 #' Get Solr stats.
 #' 
 #' @import httr
-#' @importFrom plyr compact
 #' @template stats
 #' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}, 

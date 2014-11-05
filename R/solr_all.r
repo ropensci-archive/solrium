@@ -1,7 +1,6 @@
 #' All purpose function to do search, faceting, grouping, mlt, etc.
 #' 
 #' @import httr XML
-#' @importFrom plyr compact
 #' @template search
 #' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
@@ -27,7 +26,7 @@ solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   }
   
   if(!is.null(fl)) fl <- paste0(fl, collapse = ",")
-  args <- compact(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
+  args <- sc(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
                        pageScore=pageScore, fl=fl, fq=fq, defType=defType, 
                        timeAllowed=timeAllowed, qt=qt, wt=wt, NOW=NOW, TZ=TZ,
                        echoHandler=echoHandler, echoParams=echoParams))

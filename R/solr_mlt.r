@@ -1,7 +1,6 @@
 #' Solr "more like this" search
 #' 
 #' @import httr XML
-#' @importFrom plyr compact
 #' @template mlt
 #' @return XML, JSON, a list, or data.frame
 #' @references See \url{http://wiki.apache.org/solr/MoreLikeThis} for more
@@ -44,7 +43,7 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
   {
     fl2 <- sprintf('id,%s',fl_str)
   }
-  args <- compact(list(q=q, fq=fq, mlt='true', fl=fl2, mlt.count=mlt.count, mlt.fl=mlt.fl, 
+  args <- sc(list(q=q, fq=fq, mlt='true', fl=fl2, mlt.count=mlt.count, mlt.fl=mlt.fl, 
     mlt.mintf=mlt.mintf, mlt.mindf=mlt.mindf, mlt.minwl=mlt.minwl, 
     mlt.maxwl=mlt.maxwl, mlt.maxqt=mlt.maxqt, mlt.maxntp=mlt.maxntp, 
     mlt.boost=mlt.boost, mlt.qf=mlt.qf, start=start, rows=rows, wt=wt))
