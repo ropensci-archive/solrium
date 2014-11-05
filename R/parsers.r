@@ -23,7 +23,7 @@ solr_parse <- function(input, parsetype, concat){
 #' @rdname solr_parse
 solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
 {
-  assert_that(is(input, "sr_facet"))
+  stopifnot(is(input, "sr_facet"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -113,7 +113,7 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
 #' @rdname solr_parse
 solr_parse.sr_high <- function(input, parsetype='list', concat=',')
 {
-  assert_that(is(input, "sr_high"))
+  stopifnot(is(input, "sr_high"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -166,7 +166,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_search <- function(input, parsetype='list', concat=',')
 {
-  assert_that(is(input, "sr_search"))
+  stopifnot(is(input, "sr_search"))
   wt <- attributes(input)$wt
   input <- switch(wt,
     xml = xmlParse(input),
@@ -221,7 +221,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
 {
-  assert_that(is(input, "sr_mlt"))
+  stopifnot(is(input, "sr_mlt"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -309,7 +309,7 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
 {
-  assert_that(is(input, "sr_stats"))
+  stopifnot(is(input, "sr_stats"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -444,7 +444,7 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_group <- function(input, parsetype='list', concat=',')
 {
-  assert_that(is(input, "sr_group"))
+  stopifnot(is(input, "sr_group"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
