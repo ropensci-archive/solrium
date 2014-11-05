@@ -13,7 +13,7 @@ test_that("solr_stats returns the correct dimensions", {
   expect_that(length(a), equals(1))
   expect_that(length(b), equals(2))
   expect_that(nrow(b$data), equals(2))
-  expect_that(nrow(b$facet$counter_total_all$journal), equals(9))
+  expect_equal(NCOL(b$facet$counter_total_all$journal), 9)
   expect_that(length(c), equals(1))
   expect_that(length(d), equals(2))
   expect_that(length(d$data$alm_twitterCount), equals(8))
