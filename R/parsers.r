@@ -2,7 +2,7 @@
 #'
 #' See details.
 #'
-#' @import XML jsonlite assertthat
+#' @import XML jsonlite
 #' @importFrom plyr rbind.fill
 #' @param input Output from solr_facet
 #' @param parsetype One of 'list' or 'df' (data.frame)
