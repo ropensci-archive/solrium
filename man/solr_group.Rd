@@ -97,7 +97,7 @@ Solr grouped search.
 url <- 'http://api.plos.org/search'
 
 # Basic group query
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', base=url)
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url)
 solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type', base=url)
 
 # Different ways to sort (notice diff btw sort of group.sort)

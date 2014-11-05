@@ -111,8 +111,8 @@ solr_search(q='everything:"sports alcohol"~7', fl='abstract', rows=3, base=url)
 
 # Range searches
 ## Search for articles with Twitter count between 5 and 10
-solr_search(q='*:*', fl=c('alm_twitterCount','title'), fq='alm_twitterCount:[5 TO 10]',
-rows=3, base=url)
+solr_search(q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]',
+rows=10, base=url)
 
 # Boosts
 ## Assign higher boost to title matches than to body matches (compare the two calls)
@@ -135,8 +135,9 @@ solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude')
 
 # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
 ## the species names endpoint
-url2 <- "http://bisonapi.usgs.ornl.gov/solr/scientificName/select"
-solr_search(q='*:*', base=url2, parsetype='list')
+url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+solr_search(q='*:*', base=url2, parsetype='list', rows=2)
+solr_search(scientificName='Helianthus annuus', fl=c('scientificName','TSNs'), base=url2)
 
 # FunctionQuery queries
 ## This kind of query allows you to use the actual values of fields to calculate
@@ -170,7 +171,7 @@ solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url)
 ## Searching Europeana
 ### They don't return the expected Solr output, so we can get raw data, then parse separately
 url <- 'http://europeana.eu/api/v2/search.json'
-key <- getOption("europeana_api_key")
+key <- getOption("eu_key")
 dat <- solr_search(query='*:*', rows=5, base=url, wskey = key, raw=TRUE)
 library('jsonlite')
 head( jsonlite::fromJSON(dat)$items )

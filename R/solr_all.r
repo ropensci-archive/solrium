@@ -26,13 +26,11 @@ solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
-  if(!is.null(fl)) names(fl) <- rep("fl", length(fl))
-  
+  if(!is.null(fl)) fl <- paste0(fl, collapse = ",")
   args <- compact(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
-                       pageScore=pageScore, fq=fq, defType=defType, 
+                       pageScore=pageScore, fl=fl, fq=fq, defType=defType, 
                        timeAllowed=timeAllowed, qt=qt, wt=wt, NOW=NOW, TZ=TZ,
                        echoHandler=echoHandler, echoParams=echoParams))
-  args <- c(args, fl)
   
   # additional parameters
   args <- c(args, list(...))

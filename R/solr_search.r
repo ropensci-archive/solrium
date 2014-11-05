@@ -27,8 +27,8 @@
 #' 
 #' # Range searches
 #' ## Search for articles with Twitter count between 5 and 10
-#' solr_search(q='*:*', fl=c('alm_twitterCount','title'), fq='alm_twitterCount:[5 TO 10]', 
-#' rows=3, base=url)
+#' solr_search(q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]', 
+#' rows=10, base=url)
 #' 
 #' # Boosts
 #' ## Assign higher boost to title matches than to body matches (compare the two calls)
@@ -51,8 +51,9 @@
 #' 
 #' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
 #' ## the species names endpoint
-#' url2 <- "http://bisonapi.usgs.ornl.gov/solr/scientificName/select"
-#' solr_search(q='*:*', base=url2, parsetype='list')
+#' url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+#' solr_search(q='*:*', base=url2, parsetype='list', rows=2)
+#' solr_search(scientificName='Helianthus annuus', fl=c('scientificName','TSNs'), base=url2)
 #' 
 #' # FunctionQuery queries
 #' ## This kind of query allows you to use the actual values of fields to calculate 
@@ -86,7 +87,7 @@
 #' ## Searching Europeana
 #' ### They don't return the expected Solr output, so we can get raw data, then parse separately
 #' url <- 'http://europeana.eu/api/v2/search.json'
-#' key <- getOption("europeana_api_key")
+#' key <- getOption("eu_key")
 #' dat <- solr_search(query='*:*', rows=5, base=url, wskey = key, raw=TRUE)
 #' library('jsonlite')
 #' head( jsonlite::fromJSON(dat)$items )
@@ -101,13 +102,11 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
   
-  if(!is.null(fl)) names(fl) <- rep("fl", length(fl))
-  
+  if(!is.null(fl)) fl <- paste0(fl, collapse = ",")
   args <- compact(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
-      pageScore=pageScore, fq=fq, defType=defType, 
+      pageScore=pageScore, fl=fl, fq=fq, defType=defType, 
       timeAllowed=timeAllowed, qt=qt, wt=wt, NOW=NOW, TZ=TZ,
       echoHandler=echoHandler, echoParams=echoParams))
-  args <- c(args, fl)
   
   # additional parameters
   args <- c(args, list(...))

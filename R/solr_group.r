@@ -12,7 +12,7 @@
 #' url <- 'http://api.plos.org/search'
 #' 
 #' # Basic group query
-#' solr_group(q='ecology', group.field='journal', group.limit=3, fl='id,score', base=url)
+#' solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url)
 #' solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type', base=url)
 #' 
 #' # Different ways to sort (notice diff btw sort of group.sort)
@@ -57,6 +57,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
 
+  if(!is.null(fl)) fl <- paste0(fl, collapse = ",")
   todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort', 
     'fq', 'wt', 'group.limit', 'group.offset', 'group.sort', 'group.sort', 
     'group.format', 'group.func', 'group.main', 'group.ngroups',
