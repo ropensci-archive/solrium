@@ -1,0 +1,195 @@
+solr
+=======
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+[![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
+[![Build status](https://ci.appveyor.com/api/projects/status/ytgtb62gsgf5hddi/branch/master)](https://ci.appveyor.com/project/sckott/solr/branch/master)
+
+**A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
+
+This package only deals with extracting data from a Solr endpoint, not writing data (pull request or holla if you're interested in writing solr data).
+
+## Solr info
+
++ [Solr home page](http://lucene.apache.org/solr/)
++ [Highlighting help](http://wiki.apache.org/solr/HighlightingParameters)
++ [Faceting help](http://wiki.apache.org/solr/SimpleFacetParameters)
++ [Solr stats](http://wiki.apache.org/solr/StatsComponent)
++ ['More like this' searches](http://wiki.apache.org/solr/MoreLikeThis)
++ [Grouping/Feild collapsing](http://wiki.apache.org/solr/FieldCollapsing)
++ [Installing Solr on Mac using homebrew](http://ramlev.dk/blog/2012/06/02/install-apache-solr-on-your-mac/)
++ [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
++ [Solr csv writer](http://wiki.apache.org/solr/CSVResponseWriter)
+
+## Quick start
+
+### Install
+
+Install solr
+
+```{r eval=FALSE}
+install.packages("devtools")
+devtools::install_github("ropensci/solr")
+```
+
+```{r}
+library("solr")
+```
+
+__Define stuff__ Your base url and a key (if needed). This example should work. You do need to pass a key to the Public Library of Science search API, but it apparently doesn't need to be a real one.
+
+```{r}
+url <- 'http://api.plos.org/search'
+key <- 'key'
+```
+
+### Search
+
+```{r}
+solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
+```
+
+### Search grouped data
+
+Most recent publication by journal
+
+```{r}
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', base=url, key=key)
+```
+
+First publication by journal
+
+```{r}
+solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", base=url, key=key)
+```
+
+Search group query : Last 3 publications of 2013.  
+
+```{r}
+solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', base=url, key=key)
+```
+
+Search group with format simple
+
+```{r}
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', base=url, key=key)
+```
+
+### Facet
+
+```{r}
+solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, key=key)
+```
+
+### Highlight
+
+```{r}
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
+```
+
+### Stats
+
+```{r}
+out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', base=url, key=key)
+```
+
+```{r}
+out$data
+```
+
+```{r}
+out$facet
+```
+
+### More like this
+
+`solr_mlt` is a function to return similar documents to the one
+
+```{r}
+out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
+```
+
+```{r}
+out$docs
+```
+
+```{r}
+out$mlt
+```
+
+### Parsing
+
+`solr_parse` is a general purpose parser function with extension methods `solr_parse.sr_search`, `solr_parse.sr_facet`, and `solr_parse.sr_high`, for parsing `solr_search`, `solr_facet`, and `solr_highlight` function output, respectively. `solr_parse` is used internally within those three functions (`solr_search`, `solr_facet`, `solr_highlight`) to do parsing. You can optionally get back raw `json` or `xml` from `solr_search`, `solr_facet`, and `solr_highlight` setting parameter `raw=TRUE`, and then parsing after the fact with `solr_parse`. All you need to know is `solr_parse` can parse
+
+For example:
+
+```{r}
+(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
+```
+
+Then parse
+
+```{r}
+solr_parse(out, 'df')
+```
+
+### Advanced: Function Queries
+
+Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to stort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"
+
+```{r}
+solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
+  rows=5, fl='id,title', fq='doc_type:full', base=url, key=key)
+```
+
+Here, we search for the papers with the most citations
+
+```{r}
+solr_search(q='_val_:"max(counter_total_all)"',
+    rows=5, fl='id,counter_total_all', fq='doc_type:full', base=url, key=key)
+```
+
+Or with the most tweets
+
+```{r}
+solr_search(q='_val_:"max(alm_twitterCount)"',
+    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', base=url, key=key)
+```
+
+### Using specific data sources
+
+__USGS BISON service__
+
+The occurrences service
+
+```{r}
+url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+solr_search(q='*:*', base=url2, fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
+```
+
+The species names service
+
+```{r}
+url2 <- "http://bisonapi.usgs.ornl.gov/solr/scientificName/select"
+solr_search(q='*:*', base=url2, raw=TRUE)
+```
+
+__PLOS Search API__
+
+Most of the examples above use the PLOS search API... :)
+
+### Meta
+
+* Please report any issues or bugs](https://github.com/ropensci/solr/issues).
+* License: MIT
+* Get citation information for `solr` in R doing `citation(package = 'solr')`
+
+[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
