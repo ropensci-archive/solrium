@@ -10,16 +10,16 @@ d <- solr_parse(c) # list
 e <- solr_parse(c, 'df') # data.frame
 
 test_that("solr_stats returns the correct dimensions", {
-  expect_that(length(a), equals(1))
-  expect_that(length(b), equals(2))
-  expect_that(nrow(b$data), equals(2))
+  expect_equal(length(a), 1)
+  expect_equal(length(b), 2)
+  expect_equal(nrow(b$data), 2)
   expect_equal(NCOL(b$facet$counter_total_all$journal), 9)
-  expect_that(length(c), equals(1))
-  expect_that(length(d), equals(2))
-  expect_that(length(d$data$alm_twitterCount), equals(8))
-  expect_that(length(e$facet$alm_twitterCount), equals(2))
-  expect_that(length(e$facet$alm_twitterCount$volume), equals(9))
-  expect_that(length(e$facet$alm_twitterCount$volume$missing), equals(12))
+  expect_equal(length(c), 1)
+  expect_equal(length(d), 2)
+  expect_equal(length(d$data$alm_twitterCount), 8)
+  expect_equal(length(e$facet$alm_twitterCount), 2)
+  expect_equal(NCOL(e$facet$alm_twitterCount$volume), 9)
+  expect_equal(length(e$facet$alm_twitterCount$volume$missing), 13)
 })
 
 test_that("solr_stats returns the correct classes", {
