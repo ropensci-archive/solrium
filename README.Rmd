@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
 [![Build status](https://ci.appveyor.com/api/projects/status/ytgtb62gsgf5hddi/branch/master)](https://ci.appveyor.com/project/sckott/solr/branch/master)
+[![Coverage Status](https://coveralls.io/repos/ropensci/solr/badge.svg)](https://coveralls.io/r/ropensci/solr)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
@@ -98,15 +99,11 @@ solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
 ### Stats
 
 ```{r}
-out <- solr_stats(q='ecology', stats.field='counter_total_all,alm_twitterCount', stats.facet='journal,volume', base=url, key=key)
+out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal', base=url, key=key)
 ```
 
 ```{r}
 out$data
-```
-
-```{r}
-out$facet
 ```
 
 ### More like this
