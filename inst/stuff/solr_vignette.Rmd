@@ -115,14 +115,8 @@ solr_parse(out, 'df')
 The occurrences service
 
 ```{r}
-url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q='*:*', fl=c('latitude','longitude','scientific_name'), base=url2)
-```
-
-The species names service
-
-```{r}
-solr_search(q='*:*', base=url2, raw=TRUE)
+url2 <- "http://bison.usgs.ornl.gov/solrstaging/occurrences/select"
+solr_search(q='*:*', fl=c('decimalLatitude','decimalLongitude','scientificName'), base=url2)
 ```
 
 *PLOS Search API*
