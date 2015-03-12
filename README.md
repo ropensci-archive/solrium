@@ -53,9 +53,9 @@ key <- 'key'
 
 ```r
 solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
-#>                                   id
-#> 1       10.1371/journal.pone.0074638
-#> 2 10.1371/journal.pone.0074638/title
+#>                                                              id
+#> 1       10.1371/annotation/856f0890-9d85-4719-8e54-c27530ac94f4
+#> 2 10.1371/annotation/856f0890-9d85-4719-8e54-c27530ac94f4/title
 ```
 
 ### Search grouped data
@@ -65,12 +65,18 @@ Most recent publication by journal
 
 ```r
 solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', base=url, key=key)
-#>                   groupValue numFound start     publication_date score
-#> 1                   plos one   972714     0 2015-02-27T00:00:00Z     1
-#> 2             plos pathogens    36842     0 2015-02-27T00:00:00Z     1
-#> 3 plos computational biology    30967     0 2015-02-27T00:00:00Z     1
-#> 4              plos genetics    42377     0 2015-02-27T00:00:00Z     1
-#> 5                       none    63649     0 2012-10-23T00:00:00Z     1
+#>                         groupValue numFound start     publication_date
+#> 1                         plos one   978398     0 2015-03-12T00:00:00Z
+#> 2 plos neglected tropical diseases    27027     0 2015-03-12T00:00:00Z
+#> 3                   plos pathogens    37121     0 2015-03-12T00:00:00Z
+#> 4                     plos biology    26802     0 2015-03-12T00:00:00Z
+#> 5                    plos genetics    42608     0 2015-03-12T00:00:00Z
+#>   score
+#> 1     1
+#> 2     1
+#> 3     1
+#> 4     1
+#> 5     1
 ```
 
 First publication by journal
@@ -79,15 +85,15 @@ First publication by journal
 ```r
 solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", base=url, key=key)
 #>                          groupValue numFound start     publication_date
-#> 1                          plos one   972714     0 2006-12-01T00:00:00Z
-#> 2                    plos pathogens    36842     0 2005-07-22T00:00:00Z
-#> 3        plos computational biology    30967     0 2005-06-24T00:00:00Z
-#> 4                     plos genetics    42377     0 2005-06-17T00:00:00Z
-#> 5                              none    57557     0 2005-08-23T00:00:00Z
-#> 6  plos neglected tropical diseases    26744     0 2007-08-30T00:00:00Z
-#> 7                      plos biology    26714     0 2003-08-18T00:00:00Z
-#> 8                     plos medicine    18767     0 2004-09-07T00:00:00Z
-#> 9                  plos collections        5     0 2015-02-24T00:00:00Z
+#> 1                          plos one   978398     0 2006-12-01T00:00:00Z
+#> 2  plos neglected tropical diseases    27027     0 2007-08-30T00:00:00Z
+#> 3                    plos pathogens    37121     0 2005-07-22T00:00:00Z
+#> 4                      plos biology    26802     0 2003-08-18T00:00:00Z
+#> 5                     plos genetics    42608     0 2005-06-17T00:00:00Z
+#> 6        plos computational biology    31051     0 2005-06-24T00:00:00Z
+#> 7                     plos medicine    18828     0 2004-09-07T00:00:00Z
+#> 8                  plos collections        5     0 2015-02-24T00:00:00Z
+#> 9                              none    57557     0 2005-08-23T00:00:00Z
 #> 10             plos clinical trials      521     0 2006-04-21T00:00:00Z
 #>    score
 #> 1      1
@@ -118,12 +124,12 @@ Search group with format simple
 
 ```r
 solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', base=url, key=key)
-#>   numFound start        journal     publication_date
-#> 1  1219309     0       PLOS ONE 2015-02-27T00:00:00Z
-#> 2  1219309     0       PLOS ONE 2015-02-27T00:00:00Z
-#> 3  1219309     0       PLOS ONE 2015-02-27T00:00:00Z
-#> 4  1219309     0 PLOS Pathogens 2015-02-27T00:00:00Z
-#> 5  1219309     0 PLOS Pathogens 2015-02-27T00:00:00Z
+#>   numFound start                          journal     publication_date
+#> 1  1226019     0                         PLOS ONE 2015-03-12T00:00:00Z
+#> 2  1226019     0                         PLOS ONE 2015-03-12T00:00:00Z
+#> 3  1226019     0                         PLOS ONE 2015-03-12T00:00:00Z
+#> 4  1226019     0 PLOS Neglected Tropical Diseases 2015-03-12T00:00:00Z
+#> 5  1226019     0 PLOS Neglected Tropical Diseases 2015-03-12T00:00:00Z
 ```
 
 ### Facet
@@ -138,13 +144,13 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, ke
 #> $facet_fields
 #> $facet_fields$journal
 #>                                  X1     X2
-#> 1                          plos one 972714
-#> 2                     plos genetics  42377
-#> 3                    plos pathogens  36842
-#> 4        plos computational biology  30967
-#> 5  plos neglected tropical diseases  26744
-#> 6                      plos biology  26714
-#> 7                     plos medicine  18767
+#> 1                          plos one 978398
+#> 2                     plos genetics  42608
+#> 3                    plos pathogens  37121
+#> 4        plos computational biology  31051
+#> 5  plos neglected tropical diseases  27027
+#> 6                      plos biology  26802
+#> 7                     plos medicine  18828
 #> 8              plos clinical trials    521
 #> 9                      plos medicin      9
 #> 10                 plos collections      5
@@ -183,11 +189,11 @@ out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCou
 ```r
 out$data
 #>                   min    max count missing      sum sumOfSquares
-#> counter_total_all   0 321260 25382       0 96078584 1.852121e+12
-#> alm_twitterCount    0   1669 25382       0   123788 2.226187e+07
-#>                          mean     stddev
-#> counter_total_all 3785.303916 7657.91388
-#> alm_twitterCount     4.876999   29.21167
+#> counter_total_all   0 322006 25510       0 96870597 1.873717e+12
+#> alm_twitterCount    0   1669 25510       0   124141 2.236007e+07
+#>                          mean   stddev
+#> counter_total_all 3797.357781 7683.273
+#> alm_twitterCount     4.866366   29.204
 ```
 
 ### More like this
@@ -203,11 +209,11 @@ out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1
 ```r
 out$docs
 #>                             id counter_total_all
-#> 1 10.1371/journal.pbio.1001805             11017
-#> 2 10.1371/journal.pbio.0020440             16772
-#> 3 10.1371/journal.pone.0087217              3356
-#> 4 10.1371/journal.pone.0040117              2748
-#> 5 10.1371/journal.pone.0072525              1187
+#> 1 10.1371/journal.pbio.1001805             11196
+#> 2 10.1371/journal.pbio.0020440             16790
+#> 3 10.1371/journal.pone.0087217              3414
+#> 4 10.1371/journal.pone.0040117              2769
+#> 5 10.1371/journal.pone.0072525              1189
 ```
 
 
@@ -215,43 +221,43 @@ out$docs
 out$mlt
 #> $`10.1371/journal.pbio.1001805`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0082578              1584
-#> 2 10.1371/journal.pone.0098876               932
-#> 3 10.1371/journal.pone.0102159               551
-#> 4 10.1371/journal.pcbi.1003408              4600
-#> 5 10.1371/journal.pone.0076063              2170
+#> 1 10.1371/journal.pone.0082578              1601
+#> 2 10.1371/journal.pone.0098876               942
+#> 3 10.1371/journal.pone.0102159               571
+#> 4 10.1371/journal.pone.0076063              2183
+#> 5 10.1371/journal.pcbi.1003408              4661
 #> 
 #> $`10.1371/journal.pbio.0020440`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0035964              3691
-#> 2 10.1371/journal.pone.0102679              1963
-#> 3 10.1371/journal.pone.0003259              1867
-#> 4 10.1371/journal.pone.0068814              6421
-#> 5 10.1371/journal.pntd.0003377              2521
+#> 1 10.1371/journal.pone.0102679              1997
+#> 2 10.1371/journal.pone.0035964              3729
+#> 3 10.1371/journal.pone.0003259              1869
+#> 4 10.1371/journal.pntd.0003377              2593
+#> 5 10.1371/journal.pone.0068814              6459
 #> 
 #> $`10.1371/journal.pone.0087217`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pcbi.0020092             15526
-#> 2 10.1371/journal.pone.0063375              1482
-#> 3 10.1371/journal.pone.0015143             13407
-#> 4 10.1371/journal.pone.0034096              2536
-#> 5 10.1371/journal.pcbi.1000986              2866
+#> 1 10.1371/journal.pcbi.0020092             15587
+#> 2 10.1371/journal.pone.0063375              1491
+#> 3 10.1371/journal.pone.0034096              2566
+#> 4 10.1371/journal.pone.0015143             13454
+#> 5 10.1371/journal.pcbi.1000986              2878
 #> 
 #> $`10.1371/journal.pone.0040117`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0069352              1745
-#> 2 10.1371/journal.pone.0035502              2741
-#> 3 10.1371/journal.pone.0014065              4135
-#> 4 10.1371/journal.pone.0078369              2360
-#> 5 10.1371/journal.pone.0113280               986
+#> 1 10.1371/journal.pone.0069352              1761
+#> 2 10.1371/journal.pone.0035502              2748
+#> 3 10.1371/journal.pone.0014065              4152
+#> 4 10.1371/journal.pone.0078369              2373
+#> 5 10.1371/journal.pone.0113280              1014
 #> 
 #> $`10.1371/journal.pone.0072525`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0060766              1609
-#> 2 10.1371/journal.pcbi.1002928              7644
-#> 3 10.1371/journal.pone.0068714              4375
-#> 4 10.1371/journal.pone.0072862              3299
-#> 5 10.1371/journal.pcbi.0020144             13093
+#> 1 10.1371/journal.pone.0060766              1632
+#> 2 10.1371/journal.pcbi.1002928              7713
+#> 3 10.1371/journal.pone.0068714              4424
+#> 4 10.1371/journal.pone.0072862              3319
+#> 5 10.1371/journal.pcbi.0020144             13112
 ```
 
 ### Parsing
@@ -263,7 +269,7 @@ For example:
 
 ```r
 (out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
-#> [1] "{\"response\":{\"numFound\":16015,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
+#> [1] "{\"response\":{\"numFound\":16105,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
 #> attr(,"class")
 #> [1] "sr_high"
 #> attr(,"wt")
@@ -295,14 +301,14 @@ solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
 #> 1 10.1371/journal.pmed.0020124
 #> 2 10.1371/journal.pone.0105948
 #> 3 10.1371/journal.pone.0083325
-#> 4 10.1371/journal.pone.0069841
-#> 5 10.1371/journal.pone.0115069
+#> 4 10.1371/journal.pone.0115069
+#> 5 10.1371/journal.pone.0069841
 #>                                                                                                title
 #> 1                                                     Why Most Published Research Findings Are False
 #> 2 Sliding Rocks on Racetrack Playa, Death Valley National Park: First Observation of Rocks in Motion
 #> 3                               Identifiable Images of Bystanders Extracted from Corneal Reflections
-#> 4                            Facebook Use Predicts Declines in Subjective Well-Being in Young Adults
-#> 5 An Efficiency Comparison of Document Preparation Systems Used in Academic Research and Development
+#> 4 An Efficiency Comparison of Document Preparation Systems Used in Academic Research and Development
+#> 5                            Facebook Use Predicts Declines in Subjective Well-Being in Young Adults
 ```
 
 Here, we search for the papers with the most citations
@@ -312,11 +318,11 @@ Here, we search for the papers with the most citations
 solr_search(q='_val_:"max(counter_total_all)"',
     rows=5, fl='id,counter_total_all', fq='doc_type:full', base=url, key=key)
 #>                             id counter_total_all
-#> 1 10.1371/journal.pmed.0020124           1061691
-#> 2 10.1371/journal.pmed.0050045            330846
-#> 3 10.1371/journal.pone.0007595            321260
-#> 4 10.1371/journal.pone.0033288            307543
-#> 5 10.1371/journal.pone.0069841            298973
+#> 1 10.1371/journal.pmed.0020124           1070842
+#> 2 10.1371/journal.pmed.0050045            331739
+#> 3 10.1371/journal.pone.0007595            322006
+#> 4 10.1371/journal.pone.0033288            307623
+#> 5 10.1371/journal.pone.0069841            302043
 ```
 
 Or with the most tweets
@@ -328,9 +334,9 @@ solr_search(q='_val_:"max(alm_twitterCount)"',
 #>                             id alm_twitterCount
 #> 1 10.1371/journal.pone.0061981             2381
 #> 2 10.1371/journal.pone.0115069             2274
-#> 3 10.1371/journal.pmed.0020124             1768
+#> 3 10.1371/journal.pmed.0020124             1769
 #> 4 10.1371/journal.pbio.1001535             1669
-#> 5 10.1371/journal.pone.0083325             1501
+#> 5 10.1371/journal.pone.0083325             1508
 ```
 
 ### Using specific data sources
@@ -341,7 +347,7 @@ The occurrences service
 
 
 ```r
-url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+url <- "http://bison.usgs.ornl.gov/solrstaging/occurrences/select"
 solr_search(q='*:*', base=url2, fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
 #> NULL
 ```
@@ -369,4 +375,4 @@ Most of the examples above use the PLOS search API... :)
 * License: MIT
 * Get citation information for `solr` in R doing `citation(package = 'solr')`
 
-[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)

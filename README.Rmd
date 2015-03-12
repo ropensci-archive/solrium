@@ -168,7 +168,7 @@ __USGS BISON service__
 The occurrences service
 
 ```{r}
-url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
+url <- "http://bison.usgs.ornl.gov/solrstaging/occurrences/select"
 solr_search(q='*:*', base=url2, fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
 ```
 
@@ -189,4 +189,4 @@ Most of the examples above use the PLOS search API... :)
 * License: MIT
 * Get citation information for `solr` in R doing `citation(package = 'solr')`
 
-[![](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
