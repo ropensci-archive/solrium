@@ -14,9 +14,20 @@
 #' consumption. The data format type is detected from the attribute "wt" on the
 #' sr_facet object.
 #' @export
-solr_parse <- function(input, parsetype, concat){
+solr_parse <- function(input, parsetype = NULL, concat){
   UseMethod("solr_parse")
 }
+
+#' @method solr_parse ping
+#' @export
+#' @rdname solr_parse
+solr_parse.ping <- function(input, parsetype=NULL, concat=',') {
+  wt <- attributes(input)$wt
+  switch(wt,
+         xml = xmlParse(input),
+         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
+}
+
 
 #' @method solr_parse sr_facet
 #' @export
