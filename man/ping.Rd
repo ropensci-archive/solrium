@@ -8,7 +8,7 @@ ping(base = "http://localhost:8983", wt = "json", verbose = TRUE,
   raw = FALSE, callopts = list())
 }
 \arguments{
-\item{base}{URL endpoint. This is different from the other functions in that we aren't
+\item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
 hitting a search endpoint. Pass in here}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
