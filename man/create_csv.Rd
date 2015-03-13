@@ -12,6 +12,11 @@ create_csv(base = "http://localhost:8983", files, separator = ",",
   verbose = TRUE, raw = FALSE, callopts = list())
 }
 \arguments{
+\item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
+hitting a search endpoint. Pass in here}
+
+\item{files}{Path to file to load into Solr}
+
 \item{separator}{Specifies the character to act as the field separator. Default: ','}
 
 \item{header}{TRUE if the first line of the CSV input contains field or column names.
@@ -78,6 +83,15 @@ with &overwrite=false.}
 
 \item{commit}{Commit changes after all records in this request have been indexed. The
 default is commit=false to avoid the potential performance impact of frequent commits.}
+
+\item{wt}{(character) One of json (default) or xml. If json, uses
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse}
+
+\item{verbose}{If TRUE (default) the url call used printed to console.}
+
+\item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
+
+\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
 Create documents from a CSV file

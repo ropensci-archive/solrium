@@ -2,6 +2,7 @@
 #' 
 #' @export
 #' @family create
+#' @param files Path to file to load into Solr
 #' @param base (character) URL endpoint. This is different from the other functions in that we aren't 
 #' hitting a search endpoint. Pass in here 
 #' @param wt (character) One of json (default) or xml. If json, uses 

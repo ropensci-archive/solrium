@@ -11,6 +11,8 @@ create_json(base = "http://localhost:8983", files, wt = "json",
 \item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
 hitting a search endpoint. Pass in here}
 
+\item{files}{Path to file to load into Solr}
+
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse}
 

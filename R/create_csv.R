@@ -2,6 +2,14 @@
 #' 
 #' @export
 #' @template csvcreate
+#' @param base (character) URL endpoint. This is different from the other functions in that we aren't 
+#' hitting a search endpoint. Pass in here 
+#' @param files Path to file to load into Solr
+#' @param wt (character) One of json (default) or xml. If json, uses 
+#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
+#' @param verbose If TRUE (default) the url call used printed to console.
+#' @param raw (logical) If TRUE, returns raw data in format specified by wt param
+#' @param callopts curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' mtcars <- data.frame(id=1:NROW(mtcars), mtcars)
 #' write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
