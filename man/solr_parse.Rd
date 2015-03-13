@@ -2,6 +2,7 @@
 % Please edit documentation in R/parsers.r
 \name{solr_parse}
 \alias{solr_parse}
+\alias{solr_parse.create}
 \alias{solr_parse.ping}
 \alias{solr_parse.sr_facet}
 \alias{solr_parse.sr_group}
@@ -14,6 +15,8 @@
 solr_parse(input, parsetype = NULL, concat)
 
 \method{solr_parse}{ping}(input, parsetype = NULL, concat = ",")
+
+\method{solr_parse}{create}(input, parsetype = NULL, concat = ",")
 
 \method{solr_parse}{sr_facet}(input, parsetype = NULL, concat = ",")
 

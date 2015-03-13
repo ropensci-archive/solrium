@@ -28,6 +28,17 @@ solr_parse.ping <- function(input, parsetype=NULL, concat=',') {
          json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 }
 
+#' @method solr_parse create
+#' @export
+#' @rdname solr_parse
+solr_parse.create <- function(input, parsetype=NULL, concat=',') {
+  wt <- attributes(input)$wt
+  switch(wt,
+         xml = xmlParse(input),
+         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE),
+         csv = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
+  )
+}
 
 #' @method solr_parse sr_facet
 #' @export
