@@ -122,24 +122,6 @@ solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3,
 solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3,
    base=url)
 
-# Parse data, using the USGS BISON API
-url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-out <- solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'),
-   base=url, raw=TRUE)
-solr_parse(out, 'df')
-## gives the same result
-solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), base=url)
-
-## You can choose how to combine elements longer than length 1
-solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), base=url,
-   parsetype='df', concat=';')
-
-# Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
-## the species names endpoint
-url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-solr_search(q='*:*', base=url2, parsetype='list', rows=2)
-solr_search(scientificName='Helianthus annuus', fl=c('scientificName','TSNs'), base=url2)
-
 # FunctionQuery queries
 ## This kind of query allows you to use the actual values of fields to calculate
 ## relevancy scores for returned documents
