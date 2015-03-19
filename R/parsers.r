@@ -186,7 +186,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
   input <- switch(wt,
     xml = xmlParse(input),
     json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE),
-    csv = read.table(text = input, sep = ",", stringsAsFactors = FALSE, header = TRUE)
+    csv = read.table(text = input, sep = ",", stringsAsFactors = FALSE, header = TRUE, fill = TRUE)
   )
 
   if(wt=='json') {
