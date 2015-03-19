@@ -3,8 +3,8 @@ Title: General Purpose R Interface to Solr
 Description: This package provides a set of functions for querying and parsing
     data from Solr endpoints (local and remote), including search, faceting,
     highlighting, stats, and 'more like this'.
-Version: 0.1.8.999
-Date: 2015-03-12
+Version: 0.1.9.999
+Date: 2015-03-19
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 License: MIT + file LICENSE
@@ -12,6 +12,7 @@ URL: https://github.com/ropensci/solr
 BugReports: http://www.github.com/ropensci/solr/issues
 VignetteBuilder: knitr
 Imports:
+    dplyr,
     plyr,
     httr,
     XML,

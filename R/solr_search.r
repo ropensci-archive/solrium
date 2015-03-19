@@ -35,25 +35,7 @@
 #'    base=url)
 #' solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3, 
 #'    base=url)
-#' 
-#' # Parse data, using the USGS BISON API
-#' url <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-#' out <- solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), 
-#'    base=url, raw=TRUE)
-#' solr_parse(out, 'df')
-#' ## gives the same result
-#' solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), base=url)
-#' 
-#' ## You can choose how to combine elements longer than length 1
-#' solr_search(q='*:*', fl=c('scientificName','decimalLatitude','decimalLongitude'), base=url, 
-#'    parsetype='df', concat=';')
-#' 
-#' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
-#' ## the species names endpoint
-#' url2 <- "http://bisonapi.usgs.ornl.gov/solr/occurrences/select"
-#' solr_search(q='*:*', base=url2, parsetype='list', rows=2)
-#' solr_search(scientificName='Helianthus annuus', fl=c('scientificName','TSNs'), base=url2)
-#' 
+#'    
 #' # FunctionQuery queries
 #' ## This kind of query allows you to use the actual values of fields to calculate 
 #' ## relevancy scores for returned documents
@@ -95,8 +77,8 @@
 solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL, 
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL, 
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL, 
-  base = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE)
-{
+  base = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE) {
+  
   if(is.null(base)){
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
@@ -114,5 +96,9 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   }
 
   out <- structure(solr_GET(base, args, callopts, verbose), class="sr_search", wt=wt)
-  if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
+  if(raw) { 
+    return( out ) 
+  } else {
+    solr_parse(out, parsetype, concat) 
+  }
 }
