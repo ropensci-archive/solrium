@@ -21,9 +21,6 @@
 #' to the search and not to requests in general. Time is in milliseconds. Values <= 0 
 #' mean no time restriction. Partial results may be returned (if there are any).
 #' @param qt Which query handler used.
-#' @param wt (character) Data type returned, defaults to 'csv'. One of json, xml, or csv. If json, 
-#' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-#' parse. If csv, uses \code{\link{read.table}} to parse. See Details.
 #' @param NOW Set a fixed time for evaluating Date based expresions 
 #' @param TZ Time zone, you can override the default.
 #' @param echoHandler If the echoHandler parameter is true, Solr places the name of 
@@ -47,6 +44,3 @@
 #' is more complicated in XML format, but you can do that on your own.
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... Further args.
-#' 
-#' @details \code{wt=csv} gives the fastest performance at least in all the cases we have
-#' tested in, thus it's the default value for \code{wt}.
