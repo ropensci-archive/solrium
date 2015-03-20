@@ -46,9 +46,9 @@ mean no time restriction. Partial results may be returned (if there are any).}
 
 \item{qt}{Which query handler used.}
 
-\item{wt}{(character) Data type returned, defaults to 'json'. One of json, xml, or csv. If json,
+\item{wt}{(character) Data type returned, defaults to 'csv'. One of json, xml, or csv. If json,
 uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
-parse. If csv, uses \code{\link{read.table}} to parse.}
+parse. If csv, uses \code{\link{read.table}} to parse. See Details.}
 
 \item{NOW}{Set a fixed time for evaluating Date based expresions}
 
@@ -90,6 +90,10 @@ XML, JSON, a list, or data.frame
 }
 \description{
 Solr search.
+}
+\details{
+\code{wt=csv} gives the fastest performance at least in all the cases we have
+tested in, thus it's the default value for \code{wt}.
 }
 \examples{
 \dontrun{
