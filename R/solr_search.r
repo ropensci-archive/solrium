@@ -3,6 +3,11 @@
 #' @import httr XML
 #' @template search
 #' @return XML, JSON, a list, or data.frame
+#' @param wt (character) One of json, xml, or csv. Data type returned, defaults to 'csv'. 
+#' If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+#' \code{\link[XML]{xmlParse}} to parse. If csv, uses \code{\link{read.table}} to parse. 
+#' \code{wt=csv} gives the fastest performance at least in all the cases we have
+#' tested in, thus it's the default value for \code{wt}.
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 #' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
 #' @export
