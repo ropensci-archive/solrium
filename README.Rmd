@@ -5,7 +5,7 @@ solr
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
-  warning = FALSE, 
+  warning = FALSE,
   message = FALSE
 )
 ```
@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 [![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
 [![Build status](https://ci.appveyor.com/api/projects/status/ytgtb62gsgf5hddi/branch/master)](https://ci.appveyor.com/project/sckott/solr/branch/master)
 [![Coverage Status](https://coveralls.io/repos/ropensci/solr/badge.svg)](https://coveralls.io/r/ropensci/solr)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solr)](https://github.com/metacran/cranlogs.app)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
@@ -72,7 +73,7 @@ First publication by journal
 solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", base=url, key=key)
 ```
 
-Search group query : Last 3 publications of 2013.  
+Search group query : Last 3 publications of 2013.
 
 ```{r}
 solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', base=url, key=key)
