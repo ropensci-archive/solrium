@@ -187,7 +187,7 @@ Most of the examples above use the PLOS search API... :)
 
 ### Meta
 
-* Please report any issues or bugs](https://github.com/ropensci/solr/issues).
+* Please [report any issues or bugs](https://github.com/ropensci/solr/issues).
 * License: MIT
 * Get citation information for `solr` in R doing `citation(package = 'solr')`
 

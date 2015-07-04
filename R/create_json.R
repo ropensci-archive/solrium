@@ -17,20 +17,21 @@
 #' @examples \dontrun{
 #' # from files
 #' ## from json, json is the default wt value
-#' create(files = "~/books.json")
+#' create_json(files = "~/books.json")
 #' ## from xml
-#' create(files = "~/hd.xml", wt="xml")
+#' create_json(files = "~/hd.xml", wt="xml")
 #' }
-create_json <- function(base = 'http://localhost:8983', files, wt = 'json', verbose = TRUE, raw = FALSE, 
-                        callopts = list()) {
+create_json <- function(base = 'http://localhost:8983', files, commit = TRUE, wt = 'json', 
+                        verbose = TRUE, raw = FALSE, ...) {
   
-  if(is.null(base)) stop("You must provide a url")
-  docreate(file.path(base, 'solr/update/json'), files, args, callopts, verbose, raw)
+  if (is.null(base)) stop("You must provide a url")
+  args <- sc(list(commit = asl(commit), wt = 'json'))
+  docreate(file.path(base, 'solr/update/json'), files, args = , callopts, verbose, raw)
 }
 
 docreate <- function(base, files, args, content, callopts, verbose, raw) {
-  out <- structure(solr_POST(base, files, args, content, callopts, verbose), class="create", wt=args$wt)
-  if(raw) { 
+  out <- structure(solr_POST(base, files, args, content, callopts, verbose), class = "create", wt = args$wt)
+  if (raw) { 
     return(out) 
   } else { 
     solr_parse(out) 

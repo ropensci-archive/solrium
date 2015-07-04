@@ -51,3 +51,15 @@ solr_POST <- function(base, body, args, content, callopts, verbose) {
 replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }
 
 sc <- function (l) Filter(Negate(is.null), l)
+
+asl <- function(z) {
+  if (is.logical(z) || tolower(z) == "true" || tolower(z) == "false") {
+    if (z) {
+      return('true')
+    } else {
+      return('false')
+    }
+  } else {
+    return(z)
+  }
+}

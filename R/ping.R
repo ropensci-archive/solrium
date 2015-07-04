@@ -26,9 +26,14 @@
 ping <- function(base = 'http://localhost:8983', wt = 'json', verbose = TRUE, raw = FALSE, 
                  callopts = list()) {
   
-  if(is.null(base)){
+  if (is.null(base)) {
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
-  out <- structure(solr_GET(file.path(base, 'solr/admin/ping'), args=list(wt = wt), callopts, verbose), class="ping", wt=wt)
-  if(raw){ return( out ) } else { solr_parse(out) }
+  out <- structure(solr_GET(file.path(base, 'solr/admin/ping'), args = list(wt = wt), 
+                            callopts, verbose), class = "ping", wt = wt)
+  if (raw) { 
+    return( out ) 
+  } else { 
+    solr_parse(out) 
+  }
 }

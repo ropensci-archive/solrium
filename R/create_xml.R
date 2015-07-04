@@ -17,11 +17,11 @@
 #' @examples \dontrun{
 #' # from files
 #' ## from json, json is the default wt value
-#' create(files = "~/books.json")
+#' create_xml(files = "~/books.json")
 #' ## from csv
-#' create(files = "~/books.csv", wt="csv")
+#' create_xml(files = "~/books.csv", wt="csv")
 #' ## from xml
-#' create(files = "~/hd.xml", wt="xml")
+#' create_xml(files = "~/hd.xml", wt="xml")
 #' }
 create_xml <- function(base = 'http://localhost:8983', files, wt = 'json', verbose = TRUE, raw = FALSE, 
                    callopts = list()) {

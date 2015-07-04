@@ -10,10 +10,10 @@ Local Solr setup
 
 1. If you don't have homebrew installed, install homebrew by doing ``. If you have homebrew skip to step 2.
 2. Install solr by doing `brew install solr`. This installed solr v.4.5.1
-3. Navigate in your terminal to an example Solr database: `cd /usr/local/Cellar/solr/4.5.1/libexec/example/`
+3. Navigate in your terminal to an example Solr database: `cd /usr/local/Cellar/solr/4.5.1/example/`
 4. Start solr: `java -jar start.jar`
 5. Navigate in your browser to [http://localhost:8983/solr/#/](http://localhost:8983/solr/#/)
-6. Navigate in your terminal to `cd /usr/local/Cellar/solr/4.5.1/libexec/example/exampledocs/`, then execute `./post.sh vidcard.xml` in that directory. This inserts some data into the example database.
+6. Navigate in your terminal to `cd /usr/local/Cellar/solr/4.5.1/example/exampledocs/`, then execute `./post.sh vidcard.xml` in that directory. This inserts some data into the example database.
 
 Try this query in your browser: [http://localhost:8983/solr/select?q=*:*&wt=json](http://localhost:8983/solr/select?q=*:*&wt=json)
 
