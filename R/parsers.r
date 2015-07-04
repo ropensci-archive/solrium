@@ -2,7 +2,6 @@
 #'
 #' See details.
 #'
-#' @import XML
 #' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr rbind_all as_data_frame tbl_df
