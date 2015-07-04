@@ -96,6 +96,10 @@ default is commit=false to avoid the potential performance impact of frequent co
 \description{
 Update documents using CSV
 }
+\note{
+SOLR v1.2 was first version to support csv. See
+\url{https://issues.apache.org/jira/browse/SOLR-66}
+}
 \examples{
 \dontrun{
 mtcars <- data.frame(id=1:NROW(mtcars), mtcars)

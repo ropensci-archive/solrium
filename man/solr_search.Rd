@@ -93,6 +93,10 @@ XML, JSON, a list, or data.frame
 \description{
 Solr search.
 }
+\note{
+SOLR v1.2 was first version to support csv. See
+\url{https://issues.apache.org/jira/browse/SOLR-66}
+}
 \examples{
 \dontrun{
 url <- 'http://api.plos.org/search'

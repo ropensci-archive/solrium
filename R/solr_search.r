@@ -9,6 +9,8 @@
 #' tested in, thus it's the default value for \code{wt}.
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 #' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
+#' @note SOLR v1.2 was first version to support csv. See 
+#' \url{https://issues.apache.org/jira/browse/SOLR-66}
 #' @export
 #' @examples \dontrun{
 #' url <- 'http://api.plos.org/search'

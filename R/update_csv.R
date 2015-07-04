@@ -11,6 +11,8 @@
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param callopts curl options passed on to \code{\link[httr]{GET}}
+#' @note SOLR v1.2 was first version to support csv. See 
+#' \url{https://issues.apache.org/jira/browse/SOLR-66}
 #' @examples \dontrun{
 #' mtcars <- data.frame(id=1:NROW(mtcars), mtcars)
 #' write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
