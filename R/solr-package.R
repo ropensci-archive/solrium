@@ -36,6 +36,8 @@
 #' 
 #' Let us know if there's any further performance improvements we can make.
 #' 
+#' @importFrom utils URLdecode
+#' @importFrom methods is
 #' @name solr-package
 #' @aliases solr
 #' @docType package
