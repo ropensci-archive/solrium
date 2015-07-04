@@ -1,0 +1,13 @@
+<add>
+  <doc>
+    <field name="id">05991</field>
+    <field name="name">"Cars and bikes"</field>
+    <field name="author">"Hello world"</field>
+    <field name="series_t">"A series of books"</field>
+    <field name="sequence_i">1</field>
+    <field name="genre_s">"science fiction"</field>
+    <field name="inStock">true</field>
+    <field name="price">12.75</field>
+    <field name="pages_i">3</field>
+  </doc>
+</add>

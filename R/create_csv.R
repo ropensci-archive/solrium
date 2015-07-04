@@ -1,6 +1,7 @@
-#' Create documents from a CSV file
+#' Update documents using CSV
 #' 
 #' @export
+#' @family update
 #' @template csvcreate
 #' @param base (character) URL endpoint. This is different from the other functions in that we aren't 
 #' hitting a search endpoint. Pass in here 
@@ -13,9 +14,9 @@
 #' @examples \dontrun{
 #' mtcars <- data.frame(id=1:NROW(mtcars), mtcars)
 #' write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
-#' create_csv(files = "~/mtcars.csv")
+#' update_csv(files = "~/mtcars.csv")
 #' }
-create_csv <- function(base = 'http://localhost:8983', files, separator = ',', header = TRUE,
+update_csv <- function(base = 'http://localhost:8983', files, separator = ',', header = TRUE,
                        fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE, 
                        encapsulator = NULL, escape = NULL, keepEmpty = FALSE, literal = NULL,
                        map = NULL, split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,

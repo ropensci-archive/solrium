@@ -33,7 +33,7 @@ solr_GET <- function(base, args, callopts, verbose){
 }
 
 # POST helper fxn
-solr_POST <- function(base, body, args, content, callopts, verbose) {
+solr_POST <- function(base, body, args, content, verbose, ...) {
   invisible(match.arg(args$wt, c("xml","json","csv")))
   ctype <- switch(content, 
                   xml = content_type_xml(),
@@ -41,7 +41,7 @@ solr_POST <- function(base, body, args, content, callopts, verbose) {
                   csv = content_type("text/plain; charset=utf-8")
   )
   args <- lapply(args, function(x) if(is.logical(x)) tolower(x) else x)
-  tt <- POST(base, query = args, body = upload_file(path = body), ctype, callopts)
+  tt <- POST(base, query = args, body = upload_file(path = body), ctype, ...)
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   content(tt, as="text")
@@ -62,4 +62,13 @@ asl <- function(z) {
   } else {
     return(z)
   }
+}
+
+docreate <- function(base, files, args, content, verbose, raw, ...) {
+  out <- structure(solr_POST(base, files, args, content, verbose, ...), class = "create", wt = args$wt)
+  if (raw) { 
+    return(out) 
+  } else { 
+    solr_parse(out) 
+  } 
 }

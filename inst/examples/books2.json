@@ -1,0 +1,51 @@
+[
+  {
+    "id" : "343334534545",
+    "cat" : ["book","hardcover"],
+    "name" : "Bears, lions",
+    "author" : "Foo bar",
+    "series_t" : "Percy Jackson and the Olympians",
+    "sequence_i" : 1,
+    "genre_s" : "fantasy",
+    "inStock" : true,
+    "price" : 12.50,
+    "pages_i" : 384
+  }
+,
+  {
+    "id" : "29234928423434",
+    "cat" : ["book","paperback"],
+    "name" : "The Sea of Monsters",
+    "author" : "Rick Bick",
+    "series_t" : "Stuff and things",
+    "sequence_i" : 2,
+    "genre_s" : "fantasy",
+    "inStock" : true,
+    "price" : 3.49,
+    "pages_i" : 404
+  }
+,
+  {
+    "id" : "3345345345345",
+    "cat" : ["book","paperback"],
+    "name" : "Sophie's World : The Roman Philosophers",
+    "author" : "Jill Brown",
+    "sequence_i" : 1,
+    "genre_s" : "fantasy",
+    "inStock" : true,
+    "price" : 4.07,
+    "pages_i" : 64
+  }
+,
+  {
+    "id" : "2343454435",
+    "cat" : ["book","paperback"],
+    "name" : "Lucene in Action, Third Edition",
+    "author" : "Michael McCandless",
+    "sequence_i" : 1,
+    "genre_s" : "IT",
+    "inStock" : true,
+    "price" : 34.50,
+    "pages_i" : 375
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "add": {
+    "doc": {
+      "id" : "345",
+      "cat" : ["book","hardcover"],
+      "name" : "Cars and bikes",
+      "author" : "Hello world",
+      "series_t" : "A series of books",
+      "sequence_i" : 1,
+      "genre_s" : "science fiction",
+      "inStock" : true,
+      "price" : 12.75,
+      "pages_i" : 3
+    }
+  }
+}

@@ -1,0 +1,50 @@
+<add>
+  <doc>
+    <field name="id">978-0641723445</field>
+    <field name="cat">book,hardcover</field>
+    <field name="name">The Lightning Thief</field>
+    <field name="author">Rick Riordan</field>
+    <field name="series_t">Percy Jackson and the Olympians</field>
+    <field name="sequence_i">1</field>
+    <field name="genre_s">fantasy</field>
+    <field name="inStock">TRUE</field>
+    <field name="price">12.5</field>
+    <field name="pages_i">384</field>
+  </doc>
+  <doc>
+    <field name="id">978-1423103349</field>
+    <field name="cat">book,paperback</field>
+    <field name="name">The Sea of Monsters</field>
+    <field name="author">Rick Riordan</field>
+    <field name="series_t">Percy Jackson and the Olympians</field>
+    <field name="sequence_i">2</field>
+    <field name="genre_s">fantasy</field>
+    <field name="inStock">TRUE</field>
+    <field name="price">6.49</field>
+    <field name="pages_i">304</field>
+  </doc>
+  <doc>
+    <field name="id">978-1857995879</field>
+    <field name="cat">book,paperback</field>
+    <field name="name">Sophies World : The Greek Philosophers</field>
+    <field name="author">Jostein Gaarder</field>
+    <field name="series_t">NA</field>
+    <field name="sequence_i">1</field>
+    <field name="genre_s">fantasy</field>
+    <field name="inStock">TRUE</field>
+    <field name="price">3.07</field>
+    <field name="pages_i">64</field>
+  </doc>
+  <doc>
+    <field name="id">978-1933988177</field>
+    <field name="cat">book,paperback</field>
+    <field name="name">Lucene in Action, Second Edition</field>
+    <field name="author">Michael McCandless</field>
+    <field name="series_t">NA</field>
+    <field name="sequence_i">1</field>
+    <field name="genre_s">IT</field>
+    <field name="inStock">TRUE</field>
+    <field name="price">30.5</field>
+    <field name="pages_i">475</field>
+  </doc>
+</add>
