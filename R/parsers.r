@@ -2,7 +2,8 @@
 #'
 #' See details.
 #'
-#' @import XML jsonlite
+#' @import XML
+#' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr rbind_all as_data_frame tbl_df
 #' @param input Output from solr_facet
@@ -180,7 +181,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',')
 #' @export
 #' @rdname solr_parse
 solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
-  
+
   stopifnot(is(input, "sr_search"))
   wt <- attributes(input)$wt
   input <- switch(wt,
@@ -196,8 +197,8 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
         lapply(x, function(y) {
           tmp <- if (length(y) > 1) {
             paste(y, collapse = concat)
-          } else { 
-            y  
+          } else {
+            y
           }
           if (is(y, "list")) unlist(tmp) else tmp
         })
@@ -250,8 +251,8 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
         lapply(y, function(z) {
           if (length(z) > 1) {
             paste(z, collapse = concat)
-          } else { 
-            z  
+          } else {
+            z
           }
         })
       })
@@ -265,8 +266,8 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
           lapply(y, function(z){
             if (length(z) > 1) {
               paste(z, collapse = concat)
-            } else { 
-              z  
+            } else {
+              z
             }
           })
         })
@@ -279,8 +280,8 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
           data.frame(lapply(y, function(z) {
             if (length(z) > 1) {
               paste(z, collapse = concat)
-            } else { 
-              z  
+            } else {
+              z
             }
           }), stringsAsFactors = FALSE)
         }))
