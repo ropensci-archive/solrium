@@ -1,9 +1,10 @@
 <!--
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{solr vignette}
+%\VignetteEncoding{UTF-8}
 -->
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, echo=FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,

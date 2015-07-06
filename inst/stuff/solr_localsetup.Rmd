@@ -1,6 +1,7 @@
 <!--
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Local Solr setup}
+%\VignetteEncoding{UTF-8}
 -->
 
 Local Solr setup
