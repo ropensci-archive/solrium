@@ -1,15 +1,17 @@
-# tests for solr_stats fxn in solr
 context("solr_stats")
 
-url <- 'http://api.plos.org/search'
+test_that("solr_stats works", {
+  skip_on_cran()
+  
+  url <- 'http://api.plos.org/search'
+  
+  a <- solr_stats(q='science', stats.field='counter_total_all', base=url, raw=TRUE, verbose=FALSE)
+  b <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), base=url, verbose=FALSE)
+  c <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), base=url, raw=TRUE, verbose=FALSE)
+  d <- solr_parse(c) # list
+  e <- solr_parse(c, 'df') # data.frame
 
-a <- solr_stats(q='science', stats.field='counter_total_all', base=url, raw=TRUE, verbose=FALSE)
-b <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), base=url, verbose=FALSE)
-c <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), base=url, raw=TRUE, verbose=FALSE)
-d <- solr_parse(c) # list
-e <- solr_parse(c, 'df') # data.frame
-
-test_that("solr_stats returns the correct dimensions", {
+  # correct dimenions
   expect_equal(length(a), 1)
   expect_equal(length(b), 2)
   expect_equal(nrow(b$data), 2)
@@ -20,9 +22,8 @@ test_that("solr_stats returns the correct dimensions", {
   expect_equal(length(e$facet$alm_twitterCount), 2)
   expect_equal(NCOL(e$facet$alm_twitterCount$volume), 9)
   expect_equal(length(e$facet$alm_twitterCount$volume$missing), 13)
-})
 
-test_that("solr_stats returns the correct classes", {
+  # classes
   expect_is(a, "sr_stats")
   expect_is(b, "list")
   expect_is(b$data, "data.frame")

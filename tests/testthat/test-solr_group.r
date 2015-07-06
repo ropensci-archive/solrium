@@ -1,21 +1,23 @@
-# tests for solr_group fxn in solr
 context("solr_group")
 
-url <- 'http://api.plos.org/search'
-
-a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url, verbose=FALSE)
-b <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
-   group.sort='alm_twitterCount desc', base=url, verbose=FALSE)
-out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', base=url, raw=TRUE, verbose=FALSE)
-c <- out
-d <- solr_parse(out, 'df')
-e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-                group.format='grouped', group.main='true', base=url, verbose=FALSE)
-
-suppressPackageStartupMessages(library('jsonlite', quietly = TRUE))
-f <- jsonlite::fromJSON(out, FALSE)
-
-test_that("solr_search returns the correct dimensions in the data.frame", {
+test_that("solr_group works", {
+  skip_on_cran()
+  
+  url <- 'http://api.plos.org/search'
+  
+  a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url, verbose=FALSE)
+  b <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
+                  group.sort='alm_twitterCount desc', base=url, verbose=FALSE)
+  out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', base=url, raw=TRUE, verbose=FALSE)
+  c <- out
+  d <- solr_parse(out, 'df')
+  e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
+                  group.format='grouped', group.main='true', base=url, verbose=FALSE)
+  
+  suppressPackageStartupMessages(library('jsonlite', quietly = TRUE))
+  f <- jsonlite::fromJSON(out, FALSE)
+  
+  # correct dimensions
   expect_equal(NCOL(a), 5)
   expect_equal(NCOL(b), 6)
   expect_that(length(c), equals(1))
@@ -24,9 +26,8 @@ test_that("solr_search returns the correct dimensions in the data.frame", {
   expect_equal(NCOL(e), 4)
   expect_that(length(f), equals(1))
   expect_that(length(f$grouped), equals(2))
-})
-
-test_that("solr_search returns the correct classes", {
+  
+  #  correct classes
   expect_is(a, "data.frame")
   expect_is(b, "data.frame")
   expect_is(c, "sr_group")
