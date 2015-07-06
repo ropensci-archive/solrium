@@ -1,6 +1,10 @@
 #' General purpose R interface to Solr.
+#' 
+#' This package has support for all the search endpoints, as well as a suite
+#' of functions for managing a Solr database, including adding and deleting 
+#' documents. 
 #'
-#' @section Important functions:
+#' @section Important search functions:
 #'
 #' \itemize{
 #'   \item \code{\link{solr_search}} - General search, only returns documents
@@ -12,6 +16,15 @@
 #'   \item \code{\link{solr_group}} - Group search (w/o general search)
 #'   \item \code{\link{solr_stats}} - Stats search (w/o general search)
 #' }
+#' 
+#' @section Important Solr management functions:
+#'
+#' \itemize{
+#'   \item \code{\link{update_json}} - Add or delete documents using json in a file
+#'   \item \code{\link{add}} - Add documents via an R list or data.frame
+#'   \item \code{\link{delete_by_id}} - Delete documents by ID
+#'   \item \code{\link{delete_by_query}} - Delete documents by query
+#' } 
 #'
 #' @section Vignettes:
 #'
