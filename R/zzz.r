@@ -33,24 +33,50 @@ solr_GET <- function(base, args, callopts, verbose){
 }
 
 # POST helper fxn
-solr_POST <- function(base, body, args, content, verbose, ...) {
+solr_POST <- function(base, body, args, content, ...) {
+  invisible(match.arg(args$wt, c("xml", "json", "csv")))
+  ctype <- get_ctype(content)
+  args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
+  tt <- POST(base, query = args, body = upload_file(path = body), ctype)
+  get_response(tt)
+}
+
+# POST helper fxn for R objects
+obj_POST <- function(base, body, args, ...) {
   invisible(match.arg(args$wt, c("xml","json","csv")))
-  ctype <- switch(content, 
-                  xml = content_type_xml(),
-                  json = content_type_json(),
-                  csv = content_type("text/plain; charset=utf-8")
+  args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
+  body <- jsonlite::toJSON(body, auto_unbox = TRUE)
+  tt <- POST(base, query = args, body = body, content_type_json())
+  get_response(tt)
+}
+
+get_ctype <- function(x) {
+  switch(x, 
+         xml = content_type_xml(),
+         json = content_type_json(),
+         csv = content_type("text/plain; charset=utf-8")
   )
-  args <- lapply(args, function(x) if(is.logical(x)) tolower(x) else x)
-  tt <- POST(base, query = args, body = upload_file(path = body), ctype, ...)
-  if(verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  content(tt, as="text")
+}
+
+get_response <- function(x, as = "text") {
+  if (x$status_code > 201) {
+    err <- jsonlite::fromJSON(httr::content(x))$error
+    stop(sprintf("%s: %s", err$code, err$msg), call. = FALSE)
+  } else {
+    content(x, as = as)
+  }
 }
 
 # small function to replace elements of length 0 with NULL
-replacelen0 <- function(x) if(length(x) < 1){ NULL } else { x }
-
-sc <- function (l) Filter(Negate(is.null), l)
+replacelen0 <- function(x) {
+  if (length(x) < 1) { 
+    NULL 
+  } else { 
+    x 
+  }
+}
+  
+sc <- function(l) Filter(Negate(is.null), l)
 
 asl <- function(z) {
   if (is.logical(z) || tolower(z) == "true" || tolower(z) == "false") {
@@ -64,8 +90,17 @@ asl <- function(z) {
   }
 }
 
-docreate <- function(base, files, args, content, verbose, raw, ...) {
-  out <- structure(solr_POST(base, files, args, content, verbose, ...), class = "create", wt = args$wt)
+docreate <- function(base, files, args, content, raw, ...) {
+  out <- structure(solr_POST(base, files, args, content, ...), class = "update", wt = args$wt)
+  if (raw) { 
+    return(out) 
+  } else { 
+    solr_parse(out) 
+  } 
+}
+
+objcreate <- function(base, dat, args, verbose, raw, ...) {
+  out <- structure(solr_POST(base, dat, args, "json", ...), class = "update", wt = args$wt)
   if (raw) { 
     return(out) 
   } else { 

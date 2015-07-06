@@ -4,8 +4,8 @@
 \alias{update_xml}
 \title{Update documents using XML}
 \usage{
-update_xml(files, commit = TRUE, wt = "json", verbose = TRUE,
-  raw = FALSE, base = "http://localhost:8983", ...)
+update_xml(files, commit = TRUE, wt = "json", raw = FALSE,
+  base = "http://localhost:8983", ...)
 }
 \arguments{
 \item{files}{Path to file to load into Solr}
@@ -16,8 +16,6 @@ Deafult: \code{TRUE}}
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
 parse}
-
-\item{verbose}{If \code{TRUE} (default) the url call used printed to console.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
@@ -52,6 +50,6 @@ update_xml(file)
 }
 \seealso{
 Other update: \code{\link{update_csv}};
-  \code{\link{update_json}}
+  \code{\link{update_json}}; \code{\link{update}}
 }
 

@@ -2,7 +2,6 @@
 % Please edit documentation in R/parsers.r
 \name{solr_parse}
 \alias{solr_parse}
-\alias{solr_parse.create}
 \alias{solr_parse.ping}
 \alias{solr_parse.sr_facet}
 \alias{solr_parse.sr_group}
@@ -10,13 +9,14 @@
 \alias{solr_parse.sr_mlt}
 \alias{solr_parse.sr_search}
 \alias{solr_parse.sr_stats}
+\alias{solr_parse.update}
 \title{Parse raw data from solr_search, solr_facet, or solr_highlight.}
 \usage{
 solr_parse(input, parsetype = NULL, concat)
 
 \method{solr_parse}{ping}(input, parsetype = NULL, concat = ",")
 
-\method{solr_parse}{create}(input, parsetype = NULL, concat = ",")
+\method{solr_parse}{update}(input, parsetype = NULL, concat = ",")
 
 \method{solr_parse}{sr_facet}(input, parsetype = NULL, concat = ",")
 

@@ -85,24 +85,24 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   base = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE) {
 
-  if(is.null(base)){
+  if (is.null(base)) {
     stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
   }
 
-  if(!is.null(fl)) fl <- paste0(fl, collapse = ",")
-  args <- sc(list(q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
-      pageScore=pageScore, fl=fl, fq=fq, defType=defType,
-      timeAllowed=timeAllowed, qt=qt, wt=wt, NOW=NOW, TZ=TZ,
-      echoHandler=echoHandler, echoParams=echoParams))
+  if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
+  args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
+      pageScore = pageScore, fl = fl, fq = fq, defType = defType,
+      timeAllowed = timeAllowed, qt = qt, wt = wt, NOW = NOW, TZ = TZ,
+      echoHandler = echoHandler, echoParams = echoParams))
 
   # additional parameters
   args <- c(args, list(...))
-  if('query' %in% names(args)){
+  if ('query' %in% names(args)) {
     args <- args[!names(args) %in% "q"]
   }
 
-  out <- structure(solr_GET(base, args, callopts, verbose), class="sr_search", wt=wt)
-  if(raw) {
+  out <- structure(solr_GET(base, args, callopts, verbose), class = "sr_search", wt = wt)
+  if (raw) {
     return( out )
   } else {
     solr_parse(out, parsetype, concat)

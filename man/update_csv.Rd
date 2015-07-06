@@ -9,7 +9,7 @@ update_csv(base = "http://localhost:8983", files, separator = ",",
   trim = FALSE, encapsulator = NULL, escape = NULL, keepEmpty = FALSE,
   literal = NULL, map = NULL, split = NULL, rowid = NULL,
   rowidOffset = NULL, overwrite = NULL, commit = NULL, wt = "json",
-  verbose = TRUE, raw = FALSE, callopts = list())
+  raw = FALSE, ...)
 }
 \arguments{
 \item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
@@ -87,11 +87,9 @@ default is commit=false to avoid the potential performance impact of frequent co
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse}
 
-\item{verbose}{If TRUE (default) the url call used printed to console.}
-
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
 Update documents using CSV
@@ -109,6 +107,6 @@ update_csv(files = "~/mtcars.csv")
 }
 \seealso{
 Other update: \code{\link{update_json}};
-  \code{\link{update_xml}}
+  \code{\link{update_xml}}; \code{\link{update}}
 }
 

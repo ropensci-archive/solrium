@@ -29,10 +29,10 @@ solr_parse.ping <- function(input, parsetype=NULL, concat=',') {
          json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 }
 
-#' @method solr_parse create
+#' @method solr_parse update
 #' @export
 #' @rdname solr_parse
-solr_parse.create <- function(input, parsetype=NULL, concat=',') {
+solr_parse.update <- function(input, parsetype=NULL, concat=',') {
   wt <- attributes(input)$wt
   switch(wt,
          xml = xmlParse(input),

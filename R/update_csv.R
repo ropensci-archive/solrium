@@ -8,9 +8,8 @@
 #' @param files Path to file to load into Solr
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
-#' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
-#' @param callopts curl options passed on to \code{\link[httr]{GET}}
+#' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @note SOLR v1.2 was first version to support csv. See 
 #' \url{https://issues.apache.org/jira/browse/SOLR-66}
 #' @examples \dontrun{
@@ -22,8 +21,7 @@ update_csv <- function(base = 'http://localhost:8983', files, separator = ',', h
                        fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE, 
                        encapsulator = NULL, escape = NULL, keepEmpty = FALSE, literal = NULL,
                        map = NULL, split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
-                       commit = NULL, wt = 'json', verbose = TRUE, raw = FALSE, 
-                       callopts = list()) {
+                       commit = NULL, wt = 'json', raw = FALSE, ...) {
   
   if (is.null(base)) stop("You must provide a url")
   if (!is.null(fieldnames)) fieldnames <- paste0(fieldnames, collapse = ",")
@@ -32,5 +30,5 @@ update_csv <- function(base = 'http://localhost:8983', files, separator = ',', h
                   keepEmpty = keepEmpty, literal = literal, map = map, split = split, 
                   rowid = rowid, rowidOffset = rowidOffset, overwrite = overwrite,
                   commit = commit, wt = 'json'))
-  docreate(file.path(base, 'solr/update/csv'), files, args, content = "csv", callopts, verbose, raw)
+  docreate(file.path(base, 'solr/update/csv'), files, args, content = "csv", raw, ...)
 }
