@@ -2,7 +2,11 @@
 #' 
 #' @param x Documents, either as rows in a data.frame, or a list.
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
-#' Deafult: \code{TRUE}
+#' Default: \code{TRUE}
+#' @param commit_within (numeric) Milliseconds to commit the change, the document will be added 
+#' within that time. Default: NULL
+#' @param overwrite (logical) Overwrite documents with matching keys. Default: \code{TRUE}
+#' @param boost (numeric) Boost factor. Default: NULL
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse
@@ -27,22 +31,38 @@
 #' class(x)
 #' head(x)
 #' add(x)
+#' 
+#' # Use modifiers
+#' add(x, commit_within = 5000)
 #' }
-add <- function(x, commit = TRUE, wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+add <- function(x, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, 
+                wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
   UseMethod("add")
 }
 
 #' @export
-add.list <- function(x, commit = TRUE, wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+add.list <- function(x, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, 
+                     wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+  
   if (is.null(base)) stop("You must provide a url")
-  args <- sc(list(commit = asl(commit), wt = 'json'))
+  args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
+                  overwrite = asl(overwrite), wt = 'json'))
+  if (!is.null(boost)) {
+    x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
+  }
   obj_proc(file.path(base, 'solr/update/json'), x, args, raw, ...)
 }
 
 #' @export
-add.data.frame <- function(x, commit = TRUE, wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+add.data.frame <- function(x, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, 
+                           wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+  
   if (is.null(base)) stop("You must provide a url")
-  args <- sc(list(commit = asl(commit), wt = 'json'))
+  args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
+                  overwrite = asl(overwrite), wt = 'json'))
+  if (!is.null(boost)) {
+    x$boost <- boost
+  }
   x <- apply(x, 1, as.list)
   obj_proc(file.path(base, 'solr/update/json'), x, args, raw, ...)
 }

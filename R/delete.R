@@ -5,6 +5,10 @@
 #' @param query Query to use to delete documents
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Deafult: \code{TRUE}
+#' @param commit_within (numeric) Milliseconds to commit the change, the document will be added 
+#' within that time. Default: NULL
+#' @param overwrite (logical) Overwrite documents with matching keys. Default: \code{TRUE}
+#' @param boost (numeric) Boost factor. Default: NULL 
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse
@@ -25,7 +29,10 @@
 
 #' @export
 #' @name delete
-delete_by_id <- function(ids, commit = TRUE, wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+delete_by_id <- function(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
+                         boost = NULL, wt = 'json', raw = FALSE, 
+                         base = 'http://localhost:8983', ...) {
+  
   if (is.null(base)) stop("You must provide a url")
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = lapply(ids, function(z) list(id = z)))
@@ -34,7 +41,10 @@ delete_by_id <- function(ids, commit = TRUE, wt = 'json', raw = FALSE, base = 'h
 
 #' @export
 #' @name delete
-delete_by_query <- function(query, commit = TRUE, wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+delete_by_query <- function(query, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
+                            boost = NULL, wt = 'json', raw = FALSE, 
+                            base = 'http://localhost:8983', ...) {
+  
   if (is.null(base)) stop("You must provide a url")
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = list(query = query))

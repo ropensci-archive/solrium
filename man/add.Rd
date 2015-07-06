@@ -4,14 +4,22 @@
 \alias{add}
 \title{Add documents from R objects}
 \usage{
-add(x, commit = TRUE, wt = "json", raw = FALSE,
+add(x, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+  boost = NULL, wt = "json", raw = FALSE,
   base = "http://localhost:8983", ...)
 }
 \arguments{
 \item{x}{Documents, either as rows in a data.frame, or a list.}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
-Deafult: \code{TRUE}}
+Default: \code{TRUE}}
+
+\item{commit_within}{(numeric) Milliseconds to commit the change, the document will be added
+within that time. Default: NULL}
+
+\item{overwrite}{(logical) Overwrite documents with matching keys. Default: \code{TRUE}}
+
+\item{boost}{(numeric) Boost factor. Default: NULL}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
@@ -45,6 +53,9 @@ x <- read.csv(file, stringsAsFactors = FALSE)
 class(x)
 head(x)
 add(x)
+
+# Use modifiers
+add(x, commit_within = 5000)
 }
 }
 
