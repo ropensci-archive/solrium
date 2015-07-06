@@ -7,7 +7,6 @@
 ```{r, echo=FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
-  collapse = TRUE,
   warning = FALSE,
   message = FALSE
 )
@@ -37,13 +36,11 @@ Load
 library("solr")
 ```
 
-## Create documents
-
-### From R objects
+## Create documents from R objects
 
 For now, only lists and data.frame's supported.
 
-#### data.frame
+### data.frame
 
 ```{r}
 file <- system.file("examples", "books.csv", package = "solr")
@@ -53,7 +50,7 @@ head(x)
 add(x)
 ```
 
-#### list
+### list
 
 ```{r echo=FALSE}
 delete_by_id(1:2)
@@ -62,30 +59,6 @@ delete_by_id(1:2)
 ```{r}
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
 add(ss)
-```
-
-### From files
-
-#### CSV
-
-```{r}
-mtcars <- data.frame(id = 1:NROW(mtcars), mtcars)
-write.csv(mtcars[,1:3], file = "~/mtcars.csv", row.names = FALSE, quote = FALSE)
-update_csv(files = "~/mtcars.csv")
-```
-
-#### JSON
-
-```{r}
-file <- system.file("examples", "books2.json", package = "solr")
-update_json(file)
-```
-
-#### XML
-
-```{r}
-file <- system.file("examples", "books2.xml", package = "solr")
-update_xml(file)
 ```
 
 ## Delete documents
@@ -99,7 +72,7 @@ delete_by_id(1:3)
 ```
 
 ```{r}
-docs <- list(list(id = 1, price = 100, name = "brown"), 
+docs <- list(list(id = 1, price = 100, name = "brown"),
              list(id = 2, price = 500, name = "blue"),
              list(id = 3, price = 2000L, name = "pink"))
 add(docs)
@@ -157,11 +130,47 @@ This approach is best if you have many different things you want to do at once, 
 * `update_json()`
 * `update_csv()`
 
-There are separate functions for each of the data types as they take slightly different parameters - and to make it more clear that those are the three input options for data types. 
+There are separate functions for each of the data types as they take slightly different parameters - and to make it more clear that those are the three input options for data types.
 
-### from XML
+### XML
 
 ```{r}
-
+file <- system.file("examples", "books.xml", package = "solr")
+update_xml(file)
 ```
+
+### JSON
+
+```{r}
+file <- system.file("examples", "books.json", package = "solr")
+update_json(file)
+```
+
+### CSV
+
+```{r}
+file <- system.file("examples", "books.csv", package = "solr")
+update_csv(file)
+```
+
+### Add and delete in the same file
+
+Add a document first, that we can later delete
+
+```{r}
+ss <- list(list(id = 456, name = "cat"))
+add(ss)
+```
+
+Now add a new document, and delete the one we just made
+
+```{r}
+file <- system.file("examples", "add_delete.xml", package = "solr")
+cat(readLines(file), sep = "\n")
+update_xml(file)
+```
+
+### Notes
+
+Note that `update_xml()` and `update_json()` have exactly the same parameters, but simply use different data input formats. `update_csv()` is different in that you can't do provide document or field level boosts or other modifications. In addition `update_csv()` can accept not just csv, but tsv and other types of separators. 
 

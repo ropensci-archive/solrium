@@ -17,11 +17,12 @@
 #' write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
 #' update_csv(files = "~/mtcars.csv")
 #' }
-update_csv <- function(base = 'http://localhost:8983', files, separator = ',', header = TRUE,
+update_csv <- function(files, separator = ',', header = TRUE,
                        fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE, 
                        encapsulator = NULL, escape = NULL, keepEmpty = FALSE, literal = NULL,
                        map = NULL, split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
-                       commit = NULL, wt = 'json', raw = FALSE, ...) {
+                       commit = NULL, wt = 'json', raw = FALSE, 
+                       base = 'http://localhost:8983', ...) {
   
   if (is.null(base)) stop("You must provide a url")
   if (!is.null(fieldnames)) fieldnames <- paste0(fieldnames, collapse = ",")

@@ -4,17 +4,14 @@
 \alias{update_csv}
 \title{Update documents using CSV}
 \usage{
-update_csv(base = "http://localhost:8983", files, separator = ",",
-  header = TRUE, fieldnames = NULL, skip = NULL, skipLines = 0,
-  trim = FALSE, encapsulator = NULL, escape = NULL, keepEmpty = FALSE,
-  literal = NULL, map = NULL, split = NULL, rowid = NULL,
-  rowidOffset = NULL, overwrite = NULL, commit = NULL, wt = "json",
-  raw = FALSE, ...)
+update_csv(files, separator = ",", header = TRUE, fieldnames = NULL,
+  skip = NULL, skipLines = 0, trim = FALSE, encapsulator = NULL,
+  escape = NULL, keepEmpty = FALSE, literal = NULL, map = NULL,
+  split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
+  commit = NULL, wt = "json", raw = FALSE,
+  base = "http://localhost:8983", ...)
 }
 \arguments{
-\item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
-hitting a search endpoint. Pass in here}
-
 \item{files}{Path to file to load into Solr}
 
 \item{separator}{Specifies the character to act as the field separator. Default: ','}
@@ -88,6 +85,9 @@ default is commit=false to avoid the potential performance impact of frequent co
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
+
+\item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
+hitting a search endpoint. Pass in here}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
