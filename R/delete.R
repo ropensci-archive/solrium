@@ -27,7 +27,7 @@ delete_by_id <- function(ids, commit = TRUE, wt = 'json', raw = FALSE, base = 'h
   if (is.null(base)) stop("You must provide a url")
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = list(id = ids))
-  de_lete(file.path(base, 'solr/update/json'), body, args, raw, ...)
+  obj_proc(file.path(base, 'solr/update/json'), body, args, raw, ...)
 }
 
 #' @export
@@ -36,16 +36,10 @@ delete_by_query <- function(query, commit = TRUE, wt = 'json', raw = FALSE, base
   if (is.null(base)) stop("You must provide a url")
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = list(query = query))
-  out <- structure(obj_POST(file.path(base, 'solr/update/json'), body, args, ...), 
-                   class = "update", wt = args$wt)
-  if (raw) {
-    out
-  } else {
-    solr_parse(out) 
-  }
+  obj_proc(file.path(base, 'solr/update/json'), body, args, raw, ...)
 }
 
-de_lete <- function(url, body, args, raw, ...) {
+obj_proc <- function(url, body, args, raw, ...) {
   out <- structure(obj_POST(url, body, args, ...), class = "update", wt = args$wt)
   if (raw) {
     out

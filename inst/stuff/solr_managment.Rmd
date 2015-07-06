@@ -76,19 +76,22 @@ update_xml(file)
 
 ## Delete documents
 
-```{r delete_setup, echo=FALSE}
+Add some documents first
 
+```{r delete_setup}
+docs <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+add(docs)
 ```
 
 ### By id
 
-```{r}
+```{r deleteid}
 delete_by_id(ids = "EUR")
 ```
 
 ### By query
 
-```{r}
+```{r deletequery}
 delete_by_query(query = "manu:bank")
 ```
 
