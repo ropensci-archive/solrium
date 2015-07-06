@@ -1,9 +1,11 @@
 Package: solr
-Title: General Purpose R Interface to Solr
-Description: This package provides a set of functions for querying and parsing
-    data from Solr endpoints (local and remote), including search, faceting,
-    highlighting, stats, and 'more like this'.
-Version: 0.1.9.99960
+Title: General Purpose R Interface to 'Solr'
+Description: Provides a set of functions for querying and parsing data 
+    from 'Solr' 'endpoints' (local and remote), including search, 'faceting',
+    'highlighting', 'stats', and 'more like this'. In addition, some 
+    functionality is included for creating, deleting, and updating 
+    documents in a 'Solr' 'database'.
+Version: 0.1.9.99961
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 License: MIT + file LICENSE
