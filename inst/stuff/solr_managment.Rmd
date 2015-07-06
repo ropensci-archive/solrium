@@ -1,0 +1,94 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Solr document management}
+%\VignetteEncoding{UTF-8}
+-->
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+Solr document management
+=======================
+
+## Installation
+
+Stable version from CRAN
+
+```{r eval=FALSE}
+install.packages("solr")
+```
+
+Or the development version from GitHub
+
+```{r, eval=FALSE}
+install.packages("devtools")
+devtools::install_github("ropensci/solr")
+```
+
+Load
+
+```{r}
+library("solr")
+```
+
+## Create documents
+
+### From R objects
+
+For now, only data.frame's supported.
+
+```{r}
+file <- system.file("examples", "books.csv", package = "solr")
+x <- read.csv(file)
+class(x)
+update(x)
+```
+
+### From files
+
+#### CSV
+
+```{r}
+mtcars <- data.frame(id = 1:NROW(mtcars), mtcars)
+write.csv(mtcars[,1:3], file = "~/mtcars.csv", row.names = FALSE, quote = FALSE)
+update_csv(files = "~/mtcars.csv")
+```
+
+#### JSON
+
+```{r}
+file <- system.file("examples", "books2.json", package = "solr")
+update_json(file)
+```
+
+#### XML
+
+```{r}
+file <- system.file("examples", "books2.xml", package = "solr")
+update_xml(file)
+```
+
+## Delete documents
+
+```{r delete_setup, echo=FALSE}
+
+```
+
+### By id
+
+```{r}
+delete_by_id(ids = "EUR")
+```
+
+### By query
+
+```{r}
+delete_by_query(query = "manu:bank")
+```
+

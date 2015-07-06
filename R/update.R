@@ -4,13 +4,14 @@
 #' @template update
 #' @family update
 #' @param x Input, only data.frame supported right now
+#' @details Note that you have to have a unique field named \code{id}
+#' for each document. The example below already has that field. If you
+#' don't have it, add it in.
 #' @examples \dontrun{
-#' row.names(mtcars) <- NULL
-#' mtcars <- data.frame(id = 1:NROW(mtcars), mtcars)
-#' update(mtcars)
-#' 
 #' file <- system.file("examples", "books.csv", package = "solr")
 #' x <- read.csv(file)
+#' class(x)
+#' head(x)
 #' update(x)
 #' }
 update <- function(x, commit = TRUE, wt = 'json',

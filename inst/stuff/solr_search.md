@@ -1,13 +1,13 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{solr vignette}
+%\VignetteIndexEntry{Solr search}
 %\VignetteEncoding{UTF-8}
 -->
 
 
 
-solr vignette
-======
+Solr search
+===========
 
 **A general purpose R interface to [Apache Solr](http://lucene.apache.org/solr/)**
 
