@@ -1,0 +1,19 @@
+<update>
+	<add>
+	  <doc>
+	    <field name="id">978-0641723445</field>
+	    <field name="cat">book,hardcover</field>
+	    <field name="name">The Lightning Thief</field>
+	    <field name="author">Rick Riordan</field>
+	    <field name="series_t">Percy Jackson and the Olympians</field>
+	    <field name="sequence_i">1</field>
+	    <field name="genre_s">fantasy</field>
+	    <field name="inStock">TRUE</field>
+	    <field name="price">12.5</field>
+	    <field name="pages_i">384</field>
+	  </doc>
+	</add>
+	<delete>
+		<id>456</id>
+	</delete>
+</update>

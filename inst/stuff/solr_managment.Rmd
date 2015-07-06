@@ -41,13 +41,27 @@ library("solr")
 
 ### From R objects
 
-For now, only data.frame's supported.
+For now, only lists and data.frame's supported.
+
+#### data.frame
 
 ```{r}
 file <- system.file("examples", "books.csv", package = "solr")
 x <- read.csv(file)
 class(x)
-update(x)
+head(x)
+add(x)
+```
+
+#### list
+
+```{r echo=FALSE}
+delete_by_id(1:2)
+```
+
+```{r}
+ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+add(ss)
 ```
 
 ### From files
@@ -76,22 +90,78 @@ update_xml(file)
 
 ## Delete documents
 
+### By id
+
 Add some documents first
 
-```{r delete_setup}
-docs <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+```{r echo=FALSE}
+delete_by_id(1:3)
+```
+
+```{r}
+docs <- list(list(id = 1, price = 100, name = "brown"), 
+             list(id = 2, price = 500, name = "blue"),
+             list(id = 3, price = 2000L, name = "pink"))
 add(docs)
 ```
 
-### By id
+And the documents are now in your Solr database
+
+```{r}
+tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+```
+
+Now delete those documents just added
 
 ```{r deleteid}
-delete_by_id(ids = "EUR")
+delete_by_id(ids = c(1, 2, 3))
+```
+
+And now they are gone
+
+```{r}
+tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
 ```
 
 ### By query
 
+Add some documents first
+
+```{r}
+add(docs)
+```
+
+And the documents are now in your Solr database
+
+```{r}
+tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+```
+
+Now delete those documents just added
+
 ```{r deletequery}
-delete_by_query(query = "manu:bank")
+delete_by_query(query = "(name:blue OR name:pink)")
+```
+
+And now they are gone
+
+```{r}
+tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+```
+
+## Update documents from files
+
+This approach is best if you have many different things you want to do at once, e.g., delete and add files and set any additional options. The functions are:
+
+* `update_xml()`
+* `update_json()`
+* `update_csv()`
+
+There are separate functions for each of the data types as they take slightly different parameters - and to make it more clear that those are the three input options for data types. 
+
+### from XML
+
+```{r}
+
 ```
 

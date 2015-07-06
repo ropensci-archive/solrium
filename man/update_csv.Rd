@@ -107,6 +107,6 @@ update_csv(files = "~/mtcars.csv")
 }
 \seealso{
 Other update: \code{\link{update_json}};
-  \code{\link{update_xml}}; \code{\link{update}}
+  \code{\link{update_xml}}
 }
 

@@ -1,0 +1,19 @@
+{
+    "add": {
+        "doc": {
+            "id" : "978-0641723445",
+            "cat" : ["book","hardcover"],
+            "name" : "The Lightning Thief",
+            "author" : "Rick Riordan",
+            "series_t" : "Percy Jackson and the Olympians",
+            "sequence_i" : 1,
+            "genre_s" : "fantasy",
+            "inStock" : true,
+            "price" : 12.50,
+            "pages_i" : 384
+        }
+    },
+    "delete": {
+        "id" : "456"
+    }
+}

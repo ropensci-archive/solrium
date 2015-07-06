@@ -38,7 +38,9 @@ Delete documents by ID or query
 \examples{
 \dontrun{
 # Delete by ID
-# delete_by_id(ids = "EUR")
+# delete_by_id(ids = 9)
+## Many IDs
+# delete_by_id(ids = c(3, 4))
 
 # Delete by query
 # delete_by_query(query = "manu:bank")

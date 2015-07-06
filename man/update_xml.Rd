@@ -4,7 +4,9 @@
 \alias{update_xml}
 \title{Update documents using XML}
 \usage{
-update_xml(files, commit = TRUE, wt = "json", raw = FALSE,
+update_xml(files, commit = TRUE, optimize = FALSE, max_segments = 1,
+  expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
+  prepare_commit = NULL, wt = "json", raw = FALSE,
   base = "http://localhost:8983", ...)
 }
 \arguments{
@@ -12,6 +14,23 @@ update_xml(files, commit = TRUE, wt = "json", raw = FALSE,
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Deafult: \code{TRUE}}
+
+\item{optimize}{Should index optimization be performed before the method returns.
+Default: \code{FALSE}}
+
+\item{max_segments}{optimizes down to at most this number of segments. Default: 1}
+
+\item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
+
+\item{wait_searcher}{block until a new searcher is opened and registered as the
+main query searcher, making the changes visible. Default: \code{TRUE}}
+
+\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the
+index in a more performant manner, but without "on-disk" guarantees.
+Default: \code{FALSE}}
+
+\item{prepare_commit}{The prepareCommit command is an expert-level API that
+calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
@@ -35,21 +54,33 @@ services, but should work locally.
 \examples{
 \dontrun{
 # Add documents
-file <- system.file("examples", "books2.xml", package = "solr")
+file <- system.file("examples", "books.xml", package = "solr")
+cat(readLines(file), sep = "\\n")
 update_xml(file)
 
 # Update commands - can include many varying commands
-## Add file
+## Add files
 file <- system.file("examples", "books2_delete.xml", package = "solr")
+cat(readLines(file), sep = "\\n")
 update_xml(file)
 
-## Delete file
+## Delete files
 file <- system.file("examples", "updatecommands_delete.xml", package = "solr")
+cat(readLines(file), sep = "\\n")
+update_xml(file)
+
+## Add and delete in the same document
+## Add a document first, that we can later delete
+ss <- list(list(id = 456, name = "cat"))
+add(ss)
+## Now add a new document, and delete the one we just made
+file <- system.file("examples", "add_delete.xml", package = "solr")
+cat(readLines(file), sep = "\\n")
 update_xml(file)
 }
 }
 \seealso{
 Other update: \code{\link{update_csv}};
-  \code{\link{update_json}}; \code{\link{update}}
+  \code{\link{update_json}}
 }
 

@@ -15,7 +15,9 @@
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' # Delete by ID
-#' # delete_by_id(ids = "EUR")
+#' # delete_by_id(ids = 9)
+#' ## Many IDs
+#' # delete_by_id(ids = c(3, 4))
 #' 
 #' # Delete by query
 #' # delete_by_query(query = "manu:bank")
@@ -26,7 +28,7 @@
 delete_by_id <- function(ids, commit = TRUE, wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
   if (is.null(base)) stop("You must provide a url")
   args <- sc(list(commit = asl(commit), wt = 'json'))
-  body <- list(delete = list(id = ids))
+  body <- list(delete = lapply(ids, function(z) list(id = z)))
   obj_proc(file.path(base, 'solr/update/json'), body, args, raw, ...)
 }
 

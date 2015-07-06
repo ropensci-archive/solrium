@@ -35,8 +35,16 @@ ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
 add(x = ss)
 
 # Documents in a data.frame
+## Simple example
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
 add(x = df)
+
+## More complex example, get file from package examples
+file <- system.file("examples", "books.csv", package = "solr")
+x <- read.csv(file, stringsAsFactors = FALSE)
+class(x)
+head(x)
+add(x)
 }
 }
 
