@@ -4,14 +4,16 @@
 \alias{solr_search}
 \title{Solr search.}
 \usage{
-solr_search(q = "*:*", sort = NULL, start = NULL, rows = NULL,
+solr_search(conn, q = "*:*", sort = NULL, start = NULL, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
-  key = NULL, base = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df", concat = ",", ..., verbose = TRUE)
+  key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
+  concat = ",", ..., verbose = TRUE)
 }
 \arguments{
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{sort}{Field to sort on. You can specify ascending (e.g., score desc) or
@@ -71,8 +73,6 @@ include:
 
 \item{key}{API key, if needed.}
 
-\item{base}{URL endpoint.}
-
 \item{callopts}{Call options passed on to httr::GET}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
@@ -99,22 +99,22 @@ SOLR v1.2 was first version to support csv. See
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
-solr_search(q='*:*', rows=2, fl='id', base=url)
+conn <- solr_connect('http://api.plos.org/search')
+solr_search(conn, q='*:*', rows=2, fl='id')
 
 # Search for word ecology in title and cell in the body
-solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5, base=url)
+solr_search(conn, q='title:"ecology" AND body:"cell"', fl='title', rows=5)
 
 # Search for word "cell" and not "body" in the title field
-solr_search(q='title:"cell" -title:"lines"', fl='title', rows=5, base=url)
+solr_search(conn, q='title:"cell" -title:"lines"', fl='title', rows=5)
 
 # Wildcards
 ## Search for word that starts with "cell" in the title field
-solr_search(q='title:"cell*"', fl='title', rows=5, base=url)
+solr_search(conn, q='title:"cell*"', fl='title', rows=5)
 
 # Proximity searching
 ## Search for words "sports" and "alcohol" within four words of each other
-solr_search(q='everything:"sports alcohol"~7', fl='abstract', rows=3, base=url)
+solr_search(conn, q='everything:"sports alcohol"~7', fl='abstract', rows=3)
 
 # Range searches
 ## Search for articles with Twitter count between 5 and 10
@@ -156,6 +156,26 @@ solr_search(q='_val_:"max(alm_twitterCount)"',
 url <- 'http://api.plos.org/search'
 solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url, wt="csv")
 solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url)
+
+# using a proxy
+prox <- list(url = "186.249.1.146", port = 80)
+conn <- solr_connect(url = 'http://api.plos.org/search', proxy = prox)
+solr_search(conn, q='*:*', rows=2, fl='id', callopts=verbose())
+## vs. w/o a proxy
+conn <- solr_connect(url = 'http://api.plos.org/search')
+solr_search(conn, q='*:*', rows=2, fl='id', callopts=verbose())
+
+# Pass on curl options to modify request
+conn <- solr_connect(url = 'http://api.plos.org/search')
+## verbose
+solr_search(conn, q='*:*', rows=2, fl='id', callopts=verbose())
+## progress
+res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=progress())
+## timeout
+# solr_search(conn, q='*:*', rows=200, fl='id', callopts=timeout(0.01))
+## combine curl options using the c() function
+opts <- c(verbose(), progress())
+res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=opts)
 
 ## Searching Europeana
 ### They don't return the expected Solr output, so we can get raw data, then parse separately

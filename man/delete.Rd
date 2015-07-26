@@ -6,15 +6,15 @@
 \alias{delete_by_query}
 \title{Delete documents by ID or query}
 \usage{
-delete_by_id(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE,
-  boost = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+delete_by_id(conn, ids, commit = TRUE, commit_within = NULL,
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 
-delete_by_query(query, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+delete_by_query(conn, query, commit = TRUE, commit_within = NULL,
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
+
 \item{ids}{Document IDs, one or more in a vector or list}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
@@ -34,9 +34,6 @@ parse}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in
-that we aren't hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 
 \item{query}{Query to use to delete documents}
@@ -46,13 +43,15 @@ Delete documents by ID or query
 }
 \examples{
 \dontrun{
+conn <- solr_connect()
+
 # Delete by ID
-# delete_by_id(ids = 9)
+# delete_by_id(conn, ids = 9)
 ## Many IDs
-# delete_by_id(ids = c(3, 4))
+# delete_by_id(conn, ids = c(3, 4))
 
 # Delete by query
-# delete_by_query(query = "manu:bank")
+# delete_by_query(conn, query = "manu:bank")
 }
 }
 

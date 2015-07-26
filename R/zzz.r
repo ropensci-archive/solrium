@@ -25,8 +25,8 @@ collectargs <- function(x){
 }
 
 # GET helper fxn
-solr_GET <- function(base, args, callopts, verbose){
-  tt <- GET(base, query = args, callopts)
+solr_GET <- function(base, args, callopts, verbose, ...){
+  tt <- GET(base, query = args, callopts, ...)
   if(verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
   content(tt, as="text")
@@ -46,8 +46,18 @@ obj_POST <- function(base, body, args, ...) {
   invisible(match.arg(args$wt, c("xml","json","csv")))
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
   body <- jsonlite::toJSON(body, auto_unbox = TRUE)
-  tt <- POST(base, query = args, body = body, content_type_json())
+  tt <- POST(base, query = args, body = body, content_type_json(), ...)
   get_response(tt)
+}
+
+# helper for POSTing from R objects
+obj_proc <- function(url, body, args, raw, ...) {
+  out <- structure(obj_POST(url, body, args, ...), class = "update", wt = args$wt)
+  if (raw) {
+    out
+  } else {
+    solr_parse(out) 
+  }
 }
 
 get_ctype <- function(x) {
@@ -106,4 +116,13 @@ objcreate <- function(base, dat, args, verbose, raw, ...) {
   } else { 
     solr_parse(out) 
   } 
+}
+
+check_conn <- function(x) {
+  if (!is(x, "solr_connection")) {
+    stop("Input to conn parameter must be an object of class solr_connection", call. = FALSE)
+  }
+  if (is.null(x)) {
+    stop("You must provide a connection object", call. = FALSE)
+  }
 }

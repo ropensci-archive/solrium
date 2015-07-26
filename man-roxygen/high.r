@@ -1,3 +1,4 @@
+#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param q Query terms. See examples.
 #' @param hl.fl A comma-separated list of fields for which to generate highlighted snippets. 
 #' If left blank, the fields highlighted for the LuceneQParser are the defaultSearchField 
@@ -109,7 +110,6 @@
 #' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
 #' 		parsed data returned.
 #' @param key API key, if needed.
-#' @param base URL endpoint
 #' @param callopts Call options passed on to httr::GET
 #' @param fl Fields to return
 #' @param fq Filter query, this does not affect the search, only what gets returned

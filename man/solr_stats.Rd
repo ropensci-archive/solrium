@@ -4,11 +4,13 @@
 \alias{solr_stats}
 \title{Get Solr stats.}
 \usage{
-solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
-  wt = "json", start = 0, rows = 0, key = NULL, base = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", verbose = TRUE)
+solr_stats(conn, q = "*:*", stats.field = NULL, stats.facet = NULL,
+  wt = "json", start = 0, rows = 0, key = NULL, callopts = list(),
+  raw = FALSE, parsetype = "df", verbose = TRUE)
 }
 \arguments{
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{stats.field}{The number of similar documents to return for each result.}
@@ -24,8 +26,6 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \item{rows}{Number of records to return. Defaults to 10.}
 
 \item{key}{API key, if needed.}
-
-\item{base}{URL endpoint.}
 
 \item{callopts}{Call options passed on to httr::GET}
 
@@ -43,35 +43,36 @@ Get Solr stats.
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
-solr_stats(q='science', stats.field='counter_total_all', base=url, raw=TRUE)
-solr_stats(q='title:"ecology" AND body:"cell"',
-   stats.field=c('counter_total_all','alm_twitterCount'), base=url)
-solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet='journal', base=url)
-solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet=c('journal','volume'), base=url)
+conn <- solr_connect('http://api.plos.org/search')
+
+solr_stats(conn, q='science', stats.field='counter_total_all', raw=TRUE)
+solr_stats(conn, q='title:"ecology" AND body:"cell"',
+   stats.field=c('counter_total_all','alm_twitterCount'))
+solr_stats(conn, q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet='journal')
+solr_stats(conn, q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet=c('journal','volume'))
 
 # Get raw data, then parse later if you feel like it
 ## json
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet=c('journal','volume'), base=url, raw=TRUE)
-library(jsonlite)
-fromJSON(out)
+out <- solr_stats(conn, q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet=c('journal','volume'), raw=TRUE)
+library("jsonlite")
+jsonlite::fromJSON(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 ## xml
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet=c('journal','volume'), base=url, raw=TRUE, wt="xml")
-library(XML)
-xmlParse(out)
+out <- solr_stats(conn, q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+   stats.facet=c('journal','volume'), raw=TRUE, wt="xml")
+library("XML")
+XML::xmlParse(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 # Get verbose http call information
-library(httr)
-solr_stats(q='ecology', stats.field='alm_twitterCount', base=url,
+library("httr")
+solr_stats(conn, q='ecology', stats.field='alm_twitterCount',
    callopts=verbose())
 }
 }

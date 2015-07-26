@@ -4,10 +4,12 @@
 \alias{commit}
 \title{Commit}
 \usage{
-commit(expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
-  wt = "json", raw = FALSE, base = "http://localhost:8983", ...)
+commit(conn, expunge_deletes = FALSE, wait_searcher = TRUE,
+  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
+
 \item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
 
 \item{wait_searcher}{block until a new searcher is opened and registered as the
@@ -24,9 +26,6 @@ parse}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in
-that we aren't hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
@@ -34,8 +33,10 @@ Commit
 }
 \examples{
 \dontrun{
-commit()
-commit(wait_searcher = FALSE)
+conn <- solr_connect()
+
+commit(conn)
+commit(conn, wait_searcher = FALSE)
 }
 }
 

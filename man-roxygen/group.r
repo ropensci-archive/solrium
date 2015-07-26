@@ -1,7 +1,7 @@
+#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return
-#' @param base URL endpoint.
 #' @param wt (character) Data type returned, defaults to 'json'. One of json or xml. If json, 
 #' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.

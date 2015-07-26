@@ -1,3 +1,4 @@
+#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param q Query terms. See examples.
 #' @param facet.query This param allows you to specify an arbitrary query in the
 #' Lucene default syntax to generate a facet count. By default, faceting returns
@@ -91,7 +92,6 @@
 #' @param start Record to start at, default to beginning.
 #' @param rows Number of records to return.
 #' @param key API key, if needed.
-#' @param base URL endpoint
 #' @param wt (character) Data type returned, defaults to 'json'. One of json or xml. If json, 
 #' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.

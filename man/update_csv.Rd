@@ -4,14 +4,15 @@
 \alias{update_csv}
 \title{Update documents using CSV}
 \usage{
-update_csv(files, separator = ",", header = TRUE, fieldnames = NULL,
+update_csv(conn, files, separator = ",", header = TRUE, fieldnames = NULL,
   skip = NULL, skipLines = 0, trim = FALSE, encapsulator = NULL,
   escape = NULL, keepEmpty = FALSE, literal = NULL, map = NULL,
   split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
-  commit = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+  commit = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{Connection object. Required.}
+
 \item{files}{Path to file to load into Solr}
 
 \item{separator}{Specifies the character to act as the field separator. Default: ','}
@@ -86,9 +87,6 @@ default is commit=false to avoid the potential performance impact of frequent co
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
-hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
@@ -100,9 +98,11 @@ SOLR v1.2 was first version to support csv. See
 }
 \examples{
 \dontrun{
+conn <- solr_connect()
+
 mtcars <- data.frame(id=1:NROW(mtcars), mtcars)
 write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
-update_csv(files = "~/mtcars.csv")
+update_csv(conn, "~/mtcars.csv")
 }
 }
 \seealso{

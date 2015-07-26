@@ -1,8 +1,7 @@
 #' Ping a Solr instance
 #' 
 #' @export
-#' @param base (character) URL endpoint. This is different from the other functions in that we aren't 
-#' hitting a search endpoint. Pass in here 
+#' @param conn Connection object. Required.
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
 #' @param verbose If TRUE (default) the url call used printed to console.
@@ -13,24 +12,23 @@
 #' services, but should work locally.
 #' 
 #' @examples \dontrun{
-#' ping()
-#' ping('http://localhost:8983')
-#' ping('http://localhost:8983', wt="xml")
-#' ping('http://localhost:8983', verbose=FALSE)
-#' ping('http://localhost:8983', raw=TRUE)
+#' # by default we connect to localhost, port 8983
+#' conn <- solr_connect()
+#' ping(conn)
+#' ping(conn, wt = "xml")
+#' ping(conn, verbose = FALSE)
+#' ping(conn, raw = TRUE)
 #' 
 #' library("httr")
-#' ping('http://localhost:8983', wt="xml", callopts = verbose())
+#' ping(conn, wt="xml", callopts = verbose())
 #' }
 
-ping <- function(base = 'http://localhost:8983', wt = 'json', verbose = TRUE, raw = FALSE, 
-                 callopts = list()) {
-  
-  if (is.null(base)) {
-    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
+ping <- function(conn, wt = 'json', verbose = TRUE, raw = FALSE, callopts = list()) {
+  if (is.null(conn)) {
+    stop("You must provide a connection object")
   }
-  out <- structure(solr_GET(file.path(base, 'solr/admin/ping'), args = list(wt = wt), 
-                            callopts, verbose), class = "ping", wt = wt)
+  out <- structure(solr_GET(file.path(conn$url, 'solr/admin/ping'), args = list(wt = wt), 
+                            callopts, verbose, conn$proxy), class = "ping", wt = wt)
   if (raw) { 
     return( out ) 
   } else { 

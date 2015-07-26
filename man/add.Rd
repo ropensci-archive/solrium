@@ -4,12 +4,13 @@
 \alias{add}
 \title{Add documents from R objects}
 \usage{
-add(x, commit = TRUE, commit_within = NULL, overwrite = TRUE,
-  boost = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+add(x, conn, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+  boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{x}{Documents, either as rows in a data.frame, or a list.}
+
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Default: \code{TRUE}}
@@ -28,9 +29,6 @@ parse}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in
-that we aren't hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
@@ -38,24 +36,26 @@ Add documents from R objects
 }
 \examples{
 \dontrun{
+conn <- solr_connect()
+
 # Documents in a list
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(x = ss)
+add(x = ss, conn)
 
 # Documents in a data.frame
 ## Simple example
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(x = df)
+add(x = df, conn)
 
 ## More complex example, get file from package examples
 file <- system.file("examples", "books.csv", package = "solr")
 x <- read.csv(file, stringsAsFactors = FALSE)
 class(x)
 head(x)
-add(x)
+add(x, conn)
 
 # Use modifiers
-add(x, commit_within = 5000)
+add(x, conn, commit_within = 5000)
 }
 }
 

@@ -4,24 +4,26 @@
 \alias{solr_highlight}
 \title{Do highlighting searches, outputing highlight only.}
 \usage{
-solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
-  hl.q = NULL, hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL,
-  hl.maxAnalyzedChars = NULL, hl.alternateField = NULL,
-  hl.maxAlternateFieldLength = NULL, hl.preserveMulti = NULL,
-  hl.maxMultiValuedToExamine = NULL, hl.maxMultiValuedToMatch = NULL,
-  hl.formatter = NULL, hl.simple.pre = NULL, hl.simple.post = NULL,
-  hl.fragmenter = NULL, hl.fragListBuilder = NULL,
-  hl.fragmentsBuilder = NULL, hl.boundaryScanner = NULL,
-  hl.bs.maxScan = NULL, hl.bs.chars = NULL, hl.bs.type = NULL,
-  hl.bs.language = NULL, hl.bs.country = NULL,
+solr_highlight(conn, q, hl.fl = NULL, hl.snippets = NULL,
+  hl.fragsize = NULL, hl.q = NULL, hl.mergeContiguous = NULL,
+  hl.requireFieldMatch = NULL, hl.maxAnalyzedChars = NULL,
+  hl.alternateField = NULL, hl.maxAlternateFieldLength = NULL,
+  hl.preserveMulti = NULL, hl.maxMultiValuedToExamine = NULL,
+  hl.maxMultiValuedToMatch = NULL, hl.formatter = NULL,
+  hl.simple.pre = NULL, hl.simple.post = NULL, hl.fragmenter = NULL,
+  hl.fragListBuilder = NULL, hl.fragmentsBuilder = NULL,
+  hl.boundaryScanner = NULL, hl.bs.maxScan = NULL, hl.bs.chars = NULL,
+  hl.bs.type = NULL, hl.bs.language = NULL, hl.bs.country = NULL,
   hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL,
   hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
   hl.regex.pattern = NULL, hl.regex.maxAnalyzedChars = NULL, start = 0,
-  rows = NULL, wt = "json", raw = FALSE, key = NULL, base = NULL,
+  rows = NULL, wt = "json", raw = FALSE, key = NULL,
   callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL,
   parsetype = "list", verbose = TRUE)
 }
 \arguments{
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
+
 \item{q}{Query terms. See examples.}
 
 \item{hl.fl}{A comma-separated list of fields for which to generate highlighted snippets.
@@ -169,8 +171,6 @@ parsed data returned.}
 
 \item{key}{API key, if needed.}
 
-\item{base}{URL endpoint}
-
 \item{callopts}{Call options passed on to httr::GET}
 
 \item{fl}{Fields to return}
@@ -189,21 +189,21 @@ Do highlighting searches, outputing highlight only.
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
+conn <- solr_connect('http://api.plos.org/search')
 
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url)
-solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, base = url)
+solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10)
+solr_highlight(conn, q='alcohol', hl.fl = c('abstract','title'), rows=3)
 
 # Raw data back
 ## json
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url,
+solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10,
    raw=TRUE)
 ## xml
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url,
+solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10,
    raw=TRUE, wt='xml')
 ## parse after getting data back
-out <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30,
-   rows=10, base = url, raw=TRUE, wt='xml')
+out <- solr_highlight(conn, q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30,
+   rows=10, raw=TRUE, wt='xml')
 solr_parse(out, parsetype='df')
 }
 }
