@@ -1,7 +1,7 @@
 language: r
 
 before_script: 
-  - "curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.10.2 bash"
+  - "curl -sSL https://raw.githubusercontent.com/sckott/travis-solr/master/travis-solr.sh | SOLR_VERSION=5.2.1 bash"
 
 r_github_packages:
   - jimhester/robustr
