@@ -2,6 +2,7 @@
 #' 
 #' @param x Documents, either as rows in a data.frame, or a list.
 #' @param conn Connection object. Required. See \code{\link{solr_connect}}.
+#' @param name (character) A collection or core name. Required.
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Default: \code{TRUE}
 #' @param commit_within (numeric) Milliseconds to commit the change, the document will be added 
@@ -43,13 +44,13 @@
 #' # Use modifiers
 #' add(x, conn, commit_within = 5000)
 #' }
-add <- function(x, conn, collection = NULL, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+add <- function(x, conn, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
                 boost = NULL, wt = 'json', raw = FALSE, ...) {
   UseMethod("add")
 }
 
 #' @export
-add.list <- function(x, conn, collection = NULL, commit = TRUE, commit_within = NULL, 
+add.list <- function(x, conn, name, commit = TRUE, commit_within = NULL, 
                      overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   check_conn(conn)
@@ -58,11 +59,11 @@ add.list <- function(x, conn, collection = NULL, commit = TRUE, commit_within = 
   if (!is.null(boost)) {
     x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
   }
-  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', collection)), x, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), x, args, raw, conn$proxy, ...)
 }
 
 #' @export
-add.data.frame <- function(x, conn, collection = NULL, commit = TRUE, commit_within = NULL, 
+add.data.frame <- function(x, conn, name, commit = TRUE, commit_within = NULL, 
                            overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   check_conn(conn)
@@ -72,5 +73,5 @@ add.data.frame <- function(x, conn, collection = NULL, commit = TRUE, commit_wit
     x$boost <- boost
   }
   x <- apply(x, 1, as.list)
-  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', collection)), x, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), x, args, raw, conn$proxy, ...)
 }

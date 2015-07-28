@@ -4,13 +4,15 @@
 \alias{add}
 \title{Add documents from R objects}
 \usage{
-add(x, conn, collection = NULL, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
+add(x, conn, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+  boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{x}{Documents, either as rows in a data.frame, or a list.}
 
 \item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
+
+\item{name}{(character) A collection or core name. Required.}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Default: \code{TRUE}}

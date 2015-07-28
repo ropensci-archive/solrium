@@ -18,7 +18,7 @@ ping(conn, name, wt = "json", verbose = TRUE, raw = FALSE, ...)
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
 Ping a Solr instance

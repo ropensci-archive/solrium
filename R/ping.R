@@ -7,7 +7,7 @@
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
-#' @param callopts curl options passed on to \code{\link[httr]{GET}}
+#' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' 
 #' @details You likely may not be able to run this function against many public Solr 
 #' services as they hopefully don't expose their admin interface to the public, but 

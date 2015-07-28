@@ -4,8 +4,7 @@
 \alias{collection_delete}
 \title{Add a collection}
 \usage{
-collection_delete(conn, name, verbose = TRUE, raw = FALSE,
-  callopts = list(), ...)
+collection_delete(conn, name, verbose = TRUE, raw = FALSE, ...)
 }
 \arguments{
 \item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
@@ -17,7 +16,7 @@ collection_delete(conn, name, verbose = TRUE, raw = FALSE,
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
 Add a collection
