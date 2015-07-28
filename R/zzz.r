@@ -25,11 +25,11 @@ collectargs <- function(x){
 }
 
 # GET helper fxn
-solr_GET <- function(base, args, callopts, verbose, ...){
+solr_GET <- function(base, args, callopts = NULL, verbose, ...){
   tt <- GET(base, query = args, callopts, ...)
-  if(verbose) message(URLdecode(tt$url))
+  if (verbose) message(URLdecode(tt$url))
   stop_for_status(tt)
-  content(tt, as="text")
+  content(tt, as = "text")
 }
 
 # POST helper fxn

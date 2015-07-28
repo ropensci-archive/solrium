@@ -14,36 +14,43 @@
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' 
+#' @details Works for Collections as well as Cores (in SolrCloud and Standalone 
+#' modes, respectively)
+#' 
 #' @examples \dontrun{
 #' conn <- solr_connect()
 #' 
 #' # Documents in a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-#' add(x = ss, conn)
+#' add(ss, conn, collection = "helloWorld")
 #' 
 #' # Documents in a data.frame
 #' ## Simple example
 #' df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-#' add(x = df, conn)
+#' add(x = df, conn, collection = "helloWorld")
+#' df <- data.frame(id = c(77, 78), price = c(1, 2.40))
+#' add(x = df, conn, collection = "helloWorld")
 #' 
 #' ## More complex example, get file from package examples
+#' # start Solr in Schemaless mode first: bin/solr start -e schemaless
 #' file <- system.file("examples", "books.csv", package = "solr")
 #' x <- read.csv(file, stringsAsFactors = FALSE)
 #' class(x)
 #' head(x)
-#' add(x, conn)
+#' add(x, conn, collection = "gettingstarted")
 #' 
 #' # Use modifiers
 #' add(x, conn, commit_within = 5000)
 #' }
-add <- function(x, conn, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+add <- function(x, conn, collection = NULL, commit = TRUE, commit_within = NULL, overwrite = TRUE,
                 boost = NULL, wt = 'json', raw = FALSE, ...) {
   UseMethod("add")
 }
 
 #' @export
-add.list <- function(x, conn, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
-                     boost = NULL, wt = 'json', raw = FALSE, ...) {
+add.list <- function(x, conn, collection = NULL, commit = TRUE, commit_within = NULL, 
+                     overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
@@ -51,12 +58,12 @@ add.list <- function(x, conn, commit = TRUE, commit_within = NULL, overwrite = T
   if (!is.null(boost)) {
     x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
   }
-  obj_proc(file.path(conn$url, 'solr/update/json'), x, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', collection)), x, args, raw, conn$proxy, ...)
 }
 
 #' @export
-add.data.frame <- function(x, conn, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
-                           boost = NULL, wt = 'json', raw = FALSE, ...) {
+add.data.frame <- function(x, conn, collection = NULL, commit = TRUE, commit_within = NULL, 
+                           overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
@@ -65,5 +72,5 @@ add.data.frame <- function(x, conn, commit = TRUE, commit_within = NULL, overwri
     x$boost <- boost
   }
   x <- apply(x, 1, as.list)
-  obj_proc(file.path(conn$url, 'solr/update/json'), x, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', collection)), x, args, raw, conn$proxy, ...)
 }
