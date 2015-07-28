@@ -36,6 +36,12 @@ Load
 library("solr")
 ```
 
+Initialize connection
+
+```{r}
+conn <- solr_connect('http://localhost:8983')
+```
+
 ## Create documents from R objects
 
 For now, only lists and data.frame's supported.
@@ -47,12 +53,12 @@ file <- system.file("examples", "books.csv", package = "solr")
 x <- read.csv(file)
 class(x)
 head(x)
-add(x)
+add(x, conn)
 ```
 
 ### list
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 delete_by_id(1:2)
 ```
 
@@ -67,7 +73,7 @@ add(ss)
 
 Add some documents first
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 delete_by_id(1:3)
 ```
 
