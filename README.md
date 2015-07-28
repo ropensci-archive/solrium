@@ -11,6 +11,8 @@ solr
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
+Development is now following Solr v5 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v5.
+
 This package only deals with extracting data from a Solr endpoint, not writing data (pull request or holla if you're interested in writing solr data).
 
 ## Solr info
@@ -29,7 +31,7 @@ This package only deals with extracting data from a Solr endpoint, not writing d
 
 ### Install
 
-Stable version from CRAN 
+Stable version from CRAN
 
 
 ```r
@@ -48,19 +50,18 @@ devtools::install_github("ropensci/solr")
 library("solr")
 ```
 
-__Define stuff__ Your base url and a key (if needed). This example should work. You do need to pass a key to the Public Library of Science search API, but it apparently doesn't need to be a real one.
+__Define stuff__ Use the `solr_connect()` function to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
 
 
 ```r
-url <- 'http://api.plos.org/search'
-key <- 'key'
+conn <- solr_connect('http://api.plos.org/search')
 ```
 
 ### Search
 
 
 ```r
-solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
+solr_search(conn, q='*:*', rows=2, fl='id')
 #> Source: local data frame [2 x 1]
 #> 
 #>                                      id
@@ -74,13 +75,13 @@ Most recent publication by journal
 
 
 ```r
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', base=url, key=key)
+solr_group(conn, q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score')
 #>                         groupValue numFound start     publication_date
-#> 1                         plos one  1085980     0 2015-07-02T00:00:00Z
-#> 2       plos computational biology    32847     0 2015-07-02T00:00:00Z
-#> 3                             none    63644     0 2012-10-23T00:00:00Z
-#> 4 plos neglected tropical diseases    29668     0 2015-07-02T00:00:00Z
-#> 5                     plos biology    27477     0 2015-07-02T00:00:00Z
+#> 1                         plos one  1105630     0 2015-07-28T00:00:00Z
+#> 2       plos computational biology    33092     0 2015-07-28T00:00:00Z
+#> 3                             none    63670     0 2012-10-23T00:00:00Z
+#> 4 plos neglected tropical diseases    29993     0 2015-07-28T00:00:00Z
+#> 5                     plos biology    27639     0 2015-07-27T00:00:00Z
 #>   score
 #> 1     1
 #> 2     1
@@ -93,16 +94,16 @@ First publication by journal
 
 
 ```r
-solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", base=url, key=key)
+solr_group(conn, q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]")
 #>                          groupValue numFound start     publication_date
-#> 1                          plos one  1085980     0 2006-12-01T00:00:00Z
-#> 2        plos computational biology    32847     0 2005-06-24T00:00:00Z
+#> 1                          plos one  1105630     0 2006-12-01T00:00:00Z
+#> 2        plos computational biology    33092     0 2005-06-24T00:00:00Z
 #> 3                              none    57557     0 2005-08-23T00:00:00Z
-#> 4  plos neglected tropical diseases    29668     0 2007-08-30T00:00:00Z
-#> 5                      plos biology    27477     0 2003-08-18T00:00:00Z
-#> 6                     plos medicine    19179     0 2004-09-07T00:00:00Z
-#> 7                    plos pathogens    39488     0 2005-07-22T00:00:00Z
-#> 8                     plos genetics    45235     0 2005-06-17T00:00:00Z
+#> 4  plos neglected tropical diseases    29993     0 2007-08-30T00:00:00Z
+#> 5                      plos biology    27639     0 2003-08-18T00:00:00Z
+#> 6                     plos medicine    19250     0 2004-09-07T00:00:00Z
+#> 7                    plos pathogens    39841     0 2005-07-22T00:00:00Z
+#> 8                     plos genetics    45548     0 2005-06-17T00:00:00Z
 #> 9                      plos medicin        9     0 2012-04-17T00:00:00Z
 #> 10             plos clinical trials      521     0 2006-04-21T00:00:00Z
 #>    score
@@ -122,7 +123,7 @@ Search group query : Last 3 publications of 2013.
 
 
 ```r
-solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', base=url, key=key)
+solr_group(conn, q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date')
 #>   numFound start     publication_date
 #> 1   307081     0 2013-12-31T00:00:00Z
 #> 2   307081     0 2013-12-31T00:00:00Z
@@ -133,20 +134,20 @@ Search group with format simple
 
 
 ```r
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', base=url, key=key)
+solr_group(conn, q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date')
 #>   numFound start                    journal     publication_date
-#> 1  1344063     0                   PLOS ONE 2015-07-02T00:00:00Z
-#> 2  1344063     0                   PLOS ONE 2015-07-02T00:00:00Z
-#> 3  1344063     0                   PLOS ONE 2015-07-02T00:00:00Z
-#> 4  1344063     0 PLOS Computational Biology 2015-07-02T00:00:00Z
-#> 5  1344063     0 PLOS Computational Biology 2015-07-02T00:00:00Z
+#> 1  1365208     0                   PLOS ONE 2015-07-28T00:00:00Z
+#> 2  1365208     0                   PLOS ONE 2015-07-28T00:00:00Z
+#> 3  1365208     0                   PLOS ONE 2015-07-28T00:00:00Z
+#> 4  1365208     0 PLOS Computational Biology 2015-07-28T00:00:00Z
+#> 5  1365208     0 PLOS Computational Biology 2015-07-28T00:00:00Z
 ```
 
 ### Facet
 
 
 ```r
-solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, key=key)
+solr_facet(conn, q='*:*', facet.field='journal', facet.query='cell,bird')
 #> $facet_queries
 #>        term value
 #> 1 cell,bird    21
@@ -154,13 +155,13 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, ke
 #> $facet_fields
 #> $facet_fields$journal
 #>                                  X1      X2
-#> 1                          plos one 1085980
-#> 2                     plos genetics   45235
-#> 3                    plos pathogens   39488
-#> 4        plos computational biology   32847
-#> 5  plos neglected tropical diseases   29668
-#> 6                      plos biology   27477
-#> 7                     plos medicine   19179
+#> 1                          plos one 1105630
+#> 2                     plos genetics   45548
+#> 3                    plos pathogens   39841
+#> 4        plos computational biology   33092
+#> 5  plos neglected tropical diseases   29993
+#> 6                      plos biology   27639
+#> 7                     plos medicine   19250
 #> 8              plos clinical trials     521
 #> 9                  plos collections      15
 #> 10                     plos medicin       9
@@ -177,7 +178,7 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, ke
 
 
 ```r
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
+solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=2)
 #> $`10.1371/journal.pmed.0040151`
 #> $`10.1371/journal.pmed.0040151`$abstract
 #> [1] "Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting"
@@ -192,18 +193,18 @@ solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
 
 
 ```r
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal', base=url, key=key)
+out <- solr_stats(conn, q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal')
 ```
 
 
 ```r
 out$data
 #>                   min    max count missing       sum sumOfSquares
-#> counter_total_all   0 328552 27897       0 101291508 1.985326e+12
-#> alm_twitterCount    0   1670 27897       0    124682 2.240976e+07
-#>                          mean    stddev
-#> counter_total_all 3630.910420 7614.7779
-#> alm_twitterCount     4.469369   27.9885
+#> counter_total_all   0 328552 28366       0 101309285 1.985422e+12
+#> alm_twitterCount    0   1670 28366       0    124105 2.233775e+07
+#>                          mean     stddev
+#> counter_total_all 3571.504089 7565.67159
+#> alm_twitterCount     4.375132   27.71946
 ```
 
 ### More like this
@@ -212,7 +213,7 @@ out$data
 
 
 ```r
-out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
+out <- solr_mlt(conn, q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5)
 ```
 
 
@@ -224,8 +225,8 @@ out$docs
 #> 1 10.1371/journal.pbio.1001805             11747
 #> 2 10.1371/journal.pbio.0020440             16883
 #> 3 10.1371/journal.pone.0087217              4310
-#> 4 10.1371/journal.pone.0040117              2967
-#> 5 10.1371/journal.pone.0072525              1281
+#> 4 10.1371/journal.pbio.1002191              3678
+#> 5 10.1371/journal.pone.0040117              2967
 ```
 
 
@@ -249,11 +250,19 @@ out$mlt
 #> 
 #> $`10.1371/journal.pone.0087217`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pcbi.0020092             15860
-#> 2 10.1371/journal.pone.0123774                 0
-#> 3 10.1371/journal.pone.0063375              1539
-#> 4 10.1371/journal.pcbi.1000986              2913
-#> 5 10.1371/journal.pone.0015143             13713
+#> 1 10.1371/journal.pone.0131665                 0
+#> 2 10.1371/journal.pcbi.0020092             15860
+#> 3 10.1371/journal.pone.0133941                 0
+#> 4 10.1371/journal.pone.0123774                 0
+#> 5 10.1371/journal.pone.0063375              1539
+#> 
+#> $`10.1371/journal.pbio.1002191`
+#>                             id counter_total_all
+#> 1 10.1371/journal.pone.0131700                 0
+#> 2 10.1371/journal.pone.0070448               967
+#> 3 10.1371/journal.pone.0044766              1558
+#> 4 10.1371/journal.pone.0028737              5186
+#> 5 10.1371/journal.pone.0052330              3682
 #> 
 #> $`10.1371/journal.pone.0040117`
 #>                             id counter_total_all
@@ -262,14 +271,6 @@ out$mlt
 #> 3 10.1371/journal.pone.0014065              4238
 #> 4 10.1371/journal.pone.0113280              1172
 #> 5 10.1371/journal.pone.0078369              2474
-#> 
-#> $`10.1371/journal.pone.0072525`
-#>                             id counter_total_all
-#> 1 10.1371/journal.pone.0060766              1707
-#> 2 10.1371/journal.pcbi.1002928              8040
-#> 3 10.1371/journal.pone.0124699               275
-#> 4 10.1371/journal.pone.0129588                 0
-#> 5 10.1371/journal.pone.0072862              3445
 ```
 
 ### Parsing
@@ -280,8 +281,8 @@ For example:
 
 
 ```r
-(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
-#> [1] "{\"response\":{\"numFound\":17804,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
+(out <- solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=2, raw=TRUE))
+#> [1] "{\"response\":{\"numFound\":18121,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
 #> attr(,"class")
 #> [1] "sr_high"
 #> attr(,"wt")
@@ -307,8 +308,8 @@ Function Queries allow you to query on actual numeric fields in the SOLR databas
 
 
 ```r
-solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
-  rows=5, fl='id,title', fq='doc_type:full', base=url, key=key)
+solr_search(conn, q='_val_:"product(counter_total_all,alm_twitterCount)"',
+  rows=5, fl='id,title', fq='doc_type:full')
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id
@@ -324,8 +325,8 @@ Here, we search for the papers with the most citations
 
 
 ```r
-solr_search(q='_val_:"max(counter_total_all)"',
-    rows=5, fl='id,counter_total_all', fq='doc_type:full', base=url, key=key)
+solr_search(conn, q='_val_:"max(counter_total_all)"',
+    rows=5, fl='id,counter_total_all', fq='doc_type:full')
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id counter_total_all
@@ -340,8 +341,8 @@ Or with the most tweets
 
 
 ```r
-solr_search(q='_val_:"max(alm_twitterCount)"',
-    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', base=url, key=key)
+solr_search(conn, q='_val_:"max(alm_twitterCount)"',
+    rows=5, fl='id,alm_twitterCount', fq='doc_type:full')
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id alm_twitterCount
@@ -360,9 +361,13 @@ The occurrences service
 
 
 ```r
-url <- "http://bison.usgs.ornl.gov/solrstaging/occurrences/select"
-solr_search(q='*:*', base=url2, fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
-#> Source: local data frame [0 x 0]
+conn <- solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select")
+solr_search(conn, q='*:*', fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
+#> Source: local data frame [2 x 3]
+#> 
+#>   decimalLongitude decimalLatitude    scientificName
+#> 1         -73.8053         42.3202 Buteo jamaicensis
+#> 2         -73.8053         42.3202    Circus cyaneus
 ```
 
 The species names service
@@ -370,8 +375,8 @@ The species names service
 
 ```r
 url2 <- "http://bisonapi.usgs.ornl.gov/solr/scientificName/select"
-solr_search(q='*:*', base=url2, raw=TRUE)
-#> [1] "{}"
+solr_search(conn, q='*:*', raw=TRUE)
+#> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":4147},\"response\":{\"numFound\":243170991,\"start\":0,\"docs\":[{\"computedCountyFips\":\"36039\",\"providerID\":602,\"catalogNumber\":\"OBS108216896\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Buteo jamaicensis\",\"latlon\":\"-73.8053,42.3202\",\"calculatedState\":\"New York\",\"decimalLongitude\":-73.8053,\"year\":2011,\"ITIStsn\":\"175350\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-823961-175280-175349-175350-\",\"geo\":\"-73.8053 42.3202\",\"TSNs\":[\"175350\"],\"calculatedCounty\":\"Greene County\",\"pointPath\":\"/-73.8053,42.3202/observation\",\"computedStateFips\":\"36\",\"providedCounty\":\"Greene\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"581450722\",\"recordedBy\":\"obsr15309\",\"providedScientificName\":\"Buteo jamaicensis (Gmelin, 1788)\",\"eventDate\":\"2011-02-14T00:00Z\",\"providedCommonName\":\"Red-tailed Hawk\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"New York\",\"ITIScommonName\":\"Aguililla cola roja;Buse à queue rousse;Red-tailed Hawk\",\"scientificName\":\"Buteo jamaicensis\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"36039\",\"providerID\":602,\"catalogNumber\":\"OBS108216895\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Circus cyaneus\",\"latlon\":\"-73.8053,42.3202\",\"calculatedState\":\"New York\",\"decimalLongitude\":-73.8053,\"year\":2011,\"ITIStsn\":\"175430\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-823961-175280-175429-175430-\",\"geo\":\"-73.8053 42.3202\",\"TSNs\":[\"175430\"],\"calculatedCounty\":\"Greene County\",\"pointPath\":\"/-73.8053,42.3202/observation\",\"computedStateFips\":\"36\",\"providedCounty\":\"Greene\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"585323403\",\"recordedBy\":\"obsr15309\",\"providedScientificName\":\"Circus cyaneus (Linnaeus, 1766)\",\"eventDate\":\"2011-02-14T00:00Z\",\"providedCommonName\":\"Northern Harrier\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"New York\",\"ITIScommonName\":\"Busard Saint-Martin;Gavilán rastrero;Northern Harrier\",\"scientificName\":\"Circus cyaneus\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS168651135\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Anthus rubescens\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2012,\"ITIStsn\":\"554127\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-178474-178488-554127-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"554127\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"819929403\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Anthus rubescens (Tunstall, 1771)\",\"eventDate\":\"2012-11-05T00:00Z\",\"providedCommonName\":\"American Pipit\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"American Pipit;Bisbita de agua;Buff-bellied Pipit;pipit d'Amérique\",\"scientificName\":\"Anthus rubescens\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS168651134\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Sturnus vulgaris\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2012,\"ITIStsn\":\"179637\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-179635-179636-179637-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"179637\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"846897356\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Sturnus vulgaris Linnaeus, 1758\",\"eventDate\":\"2012-11-05T00:00Z\",\"providedCommonName\":\"European Starling\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"Common Starling;Estornino pinto;étourneau sansonnet;European Starling\",\"scientificName\":\"Sturnus vulgaris\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS168651133\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Columba livia\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2012,\"ITIStsn\":\"177071\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-177038-177061-676884-177062-177071-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"177071\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"828002449\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Columba livia Gmelin, 1789\",\"eventDate\":\"2012-11-05T00:00Z\",\"providedCommonName\":\"Rock Pigeon\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"Common Pigeon;Paloma doméstica;pigeon biset;Rock Dove;Rock Pigeon\",\"scientificName\":\"Columba livia\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS168651136\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Cardinalis cardinalis\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2012,\"ITIStsn\":\"179124\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-178265-553443-179123-179124-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"179124\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"823462501\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Cardinalis cardinalis (Linnaeus, 1758)\",\"eventDate\":\"2012-11-05T00:00Z\",\"providedCommonName\":\"Northern Cardinal\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"Cardenal rojo;cardinal rouge;Northern Cardinal\",\"scientificName\":\"Cardinalis cardinalis\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS198743419\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Anas platyrhynchos\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2013,\"ITIStsn\":\"175063\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174982-174983-714011-175062-175063-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"175063\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"954484938\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Anas platyrhynchos Linnaeus, 1758\",\"eventDate\":\"2013-05-25T00:00Z\",\"providedCommonName\":\"Mallard\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"canard colvert;Mallard;Pato de collar\",\"scientificName\":\"Anas platyrhynchos\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS198743420\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Charadrius vociferus\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2013,\"ITIStsn\":\"176520\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-176445-176479-176503-176520-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"176520\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"954515174\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Charadrius vociferus Linnaeus, 1758\",\"eventDate\":\"2013-05-25T00:00Z\",\"providedCommonName\":\"Killdeer\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"Chorlo tildío;Killdeer;Pluvier kildir\",\"scientificName\":\"Charadrius vociferus\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25003\",\"providerID\":602,\"catalogNumber\":\"OBS198743418\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Branta canadensis\",\"latlon\":\"-73.274,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-73.274,\"year\":2013,\"ITIStsn\":\"174999\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-174371-174982-174983-714008-174998-174999-\",\"geo\":\"-73.274 42.3202\",\"TSNs\":[\"174999\"],\"calculatedCounty\":\"Berkshire County\",\"pointPath\":\"/-73.274,42.3202/observation\",\"computedStateFips\":\"25\",\"providedCounty\":\"Berkshire\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://ebird.org/\",\"occurrenceID\":\"954485219\",\"recordedBy\":\"obsr34603\",\"providedScientificName\":\"Branta canadensis (Linnaeus, 1758)\",\"eventDate\":\"2013-05-25T00:00Z\",\"providedCommonName\":\"Canada Goose\",\"ownerInstitutionCollectionCode\":\"EOD - eBird Observation Dataset\",\"provider\":\"Cornell Lab of Ornithology\",\"ambiguous\":false,\"resourceID\":\"602,43\",\"stateProvince\":\"Massachusetts\",\"ITIScommonName\":\"bernache du Canada;Canada Goose;Ganso canadiense\",\"scientificName\":\"Branta canadensis\",\"institutionID\":\"http://www.birds.cornell.edu\"},{\"computedCountyFips\":\"25015\",\"providerID\":407,\"catalogNumber\":\"242130\",\"basisOfRecord\":\"observation\",\"countryCode\":\"US\",\"ITISscientificName\":\"Thamnophis sirtalis sirtalis\",\"latlon\":\"-72.64085,42.3202\",\"calculatedState\":\"Massachusetts\",\"decimalLongitude\":-72.64085,\"year\":2011,\"ITIStsn\":\"174137\",\"hierarchy_homonym_string\":\"-202423-914154-914156-158852-331030-914179-914181-173747-173861-174118-634390-174121-700177-174133-174136-174137-\",\"geo\":\"-72.64085 42.3202\",\"TSNs\":[\"174137\"],\"calculatedCounty\":\"Hampshire County\",\"pointPath\":\"/-72.64085,42.3202/observation\",\"computedStateFips\":\"25\",\"kingdom\":\"Animalia\",\"decimalLatitude\":42.3202,\"collectionID\":\"http://www.inaturalist.org/observations\",\"occurrenceID\":\"891142836\",\"recordedBy\":\"Margaret Liu\",\"providedScientificName\":\"Thamnophis sirtalis subsp. sirtalis\",\"eventDate\":\"2011-09-12T00:00Z\",\"ownerInstitutionCollectionCode\":\"iNaturalist research-grade observations\",\"provider\":\"iNaturalist.org\",\"ambiguous\":false,\"resourceID\":\"407,14026\",\"ITIScommonName\":\"Common Garter Snake\",\"scientificName\":\"Thamnophis sirtalis sirtalis\",\"institutionID\":\"http://www.inaturalist.org\"}]}}\n"
 #> attr(,"class")
 #> [1] "sr_search"
 #> attr(,"wt")
