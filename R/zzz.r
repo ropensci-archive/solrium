@@ -28,8 +28,11 @@ collectargs <- function(x){
 solr_GET <- function(base, args, callopts = NULL, verbose, ...){
   tt <- GET(base, query = args, callopts, ...)
   if (verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  content(tt, as = "text")
+  if (tt$status_code > 201) {
+    stop(http_condition(tt$status_code, "message")$message, call. = FALSE)
+  } else {
+    content(tt, as = "text")
+  }
 }
 
 # POST helper fxn

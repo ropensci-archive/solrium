@@ -3,10 +3,10 @@ context("solr_facet")
 test_that("solr_facet works", {
   skip_on_cran()
   
-  url <- 'http://api.plos.org/search'
+  conn <- solr_connect('http://api.plos.org/search')
   
-  a <- solr_facet(q='*:*', facet.field='journal', base=url, verbose=FALSE)
-  b <- solr_facet(q='*:*', base=url, facet.date='publication_date', facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY', verbose=FALSE)
+  a <- solr_facet(conn, q='*:*', facet.field='journal', verbose=FALSE)
+  b <- solr_facet(conn, q='*:*', facet.date='publication_date', facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY', verbose=FALSE)
   
   # correct dimenions
   expect_equal(length(a), 4)

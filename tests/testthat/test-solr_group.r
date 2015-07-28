@@ -3,16 +3,19 @@ context("solr_group")
 test_that("solr_group works", {
   skip_on_cran()
   
-  url <- 'http://api.plos.org/search'
+  conn <- solr_connect('http://api.plos.org/search')
   
-  a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url, verbose=FALSE)
-  b <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
-                  group.sort='alm_twitterCount desc', base=url, verbose=FALSE)
-  out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', base=url, raw=TRUE, verbose=FALSE)
+  a <- solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), 
+                  verbose=FALSE)
+  b <- solr_group(conn, q='ecology', group.field='journal', group.limit=3, 
+                  fl=c('id','score','alm_twitterCount'),
+                  group.sort='alm_twitterCount desc', verbose=FALSE)
+  out <- solr_group(conn, q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id', 
+                    raw=TRUE, verbose=FALSE)
   c <- out
   d <- solr_parse(out, 'df')
-  e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-                  group.format='grouped', group.main='true', base=url, verbose=FALSE)
+  e <- solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
+                  group.format='grouped', group.main='true', verbose=FALSE)
   
   suppressPackageStartupMessages(library('jsonlite', quietly = TRUE))
   f <- jsonlite::fromJSON(out, FALSE)

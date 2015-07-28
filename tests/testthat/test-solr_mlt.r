@@ -3,13 +3,13 @@ context("solr_mlt")
 test_that("solr_mlt works", {
   skip_on_cran()
   
-  url <- 'http://api.plos.org/search'
+  conn <- solr_connect('http://api.plos.org/search')
   
-  a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', base=url, fq="doc_type:full", verbose=FALSE)
+  a <- solr_mlt(conn, q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full", verbose=FALSE)
   # b <- solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount', base=url, key=key)
-  c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, base=url, verbose=FALSE)
+  c <- solr_mlt(conn, q='ecology', mlt.fl='abstract', fl='title', rows=5, verbose=FALSE)
   
-  out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, base=url, raw=TRUE, wt="xml", verbose=FALSE)
+  out <- solr_mlt(conn, q='ecology', mlt.fl='abstract', fl='title', rows=2, raw=TRUE, wt="xml", verbose=FALSE)
   library("XML")
   outxml <- xmlParse(out)
   outdf <- solr_parse(out, "df")

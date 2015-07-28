@@ -3,10 +3,10 @@ context("solr_highlight")
 test_that("solr_highlight works", {
   skip_on_cran()
   
-  url <- 'http://api.plos.org/search'
+  conn <- solr_connect('http://api.plos.org/search')
   
-  a <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url, verbose=FALSE)
-  b <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, base = url, verbose=FALSE)
+  a <- solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10, verbose=FALSE)
+  b <- solr_highlight(conn, q='alcohol', hl.fl = c('abstract','title'), rows=3, verbose=FALSE)
   
   # correct dimensions
   expect_that(length(a), equals(10))

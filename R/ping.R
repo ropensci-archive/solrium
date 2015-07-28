@@ -2,6 +2,7 @@
 #' 
 #' @export
 #' @param conn Connection object. Required.
+#' @param name (character) Name of a collection or core. Required.
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
 #' @param verbose If TRUE (default) the url call used printed to console.
@@ -9,29 +10,35 @@
 #' @param callopts curl options passed on to \code{\link[httr]{GET}}
 #' 
 #' @details You likely may not be able to run this function against many public Solr 
-#' services, but should work locally.
+#' services as they hopefully don't expose their admin interface to the public, but 
+#' works locally.
 #' 
 #' @examples \dontrun{
 #' # by default we connect to localhost, port 8983
 #' conn <- solr_connect()
-#' ping(conn)
-#' ping(conn, wt = "xml")
-#' ping(conn, verbose = FALSE)
-#' ping(conn, raw = TRUE)
+#' ping(conn, "helloWorld")
+#' ping(conn, "helloWorld", wt = "xml")
+#' ping(conn, "helloWorld", verbose = FALSE)
+#' ping(conn, "helloWorld", raw = TRUE)
 #' 
 #' library("httr")
-#' ping(conn, wt="xml", callopts = verbose())
+#' ping(conn, "helloWorld", wt="xml", config = verbose())
 #' }
 
-ping <- function(conn, wt = 'json', verbose = TRUE, raw = FALSE, callopts = list()) {
+ping <- function(conn, name, wt = 'json', verbose = TRUE, raw = FALSE, ...) {
   if (is.null(conn)) {
     stop("You must provide a connection object")
   }
-  out <- structure(solr_GET(file.path(conn$url, 'solr/admin/ping'), args = list(wt = wt), 
-                            callopts, verbose, conn$proxy), class = "ping", wt = wt)
-  if (raw) { 
-    return( out ) 
-  } else { 
-    solr_parse(out) 
+  res <- tryCatch(solr_GET(file.path(conn$url, sprintf('solr/%s/admin/ping', name)), 
+           args = list(wt = wt), verbose = verbose, conn$proxy, ...), error = function(e) e)
+  if (is(res, "error")) {
+    return(list(status = "not found"))
+  } else {
+    out <- structure(res, class = "ping", wt = wt)
+    if (raw) { 
+      return( out ) 
+    } else { 
+      solr_parse(out) 
+    }
   }
 }

@@ -4,10 +4,12 @@
 \alias{ping}
 \title{Ping a Solr instance}
 \usage{
-ping(conn, wt = "json", verbose = TRUE, raw = FALSE, callopts = list())
+ping(conn, name, wt = "json", verbose = TRUE, raw = FALSE, ...)
 }
 \arguments{
 \item{conn}{Connection object. Required.}
+
+\item{name}{(character) Name of a collection or core. Required.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse}
@@ -23,19 +25,20 @@ Ping a Solr instance
 }
 \details{
 You likely may not be able to run this function against many public Solr
-services, but should work locally.
+services as they hopefully don't expose their admin interface to the public, but
+works locally.
 }
 \examples{
 \dontrun{
 # by default we connect to localhost, port 8983
 conn <- solr_connect()
-ping(conn)
-ping(conn, wt = "xml")
-ping(conn, verbose = FALSE)
-ping(conn, raw = TRUE)
+ping(conn, "helloWorld")
+ping(conn, "helloWorld", wt = "xml")
+ping(conn, "helloWorld", verbose = FALSE)
+ping(conn, "helloWorld", raw = TRUE)
 
 library("httr")
-ping(conn, wt="xml", callopts = verbose())
+ping(conn, "helloWorld", wt="xml", config = verbose())
 }
 }
 
