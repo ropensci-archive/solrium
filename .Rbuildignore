@@ -11,3 +11,4 @@ inst/ignore/*
 ^\.Rproj\.user$
 README.Rmd
 solr*
+^\.httr-oauth$
