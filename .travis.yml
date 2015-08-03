@@ -1,7 +1,28 @@
 language: r
 
-before_script: 
-  - "curl -sSL https://raw.githubusercontent.com/sckott/travis-solr/master/travis-solr.sh | SOLR_VERSION=5.2.1 bash"
+env:
+  global:
+    # Solr 5.2.1
+    - SOLR_VERSION="5.2.1"
+    - SOLR_DOWNLOAD="http://archive.apache.org/dist/lucene/solr/"
+    - SOLR_FILE="solr-5.2.1.tgz"
+    - SOLR_INSTALL_DIR=$TRAVIS_BUILD_DIR/srv/solr-5.2.1
+    - SOLR_OPTS="-cloud -V -m 4g -p 8983"
+  
+before_install:
+  - mkdir -p ${SOLR_INSTALL_DIR}
+  # Solr
+  - curl -O ${SOLR_DOWNLOAD}${SOLR_VERSION}/${SOLR_FILE}
+  
+install:
+  # Solr
+  - tar -zxvf ${SOLR_FILE} -C ${SOLR_INSTALL_DIR} --strip-components 1
+  - export PATH=${SOLR_INSTALL_DIR}/bin:$PATH
+
+before_script:
+  # Start Solr
+  - solr start ${SOLR_OPTS}
+  - "until nc -z localhost 8983; do echo Waiting for Solr; sleep 1; done"
 
 r_github_packages:
   - jimhester/robustr
@@ -12,6 +33,9 @@ after_success:
 
 after_failure:
   - ./travis-tool.sh dump_logs
+
+after_script:
+  - solr stop
 
 notifications:
   email:
