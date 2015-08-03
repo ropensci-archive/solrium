@@ -12,3 +12,4 @@ inst/ignore/*
 README.Rmd
 solr*
 ^\.httr-oauth$
+solr-4.10.3
