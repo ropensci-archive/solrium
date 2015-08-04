@@ -4,7 +4,7 @@ solr
 
 
 [![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
-[![Coverage Status](https://coveralls.io/repos/ropensci/solr/badge.svg)](https://coveralls.io/r/ropensci/solr)
+[![codecov.io](https://codecov.io/github/ropensci/solr/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solr?branch=master)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solr?color=2ED968)](https://github.com/metacran/cranlogs.app)
 [![cran version](http://www.r-pkg.org/badges/version/solr)](http://cran.rstudio.com/web/packages/solr)
 

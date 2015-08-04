@@ -1,7 +1,7 @@
 language: r
 sudo: required
 
-before_script: 
+before_script:
   - "curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.10.3 bash"
 
 r_github_packages:
@@ -9,7 +9,7 @@ r_github_packages:
   - jimhester/covr
 
 after_success:
-  - Rscript -e 'library(covr); coveralls()'
+  - Rscript -e 'covr::codecov()'
 
 notifications:
   email:
