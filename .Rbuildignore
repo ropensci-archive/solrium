@@ -10,6 +10,4 @@ inst/ignore/*
 ^.*\.Rproj$
 ^\.Rproj\.user$
 README.Rmd
-solr*
 ^\.httr-oauth$
-solr-4.10.3
