@@ -4,7 +4,8 @@
 \alias{solr_connect}
 \title{Solr connection}
 \usage{
-solr_connect(url = "http://localhost:8983", proxy = NULL)
+solr_connect(url = "http://localhost:8983", proxy = NULL,
+  errors = "simple")
 }
 \arguments{
 \item{url}{Base URL for Solr instance}
@@ -12,6 +13,10 @@ solr_connect(url = "http://localhost:8983", proxy = NULL)
 \item{proxy}{List of arguments for a proxy connection, including one or more of:
 url, port, username, password, and auth. See \code{\link[httr]{use_proxy}} for
 help, which is used to construct the proxy connection.}
+
+\item{(character)}{One of simple or complete. Simple gives http code and
+error message on an error, while complete gives both http code and error message,
+and stack trace, if available.}
 }
 \description{
 Solr connection

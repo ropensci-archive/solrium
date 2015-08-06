@@ -5,11 +5,15 @@
 #' @param proxy List of arguments for a proxy connection, including one or more of:
 #' url, port, username, password, and auth. See \code{\link[httr]{use_proxy}} for 
 #' help, which is used to construct the proxy connection.
+#' @param (character) One of simple or complete. Simple gives http code and 
+#' error message on an error, while complete gives both http code and error message, 
+#' and stack trace, if available.  
 #' @examples \dontrun{
 #' prox <- list(url = "187.62.207.130", port = 3128)
 #' solr_connect(url = "http://localhost:8983", proxy = prox)
 #' }
-solr_connect <- function(url = "http://localhost:8983", proxy = NULL) {
+solr_connect <- function(url = "http://localhost:8983", proxy = NULL, errors = "simple") {
+  options(solr_errors = errors)
   structure(list(url = url, proxy = make_proxy(proxy)), class = "solr_connection")
 }
 
