@@ -4,7 +4,7 @@
 \alias{solr_mlt}
 \title{Solr "more like this" search}
 \usage{
-solr_mlt(conn, q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
+solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   mlt.mintf = NULL, mlt.mindf = NULL, mlt.minwl = NULL,
   mlt.maxwl = NULL, mlt.maxqt = NULL, mlt.maxntp = NULL,
   mlt.boost = NULL, mlt.qf = NULL, fl = NULL, wt = "json", start = 0,
@@ -12,8 +12,6 @@ solr_mlt(conn, q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   parsetype = "df", concat = ",", verbose = TRUE)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{fq}{Filter query, this does not affect the search, only what gets returned}
@@ -71,6 +69,8 @@ Note that this only works reliably when data format is json (wt='json'). The par
 is more complicated in XML format, but you can do that on your own.}
 
 \item{verbose}{If TRUE (default) the url call used printed to console.}
+
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -80,18 +80,20 @@ Solr "more like this" search
 }
 \examples{
 \dontrun{
-conn <- solr_connect('http://api.plos.org/search')
+# connect
+solr_connect('http://api.plos.org/search')
 
-solr_mlt(conn, q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full")
-solr_mlt(conn, q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount')
-solr_mlt(conn, q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1,
+# more like this search
+solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full")
+solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount')
+solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1,
    fl='counter_total_all', rows=5)
-solr_mlt(conn, q='ecology', mlt.fl='abstract', fl='title', rows=5)
-solr_mlt(conn, q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
-solr_mlt(conn, q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
+solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5)
+solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
+solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
 
 # get raw data, and parse later if needed
-out <- solr_mlt(conn, q='ecology', mlt.fl='abstract', fl='title', rows=2, raw=TRUE)
+out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, raw=TRUE)
 library('jsonlite')
 jsonlite::fromJSON(out)
 solr_parse(out, "df")

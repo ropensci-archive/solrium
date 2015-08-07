@@ -10,45 +10,47 @@
 #' more information.
 #' @export
 #' @examples \dontrun{
-#' conn <- solr_connect('http://api.plos.org/search')
-#' 
-#' solr_all(conn, q='*:*', rows=2, fl='id')
+ #' # connect
+#' solr_connect('http://api.plos.org/search')
+#'
+#' solr_all(q='*:*', rows=2, fl='id')
 #'
 #' # facets
-#' solr_all(conn, q='*:*', rows=2, fl='id', facet="true", facet.field="journal")
+#' solr_all(q='*:*', rows=2, fl='id', facet="true", facet.field="journal")
 #'
 #' # mlt
-#' solr_all(conn, q='ecology', rows=2, fl='id', mlt='true', mlt.count=2, mlt.fl='abstract')
+#' solr_all(q='ecology', rows=2, fl='id', mlt='true', mlt.count=2, mlt.fl='abstract')
 #'
 #' # facets and mlt
-#' solr_all(conn, q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+#' solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 #' mlt='true', mlt.count=2, mlt.fl='abstract')
 #'
 #' # stats
-#' solr_all(conn, q='ecology', rows=2, fl='id', stats='true', stats.field='counter_total_all')
+#' solr_all(q='ecology', rows=2, fl='id', stats='true', stats.field='counter_total_all')
 #'
 #' # facets, mlt, and stats
-#' solr_all(conn, q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+#' solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 #' mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all')
 #'
 #' # group
-#' solr_all(conn, q='ecology', rows=2, fl='id', group='true',
+#' solr_all(q='ecology', rows=2, fl='id', group='true',
 #'    group.field='journal', group.limit=3)
 #'
 #' # facets, mlt, stats, and groups
-#' solr_all(conn, q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+#' solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 #'    mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all',
 #'    group='true', group.field='journal', group.limit=3)
 #'
 #' # using wt = xml
-#' solr_all(conn, q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
+#' solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
 #' }
 
-solr_all <- function(conn, q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
+solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='list', concat=',', ..., verbose=TRUE) {
 
+  conn <- solr_settings()
   check_conn(conn)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
   args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,

@@ -7,25 +7,27 @@
 #' @references See \url{http://wiki.apache.org/solr/HighlightingParameters} for
 #' more information on highlighting.
 #' @examples \dontrun{
-#' conn <- solr_connect('http://api.plos.org/search')
+#' # connect
+#' solr_connect('http://api.plos.org/search')
 #'
-#' solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10)
-#' solr_highlight(conn, q='alcohol', hl.fl = c('abstract','title'), rows=3)
+#' # highlight search
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10)
+#' solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3)
 #'
 #' # Raw data back
 #' ## json
-#' solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10,
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10,
 #'    raw=TRUE)
 #' ## xml
-#' solr_highlight(conn, q='alcohol', hl.fl = 'abstract', rows=10,
+#' solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10,
 #'    raw=TRUE, wt='xml')
 #' ## parse after getting data back
-#' out <- solr_highlight(conn, q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30,
+#' out <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30,
 #'    rows=10, raw=TRUE, wt='xml')
 #' solr_parse(out, parsetype='df')
 #' }
 
-solr_highlight <- function(conn, q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
+solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
      hl.q = NULL, hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL,
      hl.maxAnalyzedChars = NULL, hl.alternateField = NULL, hl.maxAlternateFieldLength = NULL,
      hl.preserveMulti = NULL, hl.maxMultiValuedToExamine = NULL,
@@ -38,7 +40,8 @@ solr_highlight <- function(conn, q, hl.fl = NULL, hl.snippets = NULL, hl.fragsiz
      hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NULL,
      wt='json', raw = FALSE, key = NULL, callopts=list(),
      fl='DOES_NOT_EXIST', fq=NULL, parsetype='list', verbose=TRUE) {
-  
+
+  conn <- solr_settings()
   check_conn(conn)
   if(!is.null(hl.fl)) names(hl.fl) <- rep("hl.fl", length(hl.fl))
   args <- sc(list(wt=wt, q=q, start=start, rows=rows, hl='true',

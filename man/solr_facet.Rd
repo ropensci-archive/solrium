@@ -4,7 +4,7 @@
 \alias{solr_facet}
 \title{Do faceted searches, outputing facets only.}
 \usage{
-solr_facet(conn, q = "*:*", facet.query = NA, facet.field = NA,
+solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
   facet.prefix = NA, facet.sort = NA, facet.limit = NA,
   facet.offset = NA, facet.mincount = NA, facet.missing = NA,
   facet.method = NA, facet.enum.cache.minDf = NA, facet.threads = NA,
@@ -17,8 +17,6 @@ solr_facet(conn, q = "*:*", facet.query = NA, facet.field = NA,
   verbose = TRUE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{q}{Query terms. See examples.}
 
 \item{facet.query}{This param allows you to specify an arbitrary query in the
@@ -153,6 +151,8 @@ parsed data returned.}
 \item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{...}{Further args, usually per field arguments for faceting.}
+
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).
@@ -279,63 +279,64 @@ lower & upper, don't choose outer, and don't choose all.
 }
 \examples{
 \dontrun{
-conn <- solr_connect('http://api.plos.org/search')
+# connect
+solr_connect('http://api.plos.org/search')
 
 # Facet on a single field
-solr_facet(conn, q='*:*', facet.field='journal')
+solr_facet(q='*:*', facet.field='journal')
 
 # Facet on multiple fields
-solr_facet(conn, q='alcohol', facet.field=c('journal','subject'), base=url)
+solr_facet(q='alcohol', facet.field=c('journal','subject'))
 
 # Using mincount
-solr_facet(conn, q='alcohol', facet.field='journal', facet.mincount='500', base=url)
+solr_facet(q='alcohol', facet.field='journal', facet.mincount='500')
 
 # Using facet.query to get counts
-solr_facet(conn, q='*:*', facet.field='journal', facet.query=c('cell','bird'), base=url)
+solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'))
 
 # Date faceting
-solr_facet(conn, q='*:*', base=url, facet.date='publication_date',
+solr_facet(q='*:*', facet.date='publication_date',
 facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY')
 
 # Range faceting
-solr_facet(conn, q='*:*', base=url, facet.range='counter_total_all',
+solr_facet(q='*:*', facet.range='counter_total_all',
 facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 
 # Range faceting with > 1 field, same settings
-solr_facet(conn, q='*:*', base=url, facet.range=c('counter_total_all','alm_twitterCount'),
+solr_facet(q='*:*', facet.range=c('counter_total_all','alm_twitterCount'),
 facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
 
 # Range faceting with > 1 field, different settings
-solr_facet(conn, q='*:*', base=url, facet.range=c('counter_total_all','alm_twitterCount'),
+solr_facet(q='*:*', facet.range=c('counter_total_all','alm_twitterCount'),
 f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000,
 f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5,
 f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10)
 
 # Get raw json or xml
 ## json
-solr_facet(conn, q='*:*', facet.field='journal', base=url, raw=TRUE)
+solr_facet(q='*:*', facet.field='journal', raw=TRUE)
 ## xml
-solr_facet(conn, q='*:*', facet.field='journal', base=url, raw=TRUE, wt='xml')
+solr_facet(q='*:*', facet.field='journal', raw=TRUE, wt='xml')
 
 # Get raw data back, and parse later, same as what goes on internally if
 # raw=FALSE (Default)
-out <- solr_facet(conn, q='*:*', facet.field='journal', base=url, raw=TRUE)
+out <- solr_facet(q='*:*', facet.field='journal', raw=TRUE)
 solr_parse(out)
-out <- solr_facet(conn, q='*:*', facet.field='journal', base=url, raw=TRUE,
+out <- solr_facet(q='*:*', facet.field='journal', raw=TRUE,
    wt='xml')
 solr_parse(out)
 
 # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
 ## The occurrence endpoint
-conn <- solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select")
-solr_facet(conn, q='*:*', facet.field='year')
-solr_facet(conn, q='*:*', facet.field='state_code')
-solr_facet(conn, q='*:*', facet.field='basis_of_record')
+solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select")
+solr_facet(q='*:*', facet.field='year')
+solr_facet(q='*:*', facet.field='state_code')
+solr_facet(q='*:*', facet.field='basis_of_record')
 
 # using a proxy
-prox <- list(url = "186.249.1.146", port = 80)
-conn <- solr_connect(url = 'http://api.plos.org/search', proxy = prox)
-solr_facet(conn, facet.field='journal', callopts=verbose())
+prox <- list(url = "54.195.48.153", port = 8888)
+solr_connect(url = 'http://api.plos.org/search', proxy = prox)
+solr_facet(facet.field='journal', callopts=verbose())
 }
 }
 \references{

@@ -2,29 +2,50 @@
 % Please edit documentation in R/connect.R
 \name{solr_connect}
 \alias{solr_connect}
+\alias{solr_settings}
 \title{Solr connection}
 \usage{
 solr_connect(url = "http://localhost:8983", proxy = NULL,
   errors = "simple")
+
+solr_settings()
 }
 \arguments{
-\item{url}{Base URL for Solr instance}
+\item{url}{Base URL for Solr instance. For a local instance, this is likely going
+to be \code{http://localhost:8983} (also the default), or a different port if you
+set a different port.}
 
 \item{proxy}{List of arguments for a proxy connection, including one or more of:
 url, port, username, password, and auth. See \code{\link[httr]{use_proxy}} for
 help, which is used to construct the proxy connection.}
 
-\item{(character)}{One of simple or complete. Simple gives http code and
+\item{errors}{(character) One of simple or complete. Simple gives http code and
 error message on an error, while complete gives both http code and error message,
 and stack trace, if available.}
 }
 \description{
-Solr connection
+Set Solr options, including base URL, proxy, and errors
+}
+\details{
+This function simply sets environment variables that we use internally
+within functions in this package to determine the right thing to do given your
+inputs.
 }
 \examples{
 \dontrun{
+# set solr settings
+solr_connect()
+
+# set solr settings with a proxy
 prox <- list(url = "187.62.207.130", port = 3128)
 solr_connect(url = "http://localhost:8983", proxy = prox)
+
+# get solr settings
+solr_settings()
+
+# you can also check your settings via Sys.getenv()
+Sys.getenv("SOLR_URL")
+Sys.getenv("SOLR_ERRORS")
 }
 }
 

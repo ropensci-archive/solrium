@@ -130,9 +130,11 @@ objcreate <- function(base, dat, args, verbose, raw, ...) {
 
 check_conn <- function(x) {
   if (!is(x, "solr_connection")) {
-    stop("Input to conn parameter must be an object of class solr_connection", call. = FALSE)
+    stop("Input to conn parameter must be an object of class solr_connection", 
+         call. = FALSE)
   }
   if (is.null(x)) {
-    stop("You must provide a connection object", call. = FALSE)
+    stop("You must provide a connection object", 
+         call. = FALSE)
   }
 }

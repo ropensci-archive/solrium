@@ -4,7 +4,7 @@
 \alias{solr_search}
 \title{Solr search.}
 \usage{
-solr_search(conn, q = "*:*", sort = NULL, start = NULL, rows = NULL,
+solr_search(q = "*:*", sort = NULL, start = NULL, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
@@ -12,8 +12,6 @@ solr_search(conn, q = "*:*", sort = NULL, start = NULL, rows = NULL,
   concat = ",", ..., verbose = TRUE)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{sort}{Field to sort on. You can specify ascending (e.g., score desc) or
@@ -99,34 +97,35 @@ SOLR v1.2 was first version to support csv. See
 }
 \examples{
 \dontrun{
-conn <- solr_connect('http://api.plos.org/search')
-solr_search(conn, q='*:*', rows=2, fl='id')
+# connect
+solr_connect('http://api.plos.org/search')
+
+# search
+solr_search(q='*:*', rows=2, fl='id')
 
 # Search for word ecology in title and cell in the body
-solr_search(conn, q='title:"ecology" AND body:"cell"', fl='title', rows=5)
+solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5)
 
 # Search for word "cell" and not "body" in the title field
-solr_search(conn, q='title:"cell" -title:"lines"', fl='title', rows=5)
+solr_search(q='title:"cell" -title:"lines"', fl='title', rows=5)
 
 # Wildcards
 ## Search for word that starts with "cell" in the title field
-solr_search(conn, q='title:"cell*"', fl='title', rows=5)
+solr_search(q='title:"cell*"', fl='title', rows=5)
 
 # Proximity searching
 ## Search for words "sports" and "alcohol" within four words of each other
-solr_search(conn, q='everything:"sports alcohol"~7', fl='abstract', rows=3)
+solr_search(q='everything:"sports alcohol"~7', fl='abstract', rows=3)
 
 # Range searches
 ## Search for articles with Twitter count between 5 and 10
-solr_search(conn, q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]',
+solr_search(q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]',
 rows=10)
 
 # Boosts
 ## Assign higher boost to title matches than to body matches (compare the two calls)
-solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3,
-   base=url)
-solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3,
-   base=url)
+solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3)
+solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3)
 
 # FunctionQuery queries
 ## This kind of query allows you to use the actual values of fields to calculate
@@ -136,39 +135,38 @@ solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3,
 ## metrics for articles in PLOS Journals
 url <- 'http://api.plos.org/search'
 solr_search(q="{!func}product($v1,$v2)", v1 = 'sqrt(counter_total_all)',
-   v2 = 'log(alm_twitterCount)', rows=5, fl=c('id','title'), fq='doc_type:full',
-   base=url)
+   v2 = 'log(alm_twitterCount)', rows=5, fl=c('id','title'), fq='doc_type:full')
 
 ## here, search on the product of counter_total_all and alm_twitterCount, using
 ## a new temporary field "_val_"
 solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
-   rows=5, fl=c('id','title'), fq='doc_type:full', base=url)
+   rows=5, fl=c('id','title'), fq='doc_type:full')
 
 ## papers with most citations
 solr_search(q='_val_:"max(counter_total_all)"',
-   rows=5, fl=c('id','counter_total_all'), fq='doc_type:full', base=url)
+   rows=5, fl=c('id','counter_total_all'), fq='doc_type:full')
 
 ## papers with most tweets
 solr_search(q='_val_:"max(alm_twitterCount)"',
-   rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full', base=url)
+   rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full')
 
 ## using wt = csv
 url <- 'http://api.plos.org/search'
-solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url, wt="csv")
-solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url)
+solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="csv")
+solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full')
 
 # using a proxy
 prox <- list(url = "186.249.1.146", port = 80)
-conn <- solr_connect(url = 'http://api.plos.org/search', proxy = prox)
-solr_search(conn, q='*:*', rows=2, fl='id', callopts=verbose())
+solr_connect(url = 'http://api.plos.org/search', proxy = prox)
+solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
 ## vs. w/o a proxy
-conn <- solr_connect(url = 'http://api.plos.org/search')
-solr_search(conn, q='*:*', rows=2, fl='id', callopts=verbose())
+solr_connect(url = 'http://api.plos.org/search')
+solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
 
 # Pass on curl options to modify request
-conn <- solr_connect(url = 'http://api.plos.org/search')
+solr_connect(url = 'http://api.plos.org/search')
 ## verbose
-solr_search(conn, q='*:*', rows=2, fl='id', callopts=verbose())
+solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
 ## progress
 res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=progress())
 ## timeout
@@ -181,7 +179,7 @@ res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=opts)
 ### They don't return the expected Solr output, so we can get raw data, then parse separately
 url <- 'http://europeana.eu/api/v2/search.json'
 key <- getOption("eu_key")
-dat <- solr_search(query='*:*', rows=5, base=url, wskey = key, raw=TRUE)
+dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
 library('jsonlite')
 head( jsonlite::fromJSON(dat)$items )
 }

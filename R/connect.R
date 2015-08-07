@@ -1,35 +1,73 @@
-#' Solr connection 
+#' @title Solr connection 
+#' 
+#' @description Set Solr options, including base URL, proxy, and errors
 #' 
 #' @export
-#' @param url Base URL for Solr instance
+#' @param url Base URL for Solr instance. For a local instance, this is likely going
+#' to be \code{http://localhost:8983} (also the default), or a different port if you
+#' set a different port. 
 #' @param proxy List of arguments for a proxy connection, including one or more of:
 #' url, port, username, password, and auth. See \code{\link[httr]{use_proxy}} for 
 #' help, which is used to construct the proxy connection.
-#' @param (character) One of simple or complete. Simple gives http code and 
+#' @param errors (character) One of simple or complete. Simple gives http code and 
 #' error message on an error, while complete gives both http code and error message, 
-#' and stack trace, if available.  
+#' and stack trace, if available.
+#' @details This function simply sets environment variables that we use internally
+#' within functions in this package to determine the right thing to do given your
+#' inputs.   
 #' @examples \dontrun{
+#' # set solr settings
+#' solr_connect()
+#' 
+#' # set solr settings with a proxy
 #' prox <- list(url = "187.62.207.130", port = 3128)
 #' solr_connect(url = "http://localhost:8983", proxy = prox)
+#' 
+#' # get solr settings
+#' solr_settings()
+#' 
+#' # you can also check your settings via Sys.getenv()
+#' Sys.getenv("SOLR_URL")
+#' Sys.getenv("SOLR_ERRORS")
 #' }
 solr_connect <- function(url = "http://localhost:8983", proxy = NULL, errors = "simple") {
-  options(solr_errors = errors)
-  structure(list(url = url, proxy = make_proxy(proxy)), class = "solr_connection")
+  checkurl(url)
+  errors <- match.arg(errors, c('simple', 'complete'))
+  Sys.setenv("SOLR_URL" = url)
+  Sys.setenv("SOLR_ERRORS" = errors)
+  options(solr_proxy = proxy)
+  structure(list(url = url, proxy = make_proxy(proxy), errors = errors), class = "solr_connection")
 }
 
+#' @export
+#' @rdname solr_connect
+solr_settings <- function() {
+  url <- Sys.getenv("SOLR_URL")
+  err <- Sys.getenv("SOLR_ERRORS")
+  proxy <- getOption("solr_proxy")
+  structure(list(url = url, proxy = make_proxy(proxy), errors = err), class = "solr_connection")
+}
+
+#' @export
 print.solr_connection <- function(x, ...) {
   cat("<solr_connection>", sep = "\n")
-  cat(paste0("  url: ", x$url), sep = "\n")
-  cat("  proxy url: ", cat_proxy(x$proxy))
-}
-
-cat_proxy <- function(x) {
-  if (is.null(x)) {
-    ''
+  cat(paste0("  url:    ", x$url), sep = "\n")
+  cat(paste0("  errors: ", x$errors), sep = "\n")
+  cat("  proxy:", sep = "\n")
+  if (is.null(x$proxy)) {
   } else {
-    x$options$proxy
+    cat(paste0("      url:     ", x$proxy$options$proxy), sep = "\n")
+    cat(paste0("      port:     ", x$proxy$options$proxyport))
   }
 }
+
+# cat_proxy <- function(x) {
+#   if (is.null(x)) {
+#     ''
+#   } else {
+#     x$options$proxy
+#   }
+# }
 
 make_proxy <- function(args) {
   if (is.null(args)) {
@@ -39,6 +77,14 @@ make_proxy <- function(args) {
                     username = args$username, password = args$password, 
                     auth = args$auth)
   }
+}
+
+is_url <- function(x){
+  grepl("https?://", x, ignore.case = TRUE) || grepl("localhost:[0-9]{4}", x, ignore.case = TRUE)
+}
+
+checkurl <- function(x){
+  if (!is_url(x)) stop("That does not appear to be a url", call. = FALSE)
 }
 
 # ### R6 version

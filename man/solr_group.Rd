@@ -4,7 +4,7 @@
 \alias{solr_group}
 \title{Solr grouped search.}
 \usage{
-solr_group(conn, q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
+solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   fl = NA, wt = "json", key = NA, group.field = NA, group.limit = NA,
   group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.cache.percent = NA, group.query = NA,
@@ -12,8 +12,6 @@ solr_group(conn, q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   parsetype = "df", concat = ",", verbose = TRUE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{start}{[number] The offset into the list of groups.}
@@ -86,6 +84,8 @@ is more complicated in XML format, but you can do that on your own.}
 \item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{...}{Further args.}
+
+\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -95,40 +95,41 @@ Solr grouped search.
 }
 \examples{
 \dontrun{
-conn <- solr_connect('http://api.plos.org/search')
+# connect
+solr_connect('http://api.plos.org/search')
 
 # Basic group query
-solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl=c('id','score'))
-solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl='article_type')
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'))
+solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type')
 
 # Different ways to sort (notice diff btw sort of group.sort)
 # note that you can only sort on a field if you return that field
-solr_group(conn, q='ecology', group.field='journal', group.limit=3,
+solr_group(q='ecology', group.field='journal', group.limit=3,
    fl=c('id','score'))
-solr_group(conn, q='ecology', group.field='journal', group.limit=3,
+solr_group(q='ecology', group.field='journal', group.limit=3,
    fl=c('id','score','alm_twitterCount'), group.sort='alm_twitterCount desc')
-solr_group(conn, q='ecology', group.field='journal', group.limit=3,
+solr_group(q='ecology', group.field='journal', group.limit=3,
    fl=c('id','score','alm_twitterCount'), sort='score asc', group.sort='alm_twitterCount desc')
 
 # Two group.field values
-out <- solr_group(conn, q='ecology', group.field=c('journal','article_type'), group.limit=3,
+out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3,
    fl='id', raw=TRUE)
 solr_parse(out)
 solr_parse(out, 'df')
 
 # Get two groups, one with alm_twitterCount of 0-10, and another group with 10 to infinity
-solr_group(conn, q='ecology', group.limit=3, fl=c('id','alm_twitterCount'),
+solr_group(q='ecology', group.limit=3, fl=c('id','alm_twitterCount'),
  group.query=c('alm_twitterCount:[0 TO 10]','alm_twitterCount:[10 TO *]'))
 
 # Use of group.format and group.simple.
 ## The raw data structure of these two calls are slightly different, but
 ## the parsing inside the function outputs the same results. You can of course
 ## set raw=TRUE to get back what the data actually look like
-solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
    group.format='simple')
-solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
    group.format='grouped')
-solr_group(conn, q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
    group.format='grouped', group.main='true')
 }
 }

@@ -4,7 +4,7 @@
 \alias{solr_all}
 \title{All purpose function to do search, faceting, grouping, mlt, etc.}
 \usage{
-solr_all(conn, q = "*:*", sort = NULL, start = 0, rows = NULL,
+solr_all(q = "*:*", sort = NULL, start = 0, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
@@ -12,8 +12,6 @@ solr_all(conn, q = "*:*", sort = NULL, start = 0, rows = NULL,
   concat = ",", ..., verbose = TRUE)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{sort}{Field to sort on. You can specify ascending (e.g., score desc) or
@@ -93,38 +91,39 @@ All purpose function to do search, faceting, grouping, mlt, etc.
 }
 \examples{
 \dontrun{
-conn <- solr_connect('http://api.plos.org/search')
+# connect
+solr_connect('http://api.plos.org/search')
 
-solr_all(conn, q='*:*', rows=2, fl='id')
+solr_all(q='*:*', rows=2, fl='id')
 
 # facets
-solr_all(conn, q='*:*', rows=2, fl='id', facet="true", facet.field="journal")
+solr_all(q='*:*', rows=2, fl='id', facet="true", facet.field="journal")
 
 # mlt
-solr_all(conn, q='ecology', rows=2, fl='id', mlt='true', mlt.count=2, mlt.fl='abstract')
+solr_all(q='ecology', rows=2, fl='id', mlt='true', mlt.count=2, mlt.fl='abstract')
 
 # facets and mlt
-solr_all(conn, q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 mlt='true', mlt.count=2, mlt.fl='abstract')
 
 # stats
-solr_all(conn, q='ecology', rows=2, fl='id', stats='true', stats.field='counter_total_all')
+solr_all(q='ecology', rows=2, fl='id', stats='true', stats.field='counter_total_all')
 
 # facets, mlt, and stats
-solr_all(conn, q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all')
 
 # group
-solr_all(conn, q='ecology', rows=2, fl='id', group='true',
+solr_all(q='ecology', rows=2, fl='id', group='true',
    group.field='journal', group.limit=3)
 
 # facets, mlt, stats, and groups
-solr_all(conn, q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
    mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all',
    group='true', group.field='journal', group.limit=3)
 
 # using wt = xml
-solr_all(conn, q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
+solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
 }
 }
 \references{
