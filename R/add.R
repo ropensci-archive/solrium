@@ -24,14 +24,14 @@
 #' 
 #' # Documents in a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-#' add(ss, conn, collection = "helloWorld")
+#' add(ss, conn, name = "helloWorld")
 #' 
 #' # Documents in a data.frame
 #' ## Simple example
 #' df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-#' add(x = df, conn, collection = "helloWorld")
+#' add(x = df, conn, name = "helloWorld")
 #' df <- data.frame(id = c(77, 78), price = c(1, 2.40))
-#' add(x = df, conn, collection = "helloWorld")
+#' add(x = df, conn, name = "helloWorld")
 #' 
 #' ## More complex example, get file from package examples
 #' # start Solr in Schemaless mode first: bin/solr start -e schemaless
@@ -39,7 +39,7 @@
 #' x <- read.csv(file, stringsAsFactors = FALSE)
 #' class(x)
 #' head(x)
-#' add(x, conn, collection = "gettingstarted")
+#' add(x, conn, name = "gettingstarted")
 #' 
 #' # Use modifiers
 #' add(x, conn, commit_within = 5000)

@@ -32,8 +32,8 @@
 #'
 #' # Range searches
 #' ## Search for articles with Twitter count between 5 and 10
-#' solr_search(q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]',
-#' rows=10, base=url)
+#' solr_search(conn, q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]',
+#' rows=10)
 #'
 #' # Boosts
 #' ## Assign higher boost to title matches than to body matches (compare the two calls)

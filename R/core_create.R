@@ -59,28 +59,32 @@
 #' config <- system.file("examples", "solrconfig.xml", package = "solr")
 #' schema <- system.file("examples", "schema.xml", package = "solr")
 #' core_create(conn, name = "helloWorld", config = config, schema = schema)
+#' 
+#' core_create(conn, name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", config = 'solrconfig.xml', schema = 'schema.xml')
 #' }
 core_create <- function(conn, name, numShards = 2, maxShardsPerNode = 1, 
-                              createNodeSet = NULL, collection.configName = 'compositeId', 
-                              replicationFactor = 1, router.name = NULL, shards = NULL,
-                              createNodeSet.shuffle = TRUE, router.field = NULL,
-                              autoAddReplicas = FALSE, async = NULL,
-                              verbose=TRUE, raw = FALSE, callopts=list(), ...) {
+                        createNodeSet = NULL, collection.configName = NULL, 
+                        replicationFactor = 1, router.name = NULL, shards = NULL,
+                        createNodeSet.shuffle = TRUE, router.field = NULL,
+                        autoAddReplicas = FALSE, async = NULL, 
+                        instanceDir =NULL, config = NULL, schema = NULL, 
+                        verbose=TRUE, raw = FALSE, callopts=list(), ...) {
 
-  message("Not working yet")  
-#   check_conn(conn)
-#   args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
-#                   replicationFactor = replicationFactor, 
-#                   maxShardsPerNode = maxShardsPerNode, createNodeSet = createNodeSet, 
-#                   collection.configName = collection.configName, 
-#                   router.name = router.name, shards = shards,
-#                   createNodeSet.shuffle = createNodeSet.shuffle, 
-#                   router.field = router.field, autoAddReplicas = autoAddReplicas, 
-#                   async = async, wt = 'json'))
-#   res <- solr_GET(file.path(conn$url, 'solr/admin/cores'), args, callopts, verbose, conn$proxy, ...)
-#   if (raw) {
-#     return(res)
-#   } else {
-#     jsonlite::fromJSON(res)
-#   }
+  # message("Not working yet")  
+  check_conn(conn)
+  args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
+                  replicationFactor = replicationFactor, 
+                  maxShardsPerNode = maxShardsPerNode, createNodeSet = createNodeSet, 
+                  collection.configName = collection.configName, 
+                  router.name = router.name, shards = shards,
+                  createNodeSet.shuffle = createNodeSet.shuffle, 
+                  router.field = router.field, autoAddReplicas = autoAddReplicas, 
+                  async = async, instanceDir = instanceDir, config = config, 
+                  schema = schema, wt = 'json'))
+  res <- solr_GET(file.path(conn$url, 'solr/admin/cores'), args, callopts, verbose, conn$proxy, ...)
+  if (raw) {
+    return(res)
+  } else {
+    jsonlite::fromJSON(res)
+  }
 }

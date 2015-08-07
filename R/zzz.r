@@ -29,7 +29,14 @@ solr_GET <- function(base, args, callopts = NULL, verbose, ...){
   tt <- GET(base, query = args, callopts, ...)
   if (verbose) message(URLdecode(tt$url))
   if (tt$status_code > 201) {
-    stop(http_condition(tt$status_code, "message")$message, call. = FALSE)
+    # stop(http_condition(tt$status_code, "message")$message, call. = FALSE)
+    err <- content(tt)
+    erropt <- getOption("solr_errors", "")
+    if (erropt == "simple" || erropt == "") {
+      stop(err$error$code, " - ", err$error$msg, call. = FALSE)
+    } else {
+      stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
+    }
   } else {
     content(tt, as = "text")
   }
