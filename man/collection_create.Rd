@@ -86,7 +86,7 @@ Add a collection
 \examples{
 \dontrun{
 solr_connect()
-collection_create(name = "helloWorld")
+collection_create(name = "helloWorld", numShards = 2)
 collection_create(name = "tablesChairs")
 }
 }

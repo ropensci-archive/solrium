@@ -55,7 +55,7 @@
 #' (https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)
 #' @examples \dontrun{
 #' solr_connect()
-#' collection_create(name = "helloWorld")
+#' collection_create(name = "helloWorld", numShards = 2)
 #' collection_create(name = "tablesChairs")
 #' }
 collection_create <- function(name, numShards = 2, maxShardsPerNode = 1, 
