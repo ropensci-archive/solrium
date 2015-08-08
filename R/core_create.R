@@ -64,7 +64,8 @@
 #' schema <- system.file("examples", "schema.xml", package = "solr")
 #' core_create(name = "helloWorld", config = config, schema = schema)
 #' 
-#' core_create(name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", config = 'solrconfig.xml', schema = 'schema.xml')
+#' core_create(name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", 
+#' config = 'solrconfig.xml', schema = 'schema.xml')
 #' }
 core_create <- function(name, numShards = 2, maxShardsPerNode = 1, 
                         createNodeSet = NULL, collection.configName = NULL, 
