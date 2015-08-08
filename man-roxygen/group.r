@@ -1,4 +1,3 @@
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return

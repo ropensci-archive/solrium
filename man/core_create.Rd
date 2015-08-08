@@ -69,6 +69,12 @@ and overrides. Default: \code{FALSE}}
 \item{async}{(character) Request ID to track this action which will be processed
 asynchronously}
 
+\item{instanceDir}{(character) Path to instance directory}
+
+\item{config}{(character) Path to config file}
+
+\item{schema}{(character) Path to schema file}
+
 \item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by

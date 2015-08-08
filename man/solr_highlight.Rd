@@ -178,8 +178,6 @@ parsed data returned.}
 \item{parsetype}{One of list of df (data.frame)}
 
 \item{verbose}{If TRUE (default) the url call used printed to console.}
-
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 XML, JSON, a list, or data.frame

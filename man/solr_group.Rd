@@ -84,8 +84,6 @@ is more complicated in XML format, but you can do that on your own.}
 \item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{...}{Further args.}
-
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 XML, JSON, a list, or data.frame

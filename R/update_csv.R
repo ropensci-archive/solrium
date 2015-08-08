@@ -3,8 +3,8 @@
 #' @export
 #' @family update
 #' @template csvcreate
-#' @param conn Connection object. Required.
 #' @param files Path to file to load into Solr
+#' @param name (character) Name of the core or collection
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param

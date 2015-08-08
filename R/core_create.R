@@ -45,6 +45,9 @@
 #' and overrides. Default: \code{FALSE}
 #' @param async	(character) Request ID to track this action which will be processed 
 #' asynchronously
+#' @param instanceDir (character) Path to instance directory
+#' @param config (character) Path to config file
+#' @param schema (character) Path to schema file
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
@@ -72,7 +75,7 @@ core_create <- function(name, numShards = 2, maxShardsPerNode = 1,
                         replicationFactor = 1, router.name = NULL, shards = NULL,
                         createNodeSet.shuffle = TRUE, router.field = NULL,
                         autoAddReplicas = FALSE, async = NULL, 
-                        instanceDir =NULL, config = NULL, schema = NULL, 
+                        instanceDir = NULL, config = NULL, schema = NULL, 
                         verbose=TRUE, raw = FALSE, callopts=list(), ...) {
 
   # message("Not working yet")  

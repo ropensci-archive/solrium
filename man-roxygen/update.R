@@ -1,5 +1,6 @@
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Deafult: \code{TRUE}
+#' @param name (character) Name of the core or collection
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse

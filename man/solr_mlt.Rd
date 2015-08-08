@@ -69,8 +69,6 @@ Note that this only works reliably when data format is json (wt='json'). The par
 is more complicated in XML format, but you can do that on your own.}
 
 \item{verbose}{If TRUE (default) the url call used printed to console.}
-
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 XML, JSON, a list, or data.frame

@@ -32,8 +32,6 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \item{parsetype}{(character) One of 'list' or 'df'}
 
 \item{verbose}{If TRUE (default) the url call used printed to console.}
-
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 XML, JSON, a list, or data.frame

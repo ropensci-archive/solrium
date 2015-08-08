@@ -1,4 +1,3 @@
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param q Query terms. See examples.
 #' @param facet.query This param allows you to specify an arbitrary query in the
 #' Lucene default syntax to generate a facet count. By default, faceting returns

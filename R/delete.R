@@ -16,20 +16,20 @@
 #' \code{wt} param
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
-#' conn <- solr_connect()
+#' solr_connect()
 #' 
 #' # Delete by ID
-#' # delete_by_id(conn, ids = 9)
+#' # delete_by_id(ids = 9)
 #' ## Many IDs
-#' # delete_by_id(conn, ids = c(3, 4))
+#' # delete_by_id(ids = c(3, 4))
 #' 
 #' # Delete by query
-#' # delete_by_query(conn, query = "manu:bank")
+#' # delete_by_query(query = "manu:bank")
 #' }
 
 #' @export
 #' @name delete
-delete_by_id <- function(conn, ids, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
+delete_by_id <- function(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
                          boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   conn <- solr_settings()
@@ -41,7 +41,7 @@ delete_by_id <- function(conn, ids, commit = TRUE, commit_within = NULL, overwri
 
 #' @export
 #' @name delete
-delete_by_query <- function(conn, query, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
+delete_by_query <- function(query, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
                             boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   conn <- solr_settings()

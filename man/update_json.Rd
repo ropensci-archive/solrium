@@ -12,6 +12,8 @@ update_json(files, name, commit = TRUE, optimize = FALSE,
 \arguments{
 \item{files}{Path to file to load into Solr}
 
+\item{name}{(character) Name of the core or collection}
+
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Deafult: \code{TRUE}}
 

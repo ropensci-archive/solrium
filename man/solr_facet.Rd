@@ -151,8 +151,6 @@ parsed data returned.}
 \item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{...}{Further args, usually per field arguments for faceting.}
-
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 }
 \value{
 Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).

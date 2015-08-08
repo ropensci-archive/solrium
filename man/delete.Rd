@@ -6,10 +6,10 @@
 \alias{delete_by_query}
 \title{Delete documents by ID or query}
 \usage{
-delete_by_id(conn, ids, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
+delete_by_id(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+  boost = NULL, wt = "json", raw = FALSE, ...)
 
-delete_by_query(conn, query, commit = TRUE, commit_within = NULL,
+delete_by_query(query, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
@@ -41,15 +41,15 @@ Delete documents by ID or query
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
+solr_connect()
 
 # Delete by ID
-# delete_by_id(conn, ids = 9)
+# delete_by_id(ids = 9)
 ## Many IDs
-# delete_by_id(conn, ids = c(3, 4))
+# delete_by_id(ids = c(3, 4))
 
 # Delete by query
-# delete_by_query(conn, query = "manu:bank")
+# delete_by_query(query = "manu:bank")
 }
 }
 

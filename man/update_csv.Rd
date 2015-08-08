@@ -13,6 +13,8 @@ update_csv(files, name, separator = ",", header = TRUE, fieldnames = NULL,
 \arguments{
 \item{files}{Path to file to load into Solr}
 
+\item{name}{(character) Name of the core or collection}
+
 \item{separator}{Specifies the character to act as the field separator. Default: ','}
 
 \item{header}{TRUE if the first line of the CSV input contains field or column names.
@@ -86,8 +88,6 @@ default is commit=false to avoid the potential performance impact of frequent co
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
-
-\item{conn}{Connection object. Required.}
 }
 \description{
 Update documents using CSV
