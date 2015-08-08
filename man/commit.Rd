@@ -4,12 +4,10 @@
 \alias{commit}
 \title{Commit}
 \usage{
-commit(conn, expunge_deletes = FALSE, wait_searcher = TRUE,
-  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
+commit(expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
+  wt = "json", raw = FALSE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
 
 \item{wait_searcher}{block until a new searcher is opened and registered as the
@@ -33,10 +31,10 @@ Commit
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
+solr_connect()
 
-commit(conn)
-commit(conn, wait_searcher = FALSE)
+commit()
+commit(wait_searcher = FALSE)
 }
 }
 

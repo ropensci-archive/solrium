@@ -4,13 +4,11 @@
 \alias{add}
 \title{Add documents from R objects}
 \usage{
-add(x, conn, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
   boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{x}{Documents, either as rows in a data.frame, or a list.}
-
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
 
 \item{name}{(character) A collection or core name. Required.}
 
@@ -46,14 +44,14 @@ conn <- solr_connect()
 
 # Documents in a list
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, conn, name = "helloWorld")
+add(ss, name = "books")
 
 # Documents in a data.frame
 ## Simple example
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(x = df, conn, name = "helloWorld")
+add(x = df, "books")
 df <- data.frame(id = c(77, 78), price = c(1, 2.40))
-add(x = df, conn, name = "helloWorld")
+add(x = df, "books")
 
 ## More complex example, get file from package examples
 # start Solr in Schemaless mode first: bin/solr start -e schemaless
@@ -61,10 +59,10 @@ file <- system.file("examples", "books.csv", package = "solr")
 x <- read.csv(file, stringsAsFactors = FALSE)
 class(x)
 head(x)
-add(x, conn, name = "gettingstarted")
+add(x, "gettingstarted")
 
 # Use modifiers
-add(x, conn, commit_within = 5000)
+add(x, "gettingstarted", commit_within = 5000)
 }
 }
 

@@ -4,7 +4,7 @@
 \alias{core_create}
 \title{Add a collection}
 \usage{
-core_create(conn, name, numShards = 2, maxShardsPerNode = 1,
+core_create(name, numShards = 2, maxShardsPerNode = 1,
   createNodeSet = NULL, collection.configName = NULL,
   replicationFactor = 1, router.name = NULL, shards = NULL,
   createNodeSet.shuffle = TRUE, router.field = NULL,
@@ -13,8 +13,6 @@ core_create(conn, name, numShards = 2, maxShardsPerNode = 1,
   callopts = list(), ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{name}{The name of the collection to be created. Required}
 
 \item{numShards}{(integer) The number of shards to be created as part of the
@@ -88,12 +86,17 @@ Add a collection
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
+# start Solr in Schemaless mode: bin/solr start -e schemaless
+
+# connect
+solr_connect()
+
+# Create a core
 config <- system.file("examples", "solrconfig.xml", package = "solr")
 schema <- system.file("examples", "schema.xml", package = "solr")
-core_create(conn, name = "helloWorld", config = config, schema = schema)
+core_create(name = "helloWorld", config = config, schema = schema)
 
-core_create(conn, name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", config = 'solrconfig.xml', schema = 'schema.xml')
+core_create(name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", config = 'solrconfig.xml', schema = 'schema.xml')
 }
 }
 

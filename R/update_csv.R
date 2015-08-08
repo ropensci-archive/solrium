@@ -12,18 +12,22 @@
 #' @note SOLR v1.2 was first version to support csv. See 
 #' \url{https://issues.apache.org/jira/browse/SOLR-66}
 #' @examples \dontrun{
-#' conn <- solr_connect()
+#' # start Solr in Schemaless mode: bin/solr start -e schemaless
 #' 
-#' mtcars <- data.frame(id=1:NROW(mtcars), mtcars)
-#' write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
-#' update_csv(conn, "~/mtcars.csv")
+#' # connect
+#' solr_connect()
+#' 
+#' df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
+#' write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
+#' update_csv("df.csv", "books")
 #' }
-update_csv <- function(conn, files, separator = ',', header = TRUE,
+update_csv <- function(files, name, separator = ',', header = TRUE,
                        fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE, 
                        encapsulator = NULL, escape = NULL, keepEmpty = FALSE, literal = NULL,
                        map = NULL, split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
                        commit = NULL, wt = 'json', raw = FALSE, ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   if (!is.null(fieldnames)) fieldnames <- paste0(fieldnames, collapse = ",")
   args <- sc(list(separator = separator, header = header, fieldnames = fieldnames, skip = skip, 
@@ -31,5 +35,5 @@ update_csv <- function(conn, files, separator = ',', header = TRUE,
                   keepEmpty = keepEmpty, literal = literal, map = map, split = split, 
                   rowid = rowid, rowidOffset = rowidOffset, overwrite = overwrite,
                   commit = commit, wt = 'json'))
-  docreate(file.path(conn$url, 'solr/update/csv'), files, args, content = "csv", raw, ...)
+  docreate(file.path(conn$url, sprintf('solr/%s/update/csv', name)), files, args, content = "csv", raw, ...)
 }

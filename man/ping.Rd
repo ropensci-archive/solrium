@@ -4,11 +4,9 @@
 \alias{ping}
 \title{Ping a Solr instance}
 \usage{
-ping(conn, name, wt = "json", verbose = TRUE, raw = FALSE, ...)
+ping(name, wt = "json", verbose = TRUE, raw = FALSE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required.}
-
 \item{name}{(character) Name of a collection or core. Required.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
@@ -30,15 +28,20 @@ works locally.
 }
 \examples{
 \dontrun{
-# by default we connect to localhost, port 8983
-conn <- solr_connect()
-ping(conn, "helloWorld")
-ping(conn, "helloWorld", wt = "xml")
-ping(conn, "helloWorld", verbose = FALSE)
-ping(conn, "helloWorld", raw = TRUE)
+# start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
+# after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+
+# connect: by default we connect to localhost, port 8983
+solr_connect()
+
+# ping the gettingstarted index
+ping("gettingstarted")
+ping("gettingstarted", wt = "xml")
+ping("gettingstarted", verbose = FALSE)
+ping("gettingstarted", raw = TRUE)
 
 library("httr")
-ping(conn, "helloWorld", wt="xml", config = verbose())
+ping("gettingstarted", wt="xml", config = verbose())
 }
 }
 

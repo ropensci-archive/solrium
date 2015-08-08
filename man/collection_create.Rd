@@ -4,7 +4,7 @@
 \alias{collection_create}
 \title{Add a collection}
 \usage{
-collection_create(conn, name, numShards = 2, maxShardsPerNode = 1,
+collection_create(name, numShards = 2, maxShardsPerNode = 1,
   createNodeSet = NULL, collection.configName = NULL,
   replicationFactor = 1, router.name = NULL, shards = NULL,
   createNodeSet.shuffle = TRUE, router.field = NULL,
@@ -12,8 +12,6 @@ collection_create(conn, name, numShards = 2, maxShardsPerNode = 1,
   callopts = list(), ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{name}{The name of the collection to be created. Required}
 
 \item{numShards}{(integer) The number of shards to be created as part of the
@@ -87,9 +85,9 @@ Add a collection
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
-collection_create(conn, name = "helloWorld")
-collection_create(conn, name = "tablesChairs")
+solr_connect()
+collection_create(name = "helloWorld")
+collection_create(name = "tablesChairs")
 }
 }
 

@@ -1,8 +1,10 @@
 #' Get the schema for a collection or core
 #' 
 #' @export
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param name (character) Name of collection or core
+#' @param what (character) What to retrieve. By default, we retrieve the entire
+#' schema. Options include: fields, dynamicfields, fieldtypes, copyfields, name,
+#' version, uniquekey, similarity, "solrqueryparser/defaultoperator"
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse
@@ -11,19 +13,38 @@
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
-#' conn <- solr_connect()
+#' # start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
+#' # after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+#' 
+#' # connect: by default we connect to localhost, port 8983
+#' solr_connect()
+#' 
+#' # get the schema for the gettingstarted index
+#' schema(name = "gettingstarted")
+#' 
+#' # Get parts of the schema
+#' schema(name = "gettingstarted", "fields")
+#' schema(name = "gettingstarted", "dynamicfields")
+#' schema(name = "gettingstarted", "fieldtypes")
+#' schema(name = "gettingstarted", "copyfields")
+#' schema(name = "gettingstarted", "name")
+#' schema(name = "gettingstarted", "version")
+#' schema(name = "gettingstarted", "uniquekey")
+#' schema(name = "gettingstarted", "similarity")
+#' schema(name = "gettingstarted", "solrqueryparser/defaultoperator")
 #' 
 #' # start Solr in Schemaless mode: bin/solr start -e schemaless
-#' # schema(conn, "gettingstarted")
+#' # schema("gettingstarted")
 #' 
 #' # start Solr in Standalone mode: bin/solr start
 #' # then add a core: bin/solr create -c helloWorld
-#' # schema(conn, "helloWorld")
+#' # schema("helloWorld")
 #' }
-schema <- function(conn, name = NULL, wt = 'json', raw = FALSE, verbose = TRUE, ...) {
+schema <- function(name = NULL, what = '', wt = 'json', raw = FALSE, verbose = TRUE, ...) {
+  conn <- solr_settings()
   check_conn(conn)
   args <- list(wt = 'json')
-  res <- solr_GET(file.path(conn$url, sprintf('solr/%s/schema', name)), args, verbose = verbose, conn$proxy, ...)
+  res <- solr_GET(file.path(conn$url, sprintf('solr/%s/schema', name), what), args, verbose = verbose, conn$proxy, ...)
   if (raw) {
     return(res)
   } else {

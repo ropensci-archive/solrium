@@ -4,12 +4,10 @@
 \alias{optimize}
 \title{Optimize}
 \usage{
-optimize(conn, max_segments = 1, wait_searcher = TRUE,
-  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
+optimize(max_segments = 1, wait_searcher = TRUE, soft_commit = FALSE,
+  wt = "json", raw = FALSE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{max_segments}{optimizes down to at most this number of segments. Default: 1}
 
 \item{wait_searcher}{block until a new searcher is opened and registered as the
@@ -33,11 +31,11 @@ Optimize
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
+solr_connect()
 
-optimize(conn)
-optimize(conn, max_segments = 2)
-optimize(conn, wait_searcher = FALSE)
+optimize()
+optimize(max_segments = 2)
+optimize(wait_searcher = FALSE)
 }
 }
 

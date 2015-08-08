@@ -4,11 +4,9 @@
 \alias{collection_delete}
 \title{Add a collection}
 \usage{
-collection_delete(conn, name, verbose = TRUE, raw = FALSE, ...)
+collection_delete(name, verbose = TRUE, raw = FALSE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{name}{The name of the collection to be created. Required}
 
 \item{verbose}{If TRUE (default) the url call used printed to console.}
@@ -23,9 +21,9 @@ Add a collection
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
-collection_create(conn, name = "helloWorld")
-collection_delete(conn, name = "helloWorld")
+solr_connect()
+collection_create(name = "helloWorld")
+collection_delete(name = "helloWorld")
 }
 }
 

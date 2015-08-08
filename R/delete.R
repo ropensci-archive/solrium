@@ -1,7 +1,6 @@
 #' Delete documents by ID or query
 #' 
 #' @name delete
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param ids Document IDs, one or more in a vector or list
 #' @param query Query to use to delete documents
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
@@ -33,6 +32,7 @@
 delete_by_id <- function(conn, ids, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
                          boost = NULL, wt = 'json', raw = FALSE, ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = lapply(ids, function(z) list(id = z)))
@@ -44,6 +44,7 @@ delete_by_id <- function(conn, ids, commit = TRUE, commit_within = NULL, overwri
 delete_by_query <- function(conn, query, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
                             boost = NULL, wt = 'json', raw = FALSE, ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = list(query = query))

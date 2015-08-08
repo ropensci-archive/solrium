@@ -1,7 +1,6 @@
 #' Optimize
 #' 
 #' @export
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param max_segments optimizes down to at most this number of segments. Default: 1 
 #' @param wait_searcher block until a new searcher is opened and registered as the 
 #' main query searcher, making the changes visible. Default: \code{TRUE}
@@ -15,15 +14,16 @@
 #' \code{wt} param
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
-#' conn <- solr_connect()
+#' solr_connect()
 #' 
-#' optimize(conn)
-#' optimize(conn, max_segments = 2)
-#' optimize(conn, wait_searcher = FALSE)
+#' optimize()
+#' optimize(max_segments = 2)
+#' optimize(wait_searcher = FALSE)
 #' }
-optimize <- function(conn, max_segments = 1, wait_searcher = TRUE, soft_commit = FALSE, 
+optimize <- function(max_segments = 1, wait_searcher = TRUE, soft_commit = FALSE, 
                      wt = 'json', raw = FALSE, ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(maxSegments = max_segments, waitSearcher = asl(wait_searcher), 
                   softCommit = asl(soft_commit), wt = 'json'))

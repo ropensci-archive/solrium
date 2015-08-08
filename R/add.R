@@ -1,7 +1,6 @@
 #' Add documents from R objects
 #' 
 #' @param x Documents, either as rows in a data.frame, or a list.
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param name (character) A collection or core name. Required.
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Default: \code{TRUE}
@@ -24,14 +23,14 @@
 #' 
 #' # Documents in a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-#' add(ss, conn, name = "helloWorld")
+#' add(ss, name = "books")
 #' 
 #' # Documents in a data.frame
 #' ## Simple example
 #' df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-#' add(x = df, conn, name = "helloWorld")
+#' add(x = df, "books")
 #' df <- data.frame(id = c(77, 78), price = c(1, 2.40))
-#' add(x = df, conn, name = "helloWorld")
+#' add(x = df, "books")
 #' 
 #' ## More complex example, get file from package examples
 #' # start Solr in Schemaless mode first: bin/solr start -e schemaless
@@ -39,20 +38,21 @@
 #' x <- read.csv(file, stringsAsFactors = FALSE)
 #' class(x)
 #' head(x)
-#' add(x, conn, name = "gettingstarted")
+#' add(x, "gettingstarted")
 #' 
 #' # Use modifiers
-#' add(x, conn, commit_within = 5000)
+#' add(x, "gettingstarted", commit_within = 5000)
 #' }
-add <- function(x, conn, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+add <- function(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
                 boost = NULL, wt = 'json', raw = FALSE, ...) {
   UseMethod("add")
 }
 
 #' @export
-add.list <- function(x, conn, name, commit = TRUE, commit_within = NULL, 
+add.list <- function(x, name, commit = TRUE, commit_within = NULL, 
                      overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
                   overwrite = asl(overwrite), wt = 'json'))
@@ -63,9 +63,10 @@ add.list <- function(x, conn, name, commit = TRUE, commit_within = NULL,
 }
 
 #' @export
-add.data.frame <- function(x, conn, name, commit = TRUE, commit_within = NULL, 
+add.data.frame <- function(x, name, commit = TRUE, commit_within = NULL, 
                            overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
                   overwrite = asl(overwrite), wt = 'json'))

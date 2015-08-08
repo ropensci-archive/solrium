@@ -1,7 +1,6 @@
 #' Ping a Solr instance
 #' 
 #' @export
-#' @param conn Connection object. Required.
 #' @param name (character) Name of a collection or core. Required.
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
@@ -14,21 +13,25 @@
 #' works locally.
 #' 
 #' @examples \dontrun{
-#' # by default we connect to localhost, port 8983
-#' conn <- solr_connect()
-#' ping(conn, "helloWorld")
-#' ping(conn, "helloWorld", wt = "xml")
-#' ping(conn, "helloWorld", verbose = FALSE)
-#' ping(conn, "helloWorld", raw = TRUE)
+#' # start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
+#' # after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+#' 
+#' # connect: by default we connect to localhost, port 8983
+#' solr_connect()
+#' 
+#' # ping the gettingstarted index
+#' ping("gettingstarted")
+#' ping("gettingstarted", wt = "xml")
+#' ping("gettingstarted", verbose = FALSE)
+#' ping("gettingstarted", raw = TRUE)
 #' 
 #' library("httr")
-#' ping(conn, "helloWorld", wt="xml", config = verbose())
+#' ping("gettingstarted", wt="xml", config = verbose())
 #' }
 
-ping <- function(conn, name, wt = 'json', verbose = TRUE, raw = FALSE, ...) {
-  if (is.null(conn)) {
-    stop("You must provide a connection object")
-  }
+ping <- function(name, wt = 'json', verbose = TRUE, raw = FALSE, ...) {
+  conn <- solr_settings()
+  check_conn(conn)
   res <- tryCatch(solr_GET(file.path(conn$url, sprintf('solr/%s/admin/ping', name)), 
            args = list(wt = wt), verbose = verbose, conn$proxy, ...), error = function(e) e)
   if (is(res, "error")) {

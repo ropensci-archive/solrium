@@ -1,4 +1,3 @@
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Deafult: \code{TRUE}
 #' @param wt (character) One of json (default) or xml. If json, uses 

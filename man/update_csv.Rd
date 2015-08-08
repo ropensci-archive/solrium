@@ -4,15 +4,13 @@
 \alias{update_csv}
 \title{Update documents using CSV}
 \usage{
-update_csv(conn, files, separator = ",", header = TRUE, fieldnames = NULL,
+update_csv(files, name, separator = ",", header = TRUE, fieldnames = NULL,
   skip = NULL, skipLines = 0, trim = FALSE, encapsulator = NULL,
   escape = NULL, keepEmpty = FALSE, literal = NULL, map = NULL,
   split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
   commit = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required.}
-
 \item{files}{Path to file to load into Solr}
 
 \item{separator}{Specifies the character to act as the field separator. Default: ','}
@@ -88,6 +86,8 @@ default is commit=false to avoid the potential performance impact of frequent co
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
+
+\item{conn}{Connection object. Required.}
 }
 \description{
 Update documents using CSV
@@ -98,11 +98,14 @@ SOLR v1.2 was first version to support csv. See
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
+# start Solr in Schemaless mode: bin/solr start -e schemaless
 
-mtcars <- data.frame(id=1:NROW(mtcars), mtcars)
-write.csv(mtcars[,1:3], file="~/mtcars.csv", row.names=FALSE, quote = FALSE)
-update_csv(conn, "~/mtcars.csv")
+# connect
+solr_connect()
+
+df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
+write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
+update_csv("df.csv", "books")
 }
 }
 \seealso{

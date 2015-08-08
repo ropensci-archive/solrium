@@ -1,7 +1,6 @@
 #' Add a collection
 #' 
 #' @export
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param name The name of the collection to be created. Required
 #' @param numShards (integer) The number of shards to be created as part of the 
 #' collection. This is a required parameter when using the 'compositeId' router.
@@ -55,14 +54,19 @@
 #' supported properties and values. 
 #' (https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)
 #' @examples \dontrun{
-#' conn <- solr_connect()
+#' # start Solr in Schemaless mode: bin/solr start -e schemaless
+#' 
+#' # connect
+#' solr_connect()
+#' 
+#' # Create a core
 #' config <- system.file("examples", "solrconfig.xml", package = "solr")
 #' schema <- system.file("examples", "schema.xml", package = "solr")
-#' core_create(conn, name = "helloWorld", config = config, schema = schema)
+#' core_create(name = "helloWorld", config = config, schema = schema)
 #' 
-#' core_create(conn, name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", config = 'solrconfig.xml', schema = 'schema.xml')
+#' core_create(name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld", config = 'solrconfig.xml', schema = 'schema.xml')
 #' }
-core_create <- function(conn, name, numShards = 2, maxShardsPerNode = 1, 
+core_create <- function(name, numShards = 2, maxShardsPerNode = 1, 
                         createNodeSet = NULL, collection.configName = NULL, 
                         replicationFactor = 1, router.name = NULL, shards = NULL,
                         createNodeSet.shuffle = TRUE, router.field = NULL,
@@ -71,6 +75,7 @@ core_create <- function(conn, name, numShards = 2, maxShardsPerNode = 1,
                         verbose=TRUE, raw = FALSE, callopts=list(), ...) {
 
   # message("Not working yet")  
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
                   replicationFactor = replicationFactor, 

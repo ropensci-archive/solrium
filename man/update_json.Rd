@@ -4,14 +4,12 @@
 \alias{update_json}
 \title{Update documents using JSON}
 \usage{
-update_json(conn, files, commit = TRUE, optimize = FALSE,
+update_json(files, name, commit = TRUE, optimize = FALSE,
   max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
   soft_commit = FALSE, prepare_commit = NULL, wt = "json", raw = FALSE,
   ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{files}{Path to file to load into Solr}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
@@ -52,32 +50,35 @@ services, but should work locally.
 }
 \examples{
 \dontrun{
-conn <- solr_connect()
+# start Solr in Schemaless mode: bin/solr start -e schemaless
+
+# connect
+solr_connect()
 
 # Add documents
 file <- system.file("examples", "books2.json", package = "solr")
 cat(readLines(file), sep = "\\n")
-update_json(conn, file)
+update_json(file, "books")
 
 # Update commands - can include many varying commands
 ## Add file
 file <- system.file("examples", "updatecommands_add.json", package = "solr")
 cat(readLines(file), sep = "\\n")
-update_json(conn, file)
+update_json(file, "books")
 
 ## Delete file
 file <- system.file("examples", "updatecommands_delete.json", package = "solr")
 cat(readLines(file), sep = "\\n")
-update_json(conn, file)
+update_json(file)
 
 # Add and delete in the same document
 ## Add a document first, that we can later delete
 ss <- list(list(id = 456, name = "cat"))
-add(conn, ss)
+add(ss)
 ## Now add a new document, and delete the one we just made
 file <- system.file("examples", "add_delete.json", package = "solr")
 cat(readLines(file), sep = "\\n")
-update_json(conn, file)
+update_json(file)
 }
 }
 \seealso{

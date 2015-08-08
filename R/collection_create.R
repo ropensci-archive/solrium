@@ -1,7 +1,6 @@
 #' Add a collection
 #' 
 #' @export
-#' @param conn Connection object. Required. See \code{\link{solr_connect}}.
 #' @param name The name of the collection to be created. Required
 #' @param numShards (integer) The number of shards to be created as part of the 
 #' collection. This is a required parameter when using the 'compositeId' router.
@@ -55,17 +54,18 @@
 #' supported properties and values. 
 #' (https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)
 #' @examples \dontrun{
-#' conn <- solr_connect()
-#' collection_create(conn, name = "helloWorld")
-#' collection_create(conn, name = "tablesChairs")
+#' solr_connect()
+#' collection_create(name = "helloWorld")
+#' collection_create(name = "tablesChairs")
 #' }
-collection_create <- function(conn, name, numShards = 2, maxShardsPerNode = 1, 
+collection_create <- function(name, numShards = 2, maxShardsPerNode = 1, 
                        createNodeSet = NULL, collection.configName = NULL,
                        replicationFactor = 1, router.name = NULL, shards = NULL,
                        createNodeSet.shuffle = TRUE, router.field = NULL,
                        autoAddReplicas = FALSE, async = NULL,
                        verbose=TRUE, raw = FALSE, callopts=list(), ...) {
   
+  conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
                   replicationFactor = replicationFactor, 

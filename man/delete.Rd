@@ -13,8 +13,6 @@ delete_by_query(conn, query, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
-\item{conn}{Connection object. Required. See \code{\link{solr_connect}}.}
-
 \item{ids}{Document IDs, one or more in a vector or list}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
