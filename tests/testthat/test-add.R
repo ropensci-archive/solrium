@@ -1,5 +1,7 @@
 context("add documents")
 
+# Using with Solr Cloud mode
+
 test_that("adding documents from a ", {
   skip_on_cran()
 

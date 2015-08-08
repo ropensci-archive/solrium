@@ -1,5 +1,7 @@
 context("collections management")
 
+# Using with Solr Cloud mode
+
 test_that("adding a collection works", {
   skip_on_cran()
 
