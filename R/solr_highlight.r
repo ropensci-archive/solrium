@@ -39,7 +39,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.highlightMultiTerm = NULL, hl.regex.slop = NULL, hl.regex.pattern = NULL,
      hl.regex.maxAnalyzedChars = NULL, start = 0, rows = NULL,
      wt='json', raw = FALSE, key = NULL, callopts=list(),
-     fl='DOES_NOT_EXIST', fq=NULL, parsetype='list', verbose=TRUE) {
+     fl='DOES_NOT_EXIST', fq=NULL, parsetype='list') {
 
   conn <- solr_settings()
   check_conn(conn)
@@ -61,6 +61,6 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   args <- c(args, hl.fl)
 
-  out <- structure(solr_GET(conn$url, args, callopts, verbose, conn$proxy), class="sr_high", wt=wt)
+  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class="sr_high", wt=wt)
   if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
 }

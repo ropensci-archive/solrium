@@ -75,8 +75,9 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
    facet.date.include = NA,facet.range = NA,facet.range.start = NA,facet.range.end = NA,
    facet.range.gap = NA,facet.range.hardend = NA,facet.range.other = NA,
    facet.range.include = NA, start=NA, rows=NA, key=NA, wt='json',
-   raw=FALSE, callopts=list(), verbose=TRUE, ...) {
+   raw=FALSE, callopts=list(), ...) {
 
+  check_defunct(...)
   conn <- solr_settings()
   check_conn(conn)
   todonames <- c("q",  "facet.query",  "facet.field",
@@ -94,6 +95,6 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(conn$url, args, callopts, verbose, conn$proxy), class="sr_facet", wt=wt)
+  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class="sr_facet", wt=wt)
   if (raw){ return( out ) } else { solr_parse(out) }
 }

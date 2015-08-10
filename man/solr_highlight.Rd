@@ -19,7 +19,7 @@ solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
   hl.regex.pattern = NULL, hl.regex.maxAnalyzedChars = NULL, start = 0,
   rows = NULL, wt = "json", raw = FALSE, key = NULL,
   callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL,
-  parsetype = "list", verbose = TRUE)
+  parsetype = "list")
 }
 \arguments{
 \item{q}{Query terms. See examples.}
@@ -176,14 +176,16 @@ parsed data returned.}
 \item{fq}{Filter query, this does not affect the search, only what gets returned}
 
 \item{parsetype}{One of list of df (data.frame)}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
 }
 \description{
 Do highlighting searches, outputing highlight only.
+}
+\details{
+The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+can be used to set verbose status.
 }
 \examples{
 \dontrun{

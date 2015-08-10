@@ -28,7 +28,7 @@
 solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL,
   mlt.mindf=NULL, mlt.minwl=NULL, mlt.maxwl=NULL, mlt.maxqt=NULL, mlt.maxntp=NULL,
   mlt.boost=NULL, mlt.qf=NULL, fl=NULL, wt='json', start=0, rows=NULL, key = NULL,
-  callopts=list(), raw=FALSE, parsetype='df', concat=',', verbose=TRUE) {
+  callopts=list(), raw=FALSE, parsetype='df', concat=',') {
 
   conn <- solr_settings()
   check_conn(conn)
@@ -38,11 +38,11 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
   } else {
     fl2 <- sprintf('id,%s',fl_str)
   }
-  args <- sc(list(q=q, fq=fq, mlt='true', fl=fl2, mlt.count=mlt.count, mlt.fl=mlt.fl,
-    mlt.mintf=mlt.mintf, mlt.mindf=mlt.mindf, mlt.minwl=mlt.minwl,
-    mlt.maxwl=mlt.maxwl, mlt.maxqt=mlt.maxqt, mlt.maxntp=mlt.maxntp,
-    mlt.boost=mlt.boost, mlt.qf=mlt.qf, start=start, rows=rows, wt=wt))
+  args <- sc(list(q = q, fq = fq, mlt = 'true', fl = fl2, mlt.count = mlt.count, mlt.fl = mlt.fl,
+    mlt.mintf = mlt.mintf, mlt.mindf = mlt.mindf, mlt.minwl = mlt.minwl,
+    mlt.maxwl = mlt.maxwl, mlt.maxqt = mlt.maxqt, mlt.maxntp = mlt.maxntp,
+    mlt.boost = mlt.boost, mlt.qf = mlt.qf, start = start, rows = rows, wt = wt))
 
-  out <- structure(solr_GET(conn$url, args, callopts, verbose, conn$proxy), class = "sr_mlt", wt = wt)
-  if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
+  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class = "sr_mlt", wt = wt)
+  if (raw) { return( out ) } else { solr_parse(out, parsetype, concat) }
 }

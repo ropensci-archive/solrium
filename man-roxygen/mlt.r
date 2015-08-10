@@ -33,4 +33,6 @@
 #' @param concat (character) Character to concatenate elements of longer than length 1. 
 #' Note that this only works reliably when data format is json (wt='json'). The parsing
 #' is more complicated in XML format, but you can do that on your own.
-#' @param verbose If TRUE (default) the url call used printed to console.
+#' 
+#' @details The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+#' can be used to set verbose status.

@@ -31,19 +31,20 @@ test_that("setting errors level gives correct error values", {
 test_that("setting error levels gives correct effect - simple errors", {
   skip_on_cran()
   
-  invisible(solr_connect('http://api.plos.org/search', errors = "simple"))
+  invisible(solr_connect('http://api.plos.org/search', errors = "simple", verbose = FALSE))
   
-  expect_error(solr_search(q = "*:*", rows = "asdf", verbose = FALSE), "500 - For input string")
-  expect_error(solr_search(q = "*:*", rows = "asdf", verbose = FALSE), "500 - For input string")
+  expect_error(solr_search(q = "*:*", rows = "asdf"), "500 - For input string")
+  expect_error(solr_search(q = "*:*", rows = "asdf"), "500 - For input string")
 })
 
 test_that("setting error levels gives correct effect - complete errors", {
   skip_on_cran()
   
-  invisible(solr_connect('http://api.plos.org/search', errors = "complete"))
+  invisible(solr_connect('http://api.plos.org/search', errors = "complete", verbose = FALSE))
+  
   errmssg <- "500 - For input string: \"asdf\"\nAPI stack trace"
-  expect_error(solr_search(q = "*:*", rows = "asdf", verbose = FALSE), errmssg)
-  expect_error(solr_search(q = "*:*", start = "asdf", verbose = FALSE), errmssg)
-  expect_error(solr_search(q = "*:*", sort = "down", verbose = FALSE), 
+  expect_error(solr_search(q = "*:*", rows = "asdf"), errmssg)
+  expect_error(solr_search(q = "*:*", start = "asdf"), errmssg)
+  expect_error(solr_search(q = "*:*", sort = "down"), 
     "Error : 400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down', pos=4\nAPI stack trace\n\n")
 })

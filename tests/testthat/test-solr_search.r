@@ -3,10 +3,10 @@ context("solr_search")
 test_that("solr_search works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search')
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
 
-  a <- solr_search(q='*:*', rows=2, fl='id', verbose=FALSE)
-  b <- solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5, verbose=FALSE)
+  a <- solr_search(q='*:*', rows=2, fl='id')
+  b <- solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5)
 
   # correct dimensions
   expect_that(length(a), equals(1))
@@ -20,14 +20,14 @@ test_that("solr_search works", {
 test_that("solr_search fails well", {
   skip_on_cran()
   
-  solr_connect('http://api.plos.org/search')
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
   
-  expect_error(solr_search(q = "*:*", rows = "asdf", verbose = FALSE), "500 - For input string")
-  expect_error(solr_search(q = "*:*", sort = "down", verbose = FALSE), 
+  expect_error(solr_search(q = "*:*", rows = "asdf"), "500 - For input string")
+  expect_error(solr_search(q = "*:*", sort = "down"), 
                "Error : 400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
-  expect_error(solr_search(q = "*:*", fl = "stuff", verbose = FALSE), 
+  expect_error(solr_search(q = "*:*", fl = "stuff"), 
                "not compatible with STRSXP")
-  expect_error(solr_search(q = "*:*", wt = "foobar", verbose = FALSE), 
+  expect_error(solr_search(q = "*:*", wt = "foobar"), 
                "wt must be one of: json, xml, csv")
   
 })

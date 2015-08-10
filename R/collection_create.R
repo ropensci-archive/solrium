@@ -45,7 +45,6 @@
 #' and overrides. Default: \code{FALSE}
 #' @param async	(character) Request ID to track this action which will be processed 
 #' asynchronously
-#' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
 #' @param callopts curl options passed on to \code{\link[httr]{GET}}
@@ -63,7 +62,7 @@ collection_create <- function(name, numShards = 2, maxShardsPerNode = 1,
                        replicationFactor = 1, router.name = NULL, shards = NULL,
                        createNodeSet.shuffle = TRUE, router.field = NULL,
                        autoAddReplicas = FALSE, async = NULL,
-                       verbose=TRUE, raw = FALSE, callopts=list(), ...) {
+                       raw = FALSE, callopts=list(), ...) {
   
   conn <- solr_settings()
   check_conn(conn)
@@ -75,7 +74,7 @@ collection_create <- function(name, numShards = 2, maxShardsPerNode = 1,
                   createNodeSet.shuffle = createNodeSet.shuffle, 
                   router.field = router.field, autoAddReplicas = autoAddReplicas, 
                   async = async, wt = 'json'))
-  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, callopts, verbose, conn$proxy, ...)
+  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, callopts, conn$proxy, ...)
   if (raw) {
     return(res)
   } else {

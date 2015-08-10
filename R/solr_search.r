@@ -93,7 +93,7 @@
 #'
 #' ## Searching Europeana
 #' ### They don't return the expected Solr output, so we can get raw data, then parse separately
-#' url <- 'http://europeana.eu/api/v2/search.json'
+#' solr_connect('http://europeana.eu/api/v2/search.json')
 #' key <- getOption("eu_key")
 #' dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
 #' library('jsonlite')
@@ -103,8 +103,9 @@
 solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
-  callopts=list(), raw=FALSE, parsetype='df', concat=',', ..., verbose=TRUE) {
+  callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
 
+  check_defunct(...)
   conn <- solr_settings()
   check_conn(conn)
   check_wt(wt)
@@ -120,7 +121,7 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
     args <- args[!names(args) %in% "q"]
   }
 
-  out <- structure(solr_GET(conn$url, args, callopts, verbose, conn$proxy), class = "sr_search", wt = wt)
+  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class = "sr_search", wt = wt)
   if (raw) {
     return( out )
   } else {

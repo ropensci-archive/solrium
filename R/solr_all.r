@@ -48,8 +48,9 @@
 solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
-  callopts=list(), raw=FALSE, parsetype='list', concat=',', ..., verbose=TRUE) {
+  callopts=list(), raw=FALSE, parsetype='list', concat=',', ...) {
 
+  check_defunct(...)
   conn <- solr_settings()
   check_conn(conn)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
@@ -61,7 +62,7 @@ solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(conn$url, args, callopts, verbose, conn$proxy), class = "sr_search", wt = wt)
+  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class = "sr_search", wt = wt)
   if (raw) {
     return( out )
   } else {

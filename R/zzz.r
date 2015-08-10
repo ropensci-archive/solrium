@@ -29,18 +29,11 @@ collectargs <- function(x){
 }
 
 # GET helper fxn
-solr_GET <- function(base, args, callopts = NULL, verbose, ...){
+solr_GET <- function(base, args, callopts = NULL, ...){
   tt <- GET(base, query = args, callopts, ...)
-  if (verbose) message(URLdecode(tt$url))
+  if (solr_settings()$verbose) message(URLdecode(tt$url))
   if (tt$status_code > 201) {
     solr_error(tt)
-#     err <- content(tt)
-#     erropt <- Sys.getenv("SOLR_ERRORS")
-#     if (erropt == "simple" || erropt == "") {
-#       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
-#     } else {
-#       stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
-#     }
   } else {
     content(tt, as = "text")
   }
@@ -133,7 +126,7 @@ docreate <- function(base, files, args, content, raw, ...) {
   } 
 }
 
-objcreate <- function(base, dat, args, verbose, raw, ...) {
+objcreate <- function(base, dat, args, raw, ...) {
   out <- structure(solr_POST(base, dat, args, "json", ...), class = "update", wt = args$wt)
   if (raw) { 
     return(out) 
@@ -158,4 +151,13 @@ check_wt <- function(x) {
     stop("wt must be one of: json, xml, csv", 
          call. = FALSE)
   }  
+}
+
+check_defunct <- function(...) {
+  calls <- names(sapply(match.call(), deparse))[-1]
+  calls_vec <- "verbose" %in% calls
+  if (any(calls_vec)) {
+    stop("The parameter verbose has been removed - see ?solr_connect", 
+         call. = FALSE)
+  }
 }

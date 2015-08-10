@@ -8,8 +8,8 @@ collection_create(name, numShards = 2, maxShardsPerNode = 1,
   createNodeSet = NULL, collection.configName = NULL,
   replicationFactor = 1, router.name = NULL, shards = NULL,
   createNodeSet.shuffle = TRUE, router.field = NULL,
-  autoAddReplicas = FALSE, async = NULL, verbose = TRUE, raw = FALSE,
-  callopts = list(), ...)
+  autoAddReplicas = FALSE, async = NULL, raw = FALSE, callopts = list(),
+  ...)
 }
 \arguments{
 \item{name}{The name of the collection to be created. Required}
@@ -67,8 +67,6 @@ and overrides. Default: \code{FALSE}}
 
 \item{async}{(character) Request ID to track this action which will be processed
 asynchronously}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}

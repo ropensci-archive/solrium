@@ -6,7 +6,7 @@
 \usage{
 solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
   wt = "json", start = 0, rows = 0, key = NULL, callopts = list(),
-  raw = FALSE, parsetype = "df", verbose = TRUE)
+  raw = FALSE, parsetype = "df")
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -30,14 +30,16 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
 \item{parsetype}{(character) One of 'list' or 'df'}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
 }
 \description{
 Get Solr stats.
+}
+\details{
+The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+can be used to set verbose status.
 }
 \examples{
 \dontrun{

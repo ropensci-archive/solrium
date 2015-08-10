@@ -9,7 +9,7 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   mlt.maxwl = NULL, mlt.maxqt = NULL, mlt.maxntp = NULL,
   mlt.boost = NULL, mlt.qf = NULL, fl = NULL, wt = "json", start = 0,
   rows = NULL, key = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df", concat = ",", verbose = TRUE)
+  parsetype = "df", concat = ",")
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -67,14 +67,16 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
 }
 \description{
 Solr "more like this" search
+}
+\details{
+The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+can be used to set verbose status.
 }
 \examples{
 \dontrun{

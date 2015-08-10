@@ -9,7 +9,7 @@ solr_all(q = "*:*", sort = NULL, start = 0, rows = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, callopts = list(), raw = FALSE, parsetype = "list",
-  concat = ",", ..., verbose = TRUE)
+  concat = ",", ...)
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -80,8 +80,6 @@ Note that this only works reliably when data format is json (wt='json'). The par
 is more complicated in XML format, but you can do that on your own.}
 
 \item{...}{Further args.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame

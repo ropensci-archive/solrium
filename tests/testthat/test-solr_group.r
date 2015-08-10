@@ -3,19 +3,18 @@ context("solr_group")
 test_that("solr_group works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search')
+  solr_connect('http://api.plos.org/search', verbose=FALSE)
 
-  a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-                  verbose=FALSE)
+  a <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'))
   b <- solr_group(q='ecology', group.field='journal', group.limit=3,
                   fl=c('id','score','alm_twitterCount'),
-                  group.sort='alm_twitterCount desc', verbose=FALSE)
+                  group.sort='alm_twitterCount desc')
   out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id',
-                    raw=TRUE, verbose=FALSE)
+                    raw=TRUE)
   c <- out
   d <- solr_parse(out, 'df')
   e <- solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-                  group.format='grouped', group.main='true', verbose=FALSE)
+                  group.format='grouped', group.main='true')
 
   suppressPackageStartupMessages(library('jsonlite', quietly = TRUE))
   f <- jsonlite::fromJSON(out, FALSE)

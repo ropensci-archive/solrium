@@ -4,12 +4,10 @@
 \alias{collection_delete}
 \title{Add a collection}
 \usage{
-collection_delete(name, verbose = TRUE, raw = FALSE, ...)
+collection_delete(name, raw = FALSE, ...)
 }
 \arguments{
 \item{name}{The name of the collection to be created. Required}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}

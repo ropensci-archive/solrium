@@ -50,11 +50,12 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   group.sort = NA, group.main = NA, group.ngroups = NA,
   group.cache.percent = NA, group.query = NA, group.format = NA,
   group.func = NA, callopts=list(), raw=FALSE, parsetype='df',
-  concat=',', verbose=TRUE, ...) {
+  concat=',', ...) {
 
+  check_defunct(...)
   conn <- solr_settings()
   check_conn(conn)
-  if(!is.null(fl)) fl <- paste0(fl, collapse = ",")
+  if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
   todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort',
     'fq', 'wt', 'group.limit', 'group.offset', 'group.sort', 'group.sort',
     'group.format', 'group.func', 'group.main', 'group.ngroups',
@@ -65,6 +66,7 @@ solr_group <- function(q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(conn$url, args, callopts, verbose, conn$proxy), class="sr_group", wt=wt)
-  if(raw){ return( out ) } else { solr_parse(out, parsetype, concat) }
+  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), 
+                   class = "sr_group", wt = wt)
+  if (raw) { return( out ) } else { solr_parse(out, parsetype, concat) }
 }

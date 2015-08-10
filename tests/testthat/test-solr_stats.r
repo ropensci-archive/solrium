@@ -3,11 +3,13 @@ context("solr_stats")
 test_that("solr_stats works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search')
+  solr_connect('http://api.plos.org/search', verbose=FALSE)
 
-  a <- solr_stats(q='science', stats.field='counter_total_all', raw=TRUE, verbose=FALSE)
-  b <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), verbose=FALSE)
-  c <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet=c('journal','volume'), raw=TRUE, verbose=FALSE)
+  a <- solr_stats(q='science', stats.field='counter_total_all', raw=TRUE)
+  b <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
+                  stats.facet=c('journal','volume'))
+  c <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
+                  stats.facet=c('journal','volume'), raw=TRUE)
   d <- solr_parse(c) # list
   e <- solr_parse(c, 'df') # data.frame
 

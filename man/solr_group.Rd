@@ -9,7 +9,7 @@ solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.cache.percent = NA, group.query = NA,
   group.format = NA, group.func = NA, callopts = list(), raw = FALSE,
-  parsetype = "df", concat = ",", verbose = TRUE, ...)
+  parsetype = "df", concat = ",", ...)
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -80,8 +80,6 @@ query. <!> Solr4.0 This parameter only is supported on 4.0}
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{...}{Further args.}
 }

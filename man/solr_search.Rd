@@ -9,7 +9,7 @@ solr_search(q = "*:*", sort = NULL, start = NULL, rows = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
-  concat = ",", ..., verbose = TRUE)
+  concat = ",", ...)
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -82,8 +82,6 @@ Note that this only works reliably when data format is json (wt='json'). The par
 is more complicated in XML format, but you can do that on your own.}
 
 \item{...}{Further args.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -177,7 +175,7 @@ res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=opts)
 
 ## Searching Europeana
 ### They don't return the expected Solr output, so we can get raw data, then parse separately
-url <- 'http://europeana.eu/api/v2/search.json'
+solr_connect('http://europeana.eu/api/v2/search.json')
 key <- getOption("eu_key")
 dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
 library('jsonlite')

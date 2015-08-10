@@ -2,7 +2,6 @@
 #' 
 #' @export
 #' @param name The name of the collection to be created. Required
-#' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
@@ -11,11 +10,11 @@
 #' collection_create(name = "helloWorld")
 #' collection_delete(name = "helloWorld")
 #' }
-collection_delete <- function(name, verbose=TRUE, raw = FALSE, ...) {
+collection_delete <- function(name, raw = FALSE, ...) {
   conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(action = 'DELETE', name = name, wt = 'json'))
-  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, verbose = verbose, conn$proxy, ...)
+  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, conn$proxy, ...)
   if (raw) {
     return(res)
   } else {
