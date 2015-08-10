@@ -27,9 +27,12 @@ and stack trace, if available.}
 Set Solr options, including base URL, proxy, and errors
 }
 \details{
-This function simply sets environment variables that we use internally
+This function sets environment variables that we use internally
 within functions in this package to determine the right thing to do given your
 inputs.
+
+In addition, \code{solr_connect} does a quick \code{GET} request to the URL you
+provide to make sure the service is up.
 }
 \examples{
 \dontrun{

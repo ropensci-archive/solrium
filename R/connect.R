@@ -12,9 +12,12 @@
 #' @param errors (character) One of simple or complete. Simple gives http code and 
 #' error message on an error, while complete gives both http code and error message, 
 #' and stack trace, if available.
-#' @details This function simply sets environment variables that we use internally
+#' @details This function sets environment variables that we use internally
 #' within functions in this package to determine the right thing to do given your
-#' inputs.   
+#' inputs. 
+#' 
+#' In addition, \code{solr_connect} does a quick \code{GET} request to the URL you 
+#' provide to make sure the service is up.
 #' @examples \dontrun{
 #' # set solr settings
 #' solr_connect()
@@ -36,6 +39,13 @@ solr_connect <- function(url = "http://localhost:8983", proxy = NULL, errors = "
   Sys.setenv("SOLR_URL" = url)
   Sys.setenv("SOLR_ERRORS" = errors)
   options(solr_proxy = proxy)
+  
+  res <- tryCatch(GET(Sys.getenv("SOLR_URL")), error = function(e) e)
+  if (is(res, "error")) {
+    stop(sprintf("\n  Failed to connect to %s\n  Remember to start Solr before connecting",
+                 url), call. = FALSE)
+  }
+  
   structure(list(url = url, proxy = make_proxy(proxy), errors = errors), class = "solr_connection")
 }
 

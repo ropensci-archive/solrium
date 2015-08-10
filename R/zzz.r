@@ -3,9 +3,13 @@
 #' @param x Value
 makemultiargs <- function(x){
   value <- get(x, envir = parent.frame(n = 2))
-  if( length(value) == 0 ){ NULL } else {
-    if( any(sapply(value, is.na)) ){ NULL } else {
-      if( !is.character(value) ){ 
+  if ( length(value) == 0 ) { 
+    NULL 
+  } else {
+    if ( any(sapply(value, is.na)) ) { 
+      NULL 
+    } else {
+      if ( !is.character(value) ) { 
         value <- as.character(value)
       }
       names(value) <- rep(x, length(value))
@@ -18,7 +22,7 @@ makemultiargs <- function(x){
 #' @param x Value
 collectargs <- function(x){
   outlist <- list()
-  for(i in seq_along(x)){
+  for (i in seq_along(x)) {
     outlist[[i]] <- makemultiargs(x[[i]])
   }
   as.list(unlist(sc(outlist)))
@@ -29,16 +33,26 @@ solr_GET <- function(base, args, callopts = NULL, verbose, ...){
   tt <- GET(base, query = args, callopts, ...)
   if (verbose) message(URLdecode(tt$url))
   if (tt$status_code > 201) {
-    # stop(http_condition(tt$status_code, "message")$message, call. = FALSE)
-    err <- content(tt)
-    erropt <- getOption("solr_errors", "")
-    if (erropt == "simple" || erropt == "") {
-      stop(err$error$code, " - ", err$error$msg, call. = FALSE)
-    } else {
-      stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
-    }
+    solr_error(tt)
+#     err <- content(tt)
+#     erropt <- Sys.getenv("SOLR_ERRORS")
+#     if (erropt == "simple" || erropt == "") {
+#       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
+#     } else {
+#       stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
+#     }
   } else {
     content(tt, as = "text")
+  }
+}
+
+solr_error <- function(x) {
+  err <- content(x)
+  erropt <- Sys.getenv("SOLR_ERRORS")
+  if (erropt == "simple" || erropt == "") {
+    stop(err$error$code, " - ", err$error$msg, call. = FALSE)
+  } else {
+    stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
   }
 }
 
@@ -53,7 +67,7 @@ solr_POST <- function(base, body, args, content, ...) {
 
 # POST helper fxn for R objects
 obj_POST <- function(base, body, args, ...) {
-  invisible(match.arg(args$wt, c("xml","json","csv")))
+  invisible(match.arg(args$wt, c("xml", "json", "csv")))
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
   body <- jsonlite::toJSON(body, auto_unbox = TRUE)
   tt <- POST(base, query = args, body = body, content_type_json(), ...)
