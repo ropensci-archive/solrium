@@ -107,6 +107,7 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
 
   conn <- solr_settings()
   check_conn(conn)
+  check_wt(wt)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
   args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
       pageScore = pageScore, fl = fl, fq = fq, defType = defType,

@@ -6,7 +6,7 @@
 \title{Solr connection}
 \usage{
 solr_connect(url = "http://localhost:8983", proxy = NULL,
-  errors = "simple")
+  errors = "simple", verbose = TRUE)
 
 solr_settings()
 }
@@ -22,6 +22,10 @@ help, which is used to construct the proxy connection.}
 \item{errors}{(character) One of simple or complete. Simple gives http code and
 error message on an error, while complete gives both http code and error message,
 and stack trace, if available.}
+
+\item{verbose}{(logical) Whether to print help messages or not. E.g., if
+\code{TRUE}, we print the URL on each request to a Solr server for your
+reference. Default: \code{TRUE}}
 }
 \description{
 Set Solr options, including base URL, proxy, and errors

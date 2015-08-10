@@ -152,3 +152,10 @@ check_conn <- function(x) {
          call. = FALSE)
   }
 }
+
+check_wt <- function(x) {
+  if (!x %in% c('json', 'xml', 'csv')) {
+    stop("wt must be one of: json, xml, csv", 
+         call. = FALSE)
+  }  
+}

@@ -21,7 +21,7 @@ x_f and y_f in a descending order).}
 
 \item{start}{Record to start at, default to beginning.}
 
-\item{rows}{Number of records to return. Defaults to 10.}
+\item{rows}{Number of records to return. Default: 10.}
 
 \item{pageDoc}{If you expect to be paging deeply into the results (say beyond page 10,
 assuming rows=10) and you are sorting by score, you may wish to add the pageDoc
@@ -44,7 +44,7 @@ e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score}
 to the search and not to requests in general. Time is in milliseconds. Values <= 0
 mean no time restriction. Partial results may be returned (if there are any).}
 
-\item{qt}{Which query handler used.}
+\item{qt}{Which query handler used. Options: dismax, others?}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}}
@@ -54,8 +54,8 @@ to parse. You can't use \code{csv} because the point of this function}
 
 \item{TZ}{Time zone, you can override the default.}
 
-\item{echoHandler}{If the echoHandler parameter is true, Solr places the name of
-the handle used in the response to the client for debugging purposes.}
+\item{echoHandler}{If \code{TRUE}, Solr places the name of the handle used in the
+response to the client for debugging purposes. Default:}
 
 \item{echoParams}{The echoParams parameter tells Solr what kinds of Request
 parameters should be included in the response for debugging purposes, legal values

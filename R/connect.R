@@ -12,6 +12,9 @@
 #' @param errors (character) One of simple or complete. Simple gives http code and 
 #' error message on an error, while complete gives both http code and error message, 
 #' and stack trace, if available.
+#' @param verbose (logical) Whether to print help messages or not. E.g., if 
+#' \code{TRUE}, we print the URL on each request to a Solr server for your 
+#' reference. Default: \code{TRUE}
 #' @details This function sets environment variables that we use internally
 #' within functions in this package to determine the right thing to do given your
 #' inputs. 
@@ -33,20 +36,31 @@
 #' Sys.getenv("SOLR_URL")
 #' Sys.getenv("SOLR_ERRORS")
 #' }
-solr_connect <- function(url = "http://localhost:8983", proxy = NULL, errors = "simple") {
+solr_connect <- function(url = "http://localhost:8983", proxy = NULL, 
+                         errors = "simple", verbose = TRUE) {
+  # checks
   checkurl(url)
   errors <- match.arg(errors, c('simple', 'complete'))
+  check_proxy_args(proxy)
+  
+  # set
   Sys.setenv("SOLR_URL" = url)
   Sys.setenv("SOLR_ERRORS" = errors)
+  Sys.setenv("SOLR_VERBOSITY" = verbose)
   options(solr_proxy = proxy)
   
+  # ping server
   res <- tryCatch(GET(Sys.getenv("SOLR_URL")), error = function(e) e)
   if (is(res, "error")) {
     stop(sprintf("\n  Failed to connect to %s\n  Remember to start Solr before connecting",
                  url), call. = FALSE)
   }
   
-  structure(list(url = url, proxy = make_proxy(proxy), errors = errors), class = "solr_connection")
+  structure(list(url = Sys.getenv("SOLR_URL"), 
+                 proxy = make_proxy(proxy), 
+                 errors = Sys.getenv("SOLR_ERRORS"), 
+                 verbose = Sys.getenv("SOLR_VERBOSITY")), 
+            class = "solr_connection")
 }
 
 #' @export
@@ -54,8 +68,9 @@ solr_connect <- function(url = "http://localhost:8983", proxy = NULL, errors = "
 solr_settings <- function() {
   url <- Sys.getenv("SOLR_URL")
   err <- Sys.getenv("SOLR_ERRORS")
+  verbose <- Sys.getenv("SOLR_VERBOSITY")
   proxy <- getOption("solr_proxy")
-  structure(list(url = url, proxy = make_proxy(proxy), errors = err), class = "solr_connection")
+  structure(list(url = url, proxy = make_proxy(proxy), errors = err, verbose = verbose), class = "solr_connection")
 }
 
 #' @export
@@ -63,6 +78,7 @@ print.solr_connection <- function(x, ...) {
   cat("<solr_connection>", sep = "\n")
   cat(paste0("  url:    ", x$url), sep = "\n")
   cat(paste0("  errors: ", x$errors), sep = "\n")
+  cat(paste0("  verbose: ", x$verbose), sep = "\n")
   cat("  proxy:", sep = "\n")
   if (is.null(x$proxy)) {
   } else {
@@ -78,6 +94,13 @@ print.solr_connection <- function(x, ...) {
 #     x$options$proxy
 #   }
 # }
+
+check_proxy_args <- function(x) {
+  if (!all(names(x) %in% c('url', 'port', 'username', 'password', 'auth'))) {
+    stop("Input to proxy can only contain: url, port, username, password, auth", 
+         call. = FALSE)
+  }
+}
 
 make_proxy <- function(args) {
   if (is.null(args)) {
