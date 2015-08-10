@@ -35,3 +35,29 @@ test_that("solr_stats works", {
   expect_is(d, "list")
   expect_is(e, "list")
 })
+
+test_that("solr_stats works using wt=xml", {
+  skip_on_cran()
+  
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+  
+  aa <- solr_stats(q='science', wt="xml", stats.field='counter_total_all', raw=TRUE)
+  bb <- solr_stats(q='science', wt="xml", stats.field='counter_total_all')
+  cc <- solr_stats(q='science', wt="xml", stats.field=c('counter_total_all','alm_twitterCount'), 
+                   stats.facet=c('journal','volume'))
+  
+  # correct dimenions
+  expect_equal(length(aa), 1)
+  expect_equal(length(bb), 2)
+  expect_equal(NROW(bb$data), 1)
+  expect_named(cc$facet[[1]], c("lst", "lst"))
+  expect_equal(length(cc), 2)
+  
+  # classes
+  expect_is(aa, "sr_stats")
+  expect_is(bb, "list")
+  expect_is(cc, "list")
+  expect_is(bb$data, "data.frame")
+  expect_is(cc$facet[[1]][[1]], "data.frame")
+  expect_equal(attr(aa, "wt"), "xml")
+})
