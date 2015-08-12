@@ -161,3 +161,14 @@ check_defunct <- function(...) {
          call. = FALSE)
   }
 }
+
+is_in_cloud_mode <- function(x) {
+  res <- GET(file.path(x$url, "solr/admin/collections"), 
+             query = list(wt = 'json'))
+  msg <- content(res)$error$msg
+  if (grepl("not running", msg)) {
+    FALSE
+  } else {
+    TRUE
+  }
+}

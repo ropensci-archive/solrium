@@ -12,7 +12,7 @@
 #' being created on a single live node. Defining maxShardsPerNode sets a limit on the number 
 #' of replicas CREATE will spread to each node. If the entire collection can not be fit into 
 #' the live nodes, no collection will be created at all. Default: 1
-#' @param createNodeSet (character) Allows defining the nodes to spread the new collection 
+#' @param createNodeSet (logical) Allows defining the nodes to spread the new collection 
 #' across. If not provided, the CREATE operation will create shard-replica spread across all 
 #' live Solr nodes. The format is a comma-separated list of node_names, such as 
 #' localhost:8983_solr, localhost:8984_solr, localhost:8985_solr. Default: \code{NULL}
@@ -80,13 +80,13 @@ core_create <- function(name, numShards = 2, maxShardsPerNode = 1,
                         autoAddReplicas = FALSE, async = NULL, 
                         instanceDir = NULL, config = NULL, schema = NULL, 
                         configSet = NULL, raw = FALSE, callopts=list(), ...) {
-
+  
   # message("Not working yet")  
   conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
                   replicationFactor = replicationFactor, 
-                  maxShardsPerNode = maxShardsPerNode, createNodeSet = createNodeSet, 
+                  maxShardsPerNode = maxShardsPerNode, createNodeSet = asl(createNodeSet), 
                   collection.configName = collection.configName, 
                   router.name = router.name, shards = shards,
                   createNodeSet.shuffle = asl(createNodeSet.shuffle), 

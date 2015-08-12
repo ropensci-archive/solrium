@@ -2,18 +2,18 @@
 % Please edit documentation in R/core_create.R
 \name{core_create}
 \alias{core_create}
-\title{Add a collection}
+\title{Create a core}
 \usage{
 core_create(name, numShards = 2, maxShardsPerNode = 1,
   createNodeSet = NULL, collection.configName = NULL,
   replicationFactor = 1, router.name = NULL, shards = NULL,
   createNodeSet.shuffle = TRUE, router.field = NULL,
   autoAddReplicas = FALSE, async = NULL, instanceDir = NULL,
-  config = NULL, schema = NULL, verbose = TRUE, raw = FALSE,
+  config = NULL, schema = NULL, configSet = NULL, raw = FALSE,
   callopts = list(), ...)
 }
 \arguments{
-\item{name}{The name of the collection to be created. Required}
+\item{name}{(character) The name of the collection to be created. Required}
 
 \item{numShards}{(integer) The number of shards to be created as part of the
 collection. This is a required parameter when using the 'compositeId' router.}
@@ -26,7 +26,7 @@ being created on a single live node. Defining maxShardsPerNode sets a limit on t
 of replicas CREATE will spread to each node. If the entire collection can not be fit into
 the live nodes, no collection will be created at all. Default: 1}
 
-\item{createNodeSet}{(logical) Allows defining the nodes to spread the new collection
+\item{createNodeSet}{(character) Allows defining the nodes to spread the new collection
 across. If not provided, the CREATE operation will create shard-replica spread across all
 live Solr nodes. The format is a comma-separated list of node_names, such as
 localhost:8983_solr, localhost:8984_solr, localhost:8985_solr. Default: \code{NULL}}
@@ -75,7 +75,8 @@ asynchronously}
 
 \item{schema}{(character) Path to schema file}
 
-\item{verbose}{If TRUE (default) the url call used printed to console.}
+\item{configSet}{(character) Name of the configset to use for this core. For more
+information, see https://cwiki.apache.org/confluence/display/solr/Config+Sets}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
@@ -88,11 +89,13 @@ supported properties and values.
 (https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)}
 }
 \description{
-Add a collection
+Create a core
 }
 \examples{
 \dontrun{
-# start Solr in Schemaless mode: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# you can create a new core like: bin/solr create -c corename
+# where <corename> is the name for your core - or creaate as below
 
 # connect
 solr_connect()
@@ -102,8 +105,7 @@ config <- system.file("examples", "solrconfig.xml", package = "solr")
 schema <- system.file("examples", "schema.xml", package = "solr")
 core_create(name = "helloWorld", config = config, schema = schema)
 
-core_create(name = "helloWorld", instanceDir = "/Users/sacmac/helloWorld",
-config = 'solrconfig.xml', schema = 'schema.xml')
+core_create(name = "helloWorld", configSet = 'basic_config')
 }
 }
 

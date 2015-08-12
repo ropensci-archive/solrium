@@ -19,7 +19,7 @@
 #' modes, respectively)
 #' 
 #' @examples \dontrun{
-#' conn <- solr_connect()
+#' solr_connect()
 #' 
 #' # Documents in a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
