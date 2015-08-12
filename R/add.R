@@ -18,6 +18,9 @@
 #' @details Works for Collections as well as Cores (in SolrCloud and Standalone 
 #' modes, respectively)
 #' 
+#' @seealso \code{\link{update_json}}, \code{\link{update_xml}}, 
+#' \code{\link{update_csv}} for adding documents from files
+#' 
 #' @examples \dontrun{
 #' solr_connect()
 #' 

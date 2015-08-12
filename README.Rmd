@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 Development is now following Solr v5 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v5.
 
-This package only deals with extracting data from a Solr endpoint, not writing data (pull request or holla if you're interested in writing solr data).
+Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
 ## Solr info
 
@@ -33,9 +33,7 @@ This package only deals with extracting data from a Solr endpoint, not writing d
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 + [Solr csv writer](http://wiki.apache.org/solr/CSVResponseWriter)
 
-## Quick start
-
-### Install
+## Install
 
 Stable version from CRAN
 
@@ -53,13 +51,32 @@ devtools::install_github("ropensci/solr")
 library("solr")
 ```
 
-__Define stuff__ Use the `solr_connect()` function to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
+## Setup
+
+Use `solr_connect()` to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
 
 ```{r}
 invisible(solr_connect('http://api.plos.org/search'))
 ```
 
-### Search
+You can also set whether you want simple or detailed error messages (via `errors`), and whether you want URLs used in each function call or not (via `verbose`), and your proxy settings (via `proxy`) if needed. For example:
+
+```{r eval=FALSE}
+solr_connect("localhost:8983", errors = "complete", verbose = FALSE)
+```
+
+Then you can get your settings like
+
+```{r eval=FALSE}
+solr_settings()
+#> <solr_connection>
+#>   url:    localhost:8983
+#>   errors: complete
+#>   verbose: FALSE
+#>   proxy:
+```
+
+## Search
 
 ```{r}
 solr_search(q='*:*', rows=2, fl='id')
@@ -190,9 +207,64 @@ __PLOS Search API__
 
 Most of the examples above use the PLOS search API... :)
 
-### Meta
+## Solr server management
 
-* Please [report any issues or bugs](https://github.com/ropensci/solr/issues).
+This isn't as complete as searching functions show above, but we're getting there.
+
+### Cores
+
+Many functions, e.g.:
+
+* `core_create()`
+* `core_rename()`
+* `core_status()`
+* ...
+
+Create a core
+
+```{r eval=FALSE}
+core_create(name = "foo_bar")
+```
+
+### Collections
+
+Many functions, e.g.:
+
+* `collection_create()`
+* `collection_list()`
+* `collection_addrole()`
+* ...
+
+Create a collection
+
+```{r eval=FALSE}
+collection_create(name = "hello_world")
+```
+
+### Add documents
+
+Add documents, supports adding from files (json, xml, or csv format), and from R objects (including `data.frame` and `list` types so far)
+
+```{r eval=FALSE}
+df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
+add(df, name = "books")
+```
+
+Delete documents, by id
+
+```{r eval=FALSE}
+delete_by_id(ids = c(3, 4))
+```
+
+Or by query
+
+```{r eval=FALSE}
+delete_by_query(query = "manu:bank")
+```
+
+## Meta
+
+* Please [report any issues or bugs](https://github.com/ropensci/solr/issues)
 * License: MIT
 * Get citation information for `solr` in R doing `citation(package = 'solr')`
 
