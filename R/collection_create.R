@@ -68,11 +68,11 @@ collection_create <- function(name, numShards = 2, maxShardsPerNode = 1,
   check_conn(conn)
   args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
                   replicationFactor = replicationFactor, 
-                  maxShardsPerNode = maxShardsPerNode, createNodeSet = createNodeSet, 
+                  maxShardsPerNode = maxShardsPerNode, createNodeSet = createNodeSet,
                   collection.configName = collection.configName, 
                   router.name = router.name, shards = shards,
-                  createNodeSet.shuffle = createNodeSet.shuffle, 
-                  router.field = router.field, autoAddReplicas = autoAddReplicas, 
+                  createNodeSet.shuffle = asl(createNodeSet.shuffle),
+                  router.field = router.field, autoAddReplicas = asl(autoAddReplicas),
                   async = async, wt = 'json'))
   res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, callopts, conn$proxy, ...)
   if (raw) {

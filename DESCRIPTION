@@ -5,7 +5,7 @@ Description: Provides a set of functions for querying and parsing data
     'highlighting', 'stats', and 'more like this'. In addition, some
     functionality is included for creating, deleting, and updating
     documents in a 'Solr' 'database'.
-Version: 0.2.3.9000
+Version: 0.2.4.9000
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 License: MIT + file LICENSE
