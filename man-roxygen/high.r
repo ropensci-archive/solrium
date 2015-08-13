@@ -109,9 +109,10 @@
 #' @param raw (logical) If TRUE (default) raw json or xml returned. If FALSE,
 #' 		parsed data returned.
 #' @param key API key, if needed.
-#' @param base URL endpoint
 #' @param callopts Call options passed on to httr::GET
 #' @param fl Fields to return
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param parsetype One of list of df (data.frame)
-#' @param verbose If TRUE (default) the url call used printed to console.
+#' 
+#' @details The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+#' can be used to set verbose status.

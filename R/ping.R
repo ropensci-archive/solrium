@@ -1,39 +1,47 @@
 #' Ping a Solr instance
 #' 
 #' @export
-#' @param base (character) URL endpoint. This is different from the other functions in that we aren't 
-#' hitting a search endpoint. Pass in here 
+#' @param name (character) Name of a collection or core. Required.
 #' @param wt (character) One of json (default) or xml. If json, uses 
 #' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
-#' @param callopts curl options passed on to \code{\link[httr]{GET}}
+#' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' 
 #' @details You likely may not be able to run this function against many public Solr 
-#' services, but should work locally.
+#' services as they hopefully don't expose their admin interface to the public, but 
+#' works locally.
 #' 
 #' @examples \dontrun{
-#' ping()
-#' ping('http://localhost:8983')
-#' ping('http://localhost:8983', wt="xml")
-#' ping('http://localhost:8983', verbose=FALSE)
-#' ping('http://localhost:8983', raw=TRUE)
+#' # start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
+#' # after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+#' 
+#' # connect: by default we connect to localhost, port 8983
+#' solr_connect()
+#' 
+#' # ping the gettingstarted index
+#' ping("gettingstarted")
+#' ping("gettingstarted", wt = "xml")
+#' ping("gettingstarted", verbose = FALSE)
+#' ping("gettingstarted", raw = TRUE)
 #' 
 #' library("httr")
-#' ping('http://localhost:8983', wt="xml", callopts = verbose())
+#' ping("gettingstarted", wt="xml", config = verbose())
 #' }
 
-ping <- function(base = 'http://localhost:8983', wt = 'json', verbose = TRUE, raw = FALSE, 
-                 callopts = list()) {
-  
-  if (is.null(base)) {
-    stop("You must provide a url, e.g., http://api.plos.org/search or http://localhost:8983/solr/select")
-  }
-  out <- structure(solr_GET(file.path(base, 'solr/admin/ping'), args = list(wt = wt), 
-                            callopts, verbose), class = "ping", wt = wt)
-  if (raw) { 
-    return( out ) 
-  } else { 
-    solr_parse(out) 
+ping <- function(name, wt = 'json', verbose = TRUE, raw = FALSE, ...) {
+  conn <- solr_settings()
+  check_conn(conn)
+  res <- tryCatch(solr_GET(file.path(conn$url, sprintf('solr/%s/admin/ping', name)), 
+           args = list(wt = wt), verbose = verbose, conn$proxy, ...), error = function(e) e)
+  if (is(res, "error")) {
+    return(list(status = "not found"))
+  } else {
+    out <- structure(res, class = "ping", wt = wt)
+    if (raw) { 
+      return( out ) 
+    } else { 
+      solr_parse(out) 
+    }
   }
 }

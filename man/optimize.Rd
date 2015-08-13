@@ -5,7 +5,7 @@
 \title{Optimize}
 \usage{
 optimize(max_segments = 1, wait_searcher = TRUE, soft_commit = FALSE,
-  wt = "json", raw = FALSE, base = "http://localhost:8983", ...)
+  wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{max_segments}{optimizes down to at most this number of segments. Default: 1}
@@ -24,9 +24,6 @@ parse}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in
-that we aren't hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
@@ -34,6 +31,8 @@ Optimize
 }
 \examples{
 \dontrun{
+solr_connect()
+
 optimize()
 optimize(max_segments = 2)
 optimize(wait_searcher = FALSE)

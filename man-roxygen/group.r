@@ -1,7 +1,6 @@
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param fl Fields to return
-#' @param base URL endpoint.
 #' @param wt (character) Data type returned, defaults to 'json'. One of json or xml. If json, 
 #' uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
 #' parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.
@@ -46,6 +45,4 @@
 #' @param concat (character) Character to concatenate elements of longer than length 1. 
 #' Note that this only works reliably when data format is json (wt='json'). The parsing
 #' is more complicated in XML format, but you can do that on your own.
-#' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... Further args.
-#' 

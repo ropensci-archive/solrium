@@ -17,9 +17,9 @@ solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
   hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL,
   hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
   hl.regex.pattern = NULL, hl.regex.maxAnalyzedChars = NULL, start = 0,
-  rows = NULL, wt = "json", raw = FALSE, key = NULL, base = NULL,
+  rows = NULL, wt = "json", raw = FALSE, key = NULL,
   callopts = list(), fl = "DOES_NOT_EXIST", fq = NULL,
-  parsetype = "list", verbose = TRUE)
+  parsetype = "list")
 }
 \arguments{
 \item{q}{Query terms. See examples.}
@@ -169,8 +169,6 @@ parsed data returned.}
 
 \item{key}{API key, if needed.}
 
-\item{base}{URL endpoint}
-
 \item{callopts}{Call options passed on to httr::GET}
 
 \item{fl}{Fields to return}
@@ -178,8 +176,6 @@ parsed data returned.}
 \item{fq}{Filter query, this does not affect the search, only what gets returned}
 
 \item{parsetype}{One of list of df (data.frame)}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -187,23 +183,29 @@ XML, JSON, a list, or data.frame
 \description{
 Do highlighting searches, outputing highlight only.
 }
+\details{
+The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+can be used to set verbose status.
+}
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
+# connect
+solr_connect('http://api.plos.org/search')
 
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url)
-solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, base = url)
+# highlight search
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10)
+solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3)
 
 # Raw data back
 ## json
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url,
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10,
    raw=TRUE)
 ## xml
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url,
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10,
    raw=TRUE, wt='xml')
 ## parse after getting data back
 out <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), hl.fragsize=30,
-   rows=10, base = url, raw=TRUE, wt='xml')
+   rows=10, raw=TRUE, wt='xml')
 solr_parse(out, parsetype='df')
 }
 }

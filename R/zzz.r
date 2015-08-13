@@ -3,9 +3,13 @@
 #' @param x Value
 makemultiargs <- function(x){
   value <- get(x, envir = parent.frame(n = 2))
-  if( length(value) == 0 ){ NULL } else {
-    if( any(sapply(value, is.na)) ){ NULL } else {
-      if( !is.character(value) ){ 
+  if ( length(value) == 0 ) { 
+    NULL 
+  } else {
+    if ( any(sapply(value, is.na)) ) { 
+      NULL 
+    } else {
+      if ( !is.character(value) ) { 
         value <- as.character(value)
       }
       names(value) <- rep(x, length(value))
@@ -18,18 +22,31 @@ makemultiargs <- function(x){
 #' @param x Value
 collectargs <- function(x){
   outlist <- list()
-  for(i in seq_along(x)){
+  for (i in seq_along(x)) {
     outlist[[i]] <- makemultiargs(x[[i]])
   }
   as.list(unlist(sc(outlist)))
 }
 
 # GET helper fxn
-solr_GET <- function(base, args, callopts, verbose){
-  tt <- GET(base, query = args, callopts)
-  if(verbose) message(URLdecode(tt$url))
-  stop_for_status(tt)
-  content(tt, as="text")
+solr_GET <- function(base, args, callopts = NULL, ...){
+  tt <- GET(base, query = args, callopts, ...)
+  if (solr_settings()$verbose) message(URLdecode(tt$url))
+  if (tt$status_code > 201) {
+    solr_error(tt)
+  } else {
+    content(tt, as = "text")
+  }
+}
+
+solr_error <- function(x) {
+  err <- content(x)
+  erropt <- Sys.getenv("SOLR_ERRORS")
+  if (erropt == "simple" || erropt == "") {
+    stop(err$error$code, " - ", err$error$msg, call. = FALSE)
+  } else {
+    stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
+  }
 }
 
 # POST helper fxn
@@ -43,11 +60,21 @@ solr_POST <- function(base, body, args, content, ...) {
 
 # POST helper fxn for R objects
 obj_POST <- function(base, body, args, ...) {
-  invisible(match.arg(args$wt, c("xml","json","csv")))
+  invisible(match.arg(args$wt, c("xml", "json", "csv")))
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
   body <- jsonlite::toJSON(body, auto_unbox = TRUE)
-  tt <- POST(base, query = args, body = body, content_type_json())
+  tt <- POST(base, query = args, body = body, content_type_json(), ...)
   get_response(tt)
+}
+
+# helper for POSTing from R objects
+obj_proc <- function(url, body, args, raw, ...) {
+  out <- structure(obj_POST(url, body, args, ...), class = "update", wt = args$wt)
+  if (raw) {
+    out
+  } else {
+    solr_parse(out) 
+  }
 }
 
 get_ctype <- function(x) {
@@ -79,14 +106,18 @@ replacelen0 <- function(x) {
 sc <- function(l) Filter(Negate(is.null), l)
 
 asl <- function(z) {
-  if (is.logical(z) || tolower(z) == "true" || tolower(z) == "false") {
-    if (z) {
-      return('true')
-    } else {
-      return('false')
-    }
+  if (is.null(z)) {
+    NULL
   } else {
-    return(z)
+    if (is.logical(z) || tolower(z) == "true" || tolower(z) == "false") {
+      if (z) {
+        return('true')
+      } else {
+        return('false')
+      }
+    } else {
+      return(z)
+    }
   }
 }
 
@@ -99,11 +130,49 @@ docreate <- function(base, files, args, content, raw, ...) {
   } 
 }
 
-objcreate <- function(base, dat, args, verbose, raw, ...) {
+objcreate <- function(base, dat, args, raw, ...) {
   out <- structure(solr_POST(base, dat, args, "json", ...), class = "update", wt = args$wt)
   if (raw) { 
     return(out) 
   } else { 
     solr_parse(out) 
   } 
+}
+
+check_conn <- function(x) {
+  if (!is(x, "solr_connection")) {
+    stop("Input to conn parameter must be an object of class solr_connection", 
+         call. = FALSE)
+  }
+  if (is.null(x)) {
+    stop("You must provide a connection object", 
+         call. = FALSE)
+  }
+}
+
+check_wt <- function(x) {
+  if (!x %in% c('json', 'xml', 'csv')) {
+    stop("wt must be one of: json, xml, csv", 
+         call. = FALSE)
+  }  
+}
+
+check_defunct <- function(...) {
+  calls <- names(sapply(match.call(), deparse))[-1]
+  calls_vec <- "verbose" %in% calls
+  if (any(calls_vec)) {
+    stop("The parameter verbose has been removed - see ?solr_connect", 
+         call. = FALSE)
+  }
+}
+
+is_in_cloud_mode <- function(x) {
+  res <- GET(file.path(x$url, "solr/admin/collections"), 
+             query = list(wt = 'json'))
+  msg <- content(res)$error$msg
+  if (grepl("not running", msg)) {
+    FALSE
+  } else {
+    TRUE
+  }
 }

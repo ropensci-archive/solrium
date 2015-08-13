@@ -12,19 +12,20 @@
 #' parse
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
-#' @param base (character) URL endpoint. This is different from the other functions in 
-#' that we aren't hitting a search endpoint. Pass in here 
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
+#' solr_connect()
+#' 
 #' optimize()
 #' optimize(max_segments = 2)
 #' optimize(wait_searcher = FALSE)
 #' }
 optimize <- function(max_segments = 1, wait_searcher = TRUE, soft_commit = FALSE, 
-                     wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+                     wt = 'json', raw = FALSE, ...) {
   
-  if (is.null(base)) stop("You must provide a url")
+  conn <- solr_settings()
+  check_conn(conn)
   args <- sc(list(maxSegments = max_segments, waitSearcher = asl(wait_searcher), 
                   softCommit = asl(soft_commit), wt = 'json'))
-  obj_proc(file.path(base, 'solr/update'), list(optimize = c()), args, raw, ...)
+  obj_proc(file.path(conn$url, 'solr/update'), list(optimize = c()), args, raw, conn$proxy, ...)
 }

@@ -8,8 +8,8 @@ solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
   fl = NA, wt = "json", key = NA, group.field = NA, group.limit = NA,
   group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.cache.percent = NA, group.query = NA,
-  group.format = NA, group.func = NA, base = NA, callopts = list(),
-  raw = FALSE, parsetype = "df", concat = ",", verbose = TRUE, ...)
+  group.format = NA, group.func = NA, callopts = list(), raw = FALSE,
+  parsetype = "df", concat = ",", ...)
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -71,8 +71,6 @@ documents instead of numbers of groups.}
 \item{group.func}{[function query] Group based on the unique values of a function
 query. <!> Solr4.0 This parameter only is supported on 4.0}
 
-\item{base}{URL endpoint.}
-
 \item{callopts}{Call options passed on to httr::GET}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
@@ -82,8 +80,6 @@ query. <!> Solr4.0 This parameter only is supported on 4.0}
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 
 \item{...}{Further args.}
 }
@@ -95,41 +91,42 @@ Solr grouped search.
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
+# connect
+solr_connect('http://api.plos.org/search')
 
 # Basic group query
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type', base=url)
+solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'))
+solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type')
 
 # Different ways to sort (notice diff btw sort of group.sort)
 # note that you can only sort on a field if you return that field
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'), base=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
-   group.sort='alm_twitterCount desc', base=url)
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score','alm_twitterCount'),
-   sort='score asc', group.sort='alm_twitterCount desc', base=url)
+solr_group(q='ecology', group.field='journal', group.limit=3,
+   fl=c('id','score'))
+solr_group(q='ecology', group.field='journal', group.limit=3,
+   fl=c('id','score','alm_twitterCount'), group.sort='alm_twitterCount desc')
+solr_group(q='ecology', group.field='journal', group.limit=3,
+   fl=c('id','score','alm_twitterCount'), sort='score asc', group.sort='alm_twitterCount desc')
 
 # Two group.field values
-out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id',
-   base=url, raw=TRUE)
+out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3,
+   fl='id', raw=TRUE)
 solr_parse(out)
 solr_parse(out, 'df')
 
 # Get two groups, one with alm_twitterCount of 0-10, and another group with 10 to infinity
 solr_group(q='ecology', group.limit=3, fl=c('id','alm_twitterCount'),
- group.query=c('alm_twitterCount:[0 TO 10]','alm_twitterCount:[10 TO *]'),
- base=url)
+ group.query=c('alm_twitterCount:[0 TO 10]','alm_twitterCount:[10 TO *]'))
 
 # Use of group.format and group.simple.
 ## The raw data structure of these two calls are slightly different, but
 ## the parsing inside the function outputs the same results. You can of course
 ## set raw=TRUE to get back what the data actually look like
 solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-   group.format='simple', base=url)
+   group.format='simple')
 solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-   group.format='grouped', base=url)
+   group.format='grouped')
 solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-   group.format='grouped', group.main='true', base=url)
+   group.format='grouped', group.main='true')
 }
 }
 \references{

@@ -8,8 +8,8 @@ solr_all(q = "*:*", sort = NULL, start = 0, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
-  key = NULL, base = NULL, callopts = list(), raw = FALSE,
-  parsetype = "list", concat = ",", ..., verbose = TRUE)
+  key = NULL, callopts = list(), raw = FALSE, parsetype = "list",
+  concat = ",", ...)
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -21,7 +21,7 @@ x_f and y_f in a descending order).}
 
 \item{start}{Record to start at, default to beginning.}
 
-\item{rows}{Number of records to return. Defaults to 10.}
+\item{rows}{Number of records to return. Default: 10.}
 
 \item{pageDoc}{If you expect to be paging deeply into the results (say beyond page 10,
 assuming rows=10) and you are sorting by score, you may wish to add the pageDoc
@@ -44,7 +44,7 @@ e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score}
 to the search and not to requests in general. Time is in milliseconds. Values <= 0
 mean no time restriction. Partial results may be returned (if there are any).}
 
-\item{qt}{Which query handler used.}
+\item{qt}{Which query handler used. Options: dismax, others?}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}}
@@ -54,8 +54,8 @@ to parse. You can't use \code{csv} because the point of this function}
 
 \item{TZ}{Time zone, you can override the default.}
 
-\item{echoHandler}{If the echoHandler parameter is true, Solr places the name of
-the handle used in the response to the client for debugging purposes.}
+\item{echoHandler}{If \code{TRUE}, Solr places the name of the handle used in the
+response to the client for debugging purposes. Default:}
 
 \item{echoParams}{The echoParams parameter tells Solr what kinds of Request
 parameters should be included in the response for debugging purposes, legal values
@@ -69,8 +69,6 @@ include:
 
 \item{key}{API key, if needed.}
 
-\item{base}{URL endpoint.}
-
 \item{callopts}{Call options passed on to httr::GET}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
@@ -82,8 +80,6 @@ Note that this only works reliably when data format is json (wt='json'). The par
 is more complicated in XML format, but you can do that on your own.}
 
 \item{...}{Further args.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -93,37 +89,39 @@ All purpose function to do search, faceting, grouping, mlt, etc.
 }
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
-solr_all(q='*:*', rows=2, fl='id', base=url)
+# connect
+solr_connect('http://api.plos.org/search')
+
+solr_all(q='*:*', rows=2, fl='id')
 
 # facets
-solr_all(q='*:*', rows=2, fl='id', base=url, facet="true", facet.field="journal")
+solr_all(q='*:*', rows=2, fl='id', facet="true", facet.field="journal")
 
 # mlt
-solr_all(q='ecology', rows=2, fl='id', base=url, mlt='true', mlt.count=2, mlt.fl='abstract')
+solr_all(q='ecology', rows=2, fl='id', mlt='true', mlt.count=2, mlt.fl='abstract')
 
 # facets and mlt
-solr_all(q='ecology', rows=2, fl='id', base=url, facet="true", facet.field="journal",
+solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 mlt='true', mlt.count=2, mlt.fl='abstract')
 
 # stats
-solr_all(q='ecology', rows=2, fl='id', base=url, stats='true', stats.field='counter_total_all')
+solr_all(q='ecology', rows=2, fl='id', stats='true', stats.field='counter_total_all')
 
 # facets, mlt, and stats
-solr_all(q='ecology', rows=2, fl='id', base=url, facet="true", facet.field="journal",
+solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
 mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all')
 
 # group
-solr_all(q='ecology', rows=2, fl='id', base=url, group='true',
-group.field='journal', group.limit=3)
+solr_all(q='ecology', rows=2, fl='id', group='true',
+   group.field='journal', group.limit=3)
 
 # facets, mlt, stats, and groups
-solr_all(q='ecology', rows=2, fl='id', base=url, facet="true", facet.field="journal",
-mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all',
-group='true', group.field='journal', group.limit=3)
+solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
+   mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all',
+   group='true', group.field='journal', group.limit=3)
 
 # using wt = xml
-solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', base=url, wt="xml", raw=TRUE)
+solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
 }
 }
 \references{

@@ -11,14 +11,15 @@ knitr::opts_chunk$set(
 ```
 
 [![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
-[![Build status](https://ci.appveyor.com/api/projects/status/ytgtb62gsgf5hddi/branch/master)](https://ci.appveyor.com/project/sckott/solr/branch/master)
-[![Coverage Status](https://coveralls.io/repos/ropensci/solr/badge.svg)](https://coveralls.io/r/ropensci/solr)
+[![codecov.io](https://codecov.io/github/ropensci/solr/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solr?branch=master)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solr?color=2ED968)](https://github.com/metacran/cranlogs.app)
 [![cran version](http://www.r-pkg.org/badges/version/solr)](http://cran.rstudio.com/web/packages/solr)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
-This package only deals with extracting data from a Solr endpoint, not writing data (pull request or holla if you're interested in writing solr data).
+Development is now following Solr v5 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v5.
+
+Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
 ## Solr info
 
@@ -32,11 +33,9 @@ This package only deals with extracting data from a Solr endpoint, not writing d
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 + [Solr csv writer](http://wiki.apache.org/solr/CSVResponseWriter)
 
-## Quick start
+## Install
 
-### Install
-
-Stable version from CRAN 
+Stable version from CRAN
 
 ```{r eval=FALSE}
 install.packages("solr")
@@ -52,17 +51,35 @@ devtools::install_github("ropensci/solr")
 library("solr")
 ```
 
-__Define stuff__ Your base url and a key (if needed). This example should work. You do need to pass a key to the Public Library of Science search API, but it apparently doesn't need to be a real one.
+## Setup
+
+Use `solr_connect()` to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
 
 ```{r}
-url <- 'http://api.plos.org/search'
-key <- 'key'
+invisible(solr_connect('http://api.plos.org/search'))
 ```
 
-### Search
+You can also set whether you want simple or detailed error messages (via `errors`), and whether you want URLs used in each function call or not (via `verbose`), and your proxy settings (via `proxy`) if needed. For example:
+
+```{r eval=FALSE}
+solr_connect("localhost:8983", errors = "complete", verbose = FALSE)
+```
+
+Then you can get your settings like
+
+```{r eval=FALSE}
+solr_settings()
+#> <solr_connection>
+#>   url:    localhost:8983
+#>   errors: complete
+#>   verbose: FALSE
+#>   proxy:
+```
+
+## Search
 
 ```{r}
-solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
+solr_search(q='*:*', rows=2, fl='id')
 ```
 
 ### Search grouped data
@@ -70,43 +87,43 @@ solr_search(q='*:*', rows=2, fl='id', base=url, key=key)
 Most recent publication by journal
 
 ```{r}
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score', base=url, key=key)
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score')
 ```
 
 First publication by journal
 
 ```{r}
-solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]", base=url, key=key)
+solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]")
 ```
 
 Search group query : Last 3 publications of 2013.
 
 ```{r}
-solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date', base=url, key=key)
+solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date')
 ```
 
 Search group with format simple
 
 ```{r}
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date', base=url, key=key)
+solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date')
 ```
 
 ### Facet
 
 ```{r}
-solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird', base=url, key=key)
+solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird')
 ```
 
 ### Highlight
 
 ```{r}
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key)
+solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2)
 ```
 
 ### Stats
 
 ```{r}
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal', base=url, key=key)
+out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal')
 ```
 
 ```{r}
@@ -118,7 +135,7 @@ out$data
 `solr_mlt` is a function to return similar documents to the one
 
 ```{r}
-out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5, base=url, key=key)
+out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5)
 ```
 
 ```{r}
@@ -136,7 +153,7 @@ out$mlt
 For example:
 
 ```{r}
-(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, base = url, key=key, raw=TRUE))
+(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, raw=TRUE))
 ```
 
 Then parse
@@ -151,21 +168,21 @@ Function Queries allow you to query on actual numeric fields in the SOLR databas
 
 ```{r}
 solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
-  rows=5, fl='id,title', fq='doc_type:full', base=url, key=key)
+  rows=5, fl='id,title', fq='doc_type:full')
 ```
 
 Here, we search for the papers with the most citations
 
 ```{r}
 solr_search(q='_val_:"max(counter_total_all)"',
-    rows=5, fl='id,counter_total_all', fq='doc_type:full', base=url, key=key)
+    rows=5, fl='id,counter_total_all', fq='doc_type:full')
 ```
 
 Or with the most tweets
 
 ```{r}
 solr_search(q='_val_:"max(alm_twitterCount)"',
-    rows=5, fl='id,alm_twitterCount', fq='doc_type:full', base=url, key=key)
+    rows=5, fl='id,alm_twitterCount', fq='doc_type:full')
 ```
 
 ### Using specific data sources
@@ -175,24 +192,79 @@ __USGS BISON service__
 The occurrences service
 
 ```{r}
-url <- "http://bison.usgs.ornl.gov/solrstaging/occurrences/select"
-solr_search(q='*:*', base=url2, fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
+invisible(solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select"))
+solr_search(q='*:*', fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
 ```
 
 The species names service
 
 ```{r}
-url2 <- "http://bisonapi.usgs.ornl.gov/solr/scientificName/select"
-solr_search(q='*:*', base=url2, raw=TRUE)
+invisible(solr_connect("http://bisonapi.usgs.ornl.gov/solr/scientificName/select"))
+solr_search(q='*:*', raw=TRUE)
 ```
 
 __PLOS Search API__
 
 Most of the examples above use the PLOS search API... :)
 
-### Meta
+## Solr server management
 
-* Please [report any issues or bugs](https://github.com/ropensci/solr/issues).
+This isn't as complete as searching functions show above, but we're getting there.
+
+### Cores
+
+Many functions, e.g.:
+
+* `core_create()`
+* `core_rename()`
+* `core_status()`
+* ...
+
+Create a core
+
+```{r eval=FALSE}
+core_create(name = "foo_bar")
+```
+
+### Collections
+
+Many functions, e.g.:
+
+* `collection_create()`
+* `collection_list()`
+* `collection_addrole()`
+* ...
+
+Create a collection
+
+```{r eval=FALSE}
+collection_create(name = "hello_world")
+```
+
+### Add documents
+
+Add documents, supports adding from files (json, xml, or csv format), and from R objects (including `data.frame` and `list` types so far)
+
+```{r eval=FALSE}
+df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
+add(df, name = "books")
+```
+
+Delete documents, by id
+
+```{r eval=FALSE}
+delete_by_id(ids = c(3, 4))
+```
+
+Or by query
+
+```{r eval=FALSE}
+delete_by_query(query = "manu:bank")
+```
+
+## Meta
+
+* Please [report any issues or bugs](https://github.com/ropensci/solr/issues)
 * License: MIT
 * Get citation information for `solr` in R doing `citation(package = 'solr')`
 

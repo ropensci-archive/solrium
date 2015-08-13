@@ -4,7 +4,7 @@
 #' or sort by a function (e.g., sum(x_f, y_f) desc, which sorts by the sum of 
 #' x_f and y_f in a descending order).
 #' @param start Record to start at, default to beginning.
-#' @param rows Number of records to return. Defaults to 10.
+#' @param rows Number of records to return. Default: 10.
 #' @param pageDoc If you expect to be paging deeply into the results (say beyond page 10, 
 #' assuming rows=10) and you are sorting by score, you may wish to add the pageDoc 
 #' and pageScore parameters to your request. These two parameters tell Solr (and Lucene) 
@@ -20,11 +20,11 @@
 #' @param timeAllowed The time allowed for a search to finish. This value only applies 
 #' to the search and not to requests in general. Time is in milliseconds. Values <= 0 
 #' mean no time restriction. Partial results may be returned (if there are any).
-#' @param qt Which query handler used.
+#' @param qt Which query handler used. Options: dismax, others?
 #' @param NOW Set a fixed time for evaluating Date based expresions 
 #' @param TZ Time zone, you can override the default.
-#' @param echoHandler If the echoHandler parameter is true, Solr places the name of 
-#' the handle used in the response to the client for debugging purposes.
+#' @param echoHandler If \code{TRUE}, Solr places the name of the handle used in the 
+#' response to the client for debugging purposes. Default: 
 #' @param echoParams The echoParams parameter tells Solr what kinds of Request 
 #' parameters should be included in the response for debugging purposes, legal values 
 #' include:
@@ -35,12 +35,10 @@
 #'  by the client, or implicit because of the request handler configuration.
 #' }
 #' @param key API key, if needed.
-#' @param base URL endpoint.
 #' @param callopts Call options passed on to httr::GET
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param parsetype (character) One of 'list' or 'df'
 #' @param concat (character) Character to concatenate elements of longer than length 1. 
 #' Note that this only works reliably when data format is json (wt='json'). The parsing
 #' is more complicated in XML format, but you can do that on your own.
-#' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... Further args.

@@ -14,10 +14,10 @@
 #' parse
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
-#' @param base (character) URL endpoint. This is different from the other functions in 
-#' that we aren't hitting a search endpoint. Pass in here 
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
+#' solr_connect()
+#' 
 #' # Delete by ID
 #' # delete_by_id(ids = 9)
 #' ## Many IDs
@@ -30,32 +30,23 @@
 #' @export
 #' @name delete
 delete_by_id <- function(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
-                         boost = NULL, wt = 'json', raw = FALSE, 
-                         base = 'http://localhost:8983', ...) {
+                         boost = NULL, wt = 'json', raw = FALSE, ...) {
   
-  if (is.null(base)) stop("You must provide a url")
+  conn <- solr_settings()
+  check_conn(conn)
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = lapply(ids, function(z) list(id = z)))
-  obj_proc(file.path(base, 'solr/update/json'), body, args, raw, ...)
+  obj_proc(file.path(conn$url, 'solr/update/json'), body, args, raw, conn$proxy, ...)
 }
 
 #' @export
 #' @name delete
 delete_by_query <- function(query, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
-                            boost = NULL, wt = 'json', raw = FALSE, 
-                            base = 'http://localhost:8983', ...) {
+                            boost = NULL, wt = 'json', raw = FALSE, ...) {
   
-  if (is.null(base)) stop("You must provide a url")
+  conn <- solr_settings()
+  check_conn(conn)
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = list(query = query))
-  obj_proc(file.path(base, 'solr/update/json'), body, args, raw, ...)
-}
-
-obj_proc <- function(url, body, args, raw, ...) {
-  out <- structure(obj_POST(url, body, args, ...), class = "update", wt = args$wt)
-  if (raw) {
-    out
-  } else {
-    solr_parse(out) 
-  }
+  obj_proc(file.path(conn$url, 'solr/update/json'), body, args, raw, conn$proxy, ...)
 }

@@ -7,8 +7,9 @@
 #' @param start Record to start at, default to beginning.
 #' @param rows Number of records to return. Defaults to 10.
 #' @param key API key, if needed.
-#' @param base URL endpoint.
 #' @param callopts Call options passed on to httr::GET
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param parsetype (character) One of 'list' or 'df'
-#' @param verbose If TRUE (default) the url call used printed to console.
+#' 
+#' @details The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+#' can be used to set verbose status.

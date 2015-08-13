@@ -4,13 +4,15 @@
 \alias{update_json}
 \title{Update documents using JSON}
 \usage{
-update_json(files, commit = TRUE, optimize = FALSE, max_segments = 1,
-  expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
-  prepare_commit = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+update_json(files, name, commit = TRUE, optimize = FALSE,
+  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
+  soft_commit = FALSE, prepare_commit = NULL, wt = "json", raw = FALSE,
+  ...)
 }
 \arguments{
 \item{files}{Path to file to load into Solr}
+
+\item{name}{(character) Name of the core or collection}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Deafult: \code{TRUE}}
@@ -39,9 +41,6 @@ parse}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in
-that we aren't hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
@@ -53,16 +52,21 @@ services, but should work locally.
 }
 \examples{
 \dontrun{
+# start Solr in Schemaless mode: bin/solr start -e schemaless
+
+# connect
+solr_connect()
+
 # Add documents
 file <- system.file("examples", "books2.json", package = "solr")
 cat(readLines(file), sep = "\\n")
-update_json(file)
+update_json(file, "books")
 
 # Update commands - can include many varying commands
 ## Add file
 file <- system.file("examples", "updatecommands_add.json", package = "solr")
 cat(readLines(file), sep = "\\n")
-update_json(file)
+update_json(file, "books")
 
 ## Delete file
 file <- system.file("examples", "updatecommands_delete.json", package = "solr")

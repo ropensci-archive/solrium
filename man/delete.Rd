@@ -7,12 +7,10 @@
 \title{Delete documents by ID or query}
 \usage{
 delete_by_id(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE,
-  boost = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+  boost = NULL, wt = "json", raw = FALSE, ...)
 
 delete_by_query(query, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE,
-  base = "http://localhost:8983", ...)
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{ids}{Document IDs, one or more in a vector or list}
@@ -34,9 +32,6 @@ parse}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{base}{(character) URL endpoint. This is different from the other functions in
-that we aren't hitting a search endpoint. Pass in here}
-
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 
 \item{query}{Query to use to delete documents}
@@ -46,6 +41,8 @@ Delete documents by ID or query
 }
 \examples{
 \dontrun{
+solr_connect()
+
 # Delete by ID
 # delete_by_id(ids = 9)
 ## Many IDs

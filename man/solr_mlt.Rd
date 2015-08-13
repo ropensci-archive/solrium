@@ -8,8 +8,8 @@ solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
   mlt.mintf = NULL, mlt.mindf = NULL, mlt.minwl = NULL,
   mlt.maxwl = NULL, mlt.maxqt = NULL, mlt.maxntp = NULL,
   mlt.boost = NULL, mlt.qf = NULL, fl = NULL, wt = "json", start = 0,
-  rows = NULL, key = NULL, base = NULL, callopts = list(),
-  raw = FALSE, parsetype = "df", concat = ",", verbose = TRUE)
+  rows = NULL, key = NULL, callopts = list(), raw = FALSE,
+  parsetype = "df", concat = ",")
 }
 \arguments{
 \item{q}{Query terms, defaults to '*:*', or everything.}
@@ -58,8 +58,6 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 
 \item{key}{API key, if needed.}
 
-\item{base}{URL endpoint.}
-
 \item{callopts}{Call options passed on to httr::GET}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
@@ -69,8 +67,6 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
-
-\item{verbose}{If TRUE (default) the url call used printed to console.}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -78,23 +74,26 @@ XML, JSON, a list, or data.frame
 \description{
 Solr "more like this" search
 }
+\details{
+The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
+can be used to set verbose status.
+}
 \examples{
 \dontrun{
-url <- 'http://api.plos.org/search'
+# connect
+solr_connect('http://api.plos.org/search')
 
-solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', base=url,
-   fq="doc_type:full")
-solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount',
-   base=url)
+# more like this search
+solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full")
+solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount')
 solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1,
-   fl='counter_total_all', rows=5, base=url)
-solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5, base=url)
-solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5, base=url)
-solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5, base=url)
+   fl='counter_total_all', rows=5)
+solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5)
+solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
+solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
 
 # get raw data, and parse later if needed
-out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, base=url,
-   raw=TRUE)
+out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, raw=TRUE)
 library('jsonlite')
 jsonlite::fromJSON(out)
 solr_parse(out, "df")

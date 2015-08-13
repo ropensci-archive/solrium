@@ -1,6 +1,7 @@
 #' Add documents from R objects
 #' 
 #' @param x Documents, either as rows in a data.frame, or a list.
+#' @param name (character) A collection or core name. Required.
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Default: \code{TRUE}
 #' @param commit_within (numeric) Milliseconds to commit the change, the document will be added 
@@ -12,57 +13,69 @@
 #' parse
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
-#' @param base (character) URL endpoint. This is different from the other functions in 
-#' that we aren't hitting a search endpoint. Pass in here 
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' 
+#' @details Works for Collections as well as Cores (in SolrCloud and Standalone 
+#' modes, respectively)
+#' 
+#' @seealso \code{\link{update_json}}, \code{\link{update_xml}}, 
+#' \code{\link{update_csv}} for adding documents from files
+#' 
 #' @examples \dontrun{
+#' solr_connect()
+#' 
 #' # Documents in a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-#' add(x = ss)
+#' add(ss, name = "books")
 #' 
 #' # Documents in a data.frame
 #' ## Simple example
 #' df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-#' add(x = df)
+#' add(x = df, "books")
+#' df <- data.frame(id = c(77, 78), price = c(1, 2.40))
+#' add(x = df, "books")
 #' 
 #' ## More complex example, get file from package examples
+#' # start Solr in Schemaless mode first: bin/solr start -e schemaless
 #' file <- system.file("examples", "books.csv", package = "solr")
 #' x <- read.csv(file, stringsAsFactors = FALSE)
 #' class(x)
 #' head(x)
-#' add(x)
+#' add(x, "gettingstarted")
 #' 
 #' # Use modifiers
-#' add(x, commit_within = 5000)
+#' add(x, "gettingstarted", commit_within = 5000)
 #' }
-add <- function(x, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, 
-                wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+add <- function(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+                boost = NULL, wt = 'json', raw = FALSE, ...) {
   UseMethod("add")
 }
 
 #' @export
-add.list <- function(x, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, 
-                     wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+add.list <- function(x, name, commit = TRUE, commit_within = NULL, 
+                     overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
-  if (is.null(base)) stop("You must provide a url")
+  conn <- solr_settings()
+  check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
                   overwrite = asl(overwrite), wt = 'json'))
   if (!is.null(boost)) {
     x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
   }
-  obj_proc(file.path(base, 'solr/update/json'), x, args, raw, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), x, args, raw, conn$proxy, ...)
 }
 
 #' @export
-add.data.frame <- function(x, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, 
-                           wt = 'json', raw = FALSE, base = 'http://localhost:8983', ...) {
+add.data.frame <- function(x, name, commit = TRUE, commit_within = NULL, 
+                           overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
   
-  if (is.null(base)) stop("You must provide a url")
+  conn <- solr_settings()
+  check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
                   overwrite = asl(overwrite), wt = 'json'))
   if (!is.null(boost)) {
     x$boost <- boost
   }
   x <- apply(x, 1, as.list)
-  obj_proc(file.path(base, 'solr/update/json'), x, args, raw, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), x, args, raw, conn$proxy, ...)
 }

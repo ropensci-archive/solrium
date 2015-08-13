@@ -4,12 +4,10 @@
 \alias{ping}
 \title{Ping a Solr instance}
 \usage{
-ping(base = "http://localhost:8983", wt = "json", verbose = TRUE,
-  raw = FALSE, callopts = list())
+ping(name, wt = "json", verbose = TRUE, raw = FALSE, ...)
 }
 \arguments{
-\item{base}{(character) URL endpoint. This is different from the other functions in that we aren't
-hitting a search endpoint. Pass in here}
+\item{name}{(character) Name of a collection or core. Required.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
 \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse}
@@ -18,25 +16,32 @@ hitting a search endpoint. Pass in here}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
 Ping a Solr instance
 }
 \details{
 You likely may not be able to run this function against many public Solr
-services, but should work locally.
+services as they hopefully don't expose their admin interface to the public, but
+works locally.
 }
 \examples{
 \dontrun{
-ping()
-ping('http://localhost:8983')
-ping('http://localhost:8983', wt="xml")
-ping('http://localhost:8983', verbose=FALSE)
-ping('http://localhost:8983', raw=TRUE)
+# start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
+# after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+
+# connect: by default we connect to localhost, port 8983
+solr_connect()
+
+# ping the gettingstarted index
+ping("gettingstarted")
+ping("gettingstarted", wt = "xml")
+ping("gettingstarted", verbose = FALSE)
+ping("gettingstarted", raw = TRUE)
 
 library("httr")
-ping('http://localhost:8983', wt="xml", callopts = verbose())
+ping("gettingstarted", wt="xml", config = verbose())
 }
 }
 

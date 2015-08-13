@@ -2,12 +2,12 @@ context("solr_highlight")
 
 test_that("solr_highlight works", {
   skip_on_cran()
-  
-  url <- 'http://api.plos.org/search'
-  
-  a <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10, base = url, verbose=FALSE)
-  b <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3, base = url, verbose=FALSE)
-  
+
+  solr_connect('http://api.plos.org/search', verbose=FALSE)
+
+  a <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10)
+  b <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3)
+
   # correct dimensions
   expect_that(length(a), equals(10))
   expect_that(length(a[[1]]), equals(1))
@@ -17,7 +17,7 @@ test_that("solr_highlight works", {
   # correct classes
   expect_is(a, "list")
   expect_is(a[[1]]$abstract, "character")
-  
+
   expect_is(b, "list")
   expect_is(b[[1]], "list")
   expect_is(b[[1]]$abstract, "character")
