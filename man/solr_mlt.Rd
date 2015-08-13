@@ -4,14 +4,16 @@
 \alias{solr_mlt}
 \title{Solr "more like this" search}
 \usage{
-solr_mlt(q = "*:*", fq = NULL, mlt.count = NULL, mlt.fl = NULL,
-  mlt.mintf = NULL, mlt.mindf = NULL, mlt.minwl = NULL,
+solr_mlt(name = NULL, q = "*:*", fq = NULL, mlt.count = NULL,
+  mlt.fl = NULL, mlt.mintf = NULL, mlt.mindf = NULL, mlt.minwl = NULL,
   mlt.maxwl = NULL, mlt.maxqt = NULL, mlt.maxntp = NULL,
   mlt.boost = NULL, mlt.qf = NULL, fl = NULL, wt = "json", start = 0,
   rows = NULL, key = NULL, callopts = list(), raw = FALSE,
   parsetype = "df", concat = ",")
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{fq}{Filter query, this does not affect the search, only what gets returned}

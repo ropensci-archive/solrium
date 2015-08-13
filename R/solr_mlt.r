@@ -25,7 +25,7 @@
 #' solr_parse(out, "df")
 #' }
 
-solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL,
+solr_mlt <- function(name = NULL, q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL,
   mlt.mindf=NULL, mlt.minwl=NULL, mlt.maxwl=NULL, mlt.maxqt=NULL, mlt.maxntp=NULL,
   mlt.boost=NULL, mlt.qf=NULL, fl=NULL, wt='json', start=0, rows=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='df', concat=',') {
@@ -43,6 +43,7 @@ solr_mlt <- function(q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=
     mlt.maxwl = mlt.maxwl, mlt.maxqt = mlt.maxqt, mlt.maxntp = mlt.maxntp,
     mlt.boost = mlt.boost, mlt.qf = mlt.qf, start = start, rows = rows, wt = wt))
 
-  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class = "sr_mlt", wt = wt)
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+                   class = "sr_mlt", wt = wt)
   if (raw) { return( out ) } else { solr_parse(out, parsetype, concat) }
 }

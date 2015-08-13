@@ -4,14 +4,16 @@
 \alias{solr_search}
 \title{Solr search.}
 \usage{
-solr_search(q = "*:*", sort = NULL, start = NULL, rows = NULL,
-  pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
+solr_search(name = NULL, q = "*:*", sort = NULL, start = NULL,
+  rows = NULL, pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
   concat = ",", ...)
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{sort}{Field to sort on. You can specify ascending (e.g., score desc) or
@@ -180,6 +182,11 @@ key <- getOption("eu_key")
 dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
 library('jsonlite')
 head( jsonlite::fromJSON(dat)$items )
+
+# Connect to a local Solr instance
+## not run - replace with your local Solr URL and collection/core name
+# solr_connect("localhost:8889")
+# solr_search("gettingstarted")
 }
 }
 \references{

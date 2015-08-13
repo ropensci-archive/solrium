@@ -1,3 +1,4 @@
+#' @param name Name of a collection or core. Or leave as \code{NULL} if not needed.
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param fq Filter query, this does not affect the search, only what gets returned
 #' @param mlt.count The number of similar documents to return for each result. Default is 5.

@@ -1,3 +1,4 @@
+#' @param name Name of a collection or core. Or leave as \code{NULL} if not needed.
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param stats.field The number of similar documents to return for each result.
 #' @param stats.facet You can not facet on multi-valued fields. 

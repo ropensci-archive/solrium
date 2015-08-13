@@ -1,3 +1,4 @@
+#' @param name Name of a collection or core. Or leave as \code{NULL} if not needed.
 #' @param q Query terms. See examples.
 #' @param facet.query This param allows you to specify an arbitrary query in the
 #' Lucene default syntax to generate a facet count. By default, faceting returns

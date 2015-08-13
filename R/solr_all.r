@@ -45,7 +45,7 @@
 #' solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
 #' }
 
-solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
+solr_all <- function(name = NULL, q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='list', concat=',', ...) {
@@ -62,7 +62,8 @@ solr_all <- function(q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class = "sr_search", wt = wt)
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+                   class = "sr_search", wt = wt)
   if (raw) {
     return( out )
   } else {

@@ -27,7 +27,7 @@
 #' solr_parse(out, parsetype='df')
 #' }
 
-solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
+solr_highlight <- function(name = NULL, q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
      hl.q = NULL, hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL,
      hl.maxAnalyzedChars = NULL, hl.alternateField = NULL, hl.maxAlternateFieldLength = NULL,
      hl.preserveMulti = NULL, hl.maxMultiValuedToExamine = NULL,
@@ -61,6 +61,7 @@ solr_highlight <- function(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NU
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   args <- c(args, hl.fl)
 
-  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class="sr_high", wt=wt)
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+                   class="sr_high", wt=wt)
   if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
 }

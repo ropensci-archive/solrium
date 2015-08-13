@@ -4,11 +4,13 @@
 \alias{solr_stats}
 \title{Get Solr stats.}
 \usage{
-solr_stats(q = "*:*", stats.field = NULL, stats.facet = NULL,
-  wt = "json", start = 0, rows = 0, key = NULL, callopts = list(),
-  raw = FALSE, parsetype = "df")
+solr_stats(name = NULL, q = "*:*", stats.field = NULL,
+  stats.facet = NULL, wt = "json", start = 0, rows = 0, key = NULL,
+  callopts = list(), raw = FALSE, parsetype = "df")
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{stats.field}{The number of similar documents to return for each result.}

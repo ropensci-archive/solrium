@@ -98,9 +98,14 @@
 #' dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
 #' library('jsonlite')
 #' head( jsonlite::fromJSON(dat)$items )
+#' 
+#' # Connect to a local Solr instance
+#' ## not run - replace with your local Solr URL and collection/core name
+#' # solr_connect("localhost:8889")
+#' # solr_search("gettingstarted")
 #' }
 
-solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
+solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
@@ -121,10 +126,19 @@ solr_search <- function(q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
     args <- args[!names(args) %in% "q"]
   }
 
-  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class = "sr_search", wt = wt)
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+                   class = "sr_search", wt = wt)
   if (raw) {
     return( out )
   } else {
     solr_parse(out, parsetype, concat)
+  }
+}
+
+handle_url <- function(conn, name) {
+  if (is.null(name)) {
+    conn$url
+  } else {
+    file.path(conn$url, "solr", name, "select")
   }
 }

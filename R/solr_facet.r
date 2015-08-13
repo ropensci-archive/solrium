@@ -67,7 +67,7 @@
 #' solr_facet(facet.field='journal', callopts=verbose())
 #' }
 
-solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
+solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
    facet.prefix = NA,facet.sort = NA,facet.limit = NA,facet.offset = NA,
    facet.mincount = NA,facet.missing = NA,facet.method = NA,facet.enum.cache.minDf = NA,
    facet.threads = NA,facet.date = NA,facet.date.start = NA,facet.date.end = NA,
@@ -95,6 +95,7 @@ solr_facet <- function(q="*:*", facet.query=NA, facet.field=NA,
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class="sr_facet", wt=wt)
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+                   class="sr_facet", wt=wt)
   if (raw){ return( out ) } else { solr_parse(out) }
 }

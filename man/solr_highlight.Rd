@@ -4,16 +4,16 @@
 \alias{solr_highlight}
 \title{Do highlighting searches, outputing highlight only.}
 \usage{
-solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
-  hl.q = NULL, hl.mergeContiguous = NULL, hl.requireFieldMatch = NULL,
-  hl.maxAnalyzedChars = NULL, hl.alternateField = NULL,
-  hl.maxAlternateFieldLength = NULL, hl.preserveMulti = NULL,
-  hl.maxMultiValuedToExamine = NULL, hl.maxMultiValuedToMatch = NULL,
-  hl.formatter = NULL, hl.simple.pre = NULL, hl.simple.post = NULL,
-  hl.fragmenter = NULL, hl.fragListBuilder = NULL,
-  hl.fragmentsBuilder = NULL, hl.boundaryScanner = NULL,
-  hl.bs.maxScan = NULL, hl.bs.chars = NULL, hl.bs.type = NULL,
-  hl.bs.language = NULL, hl.bs.country = NULL,
+solr_highlight(name = NULL, q, hl.fl = NULL, hl.snippets = NULL,
+  hl.fragsize = NULL, hl.q = NULL, hl.mergeContiguous = NULL,
+  hl.requireFieldMatch = NULL, hl.maxAnalyzedChars = NULL,
+  hl.alternateField = NULL, hl.maxAlternateFieldLength = NULL,
+  hl.preserveMulti = NULL, hl.maxMultiValuedToExamine = NULL,
+  hl.maxMultiValuedToMatch = NULL, hl.formatter = NULL,
+  hl.simple.pre = NULL, hl.simple.post = NULL, hl.fragmenter = NULL,
+  hl.fragListBuilder = NULL, hl.fragmentsBuilder = NULL,
+  hl.boundaryScanner = NULL, hl.bs.maxScan = NULL, hl.bs.chars = NULL,
+  hl.bs.type = NULL, hl.bs.language = NULL, hl.bs.country = NULL,
   hl.useFastVectorHighlighter = NULL, hl.usePhraseHighlighter = NULL,
   hl.highlightMultiTerm = NULL, hl.regex.slop = NULL,
   hl.regex.pattern = NULL, hl.regex.maxAnalyzedChars = NULL, start = 0,
@@ -22,6 +22,8 @@ solr_highlight(q, hl.fl = NULL, hl.snippets = NULL, hl.fragsize = NULL,
   parsetype = "list")
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms. See examples.}
 
 \item{hl.fl}{A comma-separated list of fields for which to generate highlighted snippets.

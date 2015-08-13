@@ -43,8 +43,8 @@
 #'    callopts=verbose())
 #' }
 
-solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', start=0,
-  rows=0, key = NULL, callopts=list(), raw=FALSE, parsetype='df') {
+solr_stats <- function(name = NULL, q='*:*', stats.field=NULL, stats.facet=NULL, 
+  wt='json', start=0, rows=0, key = NULL, callopts=list(), raw=FALSE, parsetype='df') {
 
   conn <- solr_settings()
   check_conn(conn)
@@ -52,6 +52,6 @@ solr_stats <- function(q='*:*', stats.field=NULL, stats.facet=NULL, wt='json', s
   args <- collectargs(todonames)
   args$stats <- 'true'
 
-  out <- structure(solr_GET(conn$url, args, callopts, conn$proxy), class="sr_stats", wt=wt)
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), class="sr_stats", wt=wt)
   if(raw){ return( out ) } else { solr_parse(out, parsetype) }
 }

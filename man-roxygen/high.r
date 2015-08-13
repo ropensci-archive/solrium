@@ -1,3 +1,4 @@
+#' @param name Name of a collection or core. Or leave as \code{NULL} if not needed.
 #' @param q Query terms. See examples.
 #' @param hl.fl A comma-separated list of fields for which to generate highlighted snippets. 
 #' If left blank, the fields highlighted for the LuceneQParser are the defaultSearchField 

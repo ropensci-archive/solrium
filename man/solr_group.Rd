@@ -4,14 +4,16 @@
 \alias{solr_group}
 \title{Solr grouped search.}
 \usage{
-solr_group(q = "*:*", start = 0, rows = NA, sort = NA, fq = NA,
-  fl = NA, wt = "json", key = NA, group.field = NA, group.limit = NA,
-  group.offset = NA, group.sort = NA, group.main = NA,
+solr_group(name = NULL, q = "*:*", start = 0, rows = NA, sort = NA,
+  fq = NA, fl = NA, wt = "json", key = NA, group.field = NA,
+  group.limit = NA, group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.cache.percent = NA, group.query = NA,
   group.format = NA, group.func = NA, callopts = list(), raw = FALSE,
   parsetype = "df", concat = ",", ...)
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{start}{[number] The offset into the list of groups.}

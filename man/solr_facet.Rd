@@ -4,7 +4,7 @@
 \alias{solr_facet}
 \title{Do faceted searches, outputing facets only.}
 \usage{
-solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
+solr_facet(name = NULL, q = "*:*", facet.query = NA, facet.field = NA,
   facet.prefix = NA, facet.sort = NA, facet.limit = NA,
   facet.offset = NA, facet.mincount = NA, facet.missing = NA,
   facet.method = NA, facet.enum.cache.minDf = NA, facet.threads = NA,
@@ -17,6 +17,8 @@ solr_facet(q = "*:*", facet.query = NA, facet.field = NA,
   ...)
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms. See examples.}
 
 \item{facet.query}{This param allows you to specify an arbitrary query in the

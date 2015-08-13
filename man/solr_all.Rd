@@ -4,7 +4,7 @@
 \alias{solr_all}
 \title{All purpose function to do search, faceting, grouping, mlt, etc.}
 \usage{
-solr_all(q = "*:*", sort = NULL, start = 0, rows = NULL,
+solr_all(name = NULL, q = "*:*", sort = NULL, start = 0, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
@@ -12,6 +12,8 @@ solr_all(q = "*:*", sort = NULL, start = 0, rows = NULL,
   concat = ",", ...)
 }
 \arguments{
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+
 \item{q}{Query terms, defaults to '*:*', or everything.}
 
 \item{sort}{Field to sort on. You can specify ascending (e.g., score desc) or

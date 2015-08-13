@@ -1,3 +1,4 @@
+#' @param name Name of a collection or core. Or leave as \code{NULL} if not needed.
 #' @param q Query terms, defaults to '*:*', or everything.
 #' @param sort Field to sort on. You can specify ascending (e.g., score desc) or 
 #' descending (e.g., score asc), sort by two fields (e.g., score desc, price asc), 
