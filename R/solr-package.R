@@ -52,7 +52,7 @@
 #' @importFrom utils URLdecode
 #' @importFrom methods is
 #' @importFrom httr GET POST stop_for_status content content_type_json
-#' content_type_xml content_type upload_file http_condition
+#' content_type_xml content_type upload_file http_condition http_status
 #' @importFrom XML xmlParse xpathApply xmlToList xmlAttrs xmlChildren xmlValue
 #' xmlGetAttr
 #' @name solr-package
