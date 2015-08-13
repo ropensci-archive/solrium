@@ -39,7 +39,7 @@
 solr_connect <- function(url = "http://localhost:8983", proxy = NULL, 
                          errors = "simple", verbose = TRUE) {
   # checks
-  checkurl(url)
+  url <- checkurl(url)
   errors <- match.arg(errors, c('simple', 'complete'))
   check_proxy_args(proxy)
   
@@ -117,7 +117,15 @@ is_url <- function(x){
 }
 
 checkurl <- function(x){
-  if (!is_url(x)) stop("That does not appear to be a url", call. = FALSE)
+  if (!is_url(x)) {
+    stop("That does not appear to be a url", call. = FALSE)
+  } else {
+    if (grepl("https?", x)) {
+      x
+    } else {
+      paste0("http://", x)
+    }
+  }
 }
 
 # ### R6 version

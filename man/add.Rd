@@ -65,4 +65,8 @@ add(x, "gettingstarted")
 add(x, "gettingstarted", commit_within = 5000)
 }
 }
+\seealso{
+\code{\link{update_json}}, \code{\link{update_xml}},
+\code{\link{update_csv}} for adding documents from files
+}
 
