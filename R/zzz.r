@@ -40,12 +40,16 @@ solr_GET <- function(base, args, callopts = NULL, ...){
 }
 
 solr_error <- function(x) {
-  err <- content(x)
-  erropt <- Sys.getenv("SOLR_ERRORS")
-  if (erropt == "simple" || erropt == "") {
-    stop(err$error$code, " - ", err$error$msg, call. = FALSE)
-  } else {
-    stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
+  if (grepl("html", x$headers$`content-type`)) {
+    stop(http_status(x)$message, call. = FALSE)
+  } else { 
+    err <- content(x)
+    erropt <- Sys.getenv("SOLR_ERRORS")
+    if (erropt == "simple" || erropt == "") {
+      stop(err$error$code, " - ", err$error$msg, call. = FALSE)
+    } else {
+      stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
+    }
   }
 }
 

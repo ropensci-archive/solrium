@@ -40,7 +40,7 @@
 #' # then add a core: bin/solr create -c helloWorld
 #' # schema("helloWorld")
 #' }
-schema <- function(name = NULL, what = '', wt = 'json', raw = FALSE, verbose = TRUE, ...) {
+schema <- function(name, what = '', wt = 'json', raw = FALSE, verbose = TRUE, ...) {
   conn <- solr_settings()
   check_conn(conn)
   args <- list(wt = 'json')

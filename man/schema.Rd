@@ -4,8 +4,7 @@
 \alias{schema}
 \title{Get the schema for a collection or core}
 \usage{
-schema(name = NULL, what = "", wt = "json", raw = FALSE,
-  verbose = TRUE, ...)
+schema(name, what = "", wt = "json", raw = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{name}{(character) Name of collection or core}
