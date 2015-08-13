@@ -11,4 +11,4 @@ inst/ignore/*
 ^\.Rproj\.user$
 README.Rmd
 ^\.httr-oauth$
-makedata.sh
+build.sh
