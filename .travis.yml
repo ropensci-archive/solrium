@@ -4,6 +4,9 @@ sudo: required
 before_script:
   - "curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.10.3 bash"
 
+script: 
+  - makedata.sh
+
 r_github_packages:
   - jimhester/robustr
   - jimhester/covr
