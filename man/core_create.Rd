@@ -4,19 +4,12 @@
 \alias{core_create}
 \title{Create a core}
 \usage{
-core_create(name, numShards = 2, maxShardsPerNode = 1,
-  createNodeSet = NULL, collection.configName = NULL,
-  replicationFactor = 1, router.name = NULL, shards = NULL,
-  createNodeSet.shuffle = TRUE, router.field = NULL,
-  autoAddReplicas = FALSE, async = NULL, instanceDir = NULL,
-  config = NULL, schema = NULL, configSet = NULL, raw = FALSE,
-  callopts = list(), ...)
+core_create(name, instanceDir = NULL, config = NULL, schema = NULL,
+  dataDir = NULL, configSet = NULL, collection = NULL, shard = NULL,
+  async = NULL, raw = FALSE, callopts = list(), ...)
 }
 \arguments{
 \item{name}{(character) The name of the core to be created. Required}
-
-\item{async}{(character) Request ID to track this action which will be
-processed asynchronously}
 
 \item{instanceDir}{(character) Path to instance directory}
 
@@ -24,8 +17,21 @@ processed asynchronously}
 
 \item{schema}{(character) Path to schema file}
 
+\item{dataDir}{(character) Name of the data directory relative to instanceDir.}
+
 \item{configSet}{(character) Name of the configset to use for this core. For more
 information, see https://cwiki.apache.org/confluence/display/solr/Config+Sets}
+
+\item{collection}{(character) The name of the collection to which this core belongs.
+The default is the name of the core. collection.<param>=<val ue> causes a property of
+<param>=<value> to be set if a new collection is being created. Use collection.configNa
+me=<configname> to point to the configuration for a new collection.}
+
+\item{shard}{(character) The shard id this core represents. Normally you want to be
+auto-assigned a shard id.}
+
+\item{async}{(character) Request ID to track this action which will be
+processed asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
@@ -36,16 +42,6 @@ information, see https://cwiki.apache.org/confluence/display/solr/Config+Sets}
 core property name to value. See the section Defining core.properties for details on
 supported properties and values.
 (https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)}
-
-\item{dataDir}{(character) Name of the data directory relative to instanceDir.}
-
-\item{collection}{(character) The name of the collection to which this core belongs.
-The default is the name of the core. collection.<param>=<val ue> causes a property of
-<param>=<value> to be set if a new collection is being created. Use collection.configNa
-me=<configname> to point to the configuration for a new collection.}
-
-\item{shard}{(character) The shard id this core represents. Normally you want to be
-auto-assigned a shard id.}
 }
 \description{
 Create a core
@@ -64,7 +60,8 @@ path <- "~/solr-5.2.1/server/solr/helloWorld/conf"
 dir.create(path, recursive = TRUE)
 file.copy(config, path)
 file.copy(schema, path)
-files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/", full.names = TRUE)
+files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/",
+full.names = TRUE)
 file.copy(files, path, recursive = TRUE)
 core_create(name = "helloWorld", instanceDir = "helloWorld")
 }

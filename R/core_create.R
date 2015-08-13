@@ -37,30 +37,21 @@
 #' dir.create(path, recursive = TRUE)
 #' file.copy(config, path)
 #' file.copy(schema, path)
-#' files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/", full.names = TRUE)
+#' files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/", 
+#' full.names = TRUE)
 #' file.copy(files, path, recursive = TRUE)
 #' core_create(name = "helloWorld", instanceDir = "helloWorld")
 #' }
-core_create <- function(name, numShards = 2, maxShardsPerNode = 1, 
-                        createNodeSet = NULL, collection.configName = NULL, 
-                        replicationFactor = 1, router.name = NULL, shards = NULL,
-                        createNodeSet.shuffle = TRUE, router.field = NULL,
-                        autoAddReplicas = FALSE, async = NULL, 
-                        instanceDir = NULL, config = NULL, schema = NULL, 
-                        configSet = NULL, raw = FALSE, callopts=list(), ...) {
+core_create <- function(name, instanceDir = NULL, config = NULL, schema = NULL, dataDir = NULL,
+                        configSet = NULL, collection = NULL, shard = NULL, async = NULL, 
+                        raw = FALSE, callopts=list(), ...) {
 
-  # message("Not working yet")  
   conn <- solr_settings()
   check_conn(conn)
-  args <- sc(list(action = 'CREATE', name = name, numShards = numShards, 
-                  replicationFactor = replicationFactor, 
-                  maxShardsPerNode = maxShardsPerNode, createNodeSet = createNodeSet, 
-                  collection.configName = collection.configName, 
-                  router.name = router.name, shards = shards,
-                  createNodeSet.shuffle = asl(createNodeSet.shuffle), 
-                  router.field = router.field, autoAddReplicas = asl(autoAddReplicas), 
-                  async = async, instanceDir = instanceDir, config = config, 
-                  schema = schema, wt = 'json'))
+  args <- sc(list(action = 'CREATE', name = name, instanceDir = instanceDir, 
+                  config = config, schema = schema, dataDir = dataDir, 
+                  configSet = configSet, collection = collection, shard = shard,
+                  async = async, wt = 'json'))
   res <- solr_GET(file.path(conn$url, 'solr/admin/cores'), args, callopts, conn$proxy, ...)
   if (raw) {
     return(res)
