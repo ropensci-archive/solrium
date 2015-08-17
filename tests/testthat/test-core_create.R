@@ -4,7 +4,7 @@ test_that("core_create works", {
   solr_connect(verbose = FALSE)
   
   core_name <- "slamcore"
-  
+
   # delete if exists
   if (core_exists(core_name)) {
     invisible(core_unload(core_name))
@@ -18,7 +18,7 @@ test_that("core_create works", {
   
   # create the core
   aa <- suppressMessages(core_create(name = core_name, instanceDir = core_name, configSet = "basic_configs"))
-  
+
   expect_is(aa, "list")
   expect_is(aa$responseHeader, "list")
   

@@ -62,7 +62,7 @@ add.list <- function(x, name, commit = TRUE, commit_within = NULL,
   if (!is.null(boost)) {
     x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
   }
-  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), x, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json/docs', name)), x, args, raw, conn$proxy, ...)
 }
 
 #' @export
@@ -77,5 +77,5 @@ add.data.frame <- function(x, name, commit = TRUE, commit_within = NULL,
     x$boost <- boost
   }
   x <- apply(x, 1, as.list)
-  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), x, args, raw, conn$proxy, ...)
+  obj_proc(url = file.path(conn$url, sprintf('solr/%s/update/json/docs', name)), x, args, raw, conn$proxy, ...)
 }

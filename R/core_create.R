@@ -27,20 +27,18 @@
 #' @examples \dontrun{
 #' # start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
 #' # you can create a new core like: bin/solr create -c corename
-#' # where <corename> is the name for your core - or creaate as below
+#' # where <corename> is the name for your core - or create as below
 #' 
 #' # connect
 #' solr_connect()
 #' 
 #' # Create a core
-#' path <- "~/solr-5.2.1/server/solr/helloWorld/conf"
+#' path <- "~/solr-5.2.1/server/solr/newcore/conf"
 #' dir.create(path, recursive = TRUE)
-#' file.copy(config, path)
-#' file.copy(schema, path)
 #' files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/", 
 #' full.names = TRUE)
 #' file.copy(files, path, recursive = TRUE)
-#' core_create(name = "helloWorld", instanceDir = "helloWorld")
+#' core_create(name = "newcore", instanceDir = "newcore", configSet = "basic_configs")
 #' }
 core_create <- function(name, instanceDir = NULL, config = NULL, schema = NULL, dataDir = NULL,
                         configSet = NULL, collection = NULL, shard = NULL, async = NULL, 
