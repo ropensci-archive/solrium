@@ -1,9 +1,14 @@
 language: r
 sudo: required
 
-before_script:
-  - "curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=4.10.3 bash"
-  - "sh build.sh"
+before_install:
+  - wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz 
+  - tar -zxf solr-5.2.1.tgz
+  - cd solr-5.2.1
+  - bin/solr start
+  - bin/solr create -c gettingstarted
+  - bin/post -c gettingstarted example/exampledocs/*.xml
+  - cd ../
 
 r_github_packages:
   - jimhester/covr
