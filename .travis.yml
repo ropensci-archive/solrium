@@ -6,7 +6,6 @@ before_script:
   - "sh build.sh"
 
 r_github_packages:
-  - jimhester/robustr
   - jimhester/covr
 
 after_success:
