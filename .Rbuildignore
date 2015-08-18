@@ -12,3 +12,4 @@ inst/ignore/*
 README.Rmd
 ^\.httr-oauth$
 build.sh
+solr-5.2.1/*
