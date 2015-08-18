@@ -42,6 +42,7 @@ update_xml <- function(files, name, commit = TRUE, optimize = FALSE, max_segment
 
   conn <- solr_settings()
   check_conn(conn)
+  stop_if_absent(name)
   args <- sc(list(commit = asl(commit), optimize = asl(optimize), maxSegments = max_segments,
                   expungeDeletes = asl(expunge_deletes), waitSearcher = asl(wait_searcher),
                   softCommit = asl(soft_commit), prepareCommit = prepare_commit, wt = 'json'))

@@ -6,14 +6,16 @@
 \alias{delete_by_query}
 \title{Delete documents by ID or query}
 \usage{
-delete_by_id(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE,
-  boost = NULL, wt = "json", raw = FALSE, ...)
+delete_by_id(ids, name, commit = TRUE, commit_within = NULL,
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 
-delete_by_query(query, commit = TRUE, commit_within = NULL,
+delete_by_query(query, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{ids}{Document IDs, one or more in a vector or list}
+
+\item{name}{(character) A collection or core name. Required.}
 
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Deafult: \code{TRUE}}

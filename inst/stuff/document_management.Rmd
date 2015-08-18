@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Solr document management}
+%\VignetteIndexEntry{Document management}
 %\VignetteEncoding{UTF-8}
 -->
 
@@ -12,8 +12,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-Solr document management
-=======================
+Document management
+===================
 
 ## Installation
 
@@ -36,10 +36,10 @@ Load
 library("solr")
 ```
 
-Initialize connection
+Initialize connection. By default, you connect to `http://localhost:8983`
 
 ```{r}
-conn <- solr_connect('http://localhost:8983')
+solr_connect()
 ```
 
 ## Create documents from R objects
@@ -50,21 +50,22 @@ For now, only lists and data.frame's supported.
 
 ```{r}
 file <- system.file("examples", "books.csv", package = "solr")
-x <- read.csv(file)
-class(x)
-head(x)
-add(x, conn)
+(x <- read.csv(file))
+```
+
+```{r}
+add(x, "gettingstarted")
 ```
 
 ### list
 
 ```{r echo=FALSE, results='hide'}
-delete_by_id(1:2)
+delete_by_id(1:2, "gettingstarted")
 ```
 
 ```{r}
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss)
+add(ss, "gettingstarted")
 ```
 
 ## Delete documents
@@ -74,32 +75,32 @@ add(ss)
 Add some documents first
 
 ```{r echo=FALSE, results='hide'}
-delete_by_id(1:3)
+delete_by_id(1:3, "gettingstarted")
 ```
 
 ```{r}
 docs <- list(list(id = 1, price = 100, name = "brown"),
              list(id = 2, price = 500, name = "blue"),
              list(id = 3, price = 2000L, name = "pink"))
-add(docs)
+add(docs, "gettingstarted")
 ```
 
 And the documents are now in your Solr database
 
 ```{r}
-tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+tail(solr_search(name = "gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
 ```
 
 Now delete those documents just added
 
 ```{r deleteid}
-delete_by_id(ids = c(1, 2, 3))
+delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 ```
 
 And now they are gone
 
 ```{r}
-tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
 ```
 
 ### By query
@@ -107,25 +108,25 @@ tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
 Add some documents first
 
 ```{r}
-add(docs)
+add(docs, "gettingstarted")
 ```
 
 And the documents are now in your Solr database
 
 ```{r}
-tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
 ```
 
 Now delete those documents just added
 
 ```{r deletequery}
-delete_by_query(query = "(name:blue OR name:pink)")
+delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 ```
 
 And now they are gone
 
 ```{r}
-tail(solr_search("*:*", base = "http://localhost:8983/solr/select", rows = 100))
+tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
 ```
 
 ## Update documents from files
@@ -142,21 +143,21 @@ There are separate functions for each of the data types as they take slightly di
 
 ```{r}
 file <- system.file("examples", "books.xml", package = "solr")
-update_xml(file)
+update_xml(file, "books")
 ```
 
 ### JSON
 
 ```{r}
 file <- system.file("examples", "books.json", package = "solr")
-update_json(file)
+update_json(file, "books")
 ```
 
 ### CSV
 
 ```{r}
 file <- system.file("examples", "books.csv", package = "solr")
-update_csv(file)
+update_csv(file, "books")
 ```
 
 ### Add and delete in the same file
@@ -165,7 +166,7 @@ Add a document first, that we can later delete
 
 ```{r}
 ss <- list(list(id = 456, name = "cat"))
-add(ss)
+add(ss, "books")
 ```
 
 Now add a new document, and delete the one we just made
@@ -173,10 +174,10 @@ Now add a new document, and delete the one we just made
 ```{r}
 file <- system.file("examples", "add_delete.xml", package = "solr")
 cat(readLines(file), sep = "\n")
-update_xml(file)
+update_xml(file, "books")
 ```
 
 ### Notes
 
-Note that `update_xml()` and `update_json()` have exactly the same parameters, but simply use different data input formats. `update_csv()` is different in that you can't do provide document or field level boosts or other modifications. In addition `update_csv()` can accept not just csv, but tsv and other types of separators. 
+Note that `update_xml()` and `update_json()` have exactly the same parameters, but simply use different data input formats. `update_csv()` is different in that you can't provide document or field level boosts or other modifications. In addition `update_csv()` can accept not just csv, but tsv and other types of separators.
 

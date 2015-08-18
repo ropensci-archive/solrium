@@ -2,6 +2,7 @@
 #' 
 #' @name delete
 #' @param ids Document IDs, one or more in a vector or list
+#' @param name (character) A collection or core name. Required.
 #' @param query Query to use to delete documents
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 
 #' Deafult: \code{TRUE}
@@ -29,24 +30,24 @@
 
 #' @export
 #' @name delete
-delete_by_id <- function(ids, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
+delete_by_id <- function(ids, name, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
                          boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = lapply(ids, function(z) list(id = z)))
-  obj_proc(file.path(conn$url, 'solr/update/json'), body, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), body, args, raw, conn$proxy, ...)
 }
 
 #' @export
 #' @name delete
-delete_by_query <- function(query, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
+delete_by_query <- function(query, name, commit = TRUE, commit_within = NULL, overwrite = TRUE, 
                             boost = NULL, wt = 'json', raw = FALSE, ...) {
   
   conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), wt = 'json'))
   body <- list(delete = list(query = query))
-  obj_proc(file.path(conn$url, 'solr/update/json'), body, args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update/json', name)), body, args, raw, conn$proxy, ...)
 }

@@ -71,6 +71,15 @@ obj_POST <- function(base, body, args, ...) {
   get_response(tt)
 }
 
+# check if core/collection exists, if not stop
+stop_if_absent <- function(x) {
+  tmp <- suppressMessages(core_exists(x))
+  if (!tmp) {
+    stop(x, " doesn't exist - create it first.\n See core_create() or collection_create()", 
+         call. = FALSE)
+  }
+}
+
 # helper for POSTing from R objects
 obj_proc <- function(url, body, args, raw, ...) {
   out <- structure(obj_POST(url, body, args, ...), class = "update", wt = args$wt)

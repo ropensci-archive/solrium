@@ -1,5 +1,6 @@
 #' Add documents from R objects
 #' 
+#' @export
 #' @param x Documents, either as rows in a data.frame, or a list.
 #' @param name (character) A collection or core name. Required.
 #' @param commit (logical) If \code{TRUE}, documents immediately searchable. 

@@ -2,12 +2,14 @@ all: move rmd2md
 
 move:
 	cd inst/stuff;\
-	cp solr_localsetup.md ../../vignettes;\
-	cp solr_search.md ../../vignettes;\
-	cp solr_management.md ../../vignettes
+	cp local_setup.md ../../vignettes;\
+	cp search.md ../../vignettes;\
+	cp document_management.md ../../vignettes;\
+	cp cores_collections.md ../../vignettes
 
 rmd2md:
 	cd vignettes;\
-	mv solr_search.md solr_search.Rmd;\
-	mv solr_localsetup.md solr_localsetup.Rmd;\
-	mv solr_management.md solr_management.Rmd
+	mv search.md search.Rmd;\
+	mv local_setup.md local_setup.Rmd;\
+	mv document_management.md document_management.Rmd;\
+	mv cores_collections.md cores_collections.Rmd

@@ -29,6 +29,7 @@ update_csv <- function(files, name, separator = ',', header = TRUE,
   
   conn <- solr_settings()
   check_conn(conn)
+  stop_if_absent(name)
   if (!is.null(fieldnames)) fieldnames <- paste0(fieldnames, collapse = ",")
   args <- sc(list(separator = separator, header = header, fieldnames = fieldnames, skip = skip, 
                   skipLines = skipLines, trim = trim, encapsulator = encapsulator, escape = escape, 
