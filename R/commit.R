@@ -1,6 +1,7 @@
 #' Commit
 #' 
 #' @export
+#' @param name (character) A collection or core name. Required. 
 #' @param expunge_deletes merge segments with deletes away. Default: \code{FALSE}
 #' @param wait_searcher block until a new searcher is opened and registered as the 
 #' main query searcher, making the changes visible. Default: \code{TRUE}
@@ -16,15 +17,20 @@
 #' @examples \dontrun{
 #' solr_connect()
 #' 
-#' commit()
-#' commit(wait_searcher = FALSE)
+#' commit("gettingstarted")
+#' commit("gettingstarted", wait_searcher = FALSE)
 #' }
-commit <- function(expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE, 
+commit <- function(name, expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE, 
                    wt = 'json', raw = FALSE, ...) {
   
   conn <- solr_settings()
   check_conn(conn)
-  args <- sc(list(expungeDeletes = asl(expunge_deletes), waitSearcher = asl(wait_searcher), 
-                  softCommit = asl(soft_commit), wt = 'json'))
-  obj_proc(file.path(conn$url, 'solr/update'), list(commit = c()), args, raw, conn$proxy, ...)
+  obj_proc(file.path(conn$url, sprintf('solr/%s/update', name)), 
+           body = list(commit = 
+                         list(expungeDeletes = asl(expunge_deletes), 
+                              waitSearcher = asl(wait_searcher), 
+                              softCommit = asl(soft_commit))), 
+           args = list(wt = 'json'), 
+           raw = raw, 
+           conn$proxy, ...)
 }

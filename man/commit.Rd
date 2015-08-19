@@ -4,10 +4,12 @@
 \alias{commit}
 \title{Commit}
 \usage{
-commit(expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
-  wt = "json", raw = FALSE, ...)
+commit(name, expunge_deletes = FALSE, wait_searcher = TRUE,
+  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{name}{(character) A collection or core name. Required.}
+
 \item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
 
 \item{wait_searcher}{block until a new searcher is opened and registered as the
@@ -33,8 +35,8 @@ Commit
 \dontrun{
 solr_connect()
 
-commit()
-commit(wait_searcher = FALSE)
+commit("gettingstarted")
+commit("gettingstarted", wait_searcher = FALSE)
 }
 }
 

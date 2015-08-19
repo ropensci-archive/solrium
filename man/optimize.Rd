@@ -4,10 +4,12 @@
 \alias{optimize}
 \title{Optimize}
 \usage{
-optimize(max_segments = 1, wait_searcher = TRUE, soft_commit = FALSE,
-  wt = "json", raw = FALSE, ...)
+optimize(name, max_segments = 1, wait_searcher = TRUE,
+  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{name}{(character) A collection or core name. Required.}
+
 \item{max_segments}{optimizes down to at most this number of segments. Default: 1}
 
 \item{wait_searcher}{block until a new searcher is opened and registered as the
@@ -33,9 +35,9 @@ Optimize
 \dontrun{
 solr_connect()
 
-optimize()
-optimize(max_segments = 2)
-optimize(wait_searcher = FALSE)
+optimize("gettingstarted")
+optimize("gettingstarted", max_segments = 2)
+optimize("gettingstarted", wait_searcher = FALSE)
 }
 }
 
