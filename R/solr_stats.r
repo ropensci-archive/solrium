@@ -1,4 +1,6 @@
-#' Get Solr stats.
+#' @title Solr stats
+#' 
+#' @description Returns only stat items
 #'
 #' @template stats
 #' @return XML, JSON, a list, or data.frame

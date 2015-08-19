@@ -1,4 +1,7 @@
-#' Solr search.
+#' @title Solr search
+#' 
+#' @description Returns only matched documents, and doesn't return other items, 
+#' including facets, groups, mlt, stats, and highlights.
 #'
 #' @template search
 #' @return XML, JSON, a list, or data.frame

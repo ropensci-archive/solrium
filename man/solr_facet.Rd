@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_facet.r
 \name{solr_facet}
 \alias{solr_facet}
-\title{Do faceted searches, outputing facets only.}
+\title{Faceted search}
 \usage{
 solr_facet(name = NULL, q = "*:*", facet.query = NA, facet.field = NA,
   facet.prefix = NA, facet.sort = NA, facet.limit = NA,
@@ -156,7 +156,7 @@ parsed data returned.}
 Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).
 }
 \description{
-Do faceted searches, outputing facets only.
+Returns only facet items
 }
 \details{
 A number of fields can be specified multiple times, in which case you can separate

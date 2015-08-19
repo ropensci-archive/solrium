@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_search.r
 \name{solr_search}
 \alias{solr_search}
-\title{Solr search.}
+\title{Solr search}
 \usage{
 solr_search(name = NULL, q = "*:*", sort = NULL, start = NULL,
   rows = NULL, pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
@@ -89,7 +89,8 @@ is more complicated in XML format, but you can do that on your own.}
 XML, JSON, a list, or data.frame
 }
 \description{
-Solr search.
+Returns only matched documents, and doesn't return other items,
+including facets, groups, mlt, stats, and highlights.
 }
 \note{
 SOLR v1.2 was first version to support csv. See

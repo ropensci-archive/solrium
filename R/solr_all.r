@@ -1,4 +1,6 @@
-#' All purpose function to do search, faceting, grouping, mlt, etc.
+#' @title All purpose search
+#' 
+#' @description Includes documents, facets, groups, mlt, stats, and highlights.
 #'
 #' @template search
 #' @param wt (character) One of json (default) or xml. If json, uses

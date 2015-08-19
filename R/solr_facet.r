@@ -1,4 +1,6 @@
-#' Do faceted searches, outputing facets only.
+#' @title Faceted search
+#' 
+#' @description Returns only facet items
 #'
 #' @template facet
 #' @return Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).

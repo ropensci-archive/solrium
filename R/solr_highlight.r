@@ -1,5 +1,7 @@
-#' Do highlighting searches, outputing highlight only.
+#' @title Highlighting search
 #'
+#' @description Returns only highlight items
+#' 
 #' @export
 #' @template high
 #' @return XML, JSON, a list, or data.frame

@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_mlt.r
 \name{solr_mlt}
 \alias{solr_mlt}
-\title{Solr "more like this" search}
+\title{"more like this" search}
 \usage{
 solr_mlt(name = NULL, q = "*:*", fq = NULL, mlt.count = NULL,
   mlt.fl = NULL, mlt.mintf = NULL, mlt.mindf = NULL, mlt.minwl = NULL,
@@ -74,7 +74,7 @@ is more complicated in XML format, but you can do that on your own.}
 XML, JSON, a list, or data.frame
 }
 \description{
-Solr "more like this" search
+Returns only more like this items
 }
 \details{
 The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which

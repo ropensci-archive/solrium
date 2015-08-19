@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_group.r
 \name{solr_group}
 \alias{solr_group}
-\title{Solr grouped search.}
+\title{Grouped search}
 \usage{
 solr_group(name = NULL, q = "*:*", start = 0, rows = NA, sort = NA,
   fq = NA, fl = NA, wt = "json", key = NA, group.field = NA,
@@ -89,7 +89,7 @@ is more complicated in XML format, but you can do that on your own.}
 XML, JSON, a list, or data.frame
 }
 \description{
-Solr grouped search.
+Returns only group items
 }
 \examples{
 \dontrun{

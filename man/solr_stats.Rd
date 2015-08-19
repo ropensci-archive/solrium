@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_stats.r
 \name{solr_stats}
 \alias{solr_stats}
-\title{Get Solr stats.}
+\title{Solr stats}
 \usage{
 solr_stats(name = NULL, q = "*:*", stats.field = NULL,
   stats.facet = NULL, wt = "json", start = 0, rows = 0, key = NULL,
@@ -37,7 +37,7 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 XML, JSON, a list, or data.frame
 }
 \description{
-Get Solr stats.
+Returns only stat items
 }
 \details{
 The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which

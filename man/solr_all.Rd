@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_all.r
 \name{solr_all}
 \alias{solr_all}
-\title{All purpose function to do search, faceting, grouping, mlt, etc.}
+\title{All purpose search}
 \usage{
 solr_all(name = NULL, q = "*:*", sort = NULL, start = 0, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
@@ -87,7 +87,7 @@ is more complicated in XML format, but you can do that on your own.}
 XML, JSON, a list, or data.frame
 }
 \description{
-All purpose function to do search, faceting, grouping, mlt, etc.
+Includes documents, facets, groups, mlt, stats, and highlights.
 }
 \examples{
 \dontrun{

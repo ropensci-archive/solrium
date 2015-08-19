@@ -2,7 +2,7 @@
 % Please edit documentation in R/solr_highlight.r
 \name{solr_highlight}
 \alias{solr_highlight}
-\title{Do highlighting searches, outputing highlight only.}
+\title{Highlighting search}
 \usage{
 solr_highlight(name = NULL, q, hl.fl = NULL, hl.snippets = NULL,
   hl.fragsize = NULL, hl.q = NULL, hl.mergeContiguous = NULL,
@@ -183,7 +183,7 @@ parsed data returned.}
 XML, JSON, a list, or data.frame
 }
 \description{
-Do highlighting searches, outputing highlight only.
+Returns only highlight items
 }
 \details{
 The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which

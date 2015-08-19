@@ -1,4 +1,6 @@
-#' Solr "more like this" search
+#' @title "more like this" search
+#' 
+#' @description Returns only more like this items
 #'
 #' @template mlt
 #' @return XML, JSON, a list, or data.frame

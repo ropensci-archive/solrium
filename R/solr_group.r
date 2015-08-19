@@ -1,4 +1,6 @@
-#' Solr grouped search.
+#' @title Grouped search
+#' 
+#' @description Returns only group items
 #'
 #' @template group
 #' @return XML, JSON, a list, or data.frame
