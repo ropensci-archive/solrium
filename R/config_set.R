@@ -40,12 +40,12 @@ config_set <- function(name, set = NULL, unset = NULL, ...) {
   body <- sc(list(`set-property` = unbox_if(set), 
                   `unset-property` = unset))
   res <- solr_POST_body(url, body, list(wt = "json"), conn$proxy, ...)
-  jsonlite::fromJSON(x)
+  jsonlite::fromJSON(res)
 }
 
 unbox_if <- function(x) {
   if (!is.null(x)) {
-    lapply(set, jsonlite::unbox)
+    lapply(x, jsonlite::unbox)
   } else {
     NULL
   }
