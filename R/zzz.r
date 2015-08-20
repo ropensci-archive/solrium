@@ -62,6 +62,14 @@ solr_POST <- function(base, body, args, content, ...) {
   get_response(tt)
 }
 
+# POST helper fxn - just a body
+solr_POST_body <- function(base, body, args, ...) {
+  invisible(match.arg(args$wt, c("xml", "json")))
+  tt <- POST(base, query = args, body = body, 
+             content_type_json(), encode = "json", ...)
+  get_response(tt)
+}
+
 # POST helper fxn for R objects
 obj_POST <- function(base, body, args, ...) {
   invisible(match.arg(args$wt, c("xml", "json", "csv")))
@@ -187,5 +195,13 @@ is_in_cloud_mode <- function(x) {
     FALSE
   } else {
     TRUE
+  }
+}
+
+json_parse <- function(x, raw) {
+  if (raw) {
+    x
+  } else {
+    jsonlite::fromJSON(x)
   }
 }

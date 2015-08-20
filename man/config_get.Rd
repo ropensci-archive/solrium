@@ -2,7 +2,7 @@
 % Please edit documentation in R/config_get.R
 \name{config_get}
 \alias{config_get}
-\title{Examine Solr configuration details}
+\title{Get Solr configuration details}
 \usage{
 config_get(name, what = NULL, wt = "json", raw = FALSE, ...)
 }
@@ -26,7 +26,7 @@ A list, XMLInternalDocument/XMLInternalElementNode, or character
 string.
 }
 \description{
-Examine Solr configuration details
+Get Solr configuration details
 }
 \details{
 Note that if \code{raw=TRUE}, \code{what} is ignored. That is,

@@ -1,4 +1,4 @@
-#' @title Examine Solr configuration details
+#' @title Get Solr configuration details
 #' 
 #' @export
 #' 
