@@ -7,10 +7,10 @@
 \title{Delete documents by ID or query}
 \usage{
 delete_by_id(ids, name, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
+  overwrite = TRUE, boost = NULL, raw = FALSE, ...)
 
 delete_by_query(query, name, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
+  overwrite = TRUE, boost = NULL, raw = FALSE, ...)
 }
 \arguments{
 \item{ids}{Document IDs, one or more in a vector or list}
@@ -27,10 +27,6 @@ within that time. Default: NULL}
 
 \item{boost}{(numeric) Boost factor. Default: NULL}
 
-\item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
-parse}
-
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
@@ -41,10 +37,18 @@ parse}
 \description{
 Delete documents by ID or query
 }
+\details{
+We use json internally as data interchange format for this function.
+}
 \examples{
 \dontrun{
 solr_connect()
 
+# add some documents first
+ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+add(ss, name = "gettingstarted")
+
+# Now, delete them
 # Delete by ID
 # delete_by_id(ids = 9)
 ## Many IDs

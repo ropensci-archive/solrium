@@ -21,11 +21,10 @@
 #' core_exists("hhhhhh")
 #' }
 core_exists <- function(name, callopts=list()) {
-  tmp <- core_status(name = name, callopts = callopts)
+  tmp <- suppressMessages(core_status(name = name, callopts = callopts))
   if (length(tmp$status[[1]]) > 0) {
     TRUE 
   } else {
     FALSE
   }
 }
-

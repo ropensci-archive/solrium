@@ -73,8 +73,8 @@ obj_POST <- function(base, body, args, ...) {
 
 # check if core/collection exists, if not stop
 stop_if_absent <- function(x) {
-  tmp <- suppressMessages(core_exists(x))
-  if (!tmp) {
+  tmp <- vapply(list(core_exists, collection_exists), function(z) z(x), logical(1))
+  if (!any(tmp)) {
     stop(x, " doesn't exist - create it first.\n See core_create() or collection_create()", 
          call. = FALSE)
   }
