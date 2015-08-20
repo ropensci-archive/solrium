@@ -42,11 +42,3 @@ config_set <- function(name, set = NULL, unset = NULL, ...) {
   res <- solr_POST_body(url, body, list(wt = "json"), conn$proxy, ...)
   jsonlite::fromJSON(res)
 }
-
-unbox_if <- function(x) {
-  if (!is.null(x)) {
-    lapply(x, jsonlite::unbox)
-  } else {
-    NULL
-  }
-}

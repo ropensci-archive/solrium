@@ -205,3 +205,11 @@ json_parse <- function(x, raw) {
     jsonlite::fromJSON(x)
   }
 }
+
+unbox_if <- function(x) {
+  if (!is.null(x)) {
+    lapply(x, jsonlite::unbox)
+  } else {
+    NULL
+  }
+}
