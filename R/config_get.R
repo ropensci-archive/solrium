@@ -54,7 +54,7 @@ config_get <- function(name, what = NULL, wt = "json", raw = FALSE, ...) {
   config_parse(res, what, wt, raw)
 }
 
-config_parse <- function(x, what, wt, raw) {
+config_parse <- function(x, what = NULL, wt, raw) {
   if (raw) {
     return(x)
   } else {

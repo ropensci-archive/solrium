@@ -11,6 +11,10 @@ solr_get(ids, name, wt = "json", raw = FALSE, ...)
 
 \item{name}{(character) A collection or core name. Required.}
 
+\item{wt}{(character) One of json (default) or xml. Data type returned.
+If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
+\code{\link[XML]{xmlParse}} to parse.}
+
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
@@ -35,6 +39,10 @@ solr_get(ids = 1, "gettingstarted")
 solr_get(ids = 2, "gettingstarted")
 solr_get(ids = c(1, 2), "gettingstarted")
 solr_get(ids = "1,2", "gettingstarted")
+
+# Get raw JSON
+solr_get(ids = 1, "gettingstarted", raw = TRUE, wt = "json")
+solr_get(ids = 1, "gettingstarted", raw = TRUE, wt = "xml")
 }
 }
 
