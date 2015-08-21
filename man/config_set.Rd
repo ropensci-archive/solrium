@@ -12,7 +12,7 @@ config_set(name, set = NULL, unset = NULL, ...)
 \item{set}{(list) List of key:value pairs of what to set. Default: NULL
 (nothing passed)}
 
-\item{unset}{(list) List of key:value pairs of what to unset. Default: NULL
+\item{unset}{(list) One or more character strings of keys to unset. Default: NULL
 (nothing passed)}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}

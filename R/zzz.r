@@ -206,9 +206,13 @@ json_parse <- function(x, raw) {
   }
 }
 
-unbox_if <- function(x) {
+unbox_if <- function(x, recursive = FALSE) {
   if (!is.null(x)) {
-    lapply(x, jsonlite::unbox)
+    if (recursive) {
+      rapply(x, jsonlite::unbox, how = "list")
+    } else {
+      lapply(x, jsonlite::unbox)
+    }
   } else {
     NULL
   }

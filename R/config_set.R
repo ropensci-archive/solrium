@@ -5,7 +5,7 @@
 #' @param name (character) The name of the core. If not given, all cores.
 #' @param set (list) List of key:value pairs of what to set. Default: NULL 
 #' (nothing passed)
-#' @param unset (list) List of key:value pairs of what to unset. Default: NULL 
+#' @param unset (list) One or more character strings of keys to unset. Default: NULL 
 #' (nothing passed)
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @return A list with response from server
