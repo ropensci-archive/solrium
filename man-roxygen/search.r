@@ -16,7 +16,9 @@
 #' e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score
 #' @param pageScore See pageDoc notes.
 #' @param fq Filter query, this does not affect the search, only what gets returned
-#' @param fl Fields to return
+#' @param fl Fields to return, can be a character vector like \code{c('id', 'title')}, 
+#' or a single character vector with one or more comma separated names, like 
+#' \code{'id,title'}
 #' @param defType Specify the query parser to use with this request. 
 #' @param timeAllowed The time allowed for a search to finish. This value only applies 
 #' to the search and not to requests in general. Time is in milliseconds. Values <= 0 
