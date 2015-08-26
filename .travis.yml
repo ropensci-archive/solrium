@@ -1,8 +1,11 @@
-language: r
+language: c
 sudo: required
 
 before_install:
-  - wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz 
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - chmod 755 pkg-build.sh
+  - ./pkg-build.sh bootstrap
+  - wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz
   - tar -zxf solr-5.2.1.tgz
   - cd solr-5.2.1
   - bin/solr start
@@ -10,15 +13,28 @@ before_install:
   - bin/post -c gettingstarted example/exampledocs/*.xml
   - cd ../
 
-r_github_packages:
-  - jimhester/covr
+install:
+  - ./pkg-build.sh install_deps
+  - ./pkg-build.sh install_github jimhester/covr
+
+script:
+  - ./pkg-build.sh run_tests
+
+after_failure:
+  - ./pkg-build.sh dump_logs
 
 after_success:
-- Rscript -e 'covr::codecov()'
+  - Rscript -e 'covr::codecov()'
 
 notifications:
   email:
     on_success: change
     on_failure: change
   slack:
-    secure: K0pppSYESNGYdlG3OsjjyJRboEGdcxsl6GxjbHvJE7EsxKTJ5mH506tv6YjeXUcYRJ76D5G1UoKV/sCDC5/Bfz6RpDTAkuzOQyIlAatjuFKSAvx1G+y/PZjaGywb3cBZhYO93oG2TbAehMlXpIAnQcptc3YqhmocJrItnsU9T0M=
+      secure: K0pppSYESNGYdlG3OsjjyJRboEGdcxsl6GxjbHvJE7EsxKTJ5mH506tv6YjeXUcYRJ76D5G1UoKV/sCDC5/Bfz6RpDTAkuzOQyIlAatjuFKSAvx1G+y/PZjaGywb3cBZhYO93oG2TbAehMlXpIAnQcptc3YqhmocJrItnsU9T0M=
+
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel
