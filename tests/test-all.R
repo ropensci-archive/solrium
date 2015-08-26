@@ -1,3 +1,2 @@
 library('testthat')
-library('solr')
-test_check('solr')
+test_check('solrium')

@@ -38,7 +38,9 @@ e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score}
 
 \item{fq}{Filter query, this does not affect the search, only what gets returned}
 
-\item{fl}{Fields to return}
+\item{fl}{Fields to return, can be a character vector like \code{c('id', 'title')},
+or a single character vector with one or more comma separated names, like
+\code{'id,title'}}
 
 \item{defType}{Specify the query parser to use with this request.}
 

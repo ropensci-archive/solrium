@@ -1,4 +1,4 @@
-solr
+solrium
 =======
 
 ```{r echo=FALSE}
@@ -10,16 +10,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
-[![codecov.io](https://codecov.io/github/ropensci/solr/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solr?branch=master)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solr?color=2ED968)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/solr)](http://cran.rstudio.com/web/packages/solr)
+[![Build Status](https://api.travis-ci.org/ropensci/solrium.png)](https://travis-ci.org/ropensci/solrium)
+[![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
+[![cran version](http://www.r-pkg.org/badges/version/solrium)](http://cran.rstudio.com/web/packages/solrium)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
 Development is now following Solr v5 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v5.
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
+
+> Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
 
 ## Solr info
 
@@ -44,11 +46,11 @@ install.packages("solr")
 Or development version from GitHub
 
 ```{r eval=FALSE}
-devtools::install_github("ropensci/solr")
+devtools::install_github("ropensci/solrium")
 ```
 
 ```{r}
-library("solr")
+library("solrium")
 ```
 
 ## Setup
@@ -264,8 +266,8 @@ delete_by_query(query = "manu:bank")
 
 ## Meta
 
-* Please [report any issues or bugs](https://github.com/ropensci/solr/issues)
+* Please [report any issues or bugs](https://github.com/ropensci/solrium/issues)
 * License: MIT
-* Get citation information for `solr` in R doing `citation(package = 'solr')`
+* Get citation information for `solrium` in R doing `citation(package = 'solrium')`
 
 [![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)

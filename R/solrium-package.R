@@ -55,8 +55,8 @@
 #' content_type_xml content_type upload_file http_condition http_status
 #' @importFrom XML xmlParse xpathApply xmlToList xmlAttrs xmlChildren xmlValue
 #' xmlGetAttr
-#' @name solr-package
-#' @aliases solr
+#' @name solrium-package
+#' @aliases solrium
 #' @docType package
 #' @title General purpose R interface to Solr.
 #' @author Scott Chamberlain \email{myrmecocystus@@gmail.com}
