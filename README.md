@@ -1,18 +1,20 @@
-solr
+solrium
 =======
 
 
 
-[![Build Status](https://api.travis-ci.org/ropensci/solr.png)](https://travis-ci.org/ropensci/solr)
-[![codecov.io](https://codecov.io/github/ropensci/solr/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solr?branch=master)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solr?color=2ED968)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/solr)](http://cran.rstudio.com/web/packages/solr)
+[![Build Status](https://api.travis-ci.org/ropensci/solrium.png)](https://travis-ci.org/ropensci/solrium)
+[![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
+[![cran version](http://www.r-pkg.org/badges/version/solrium)](http://cran.rstudio.com/web/packages/solrium)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
 Development is now following Solr v5 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v5.
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
+
+> Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
 
 ## Solr info
 
@@ -39,12 +41,12 @@ Or development version from GitHub
 
 
 ```r
-devtools::install_github("ropensci/solr")
+devtools::install_github("ropensci/solrium")
 ```
 
 
 ```r
-library("solr")
+library("solrium")
 ```
 
 ## Setup
@@ -82,9 +84,10 @@ solr_settings()
 solr_search(q='*:*', rows=2, fl='id')
 #> Source: local data frame [2 x 1]
 #> 
-#>                                      id
-#> 1    10.1371/journal.pone.0123754/title
-#> 2 10.1371/journal.pone.0123754/abstract
+#>                                                              id
+#>                                                           (chr)
+#> 1       10.1371/annotation/ec04ad74-63cc-4fbe-9ad8-074a1d62fdf4
+#> 2 10.1371/annotation/ec04ad74-63cc-4fbe-9ad8-074a1d62fdf4/title
 ```
 
 ### Search grouped data
@@ -94,18 +97,12 @@ Most recent publication by journal
 
 ```r
 solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score')
-#>                         groupValue numFound start     publication_date
-#> 1                         plos one  1117769     0 2015-08-12T00:00:00Z
-#> 2       plos computational biology    33291     0 2015-08-12T00:00:00Z
-#> 3                             none    63693     0 2012-10-23T00:00:00Z
-#> 4 plos neglected tropical diseases    30300     0 2015-08-12T00:00:00Z
-#> 5                     plos biology    27728     0 2015-08-12T00:00:00Z
-#>   score
-#> 1     1
-#> 2     1
-#> 3     1
-#> 4     1
-#> 5     1
+#>                   groupValue numFound start     publication_date score
+#> 1                   plos one  1127931     0 2015-08-26T00:00:00Z     1
+#> 2             plos pathogens    40309     0 2015-08-25T00:00:00Z     1
+#> 3               plos biology    27802     0 2015-08-26T00:00:00Z     1
+#> 4              plos medicine    19322     0 2015-08-25T00:00:00Z     1
+#> 5 plos computational biology    33493     0 2015-08-26T00:00:00Z     1
 ```
 
 First publication by journal
@@ -114,16 +111,16 @@ First publication by journal
 ```r
 solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]")
 #>                          groupValue numFound start     publication_date
-#> 1                          plos one  1117769     0 2006-12-20T00:00:00Z
-#> 2        plos computational biology    33291     0 2005-06-24T00:00:00Z
-#> 3                              none    57557     0 2005-08-23T00:00:00Z
-#> 4  plos neglected tropical diseases    30300     0 2007-08-30T00:00:00Z
-#> 5                      plos biology    27728     0 2003-08-18T00:00:00Z
-#> 6                     plos medicine    19285     0 2004-09-07T00:00:00Z
-#> 7                    plos pathogens    40135     0 2005-07-22T00:00:00Z
-#> 8                     plos genetics    45835     0 2005-06-17T00:00:00Z
-#> 9                      plos medicin        9     0 2012-04-17T00:00:00Z
-#> 10                 plos collections       20     0 2014-07-02T00:00:00Z
+#> 1                          plos one  1127931     0 2006-12-20T00:00:00Z
+#> 2                    plos pathogens    40309     0 2005-07-22T00:00:00Z
+#> 3                      plos biology    27802     0 2003-08-18T00:00:00Z
+#> 4                     plos medicine    19322     0 2004-09-07T00:00:00Z
+#> 5        plos computational biology    33493     0 2005-06-24T00:00:00Z
+#> 6                     plos genetics    46143     0 2005-06-17T00:00:00Z
+#> 7                  plos collections       20     0 2014-07-02T00:00:00Z
+#> 8  plos neglected tropical diseases    30625     0 2007-08-30T00:00:00Z
+#> 9                              none    57557     0 2005-08-23T00:00:00Z
+#> 10             plos clinical trials      521     0 2006-04-21T00:00:00Z
 #>    score
 #> 1      1
 #> 2      1
@@ -153,12 +150,12 @@ Search group with format simple
 
 ```r
 solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date')
-#>   numFound start                    journal     publication_date
-#> 1  1378586     0                   PLOS ONE 2015-08-12T00:00:00Z
-#> 2  1378586     0                   PLOS ONE 2015-08-12T00:00:00Z
-#> 3  1378586     0                   PLOS ONE 2015-08-12T00:00:00Z
-#> 4  1378586     0 PLOS Computational Biology 2015-08-12T00:00:00Z
-#> 5  1378586     0 PLOS Computational Biology 2015-08-12T00:00:00Z
+#>   numFound start        journal     publication_date
+#> 1  1389867     0       PLOS ONE 2015-08-26T00:00:00Z
+#> 2  1389867     0       PLOS ONE 2015-08-26T00:00:00Z
+#> 3  1389867     0       PLOS ONE 2015-08-26T00:00:00Z
+#> 4  1389867     0 PLOS Pathogens 2015-08-25T00:00:00Z
+#> 5  1389867     0 PLOS Pathogens 2015-08-25T00:00:00Z
 ```
 
 ### Facet
@@ -173,13 +170,13 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird')
 #> $facet_fields
 #> $facet_fields$journal
 #>                                  X1      X2
-#> 1                          plos one 1117769
-#> 2                     plos genetics   45835
-#> 3                    plos pathogens   40135
-#> 4        plos computational biology   33291
-#> 5  plos neglected tropical diseases   30300
-#> 6                      plos biology   27728
-#> 7                     plos medicine   19285
+#> 1                          plos one 1127931
+#> 2                     plos genetics   46143
+#> 3                    plos pathogens   40309
+#> 4        plos computational biology   33493
+#> 5  plos neglected tropical diseases   30625
+#> 6                      plos biology   27802
+#> 7                     plos medicine   19322
 #> 8              plos clinical trials     521
 #> 9                  plos collections      20
 #> 10                     plos medicin       9
@@ -218,11 +215,11 @@ out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCou
 ```r
 out$data
 #>                   min    max count missing       sum sumOfSquares
-#> counter_total_all   0 336628 28657       0 103310908 2.038280e+12
-#> alm_twitterCount    0   1670 28657       0    127816 2.304263e+07
+#> counter_total_all   0 337257 28897       0 109466738 2.226977e+12
+#> alm_twitterCount    0   1691 28897       0    143795 2.587437e+07
 #>                          mean     stddev
-#> counter_total_all 3605.084552 7624.44490
-#> alm_twitterCount     4.460202   28.00389
+#> counter_total_all 3788.169637 7919.46856
+#> alm_twitterCount     4.976122   29.50709
 ```
 
 ### More like this
@@ -240,11 +237,12 @@ out$docs
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id counter_total_all
-#> 1 10.1371/journal.pbio.1001805             11747
-#> 2 10.1371/journal.pbio.0020440             16883
-#> 3 10.1371/journal.pone.0087217              4713
-#> 4 10.1371/journal.pbio.1002191              3678
-#> 5 10.1371/journal.pone.0040117              2967
+#>                          (chr)             (int)
+#> 1 10.1371/journal.pbio.1001805             13766
+#> 2 10.1371/journal.pbio.0020440             16995
+#> 3 10.1371/journal.pone.0087217              4763
+#> 4 10.1371/journal.pbio.1002191              8551
+#> 5 10.1371/journal.pone.0040117              3211
 ```
 
 
@@ -252,43 +250,43 @@ out$docs
 out$mlt
 #> $`10.1371/journal.pbio.1001805`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0082578              1683
-#> 2 10.1371/journal.pone.0098876               986
-#> 3 10.1371/journal.pone.0102159               762
-#> 4 10.1371/journal.pcbi.1002652              2626
-#> 5 10.1371/journal.pone.0076063              2315
+#> 1 10.1371/journal.pone.0082578              1784
+#> 2 10.1371/journal.pone.0098876              1055
+#> 3 10.1371/journal.pone.0102159               781
+#> 4 10.1371/journal.pone.0087380              1386
+#> 5 10.1371/journal.pcbi.1003408              5670
 #> 
 #> $`10.1371/journal.pbio.0020440`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0102679              2392
-#> 2 10.1371/journal.pone.0035964              3975
-#> 3 10.1371/journal.pone.0003259              1915
-#> 4 10.1371/journal.pntd.0003377              2848
-#> 5 10.1371/journal.pone.0101568              1976
+#> 1 10.1371/journal.pone.0102679              2414
+#> 2 10.1371/journal.pone.0035964              3997
+#> 3 10.1371/journal.pone.0003259              1919
+#> 4 10.1371/journal.pone.0101568              2002
+#> 5 10.1371/journal.pone.0068814              6714
 #> 
 #> $`10.1371/journal.pone.0087217`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0131665                 0
-#> 2 10.1371/journal.pcbi.0020092             15860
-#> 3 10.1371/journal.pone.0133941               137
-#> 4 10.1371/journal.pone.0123774                 0
-#> 5 10.1371/journal.pone.0063375              1539
+#> 1 10.1371/journal.pone.0131665               170
+#> 2 10.1371/journal.pcbi.0020092             16263
+#> 3 10.1371/journal.pone.0133941               172
+#> 4 10.1371/journal.pone.0123774               722
+#> 5 10.1371/journal.pone.0063375              1614
 #> 
 #> $`10.1371/journal.pbio.1002191`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pbio.1002232                 0
-#> 2 10.1371/journal.pone.0131700                 0
-#> 3 10.1371/journal.pone.0070448              1033
-#> 4 10.1371/journal.pone.0044766              1558
-#> 5 10.1371/journal.pone.0028737              5186
+#> 1 10.1371/journal.pbio.1002232               867
+#> 2 10.1371/journal.pone.0131700               390
+#> 3 10.1371/journal.pone.0070448              1035
+#> 4 10.1371/journal.pone.0052330              3939
+#> 5 10.1371/journal.pone.0062824              1602
 #> 
 #> $`10.1371/journal.pone.0040117`
 #>                             id counter_total_all
-#> 1 10.1371/journal.pone.0069352              2039
-#> 2 10.1371/journal.pone.0014065              4238
-#> 3 10.1371/journal.pone.0035502              3010
-#> 4 10.1371/journal.pone.0113280              1172
-#> 5 10.1371/journal.pone.0078369              2474
+#> 1 10.1371/journal.pone.0069352              2072
+#> 2 10.1371/journal.pone.0035502              3036
+#> 3 10.1371/journal.pone.0014065              4471
+#> 4 10.1371/journal.pone.0113280              1442
+#> 5 10.1371/journal.pone.0078369              2677
 ```
 
 ### Parsing
@@ -300,7 +298,7 @@ For example:
 
 ```r
 (out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, raw=TRUE))
-#> [1] "{\"response\":{\"numFound\":18336,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
+#> [1] "{\"response\":{\"numFound\":18501,\"start\":0,\"docs\":[{},{}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
 #> attr(,"class")
 #> [1] "sr_high"
 #> attr(,"wt")
@@ -331,11 +329,12 @@ solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id
+#>                          (chr)
 #> 1 10.1371/journal.pmed.0020124
-#> 2 10.1371/journal.pone.0105948
+#> 2 10.1371/journal.pone.0115069
 #> 3 10.1371/journal.pone.0069841
-#> 4 10.1371/journal.pone.0115069
-#> 5 10.1371/journal.pone.0083325
+#> 4 10.1371/journal.pone.0105948
+#> 5 10.1371/journal.pone.0046362
 #> Variables not shown: title (chr)
 ```
 
@@ -348,11 +347,12 @@ solr_search(q='_val_:"max(counter_total_all)"',
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id counter_total_all
-#> 1 10.1371/journal.pmed.0020124           1110803
-#> 2 10.1371/journal.pone.0007595            336628
-#> 3 10.1371/journal.pmed.0050045            336537
-#> 4 10.1371/journal.pone.0069841            328704
-#> 5 10.1371/journal.pone.0033288            308133
+#>                          (chr)             (int)
+#> 1 10.1371/journal.pmed.0020124           1178768
+#> 2 10.1371/journal.pmed.0050045            341152
+#> 3 10.1371/journal.pone.0007595            337257
+#> 4 10.1371/journal.pone.0069841            330639
+#> 5 10.1371/journal.pone.0033288            309175
 ```
 
 Or with the most tweets
@@ -364,11 +364,12 @@ solr_search(q='_val_:"max(alm_twitterCount)"',
 #> Source: local data frame [5 x 2]
 #> 
 #>                             id alm_twitterCount
-#> 1 10.1371/journal.pone.0061981             2381
-#> 2 10.1371/journal.pone.0115069             2275
-#> 3 10.1371/journal.pmed.0020124             1769
-#> 4 10.1371/journal.pbio.1001535             1670
-#> 5 10.1371/journal.pone.0083325             1508
+#>                          (chr)            (int)
+#> 1 10.1371/journal.pone.0061981             2382
+#> 2 10.1371/journal.pone.0115069             2325
+#> 3 10.1371/journal.pmed.0020124             1926
+#> 4 10.1371/journal.pbio.1001535             1691
+#> 5 10.1371/journal.pmed.1001747             1526
 ```
 
 ### Using specific data sources
@@ -384,6 +385,7 @@ solr_search(q='*:*', fl=c('decimalLatitude','decimalLongitude','scientificName')
 #> Source: local data frame [2 x 3]
 #> 
 #>   decimalLongitude decimalLatitude    scientificName
+#>              (dbl)           (dbl)             (chr)
 #> 1         -73.8053         42.3202 Buteo jamaicensis
 #> 2         -73.8053         42.3202    Circus cyaneus
 ```
@@ -394,7 +396,7 @@ The species names service
 ```r
 invisible(solr_connect("http://bisonapi.usgs.ornl.gov/solr/scientificName/select"))
 solr_search(q='*:*', raw=TRUE)
-#> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":4},\"response\":{\"numFound\":379955,\"start\":0,\"docs\":[{\"scientificName\":\"Dictyopteris polypodioides\",\"_version_\":1497904756721451008},{\"scientificName\":\"Lonicera iberica\",\"_version_\":1497904756736131072},{\"scientificName\":\"Catocala editha\",\"_version_\":1497904756736131073},{\"scientificName\":\"Pseudopomala brachyptera\",\"_version_\":1497904756736131074},{\"scientificName\":\"Lycopodium cernuum ingens\",\"_version_\":1497904756737179648},{\"scientificName\":\"Sanoarca\",\"_version_\":1497904756737179649},{\"scientificName\":\"Celleporina ventricosa\",\"_version_\":1497904756737179650},{\"scientificName\":\"Mactra alata\",\"_version_\":1497904756737179651},{\"scientificName\":\"Ceraticelus laticeps\",\"_version_\":1497904756737179652},{\"scientificName\":\"Reithrodontomys wetmorei\",\"_version_\":1497904756738228224}]}}\n"
+#> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":11},\"response\":{\"numFound\":380493,\"start\":0,\"docs\":[{\"scientificName\":\"Pinus rigida globosa\",\"_version_\":1509960226766323717},{\"scientificName\":\"Cestrum intermedium\",\"_version_\":1509960226767372288},{\"scientificName\":\"Tachyempis\",\"_version_\":1509960226767372289},{\"scientificName\":\"Arabis codyi\",\"_version_\":1509960226767372290},{\"scientificName\":\"Gaudryinella\",\"_version_\":1509960226767372291},{\"scientificName\":\"Virginia elegans\",\"_version_\":1509960226767372292},{\"scientificName\":\"Helicogloea contorta\",\"_version_\":1509960226767372293},{\"scientificName\":\"Partulina fusoidea\",\"_version_\":1509960226767372294},{\"scientificName\":\"Ectemnius scaber\",\"_version_\":1509960226767372295},{\"scientificName\":\"Cerithiopsis stejnegeri dina\",\"_version_\":1509960226767372296}]}}\n"
 #> attr(,"class")
 #> [1] "sr_search"
 #> attr(,"wt")
@@ -467,8 +469,8 @@ delete_by_query(query = "manu:bank")
 
 ## Meta
 
-* Please [report any issues or bugs](https://github.com/ropensci/solr/issues)
+* Please [report any issues or bugs](https://github.com/ropensci/solrium/issues)
 * License: MIT
-* Get citation information for `solr` in R doing `citation(package = 'solr')`
+* Get citation information for `solrium` in R doing `citation(package = 'solrium')`
 
 [![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
