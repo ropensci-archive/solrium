@@ -14,6 +14,8 @@ Development is now following Solr v5 and greater - which introduced many changes
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
+> Currently developing against Solr `v5.3.0`
+
 > Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
 
 ## Solr info
@@ -100,9 +102,9 @@ solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='pu
 #>                   groupValue numFound start     publication_date score
 #> 1                   plos one  1127931     0 2015-08-26T00:00:00Z     1
 #> 2             plos pathogens    40309     0 2015-08-25T00:00:00Z     1
-#> 3               plos biology    27802     0 2015-08-26T00:00:00Z     1
+#> 3               plos biology    27807     0 2015-08-26T00:00:00Z     1
 #> 4              plos medicine    19322     0 2015-08-25T00:00:00Z     1
-#> 5 plos computational biology    33493     0 2015-08-26T00:00:00Z     1
+#> 5 plos computational biology    33498     0 2015-08-26T00:00:00Z     1
 ```
 
 First publication by journal
@@ -113,9 +115,9 @@ solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publicatio
 #>                          groupValue numFound start     publication_date
 #> 1                          plos one  1127931     0 2006-12-20T00:00:00Z
 #> 2                    plos pathogens    40309     0 2005-07-22T00:00:00Z
-#> 3                      plos biology    27802     0 2003-08-18T00:00:00Z
+#> 3                      plos biology    27807     0 2003-08-18T00:00:00Z
 #> 4                     plos medicine    19322     0 2004-09-07T00:00:00Z
-#> 5        plos computational biology    33493     0 2005-06-24T00:00:00Z
+#> 5        plos computational biology    33498     0 2005-06-24T00:00:00Z
 #> 6                     plos genetics    46143     0 2005-06-17T00:00:00Z
 #> 7                  plos collections       20     0 2014-07-02T00:00:00Z
 #> 8  plos neglected tropical diseases    30625     0 2007-08-30T00:00:00Z
@@ -151,11 +153,11 @@ Search group with format simple
 ```r
 solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date')
 #>   numFound start        journal     publication_date
-#> 1  1389867     0       PLOS ONE 2015-08-26T00:00:00Z
-#> 2  1389867     0       PLOS ONE 2015-08-26T00:00:00Z
-#> 3  1389867     0       PLOS ONE 2015-08-26T00:00:00Z
-#> 4  1389867     0 PLOS Pathogens 2015-08-25T00:00:00Z
-#> 5  1389867     0 PLOS Pathogens 2015-08-25T00:00:00Z
+#> 1  1389877     0       PLOS ONE 2015-08-26T00:00:00Z
+#> 2  1389877     0       PLOS ONE 2015-08-26T00:00:00Z
+#> 3  1389877     0       PLOS ONE 2015-08-26T00:00:00Z
+#> 4  1389877     0 PLOS Pathogens 2015-08-25T00:00:00Z
+#> 5  1389877     0 PLOS Pathogens 2015-08-25T00:00:00Z
 ```
 
 ### Facet
@@ -173,9 +175,9 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird')
 #> 1                          plos one 1127931
 #> 2                     plos genetics   46143
 #> 3                    plos pathogens   40309
-#> 4        plos computational biology   33493
+#> 4        plos computational biology   33498
 #> 5  plos neglected tropical diseases   30625
-#> 6                      plos biology   27802
+#> 6                      plos biology   27807
 #> 7                     plos medicine   19322
 #> 8              plos clinical trials     521
 #> 9                  plos collections      20
@@ -396,7 +398,7 @@ The species names service
 ```r
 invisible(solr_connect("http://bisonapi.usgs.ornl.gov/solr/scientificName/select"))
 solr_search(q='*:*', raw=TRUE)
-#> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":11},\"response\":{\"numFound\":380493,\"start\":0,\"docs\":[{\"scientificName\":\"Pinus rigida globosa\",\"_version_\":1509960226766323717},{\"scientificName\":\"Cestrum intermedium\",\"_version_\":1509960226767372288},{\"scientificName\":\"Tachyempis\",\"_version_\":1509960226767372289},{\"scientificName\":\"Arabis codyi\",\"_version_\":1509960226767372290},{\"scientificName\":\"Gaudryinella\",\"_version_\":1509960226767372291},{\"scientificName\":\"Virginia elegans\",\"_version_\":1509960226767372292},{\"scientificName\":\"Helicogloea contorta\",\"_version_\":1509960226767372293},{\"scientificName\":\"Partulina fusoidea\",\"_version_\":1509960226767372294},{\"scientificName\":\"Ectemnius scaber\",\"_version_\":1509960226767372295},{\"scientificName\":\"Cerithiopsis stejnegeri dina\",\"_version_\":1509960226767372296}]}}\n"
+#> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":7},\"response\":{\"numFound\":380493,\"start\":0,\"docs\":[{\"scientificName\":\"Pinus rigida globosa\",\"_version_\":1509960226766323717},{\"scientificName\":\"Cestrum intermedium\",\"_version_\":1509960226767372288},{\"scientificName\":\"Tachyempis\",\"_version_\":1509960226767372289},{\"scientificName\":\"Arabis codyi\",\"_version_\":1509960226767372290},{\"scientificName\":\"Gaudryinella\",\"_version_\":1509960226767372291},{\"scientificName\":\"Virginia elegans\",\"_version_\":1509960226767372292},{\"scientificName\":\"Helicogloea contorta\",\"_version_\":1509960226767372293},{\"scientificName\":\"Partulina fusoidea\",\"_version_\":1509960226767372294},{\"scientificName\":\"Ectemnius scaber\",\"_version_\":1509960226767372295},{\"scientificName\":\"Cerithiopsis stejnegeri dina\",\"_version_\":1509960226767372296}]}}\n"
 #> attr(,"class")
 #> [1] "sr_search"
 #> attr(,"wt")
