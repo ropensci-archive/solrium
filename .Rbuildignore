@@ -8,3 +8,5 @@ tests/test-all.R
 inst/stuff/
 ^.*\.Rproj$
 ^\.Rproj\.user$
+cran-comments.md
+
