@@ -19,7 +19,7 @@
 #' @param callopts Call options passed on to httr::GET
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param parsetype (character) One of 'list' or 'df'
-#' @param concat (character) Character to concatenate elements of longer than length 1. 
+#' @param concat (character) Character to concatenate elements of longer than length 1.
 #' Note that this only works reliably when data format is json (wt='json'). The parsing
 #' is more complicated in XML format, but you can do that on your own.
 #' @param verbose If TRUE (default) the url call used printed to console.
