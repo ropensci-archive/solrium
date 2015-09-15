@@ -1,7 +1,14 @@
+solr 0.1.6
+===============
+
+MINOR IMPROVEMENTS
+
+* Import non-base R functions to comply with CRAN requirements (#76)
+
 solr 0.1.4
 ===============
 
-NEW FEATURES 
+NEW FEATURES
 
 * Removed R version dependency in DESCRIPTION file, didn't seem to be a reason for it, (#25).
 * Removed redundant code from multiple functions to single functions in zzz.r file.
@@ -9,16 +16,16 @@ NEW FEATURES
 solr 0.1.3
 ===============
 
-NEW FEATURES 
+NEW FEATURES
 
 * Added function `solr_group()`, and started group parser, to do grouping searches.
 * Fixed `solr_*` functions so that you pass in many fields as a vector e.g., (`c('field1','field')`), rather than as a comma-separated string e.g., `'field1,field'` (#22).
-* Added a message to each `solr_*` function to print HTTP uri. Can be suppressed with `verbose=FALSE`. 
+* Added a message to each `solr_*` function to print HTTP uri. Can be suppressed with `verbose=FALSE`.
 * Started `solr_all` function to try to integrate all things into one function, as everthing is just parameters passed to the same URL - we'll see how useful though.
 
 solr 0.1.0
 ===============
 
-NEW FEATURES 
+NEW FEATURES
 
 * released to CRAN
