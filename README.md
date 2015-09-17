@@ -15,7 +15,6 @@ This package only deals with exracting data from a Solr endpoint, not writing da
 + [Solr stats](http://wiki.apache.org/solr/StatsComponent)
 + ['More like this' searches](http://wiki.apache.org/solr/MoreLikeThis)
 + [Grouping/Feild collapsing](http://wiki.apache.org/solr/FieldCollapsing)
-+ [Installing Solr on Mac using homebrew](http://ramlev.dk/blog/2012/06/02/install-apache-solr-on-your-mac/)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 
 ### Quick start
