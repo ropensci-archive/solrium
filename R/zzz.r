@@ -48,8 +48,18 @@ solr_error <- function(x) {
     if (erropt == "simple" || erropt == "") {
       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
     } else {
-      stop(err$error$code, " - ", err$error$msg, "\nAPI stack trace\n", err$error$trace, call. = FALSE)
+      stop(err$error$code, " - ", err$error$msg, 
+           "\nAPI stack trace\n", 
+           pluck_trace(err$error$trace), call. = FALSE)
     }
+  }
+}
+
+pluck_trace <- function(x) {
+  if (is.null(x)) {
+    " - no stack trace"
+  } else {
+    x
   }
 }
 

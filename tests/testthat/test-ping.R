@@ -4,14 +4,14 @@ context("ping")
 test_that("ping works against", {
   skip_on_cran()
 
-  solr_connect(verbose = FALSE)
+  invisible(solr_connect(verbose = FALSE))
 
   aa <- ping(name = "gettingstarted")
 
   expect_is(aa, "list")
   expect_is(aa$responseHeader, "list")
   expect_equal(aa$responseHeader$status, 0)
-  expect_equal(aa$responseHeader$params$q, "solrpingquery")
+  expect_equal(aa$responseHeader$params$q, "{!lucene}*:*")
 })
 
 test_that("ping gives raw data correctly", {

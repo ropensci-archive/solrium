@@ -4,7 +4,7 @@ context("schema")
 test_that("schema works against", {
   skip_on_cran()
 
-  solr_connect(verbose = FALSE)
+  invisible(solr_connect(verbose = FALSE))
 
   aa <- schema(name = "gettingstarted")
   bb <- schema(name = "gettingstarted", "fields")

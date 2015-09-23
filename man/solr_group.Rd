@@ -5,7 +5,7 @@
 \title{Grouped search}
 \usage{
 solr_group(name = NULL, q = "*:*", start = 0, rows = NA, sort = NA,
-  fq = NA, fl = NA, wt = "json", key = NA, group.field = NA,
+  fq = NA, fl = NULL, wt = "json", key = NA, group.field = NA,
   group.limit = NA, group.offset = NA, group.sort = NA, group.main = NA,
   group.ngroups = NA, group.cache.percent = NA, group.query = NA,
   group.format = NA, group.func = NA, callopts = list(), raw = FALSE,

@@ -47,7 +47,7 @@
 #'    group.format='grouped', group.main='true')
 #' }
 
-solr_group <- function(name = NULL, q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NA,
+solr_group <- function(name = NULL, q='*:*', start=0, rows = NA, sort = NA, fq = NA, fl = NULL,
   wt='json', key = NA, group.field = NA, group.limit = NA, group.offset = NA,
   group.sort = NA, group.main = NA, group.ngroups = NA,
   group.cache.percent = NA, group.query = NA, group.format = NA,
@@ -68,7 +68,7 @@ solr_group <- function(name = NULL, q='*:*', start=0, rows = NA, sort = NA, fq =
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+  out <- structure(solr_GET(base = handle_url(conn, name), args, callopts, conn$proxy), 
                    class = "sr_group", wt = wt)
   if (raw) { return( out ) } else { solr_parse(out, parsetype, concat) }
 }
