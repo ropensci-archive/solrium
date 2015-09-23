@@ -7,7 +7,7 @@ test_that("adding documents from a ", {
 
   # setup
   pinged <- ping(name = "helloWorld", verbose = FALSE)$status
-  if (pinged != "OK") collection_create(name = "helloWorld")
+  if (pinged != "OK") collection_create(name = "helloWorld", numShards = 2)
 
   # list works
   ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
