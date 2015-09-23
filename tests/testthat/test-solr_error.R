@@ -35,3 +35,15 @@ test_that("solr_error works when there should be errors - complete errors", {
   expect_error(solr_search(q = '*:*', rows = 5, sort = "things"), 
                "no stack trace")
 })
+
+test_that("solr_error - test directly", {
+  skip_on_cran()
+  
+  invisible(solr_connect('http://api.plos.org/search', 
+                         errors = "complete", 
+                         verbose = FALSE))
+  
+  library("httr")
+  res <- GET("http://api.plos.org/search?wt=json&q=%22synthetic%20biology%22&rows=10&fl=id,title&sort=notasortoption")
+  expect_error(solrium:::solr_error(res), "Can't determine a Sort Order \\(asc or desc\\)")
+})
