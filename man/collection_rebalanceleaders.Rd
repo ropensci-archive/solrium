@@ -21,8 +21,7 @@ this is the maximum interval that any single wait for at least one reassignment.
 For example, if 10 reassignments are to take place and maxAtOnce is 1 and maxWaitSeconds
 is 60, the upper bound on the time that the command may wait is 10 minutes. Default: 60}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }

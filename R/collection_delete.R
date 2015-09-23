@@ -1,9 +1,8 @@
 #' Add a collection
-#' 
+#'
 #' @export
 #' @param name The name of the collection to be created. Required
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' solr_connect()

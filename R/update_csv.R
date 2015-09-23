@@ -20,6 +20,11 @@
 #' df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
 #' write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
 #' update_csv("df.csv", "books")
+#' 
+#' # give back xml
+#' update_csv("df.csv", "books", wt = "xml")
+#' ## raw xml
+#' update_csv("df.csv", "books", wt = "xml", raw = FALSE)
 #' }
 update_csv <- function(files, name, separator = ',', header = TRUE,
                        fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE, 
@@ -35,6 +40,6 @@ update_csv <- function(files, name, separator = ',', header = TRUE,
                   skipLines = skipLines, trim = trim, encapsulator = encapsulator, escape = escape, 
                   keepEmpty = keepEmpty, literal = literal, map = map, split = split, 
                   rowid = rowid, rowidOffset = rowidOffset, overwrite = overwrite,
-                  commit = commit, wt = 'json'))
+                  commit = commit, wt = wt))
   docreate(file.path(conn$url, sprintf('solr/%s/update/csv', name)), files, args, content = "csv", raw, ...)
 }

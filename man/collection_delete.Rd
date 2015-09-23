@@ -9,8 +9,7 @@ collection_delete(name, raw = FALSE, ...)
 \arguments{
 \item{name}{The name of the collection to be created. Required}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }

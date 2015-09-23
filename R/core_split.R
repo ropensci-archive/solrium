@@ -18,8 +18,7 @@
 #' @param split.key (character) The key to be used for splitting the index
 #' @param async	(character) Request ID to track this action which will be processed
 #' asynchronously
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param callopts curl options passed on to \code{\link[httr]{GET}}
 #' @details The core index will be split into as many pieces as the number of \code{path}
 #' or \code{targetCore} parameters.

@@ -14,8 +14,7 @@ core_rename(name, other, async = NULL, raw = FALSE, callopts = list())
 \item{async}{(character) Request ID to track this action which will be processed
 asynchronously}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
 }

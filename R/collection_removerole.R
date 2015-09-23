@@ -1,18 +1,17 @@
 #' @title Remove a role from a node
-#' 
-#' @description Remove an assigned role. This API is used to undo the roles 
+#'
+#' @description Remove an assigned role. This API is used to undo the roles
 #' assigned using \code{\link{collection_addrole}}
-#' 
+#'
 #' @export
-#' @param role (character) Required. The name of the role. The only supported role 
-#' as of now is overseer (set as default). 
+#' @param role (character) Required. The name of the role. The only supported role
+#' as of now is overseer (set as default).
 #' @param node (character) Required. The name of the node.
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' solr_connect()
-#' 
+#'
 #' # get list of nodes
 #' nodes <- collection_clusterstatus()$cluster$live_nodes
 #' collection_addrole(node = nodes[1])

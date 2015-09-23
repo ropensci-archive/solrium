@@ -46,6 +46,13 @@
 #' 
 #' # Use modifiers
 #' add(x, "gettingstarted", commit_within = 5000)
+#' 
+#' # Get back XML instead of a list
+#' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+#' # parsed XML
+#' add(ss, name = "books", wt = "xml")
+#' # raw XML
+#' add(ss, name = "books", wt = "xml", raw = TRUE)
 #' }
 add <- function(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
                 boost = NULL, wt = 'json', raw = FALSE, ...) {
@@ -59,7 +66,7 @@ add.list <- function(x, name, commit = TRUE, commit_within = NULL,
   conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
-                  overwrite = asl(overwrite), wt = 'json'))
+                  overwrite = asl(overwrite), wt = wt))
   if (!is.null(boost)) {
     x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
   }
@@ -73,7 +80,7 @@ add.data.frame <- function(x, name, commit = TRUE, commit_within = NULL,
   conn <- solr_settings()
   check_conn(conn)
   args <- sc(list(commit = asl(commit), commitWithin = commit_within, 
-                  overwrite = asl(overwrite), wt = 'json'))
+                  overwrite = asl(overwrite), wt = wt))
   if (!is.null(boost)) {
     x$boost <- boost
   }

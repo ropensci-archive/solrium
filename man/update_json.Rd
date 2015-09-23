@@ -58,29 +58,29 @@ services, but should work locally.
 solr_connect()
 
 # Add documents
-file <- system.file("examples", "books2.json", package = "solr")
+file <- system.file("examples", "books2.json", package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_json(file, "books")
 
 # Update commands - can include many varying commands
 ## Add file
-file <- system.file("examples", "updatecommands_add.json", package = "solr")
+file <- system.file("examples", "updatecommands_add.json", package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_json(file, "books")
 
 ## Delete file
-file <- system.file("examples", "updatecommands_delete.json", package = "solr")
+file <- system.file("examples", "updatecommands_delete.json", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file)
+update_json(file, "books")
 
 # Add and delete in the same document
 ## Add a document first, that we can later delete
 ss <- list(list(id = 456, name = "cat"))
-add(ss)
+add(ss, "books")
 ## Now add a new document, and delete the one we just made
-file <- system.file("examples", "add_delete.json", package = "solr")
+file <- system.file("examples", "add_delete.json", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file)
+update_json(file, "books")
 }
 }
 \seealso{

@@ -37,6 +37,11 @@ solr_connect()
 
 commit("gettingstarted")
 commit("gettingstarted", wait_searcher = FALSE)
+
+# get xml back
+commit("gettingstarted", wt = "xml")
+## raw xml
+commit("gettingstarted", wt = "xml", raw = TRUE)
 }
 }
 

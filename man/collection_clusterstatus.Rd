@@ -13,8 +13,7 @@ If omitted, information on all collections in the cluster will be returned.}
 \item{shard}{(character) The shard(s) for which information is requested. Multiple
 shard names can be specified as a character vector.}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }

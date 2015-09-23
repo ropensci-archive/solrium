@@ -9,8 +9,7 @@ core_requeststatus(requestid, raw = FALSE, callopts = list())
 \arguments{
 \item{requestid}{The name of one of the cores to be removed. Required}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
 }

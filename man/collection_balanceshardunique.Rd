@@ -22,8 +22,7 @@ property (preferredLeader) that defaults this value to \code{TRUE}. For all othe
 properties that are balanced, this must be set to \code{TRUE} or an error message is
 returned}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }

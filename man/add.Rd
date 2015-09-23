@@ -63,6 +63,13 @@ add(x, "gettingstarted")
 
 # Use modifiers
 add(x, "gettingstarted", commit_within = 5000)
+
+# Get back XML instead of a list
+ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+# parsed XML
+add(ss, name = "books", wt = "xml")
+# raw XML
+add(ss, name = "books", wt = "xml", raw = TRUE)
 }
 }
 \seealso{

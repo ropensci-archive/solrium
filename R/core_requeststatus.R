@@ -1,14 +1,13 @@
 #' Request status of asynchronous CoreAdmin API call
-#' 
+#'
 #' @export
-#' 
+#'
 #' @param requestid The name of one of the cores to be removed. Required
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param callopts curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' # start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
-#' 
+#'
 #' # FIXME: not tested yet...
 #' # solr_connect()
 #' # core_requeststatus(requestid = 1)

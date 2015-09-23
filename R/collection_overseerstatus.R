@@ -1,11 +1,10 @@
 #' @title Get overseer status
-#' 
-#' @description Returns the current status of the overseer, performance statistics 
+#'
+#' @description Returns the current status of the overseer, performance statistics
 #' of various overseer APIs as well as last 10 failures per operation type.
-#' 
+#'
 #' @export
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' solr_connect()

@@ -106,6 +106,11 @@ solr_connect()
 df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
 write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
 update_csv("df.csv", "books")
+
+# give back xml
+update_csv("df.csv", "books", wt = "xml")
+## raw xml
+update_csv("df.csv", "books", wt = "xml", raw = FALSE)
 }
 }
 \seealso{

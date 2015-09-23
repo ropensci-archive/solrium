@@ -4,7 +4,7 @@
 \alias{schema}
 \title{Get the schema for a collection or core}
 \usage{
-schema(name, what = "", wt = "json", raw = FALSE, verbose = TRUE, ...)
+schema(name, what = "", raw = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{name}{(character) Name of collection or core}
@@ -13,12 +13,7 @@ schema(name, what = "", wt = "json", raw = FALSE, verbose = TRUE, ...)
 schema. Options include: fields, dynamicfields, fieldtypes, copyfields, name,
 version, uniquekey, similarity, "solrqueryparser/defaultoperator"}
 
-\item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
-parse}
-
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{verbose}{If TRUE (default) the url call used printed to console.}
 
@@ -48,6 +43,10 @@ schema(name = "gettingstarted", "version")
 schema(name = "gettingstarted", "uniquekey")
 schema(name = "gettingstarted", "similarity")
 schema(name = "gettingstarted", "solrqueryparser/defaultoperator")
+
+# get raw data
+schema(name = "gettingstarted", "similarity", raw = TRUE)
+schema(name = "gettingstarted", "uniquekey", raw = TRUE)
 
 # start Solr in Schemaless mode: bin/solr start -e schemaless
 # schema("gettingstarted")

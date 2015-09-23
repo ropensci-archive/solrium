@@ -19,6 +19,11 @@
 #' 
 #' commit("gettingstarted")
 #' commit("gettingstarted", wait_searcher = FALSE)
+#' 
+#' # get xml back
+#' commit("gettingstarted", wt = "xml")
+#' ## raw xml
+#' commit("gettingstarted", wt = "xml", raw = TRUE)
 #' }
 commit <- function(name, expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE, 
                    wt = 'json', raw = FALSE, ...) {
@@ -30,7 +35,7 @@ commit <- function(name, expunge_deletes = FALSE, wait_searcher = TRUE, soft_com
                          list(expungeDeletes = asl(expunge_deletes), 
                               waitSearcher = asl(wait_searcher), 
                               softCommit = asl(soft_commit))), 
-           args = list(wt = 'json'), 
+           args = list(wt = wt), 
            raw = raw, 
            conn$proxy, ...)
 }

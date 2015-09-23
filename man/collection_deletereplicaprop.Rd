@@ -19,8 +19,7 @@ literal 'property.' prepended to distinguish it from system-maintained propertie
 So these two forms are equivalent: \code{property=special} and
 \code{property=property.special}}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
 }

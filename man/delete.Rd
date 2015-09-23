@@ -7,10 +7,10 @@
 \title{Delete documents by ID or query}
 \usage{
 delete_by_id(ids, name, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, raw = FALSE, ...)
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 
 delete_by_query(query, name, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, raw = FALSE, ...)
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{ids}{Document IDs, one or more in a vector or list}
@@ -26,6 +26,10 @@ within that time. Default: NULL}
 \item{overwrite}{(logical) Overwrite documents with matching keys. Default: \code{TRUE}}
 
 \item{boost}{(numeric) Boost factor. Default: NULL}
+
+\item{wt}{(character) One of json (default) or xml. If json, uses
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
+parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}

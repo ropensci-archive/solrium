@@ -1,26 +1,25 @@
 #' Get core status
-#' 
+#'
 #' @export
-#' 
+#'
 #' @param name (character) The name of the core. If not given, all cores.
-#' @param indexInfo (logical) 
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param indexInfo (logical)
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param callopts curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' # start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
 #' # you can create a new core like: bin/solr create -c corename
 #' # where <corename> is the name for your core - or creaate as below
-#' 
+#'
 #' # connect
 #' solr_connect()
-#' 
+#'
 #' # Status of all cores
 #' core_status()
-#' 
+#'
 #' # Status of particular cores
 #' core_status("gettingstarted")
-#' 
+#'
 #' # Get index info or not
 #' ## Default: TRUE
 #' core_status("gettingstarted", indexInfo = TRUE)

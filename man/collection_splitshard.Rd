@@ -21,8 +21,7 @@ e.g. ranges=0-1f4,1f5-3e8,3e9-5dc}
 \item{async}{(character) Request ID to track this action which will be processed
 asynchronously}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }

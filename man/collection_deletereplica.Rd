@@ -18,8 +18,7 @@ be removed.}
 \item{onlyIfDown}{(logical) When \code{TRUE} will not take any action if the replica
 is active. Default: \code{FALSE}}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
 

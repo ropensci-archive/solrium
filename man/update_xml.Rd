@@ -57,18 +57,18 @@ services, but should work locally.
 solr_connect()
 
 # Add documents
-file <- system.file("examples", "books.xml", package = "solr")
+file <- system.file("examples", "books.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_xml(file, "books")
 
 # Update commands - can include many varying commands
 ## Add files
-file <- system.file("examples", "books2_delete.xml", package = "solr")
+file <- system.file("examples", "books2_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_xml(file, "books")
 
 ## Delete files
-file <- system.file("examples", "updatecommands_delete.xml", package = "solr")
+file <- system.file("examples", "updatecommands_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_xml(file, "books")
 
@@ -77,7 +77,7 @@ update_xml(file, "books")
 ss <- list(list(id = 456, name = "cat"))
 add(ss, "books")
 ## Now add a new document, and delete the one we just made
-file <- system.file("examples", "add_delete.xml", package = "solr")
+file <- system.file("examples", "add_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_xml(file, "books")
 }

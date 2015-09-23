@@ -1,15 +1,14 @@
 #' @title Get cluster status
-#' 
-#' @description Fetch the cluster status including collections, shards, replicas, 
+#'
+#' @description Fetch the cluster status including collections, shards, replicas,
 #' configuration name as well as collection aliases and cluster properties.
-#' 
+#'
 #' @export
-#' @param name (character) The collection name for which information is requested. 
+#' @param name (character) The collection name for which information is requested.
 #' If omitted, information on all collections in the cluster will be returned.
-#' @param shard (character) The shard(s) for which information is requested. Multiple 
+#' @param shard (character) The shard(s) for which information is requested. Multiple
 #' shard names can be specified as a character vector.
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
 #' solr_connect()

@@ -38,6 +38,11 @@ solr_connect()
 optimize("gettingstarted")
 optimize("gettingstarted", max_segments = 2)
 optimize("gettingstarted", wait_searcher = FALSE)
+
+# get xml back
+optimize("gettingstarted", wt = "xml")
+## raw xml
+optimize("gettingstarted", wt = "xml", raw = TRUE)
 }
 }
 

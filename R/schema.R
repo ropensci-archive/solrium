@@ -5,11 +5,7 @@
 #' @param what (character) What to retrieve. By default, we retrieve the entire
 #' schema. Options include: fields, dynamicfields, fieldtypes, copyfields, name,
 #' version, uniquekey, similarity, "solrqueryparser/defaultoperator"
-#' @param wt (character) One of json (default) or xml. If json, uses 
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-#' parse
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
+#' @param raw (logical) If \code{TRUE}, returns raw data 
 #' @param verbose If TRUE (default) the url call used printed to console.
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' @examples \dontrun{
@@ -33,6 +29,10 @@
 #' schema(name = "gettingstarted", "similarity")
 #' schema(name = "gettingstarted", "solrqueryparser/defaultoperator")
 #' 
+#' # get raw data
+#' schema(name = "gettingstarted", "similarity", raw = TRUE)
+#' schema(name = "gettingstarted", "uniquekey", raw = TRUE)
+#' 
 #' # start Solr in Schemaless mode: bin/solr start -e schemaless
 #' # schema("gettingstarted")
 #' 
@@ -40,11 +40,11 @@
 #' # then add a core: bin/solr create -c helloWorld
 #' # schema("helloWorld")
 #' }
-schema <- function(name, what = '', wt = 'json', raw = FALSE, verbose = TRUE, ...) {
+schema <- function(name, what = '', raw = FALSE, verbose = TRUE, ...) {
   conn <- solr_settings()
   check_conn(conn)
-  args <- list(wt = 'json')
-  res <- solr_GET(file.path(conn$url, sprintf('solr/%s/schema', name), what), args, verbose = verbose, conn$proxy, ...)
+  res <- solr_GET(file.path(conn$url, sprintf('solr/%s/schema', name), what), 
+                  list(wt = "json"), verbose = verbose, conn$proxy, ...)
   if (raw) {
     return(res)
   } else {

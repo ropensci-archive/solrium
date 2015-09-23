@@ -17,8 +17,7 @@ collection across. If not provided, the CREATE operation will create shard-repli
 spread across all live Solr nodes. The format is a comma-separated list of
 node_names, such as localhost:8983_solr, localhost:8984_s olr, localhost:8985_solr.}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
-\code{wt} param}
+\item{raw}{(logical) If \code{TRUE}, returns raw data}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }

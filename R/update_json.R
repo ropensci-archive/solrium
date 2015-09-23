@@ -12,29 +12,29 @@
 #' solr_connect()
 #'
 #' # Add documents
-#' file <- system.file("examples", "books2.json", package = "solr")
+#' file <- system.file("examples", "books2.json", package = "solrium")
 #' cat(readLines(file), sep = "\n")
 #' update_json(file, "books")
 #'
 #' # Update commands - can include many varying commands
 #' ## Add file
-#' file <- system.file("examples", "updatecommands_add.json", package = "solr")
+#' file <- system.file("examples", "updatecommands_add.json", package = "solrium")
 #' cat(readLines(file), sep = "\n")
 #' update_json(file, "books")
 #'
 #' ## Delete file
-#' file <- system.file("examples", "updatecommands_delete.json", package = "solr")
+#' file <- system.file("examples", "updatecommands_delete.json", package = "solrium")
 #' cat(readLines(file), sep = "\n")
-#' update_json(file)
+#' update_json(file, "books")
 #'
 #' # Add and delete in the same document
 #' ## Add a document first, that we can later delete
 #' ss <- list(list(id = 456, name = "cat"))
-#' add(ss)
+#' add(ss, "books")
 #' ## Now add a new document, and delete the one we just made
-#' file <- system.file("examples", "add_delete.json", package = "solr")
+#' file <- system.file("examples", "add_delete.json", package = "solrium")
 #' cat(readLines(file), sep = "\n")
-#' update_json(file)
+#' update_json(file, "books")
 #' }
 update_json <- function(files, name, commit = TRUE, optimize = FALSE, max_segments = 1,
                         expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
@@ -45,6 +45,6 @@ update_json <- function(files, name, commit = TRUE, optimize = FALSE, max_segmen
   stop_if_absent(name)
   args <- sc(list(commit = asl(commit), optimize = asl(optimize), maxSegments = max_segments,
                   expungeDeletes = asl(expunge_deletes), waitSearcher = asl(wait_searcher),
-                  softCommit = asl(soft_commit), prepareCommit = prepare_commit, wt = 'json'))
+                  softCommit = asl(soft_commit), prepareCommit = prepare_commit, wt = wt))
   docreate(file.path(conn$url, sprintf('solr/%s/update/json/docs', name)), files, args, 'json', raw, ...)
 }
