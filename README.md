@@ -14,9 +14,11 @@ Development is now following Solr v5 and greater - which introduced many changes
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
-> Currently developing against Solr `v5.3.0`
+Some notes: 
 
-> Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
+* Currently developing against Solr `v5.3.0`
+* Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
+* I'm holding off on pushing this revamped version of this R client until I think the next version of Solr comes out with hopefully HTTP API access to manipulating cores/collections better.
 
 ## Solr info
 

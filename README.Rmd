@@ -25,6 +25,8 @@ Be aware that currently some functions will only work in certain Solr modes, e.g
 
 > Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
 
+> NOTE: I'm holding off on pushing this revamped version of this R client until I think the next version of Solr comes out with hopefully HTTP API access to manipulating cores/collections better.
+
 ## Solr info
 
 + [Solr home page](http://lucene.apache.org/solr/)
