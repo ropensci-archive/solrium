@@ -140,7 +140,7 @@ of fields to allow you to facet within the results of the parent facet to return
 counts in the format of SQL group by operation}
 
 \item{facet.pivot.mincount}{This param indicates the minimum counts for facet fields
-should be included in the response. Default: 0. This parameter should only be specified
+to be included in the response. Default: 0. This parameter should only be specified
 once.}
 
 \item{start}{Record to start at, default to beginning.}
