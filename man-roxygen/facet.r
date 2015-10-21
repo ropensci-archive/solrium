@@ -89,6 +89,12 @@
 #' per field basis.
 #' @param facet.range.other See Details.
 #' @param facet.range.include See Details.
+#' @param facet.pivot This param allows you to specify a single comma-separated string 
+#' of fields to allow you to facet within the results of the parent facet to return 
+#' counts in the format of SQL group by operation
+#' @param facet.pivot.mincount This param indicates the minimum counts for facet fields
+#' should be included in the response. Default: 0. This parameter should only be specified 
+#' once.
 #' @param start Record to start at, default to beginning.
 #' @param rows Number of records to return.
 #' @param key API key, if needed.
@@ -111,6 +117,7 @@
 #'  \item facet.range
 #'  \item facet.range.other
 #'  \item facet.range.include
+#'  \item facet.pivot
 #' }
 #'
 #' \strong{Options for some parameters}:
