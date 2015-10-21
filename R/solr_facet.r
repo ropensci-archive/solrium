@@ -80,7 +80,7 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
    facet.date.gap = NA,facet.date.hardend = NA,facet.date.other = NA,
    facet.date.include = NA,facet.range = NA,facet.range.start = NA,facet.range.end = NA,
    facet.range.gap = NA,facet.range.hardend = NA,facet.range.other = NA,facet.pivot = NA,
-   facet.range.include = NA, start=NA, rows=NA, key=NA, wt='json',
+   facet.pivot.mincount = NA,facet.range.include = NA, start=NA, rows=NA, key=NA, wt='json',
    raw=FALSE, callopts=list(), ...) {
 
   check_defunct(...)
@@ -93,7 +93,7 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
      "facet.date.gap", "facet.date.hardend", "facet.date.other",
      "facet.date.include", "facet.range", "facet.range.start", "facet.range.end",
      "facet.range.gap", "facet.range.hardend", "facet.range.other", "facet.pivot",
-     "facet.range.include",  "start",  "rows",  "key", "wt")
+     "facet.pivot.mincount", "facet.range.include",  "start",  "rows",  "key", "wt")
   args <- collectargs(todonames)
   args$fl <- 'DOES_NOT_EXIST'
   args$facet <- 'true'
