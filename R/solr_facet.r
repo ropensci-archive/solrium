@@ -24,9 +24,9 @@
 #' # Using facet.query to get counts
 #' solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'))
 #' 
-#' # Using facet.pivot to simulate SQL group-by counts
-#' # facet.pivot argument should be a single, comma-separated string of field names
-#' solr_facet(q='alcohol', facet.pivot='journal,subject', facet.pivot.mincount=10)
+#' # Using facet.pivot to simulate SQL group by counts
+#' solr_facet(q='alcohol', facet.pivot='journal,subject', 
+#'              facet.pivot.mincount=10)
 #'
 #' # Date faceting
 #' solr_facet(q='*:*', facet.date='publication_date',
@@ -79,8 +79,8 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
    facet.threads = NA,facet.date = NA,facet.date.start = NA,facet.date.end = NA,
    facet.date.gap = NA,facet.date.hardend = NA,facet.date.other = NA,
    facet.date.include = NA,facet.range = NA,facet.range.start = NA,facet.range.end = NA,
-   facet.range.gap = NA,facet.range.hardend = NA,facet.range.other = NA,facet.pivot = NA,
-   facet.pivot.mincount = NA,facet.range.include = NA, start=NA, rows=NA, key=NA, wt='json',
+   facet.range.gap = NA,facet.range.hardend = NA,facet.range.other = NA,facet.range.include = NA,
+   facet.pivot = NA, facet.pivot.mincount = NA, start=NA, rows=NA, key=NA, wt='json',
    raw=FALSE, callopts=list(), ...) {
 
   check_defunct(...)
@@ -92,8 +92,9 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
      "facet.threads", "facet.date", "facet.date.start", "facet.date.end",
      "facet.date.gap", "facet.date.hardend", "facet.date.other",
      "facet.date.include", "facet.range", "facet.range.start", "facet.range.end",
-     "facet.range.gap", "facet.range.hardend", "facet.range.other", "facet.pivot",
-     "facet.pivot.mincount", "facet.range.include",  "start",  "rows",  "key", "wt")
+     "facet.range.gap", "facet.range.hardend", "facet.range.other", 
+     "facet.range.include", "facet.pivot", "facet.pivot.mincount", 
+     "start", "rows", "key", "wt")
   args <- collectargs(todonames)
   args$fl <- 'DOES_NOT_EXIST'
   args$facet <- 'true'
