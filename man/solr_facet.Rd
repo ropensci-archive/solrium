@@ -12,9 +12,9 @@ solr_facet(name = NULL, q = "*:*", facet.query = NA, facet.field = NA,
   facet.date.gap = NA, facet.date.hardend = NA, facet.date.other = NA,
   facet.date.include = NA, facet.range = NA, facet.range.start = NA,
   facet.range.end = NA, facet.range.gap = NA, facet.range.hardend = NA,
-  facet.range.other = NA, facet.range.include = NA, start = NA,
-  rows = NA, key = NA, wt = "json", raw = FALSE, callopts = list(),
-  ...)
+  facet.range.other = NA, facet.range.include = NA, facet.pivot = NA,
+  facet.pivot.mincount = NA, start = NA, rows = NA, key = NA,
+  wt = "json", raw = FALSE, callopts = list(), ...)
 }
 \arguments{
 \item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
@@ -135,6 +135,14 @@ per field basis.}
 
 \item{facet.range.include}{See Details.}
 
+\item{facet.pivot}{This param allows you to specify a single comma-separated string
+of fields to allow you to facet within the results of the parent facet to return
+counts in the format of SQL group by operation}
+
+\item{facet.pivot.mincount}{This param indicates the minimum counts for facet fields
+should be included in the response. Default: 0. This parameter should only be specified
+once.}
+
 \item{start}{Record to start at, default to beginning.}
 
 \item{rows}{Number of records to return.}
@@ -170,6 +178,7 @@ them by commas, like \code{facet.field='journal,subject'}. Those fields are:
  \item facet.range
  \item facet.range.other
  \item facet.range.include
+ \item facet.pivot
 }
 
 \strong{Options for some parameters}:
@@ -291,6 +300,10 @@ solr_facet(q='alcohol', facet.field='journal', facet.mincount='500')
 
 # Using facet.query to get counts
 solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'))
+
+# Using facet.pivot to simulate SQL group by counts
+# facet.pivot argument should be a single, comma-separated string of field names
+solr_facet(q='alcohol', facet.pivot='journal,subject', facet.pivot.mincount=10)
 
 # Date faceting
 solr_facet(q='*:*', facet.date='publication_date',
