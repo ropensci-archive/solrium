@@ -26,7 +26,7 @@
 #' 
 #' # Using facet.pivot to simulate SQL group-by counts
 #' # facet.pivot argument should be a single, comma-separated string of field names
-#' solr_facet(q='alcohol', facet.pivot='journal,subject')
+#' solr_facet(q='alcohol', facet.pivot='journal,subject', facet.pivot.mincount=10)
 #'
 #' # Date faceting
 #' solr_facet(q='*:*', facet.date='publication_date',
