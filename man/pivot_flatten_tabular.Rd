@@ -6,8 +6,17 @@
 \usage{
 pivot_flatten_tabular(df_w_pivot)
 }
+\arguments{
+\item{df_w_pivot}{a \code{tbl_df} or \code{data.frame} with
+nested \code{data.frame} objects representing nested
+facet.pivot results}
+}
+\value{
+a \code{tbl_df}
+}
 \description{
 Convert a nested hierarchy of facet.pivot elements
 to tabular data (rows and columns)
 }
+\keyword{internal}
 

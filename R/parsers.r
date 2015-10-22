@@ -565,12 +565,17 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
   return( datout )
 }
 
-#' @title Flatten facet.pivot responses
-#' @description Convert a nested hierarchy of facet.pivot elements 
+#' Flatten facet.pivot responses
+#' 
+#' Convert a nested hierarchy of facet.pivot elements 
 #' to tabular data (rows and columns)
-#' @importFrom plyr ldply
-#' @rdname pivot_flatten_tabular
-#' @export
+#' 
+#' @param df_w_pivot a \code{tbl_df} or \code{data.frame} with 
+#' nested \code{data.frame} objects representing nested 
+#' facet.pivot results
+#' @return a \code{tbl_df}
+#' 
+#' @keywords internal
 pivot_flatten_tabular <- function(df_w_pivot){
   parent <- df_w_pivot[names(df_w_pivot)[grepl(c('field|value'), names(df_w_pivot))]]
   pivot <- df_w_pivot$pivot
@@ -580,6 +585,6 @@ pivot_flatten_tabular <- function(df_w_pivot){
       pp[[i]] <- data.frame(cbind(parent[i,], pivot[[i]], row.names=NULL))
     }
   }
-  # return a data.frame to flatten again if necessary
-  return(ldply(pp))
+  # return a tbl_df to flatten again if necessary
+  return(rbind_all(pp))
 }
