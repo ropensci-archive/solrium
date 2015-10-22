@@ -48,13 +48,13 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
 {
   stopifnot(is(input, "sr_facet"))
   wt <- attributes(input)$wt
-  input <- switch(wt,
-                  xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
+  input_parsed <- switch(wt,
+                         xml = xmlParse(input),
+                         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   # Facet queries
   if(wt=='json') {
-    fqdat <- input$facet_counts$facet_queries
+    fqdat <- input_parsed$facet_counts$facet_queries
     if(length(fqdat)==0) {
       fqout <- NULL
     } else {
@@ -62,19 +62,19 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
     }
     row.names(fqout) <- NULL
   } else {
-    nodes <- xpathApply(input, '//lst[@name="facet_queries"]//int')
+    nodes <- xpathApply(input_parsed, '//lst[@name="facet_queries"]//int')
     if(length(nodes)==0){ fqout <- NULL } else { fqout <- nodes }
   }
 
   # facet fields
   if(wt=='json'){
-    ffout <- lapply(input$facet_counts$facet_fields, function(x){
+    ffout <- lapply(input_parsed$facet_counts$facet_fields, function(x){
       data.frame(do.call(rbind, lapply(seq(1, length(x), by=2), function(y){
         x[c(y, y+1)]
       })), stringsAsFactors=FALSE)
     })
   } else {
-    nodes <- xpathApply(input, '//lst[@name="facet_fields"]//lst')
+    nodes <- xpathApply(input_parsed, '//lst[@name="facet_fields"]//lst')
     parselist <- function(x){
       tmp <- xmlToList(x)
       do.call(rbind.fill, lapply(tmp[!names(tmp) %in% ".attrs"], data.frame, stringsAsFactors=FALSE))
@@ -82,13 +82,38 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
     ffout <- lapply(nodes, parselist)
     names(ffout) <- sapply(nodes, xmlAttrs)
   }
+  
+  # facet pivot
+  if(wt=='json'){
+    pivot_input <- jsonlite::fromJSON(input, simplifyDataFrame = TRUE, simplifyMatrix = FALSE)$facet_count$facet_pivot[[1]]
+    if(length(pivot_input)==0){
+      fpout <- NULL
+    } else {
+      pivots_left <- ('pivot' %in% names(pivot_input))
+      infinite_loop_check <- 1
+      while(pivots_left & infinite_loop_check < 100){
+        stopifnot(is.data.frame(pivot_input))
+        pivot_input <- pivot_flatten_tabular(pivot_input)
+        pivots_left <- ('pivot' %in% names(pivot_input))
+        infinite_loop_check <- infinite_loop_check + 1
+      }
+      for (i in seq(1, ncol(pivot_input)-1, by=2)){
+        names(pivot_input)[i+1] <- pivot_input[1,i]
+      }
+      pivot_input <- pivot_input[-c(seq(1, ncol(pivot_input)-1, by=2))]
+      fpout <- pivot_input
+    }
+  } else {
+    #message('Note: facet.pivot not supported with XML reponse types')
+    fpout <- NULL
+  }
 
   # Facet dates
   if(wt=='json') {
-    if(length(input$facet_counts$facet_dates)==0) {
+    if(length(input_parsed$facet_counts$facet_dates)==0) {
       datesout <- NULL
     } else {
-      datesout <- lapply(input$facet_counts$facet_dates, function(x) {
+      datesout <- lapply(input_parsed$facet_counts$facet_dates, function(x) {
         x <- x[!names(x) %in% c('gap','start','end')]
         x <- data.frame(date=names(x), value=do.call(c, x), stringsAsFactors=FALSE)
         row.names(x) <- NULL
@@ -96,16 +121,16 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
       })
     }
   } else {
-    nodes <- xpathApply(input, '//lst[@name="facet_dates"]//int')
+    nodes <- xpathApply(input_parsed, '//lst[@name="facet_dates"]//int')
     if(length(nodes)==0){ datesout <- NULL } else { datesout <- nodes }
   }
 
   # Facet ranges
   if(wt=='json'){
-    if(length(input$facet_counts$facet_ranges)==0){
+    if(length(input_parsed$facet_counts$facet_ranges)==0){
       rangesout <- NULL
     } else {
-      rangesout <- lapply(input$facet_counts$facet_ranges, function(x){
+      rangesout <- lapply(input_parsed$facet_counts$facet_ranges, function(x){
         x <- x[!names(x) %in% c('gap','start','end')]$counts
         data.frame(do.call(rbind, lapply(seq(1, length(x), by=2), function(y){
           x[c(y, y+1)]
@@ -113,13 +138,14 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
       })
     }
   } else {
-    nodes <- xpathApply(input, '//lst[@name="facet_ranges"]//int')
+    nodes <- xpathApply(input_parsed, '//lst[@name="facet_ranges"]//int')
     if(length(nodes)==0){ rangesout <- NULL } else { rangesout <- nodes }
   }
 
   # output
   return( list(facet_queries = replacelen0(fqout),
                facet_fields = replacelen0(ffout),
+               facet_pivot = replacelen0(fpout),
                facet_dates = replacelen0(datesout),
                facet_ranges = replacelen0(rangesout)) )
 }
@@ -537,4 +563,28 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
   }
 
   return( datout )
+}
+
+#' Flatten facet.pivot responses
+#' 
+#' Convert a nested hierarchy of facet.pivot elements 
+#' to tabular data (rows and columns)
+#' 
+#' @param df_w_pivot a \code{tbl_df} or \code{data.frame} with 
+#' nested \code{data.frame} objects representing nested 
+#' facet.pivot results
+#' @return a \code{tbl_df}
+#' 
+#' @keywords internal
+pivot_flatten_tabular <- function(df_w_pivot){
+  parent <- df_w_pivot[names(df_w_pivot)[grepl(c('field|value'), names(df_w_pivot))]]
+  pivot <- df_w_pivot$pivot
+  pp <- list()
+  for (i in 1:nrow(parent)){
+    if ((!is.null(pivot[[i]])) && (nrow(pivot[[i]])>0)){
+      pp[[i]] <- data.frame(cbind(parent[i,], pivot[[i]], row.names=NULL))
+    }
+  }
+  # return a tbl_df to flatten again if necessary
+  return(rbind_all(pp))
 }
