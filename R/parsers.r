@@ -368,60 +368,40 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$stats$stats_fields
+      
       if (length(dat) == 1) {
-        # log the high level
         dat_reg <- data.frame(dat[[1]][!names(dat[[1]]) %in% 'facets'])
-        # parse the facets
-        dat_facet <- lapply(dat, function(x){
-          facetted <- x[names(x) %in% 'facets'][[1]]
-          if (length(facetted) == 1) {
-            df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
-            df <- data.frame(df, row.names(df))
-            names(df)[ncol(df)] <- names(facetted)
-            row.names(df) <- NULL
-          } else {
-            df <- lapply(seq.int(length(facetted)), function(n){
-              z <- facetted[[n]]
-              dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
-              dd <- data.frame(dd, row.names(dd))
-              row.names(dd) <- NULL
-              names(dd)[ncol(dd)] <- names(facetted)[n]
-              dd
-            })
-            names(df) <- names(facetted)
-          }
-          return(df)
-        })
-        datout <- list(data = dat_reg, facet = dat_facet)
       } else {
         dat2 <- lapply(dat, function(x){
           data.frame(x[!names(x) %in% 'facets'])
         })
         dat_reg <- do.call(rbind, dat2)
-
-        # facets
-        dat_facet <- lapply(dat, function(x){
-          facetted <- x[names(x) %in% 'facets'][[1]]
-          if (length(facetted) == 1) {
-            df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
-            df <- data.frame(df, row.names(df))
-            names(df)[ncol(df)] <- names(facetted)
-            row.names(df) <- NULL
-          } else {
-            df <- lapply(seq.int(length(facetted)), function(n){
-              z <- facetted[[n]]
-              dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
-              dd <- data.frame(dd, row.names(dd))
-              row.names(dd) <- NULL
-              names(dd)[ncol(dd)] <- names(facetted)[n]
-              dd
-            })
-            names(df) <- names(facetted)
-          }
-          return(df)
-        })
-        datout <- list(data = dat_reg, facet = dat_facet)
       }
+      
+      # parse the facets
+      dat_facet <- lapply(dat, function(x){
+        facetted <- x[names(x) %in% 'facets'][[1]]
+        if (length(facetted) == 1) {
+          df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
+          df <- data.frame(df, row.names(df))
+          names(df)[ncol(df)] <- names(facetted)
+          row.names(df) <- NULL
+        } else {
+          df <- lapply(seq.int(length(facetted)), function(n){
+            z <- facetted[[n]]
+            dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
+            dd <- data.frame(dd, row.names(dd))
+            row.names(dd) <- NULL
+            names(dd)[ncol(dd)] <- names(facetted)[n]
+            dd
+          })
+          names(df) <- names(facetted)
+        }
+        return(df)
+      })
+      
+      datout <- list(data = dat_reg, facet = dat_facet)
+      
     } else {
       dat <- input$stats$stats_fields
       # w/o facets
