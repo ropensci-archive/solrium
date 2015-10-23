@@ -369,15 +369,11 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
     if (parsetype == 'df') {
       dat <- input$stats$stats_fields
       
-      if (length(dat) == 1) {
-        dat_reg <- data.frame(dat[[1]][!names(dat[[1]]) %in% 'facets'])
-      } else {
-        dat2 <- lapply(dat, function(x){
-          data.frame(x[!names(x) %in% 'facets'])
-        })
-        dat_reg <- do.call(rbind, dat2)
-      }
-      
+      dat2 <- lapply(dat, function(x){
+        data.frame(x[!names(x) %in% 'facets'])
+      })
+      dat_reg <- do.call(rbind, dat2)
+        
       # parse the facets
       dat_facet <- lapply(dat, function(x){
         facetted <- x[names(x) %in% 'facets'][[1]]
