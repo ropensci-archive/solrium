@@ -22,8 +22,10 @@ test_that("solr_facet works", {
   expect_that(dim(b$facet_dates$publication_date), equals(c(6,2)))
   
   expect_equal(length(c), 5)
-  expect_equal(names(c$facet_pivot), c('journal','subject','count'))
-  expect_true(min(c$facet_pivot$count) >= 10)
+  expect_equal(names(c$facet_pivot), c('journal', 'journal,subject'))
+  expect_equal(names(c$facet_pivot$journal), c('journal', 'count'))
+  expect_equal(names(c$facet_pivot$`journal,subject`), c('journal', 'subject', 'count'))
+  expect_true(min(c$facet_pivot$`journal,subject`$count) >= 10)
   
   # correct classes
   expect_is(a, "list")
