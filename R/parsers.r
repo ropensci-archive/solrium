@@ -89,22 +89,29 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
     if(length(pivot_input)==0){
       fpout <- NULL
     } else {
+      fpout <- list()
       pivots_left <- ('pivot' %in% names(pivot_input))
-      infinite_loop_check <- 1
-      while(pivots_left & infinite_loop_check < 100){
-        stopifnot(is.data.frame(pivot_input))
-        pivot_input <- pivot_flatten_tabular(pivot_input)
-        pivots_left <- ('pivot' %in% names(pivot_input))
-        infinite_loop_check <- infinite_loop_check + 1
+      if (pivots_left){
+        infinite_loop_check <- 1
+        while(pivots_left & infinite_loop_check < 100){
+          stopifnot(is.data.frame(pivot_input))
+          flattened_result <- pivot_flatten_tabular(pivot_input)
+          fpout <- c(fpout, list(flattened_result$parent))
+          pivot_input <- flattened_result$flattened_pivot
+          pivots_left <- ('pivot' %in% names(pivot_input))
+          infinite_loop_check <- infinite_loop_check + 1
+        }
+        fpout <- c(fpout, list(flattened_result$flattened_pivot))
+      } else {
+        fpout <- c(fpout, list(pivot_input))
       }
-      for (i in seq(1, ncol(pivot_input)-1, by=2)){
-        names(pivot_input)[i+1] <- pivot_input[1,i]
-      }
-      pivot_input <- pivot_input[-c(seq(1, ncol(pivot_input)-1, by=2))]
-      fpout <- pivot_input
+      fpout <- lapply(fpout, collapse_pivot_names)
+      names(fpout) <- sapply(fpout, FUN=function(x){
+        paste(head(names(x), -1), collapse=",")
+      })
     }
   } else {
-    #message('Note: facet.pivot not supported with XML reponse types')
+    message('facet.pivot results are not supported with XML response types, use wt="json"')
     fpout <- NULL
   }
 
@@ -573,21 +580,55 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
 #' Convert a nested hierarchy of facet.pivot elements 
 #' to tabular data (rows and columns)
 #' 
-#' @param df_w_pivot a \code{tbl_df} or \code{data.frame} with 
-#' nested \code{data.frame} objects representing nested 
-#' facet.pivot results
-#' @return a \code{tbl_df}
+#' @param df_w_pivot a \code{data.frame} with another 
+#' \code{data.frame} nested inside representing a 
+#' pivot reponse
+#' @return a \code{data.frame}
 #' 
 #' @keywords internal
 pivot_flatten_tabular <- function(df_w_pivot){
-  parent <- df_w_pivot[names(df_w_pivot)[grepl(c('field|value'), names(df_w_pivot))]]
+  # drop last column assumed to be named "pivot"
+  parent <- df_w_pivot[head(names(df_w_pivot),-1)]
   pivot <- df_w_pivot$pivot
   pp <- list()
   for (i in 1:nrow(parent)){
     if ((!is.null(pivot[[i]])) && (nrow(pivot[[i]])>0)){
+      # from parent drop last column assumed to be named "count" to not create duplicate columns of information
       pp[[i]] <- data.frame(cbind(parent[i,], pivot[[i]], row.names=NULL))
     }
   }
+  flattened_pivot <- do.call('rbind', pp)
   # return a tbl_df to flatten again if necessary
-  return(rbind_all(pp))
+  return(list(parent=parent, flattened_pivot=flattened_pivot))
+}
+
+#' Collapse Pivot Field and Value Columns
+#' 
+#' Convert a table consisting of columns in sets of 3 
+#' into 2 columns assuming that the first column of every set of 3
+#' (field) is duplicated throughout all rows and should be removed. 
+#' This type of structure is usually returned by facet.pivot responses.
+#' 
+#' @param data a \code{data.frame} with every 2 columns
+#' representing a field and value and the final representing
+#' a count
+#' @return a \code{data.frame}
+#' 
+#' @keywords internal
+collapse_pivot_names <- function(data){
+  
+  # shift field name to the column name to its right
+  for (i in seq(1, ncol(data)-1, by=3)){
+    names(data)[i+1] <- data[1,i]
+  }
+  
+  # remove columns with duplicating information (anything named field)
+  data <- data[-c(seq(1, ncol(data)-1, by=3))]
+  
+  # remove vestigial count columns
+  if(ncol(data)>2)
+    data <- data[-c(seq(0, ncol(data)-1, by=2))]
+  
+  names(data)[length(data)] <- 'count'
+  return(data)
 }
