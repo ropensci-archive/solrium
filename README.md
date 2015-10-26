@@ -476,5 +476,6 @@ delete_by_query(query = "manu:bank")
 * Please [report any issues or bugs](https://github.com/ropensci/solrium/issues)
 * License: MIT
 * Get citation information for `solrium` in R doing `citation(package = 'solrium')`
+* Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 [![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
