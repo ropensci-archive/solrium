@@ -382,26 +382,30 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
       dat_reg <- do.call(rbind, dat2)
         
       # parse the facets
-      dat_facet <- lapply(dat, function(x){
-        facetted <- x[names(x) %in% 'facets'][[1]]
-        if (length(facetted) == 1) {
-          df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
-          df <- data.frame(df, row.names(df))
-          names(df)[ncol(df)] <- names(facetted)
-          row.names(df) <- NULL
-        } else {
-          df <- lapply(seq.int(length(facetted)), function(n){
-            z <- facetted[[n]]
-            dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
-            dd <- data.frame(dd, row.names(dd))
-            row.names(dd) <- NULL
-            names(dd)[ncol(dd)] <- names(facetted)[n]
-            dd
-          })
-          names(df) <- names(facetted)
-        }
-        return(df)
-      })
+      if (length(dat[[1]]$facets) == 0) {
+        dat_facet <- NULL
+      } else {
+        dat_facet <- lapply(dat, function(x){
+          facetted <- x[names(x) %in% 'facets'][[1]]
+          if (length(facetted) == 1) {
+            df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
+            df <- data.frame(df, row.names(df))
+            names(df)[ncol(df)] <- names(facetted)
+            row.names(df) <- NULL
+          } else {
+            df <- lapply(seq.int(length(facetted)), function(n){
+              z <- facetted[[n]]
+              dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
+              dd <- data.frame(dd, row.names(dd))
+              row.names(dd) <- NULL
+              names(dd)[ncol(dd)] <- names(facetted)[n]
+              dd
+            })
+            names(df) <- names(facetted)
+          }
+          return(df)
+        })
+      }
       
       datout <- list(data = dat_reg, facet = dat_facet)
       
@@ -562,10 +566,9 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
     } else {
       datout <- input$grouped
     }
-  } else
-  {
+  } else {
     temp <- xpathApply(input, '//lst/lst[@name="grouped"]/lst')
-    if(parsetype=='df') {
+    if (parsetype == 'df') {
       datout <- "not done yet"
     } else {
       datout <- "not done yet"
@@ -591,15 +594,15 @@ pivot_flatten_tabular <- function(df_w_pivot){
   parent <- df_w_pivot[head(names(df_w_pivot),-1)]
   pivot <- df_w_pivot$pivot
   pp <- list()
-  for (i in 1:nrow(parent)){
-    if ((!is.null(pivot[[i]])) && (nrow(pivot[[i]])>0)){
+  for (i in 1:nrow(parent)) {
+    if ((!is.null(pivot[[i]])) && (nrow(pivot[[i]]) > 0)) {
       # from parent drop last column assumed to be named "count" to not create duplicate columns of information
-      pp[[i]] <- data.frame(cbind(parent[i,], pivot[[i]], row.names=NULL))
+      pp[[i]] <- data.frame(cbind(parent[i,], pivot[[i]], row.names = NULL))
     }
   }
   flattened_pivot <- do.call('rbind', pp)
   # return a tbl_df to flatten again if necessary
-  return(list(parent=parent, flattened_pivot=flattened_pivot))
+  return(list(parent = parent, flattened_pivot = flattened_pivot))
 }
 
 #' Collapse Pivot Field and Value Columns
@@ -618,16 +621,17 @@ pivot_flatten_tabular <- function(df_w_pivot){
 collapse_pivot_names <- function(data){
   
   # shift field name to the column name to its right
-  for (i in seq(1, ncol(data)-1, by=3)){
-    names(data)[i+1] <- data[1,i]
+  for (i in seq(1, ncol(data) - 1, by = 3)) {
+    names(data)[i + 1] <- data[1, i]
   }
   
   # remove columns with duplicating information (anything named field)
-  data <- data[-c(seq(1, ncol(data)-1, by=3))]
+  data <- data[-c(seq(1, ncol(data) - 1, by = 3))]
   
   # remove vestigial count columns
-  if(ncol(data)>2)
-    data <- data[-c(seq(0, ncol(data)-1, by=2))]
+  if (ncol(data) > 2) {
+    data <- data[-c(seq(0, ncol(data) - 1, by = 2))]
+  }
   
   names(data)[length(data)] <- 'count'
   return(data)

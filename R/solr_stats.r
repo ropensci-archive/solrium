@@ -54,6 +54,11 @@ solr_stats <- function(name = NULL, q='*:*', stats.field=NULL, stats.facet=NULL,
   args <- collectargs(todonames)
   args$stats <- 'true'
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), class="sr_stats", wt=wt)
-  if(raw){ return( out ) } else { solr_parse(out, parsetype) }
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+                   class = "sr_stats", wt = wt)
+  if (raw) { 
+    return( out ) 
+  } else { 
+    solr_parse(out, parsetype) 
+  }
 }
