@@ -3,6 +3,7 @@
 #' @export
 #' 
 #' @param name (character) The name of the core. If not given, all cores.
+#' @param param (character) Name of a parameter
 #' @param set (list) List of key:value pairs of what to set. Create or overwrite 
 #' a parameter set map. Default: NULL (nothing passed)
 #' @param unset (list) One or more character strings of keys to unset. Default: NULL 

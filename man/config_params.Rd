@@ -10,6 +10,8 @@ config_params(name, param = NULL, set = NULL, unset = NULL,
 \arguments{
 \item{name}{(character) The name of the core. If not given, all cores.}
 
+\item{param}{(character) Name of a parameter}
+
 \item{set}{(list) List of key:value pairs of what to set. Create or overwrite
 a parameter set map. Default: NULL (nothing passed)}
 
