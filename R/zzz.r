@@ -43,7 +43,7 @@ solr_error <- function(x) {
   if (grepl("html", x$headers$`content-type`)) {
     stop(http_status(x)$message, call. = FALSE)
   } else { 
-    err <- content(x)
+    err <- jsonlite::fromJSON(content(x), "text")
     erropt <- Sys.getenv("SOLR_ERRORS")
     if (erropt == "simple" || erropt == "") {
       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
