@@ -52,7 +52,6 @@
 #'
 #' ## Here, we search on the product of counter_total_all and alm_twitterCount
 #' ## metrics for articles in PLOS Journals
-#' url <- 'http://api.plos.org/search'
 #' solr_search(q="{!func}product($v1,$v2)", v1 = 'sqrt(counter_total_all)',
 #'    v2 = 'log(alm_twitterCount)', rows=5, fl=c('id','title'), fq='doc_type:full')
 #'
@@ -70,7 +69,6 @@
 #'    rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full')
 #'
 #' ## using wt = csv
-#' url <- 'http://api.plos.org/search'
 #' solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="csv")
 #' solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full')
 #'
@@ -87,12 +85,12 @@
 #' ## verbose
 #' solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
 #' ## progress
-#' res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=progress())
+#' res <- solr_search(q='*:*', rows=200, fl='id', callopts=progress())
 #' ## timeout
-#' # solr_search(conn, q='*:*', rows=200, fl='id', callopts=timeout(0.01))
+#' # solr_search(q='*:*', rows=200, fl='id', callopts=timeout(0.01))
 #' ## combine curl options using the c() function
 #' opts <- c(verbose(), progress())
-#' res <- solr_search(conn, q='*:*', rows=200, fl='id', callopts=opts)
+#' res <- solr_search(q='*:*', rows=200, fl='id', callopts=opts)
 #'
 #' ## Searching Europeana
 #' ### They don't return the expected Solr output, so we can get raw data, then parse separately
@@ -119,9 +117,13 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
   check_wt(wt)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
   args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
-      pageScore = pageScore, fl = fl, fq = fq, defType = defType,
+      pageScore = pageScore, fl = fl, defType = defType,
       timeAllowed = timeAllowed, qt = qt, wt = wt, NOW = NOW, TZ = TZ,
       echoHandler = echoHandler, echoParams = echoParams))
+  
+  # args that can be repeated
+  todonames <- "fq"
+  args <- c(args, collectargs(todonames))
 
   # additional parameters
   args <- c(args, list(...))

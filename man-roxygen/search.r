@@ -15,7 +15,10 @@
 #' to add [docid] to the &fl list. 
 #' e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score
 #' @param pageScore See pageDoc notes.
-#' @param fq Filter query, this does not affect the search, only what gets returned
+#' @param fq Filter query, this does not affect the search, only what gets returned. 
+#' This parameter can accept multiple items in a lis or vector. You can't pass more than 
+#' one parameter of the same name, so we get around it by passing multiple queries 
+#' and we parse internally
 #' @param fl Fields to return, can be a character vector like \code{c('id', 'title')}, 
 #' or a single character vector with one or more comma separated names, like 
 #' \code{'id,title'}
