@@ -3,8 +3,6 @@ language: r
 env:
   matrix:
   - SOLR_VER=4.10.2
-  - SOLR_VER=5.0.0
-  - SOLR_VER=5.1.0
   - SOLR_VER=5.4.0
 
 before_script:
@@ -13,22 +11,12 @@ before_script:
 
     "4.10.2")
       export SOLR_VER=4.10.2 ;
-      curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=SOLR_VER bash
-      ;;
-
-    "5.0.0")
-      export SOLR_VER=5.0.0 ;
-      curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=SOLR_VER bash
-      ;;
-
-    "5.1.0")
-      export SOLR_VER=5.1.0 ;
-      curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=SOLR_VER bash
+      curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=$SOLR_VER bash
       ;;
 
     "5.4.0")
       export SOLR_VER=5.4.0 ;
-      curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=SOLR_VER bash
+      curl -sSL https://raw.githubusercontent.com/moliware/travis-solr/master/travis-solr.sh | SOLR_VERSION=$SOLR_VER bash
       ;;
    esac
 
