@@ -5,9 +5,9 @@ before_install:
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
   - chmod 755 pkg-build.sh
   - ./pkg-build.sh bootstrap
-  - wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz
-  - tar -zxf solr-5.2.1.tgz
-  - cd solr-5.2.1
+  - wget http://archive.apache.org/dist/lucene/solr/5.4.1/solr-5.4.1.tgz
+  - tar -zxf solr-5.4.1.tgz
+  - cd solr-5.4.1
   - bin/solr start
   - bin/solr create -c gettingstarted
   - bin/post -c gettingstarted example/exampledocs/*.xml
