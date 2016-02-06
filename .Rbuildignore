@@ -14,3 +14,4 @@ README.Rmd
 build.sh
 solr-5.2.1/*
 ^CONDUCT\.md$
+cran-comments.md
