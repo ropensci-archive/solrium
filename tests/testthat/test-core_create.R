@@ -11,9 +11,9 @@ test_that("core_create works", {
   }
   
   # write files in preparation
-  path <- sprintf("~/solr-5.2.1/server/solr/%s/conf", core_name)
+  path <- sprintf("~/solr-5.4.1/server/solr/%s/conf", core_name)
   dir.create(path, recursive = TRUE)
-  files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/", full.names = TRUE)
+  files <- list.files("~/solr-5.4.1/server/solr/configsets/data_driven_schema_configs/conf/", full.names = TRUE)
   invisible(file.copy(files, path, recursive = TRUE))
   
   # create the core

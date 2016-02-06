@@ -3,7 +3,7 @@ context("solr_stats")
 test_that("solr_stats works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search', verbose=FALSE)
+  invisible(solr_connect('http://api.plos.org/search', verbose=FALSE))
 
   a <- solr_stats(q='science', stats.field='counter_total_all', raw=TRUE)
   b <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), 
@@ -23,7 +23,6 @@ test_that("solr_stats works", {
   expect_equal(length(d$data$alm_twitterCount), 8)
   expect_equal(length(e$facet$alm_twitterCount), 2)
   expect_equal(NCOL(e$facet$alm_twitterCount$volume), 9)
-  expect_equal(length(e$facet$alm_twitterCount$volume$missing), 13)
 
   # classes
   expect_is(a, "sr_stats")
@@ -39,7 +38,7 @@ test_that("solr_stats works", {
 test_that("solr_stats works using wt=xml", {
   skip_on_cran()
   
-  solr_connect('http://api.plos.org/search', verbose = FALSE)
+  invisible(solr_connect('http://api.plos.org/search', verbose = FALSE))
   
   aa <- solr_stats(q='science', wt="xml", stats.field='counter_total_all', raw=TRUE)
   bb <- solr_stats(q='science', wt="xml", stats.field='counter_total_all')

@@ -29,8 +29,8 @@ test_that("schema works against", {
 test_that("schema fails well", {
   skip_on_cran()
   
-  solr_connect(verbose = FALSE)
+  invisible(solr_connect(verbose = FALSE))
   
   expect_error(schema(), "argument \"name\" is missing")
-  expect_error(schema(name = "gettingstarted", "stuff"), "client error")
+  expect_error(schema(name = "gettingstarted", "stuff"), "Client error")
 })

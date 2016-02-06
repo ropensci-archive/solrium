@@ -3,7 +3,7 @@ context("solr_facet")
 test_that("solr_facet works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search', verbose=FALSE)
+  invisible(solr_connect('http://api.plos.org/search', verbose=FALSE))
 
   a <- solr_facet(q='*:*', facet.field='journal')
   b <- solr_facet(q='*:*', facet.date='publication_date', 
@@ -33,5 +33,7 @@ test_that("solr_facet works", {
   expect_is(c, "list")
   expect_is(b$facet_dates, "list")
   expect_is(b$facet_dates$publication_date, "data.frame")
-  expect_is(c$facet_pivot, "data.frame")
+  expect_is(c$facet_pivot, "list")
+  expect_is(c$facet_pivot$journal, "data.frame")
+  expect_is(c$facet_pivot$`journal,subject`, "data.frame")
 })

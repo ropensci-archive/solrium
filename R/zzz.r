@@ -35,7 +35,7 @@ solr_GET <- function(base, args, callopts = NULL, ...){
   if (tt$status_code > 201) {
     solr_error(tt)
   } else {
-    content(tt, as = "text")
+    content(tt, as = "text", encoding = "UTF-8")
   }
 }
 
@@ -43,7 +43,7 @@ solr_error <- function(x) {
   if (grepl("html", x$headers$`content-type`)) {
     stop(http_status(x)$message, call. = FALSE)
   } else { 
-    err <- jsonlite::fromJSON(content(x), "text")
+    err <- jsonlite::fromJSON(content(x, "text", encoding = "UTF-8"))
     erropt <- Sys.getenv("SOLR_ERRORS")
     if (erropt == "simple" || erropt == "") {
       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
@@ -118,10 +118,10 @@ get_ctype <- function(x) {
 
 get_response <- function(x, as = "text") {
   if (x$status_code > 201) {
-    err <- jsonlite::fromJSON(httr::content(x))$error
+    err <- jsonlite::fromJSON(httr::content(x, "text", encoding = "UTF-8"))$error
     stop(sprintf("%s: %s", err$code, err$msg), call. = FALSE)
   } else {
-    content(x, as = as)
+    content(x, as = as, encoding = "UTF-8")
   }
 }
 
@@ -200,7 +200,8 @@ check_defunct <- function(...) {
 is_in_cloud_mode <- function(x) {
   res <- GET(file.path(x$url, "solr/admin/collections"), 
              query = list(wt = 'json'))
-  msg <- content(res)$error$msg
+  if (res$status_code > 201) return(FALSE)
+  msg <- jsonlite::fromJSON(content(res, "text", encoding = "UTF-8"))$error$msg
   if (grepl("not running", msg)) {
     FALSE
   } else {
