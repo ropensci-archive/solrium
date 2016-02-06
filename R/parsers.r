@@ -1,10 +1,5 @@
 #' Parse raw data from solr_search, solr_facet, or solr_highlight.
 #'
-#' See details.
-#'
-#' @importFrom jsonlite fromJSON
-#' @importFrom plyr rbind.fill
-#' @importFrom dplyr rbind_all as_data_frame tbl_df
 #' @param input Output from solr_facet
 #' @param parsetype One of 'list' or 'df' (data.frame)
 #' @param concat Character to conactenate strings by, e.g,. ',' (character). Used

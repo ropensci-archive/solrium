@@ -6,9 +6,6 @@
 \alias{solrium-package}
 \title{General purpose R interface to Solr.}
 \description{
-General purpose R interface to Solr.
-}
-\details{
 This package has support for all the search endpoints, as well as a suite
 of functions for managing a Solr database, including adding and deleting 
 documents.

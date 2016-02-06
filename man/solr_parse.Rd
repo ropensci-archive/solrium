@@ -39,7 +39,7 @@ solr_parse(input, parsetype = NULL, concat)
 in solr_parse.sr_search only.}
 }
 \description{
-See details.
+Parse raw data from solr_search, solr_facet, or solr_highlight.
 }
 \details{
 This is the parser used internally in solr_facet, but if you output raw

@@ -55,10 +55,12 @@
 #' content_type_xml content_type upload_file http_condition http_status
 #' @importFrom XML xmlParse xpathApply xmlToList xmlAttrs xmlChildren xmlValue
 #' xmlGetAttr
+#' @importFrom jsonlite fromJSON
+#' @importFrom plyr rbind.fill
+#' @importFrom dplyr rbind_all as_data_frame tbl_df
 #' @name solrium-package
 #' @aliases solrium
 #' @docType package
-#' @title General purpose R interface to Solr.
 #' @author Scott Chamberlain \email{myrmecocystus@@gmail.com}
 #' @keywords package
 NULL
