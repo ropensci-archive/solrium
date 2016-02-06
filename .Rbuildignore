@@ -2,6 +2,7 @@ man-roxygen/*
 .travis.yml
 .DS_Store
 travis-tool.sh
+travisold.yml
 vignettes/margins.sty
 Makefile
 inst/stuff/*

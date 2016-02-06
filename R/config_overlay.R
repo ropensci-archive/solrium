@@ -1,4 +1,4 @@
-#' @title Get Solr configuration overlay
+#' Get Solr configuration overlay
 #' 
 #' @export
 #' 

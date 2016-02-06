@@ -27,6 +27,9 @@ be sent in each update request.}
 \value{
 A list with response from server
 }
+\description{
+Set Solr configuration params
+}
 \details{
 The Request Parameters API allows creating parameter sets that can 
 override or take the place of parameters defined in solrconfig.xml. It is 

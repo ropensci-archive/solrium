@@ -25,6 +25,9 @@ If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
 A list, XMLInternalDocument/XMLInternalElementNode, or character 
 string.
 }
+\description{
+Get Solr configuration details
+}
 \details{
 Note that if \code{raw=TRUE}, \code{what} is ignored. That is, 
 you get all the data when \code{raw=TRUE}.

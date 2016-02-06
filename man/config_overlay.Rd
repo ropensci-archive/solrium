@@ -16,6 +16,9 @@ config_overlay(name, omitHeader = FALSE, ...)
 \value{
 A list with response from server
 }
+\description{
+Get Solr configuration overlay
+}
 \examples{
 \dontrun{
 # start Solr with Cloud mode via the schemaless eg: bin/solr -e cloud

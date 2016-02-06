@@ -20,6 +20,9 @@ config_set(name, set = NULL, unset = NULL, ...)
 \value{
 A list with response from server
 }
+\description{
+Set Solr configuration details
+}
 \examples{
 \dontrun{
 # start Solr with Cloud mode via the schemaless eg: bin/solr -e cloud
