@@ -6,7 +6,6 @@ solrium
 [![Build Status](https://api.travis-ci.org/ropensci/solrium.png)](https://travis-ci.org/ropensci/solrium)
 [![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/solrium)](http://cran.rstudio.com/web/packages/solrium)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
@@ -84,7 +83,7 @@ solr_settings()
 ```r
 solr_search(q='*:*', rows=2, fl='id')
 #> Source: local data frame [2 x 1]
-#> 
+#>
 #>                                                              id
 #>                                                           (chr)
 #> 1       10.1371/annotation/d090733e-1f34-43c5-a06a-255456946303
@@ -173,7 +172,7 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird')
 #> $facet_queries
 #>        term value
 #> 1 cell,bird    24
-#> 
+#>
 #> $facet_fields
 #> $facet_fields$journal
 #>                                 X1      X2
@@ -186,14 +185,14 @@ solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird')
 #> 7                    plos medicine   19944
 #> 8             plos clinical trials     521
 #> 9                     plos medicin       9
-#> 
-#> 
+#>
+#>
 #> $facet_pivot
 #> NULL
-#> 
+#>
 #> $facet_dates
 #> NULL
-#> 
+#>
 #> $facet_ranges
 #> NULL
 ```
@@ -206,8 +205,8 @@ solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2)
 #> $`10.1371/journal.pmed.0040151`
 #> $`10.1371/journal.pmed.0040151`$abstract
 #> [1] "Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting"
-#> 
-#> 
+#>
+#>
 #> $`10.1371/journal.pone.0027752`
 #> $`10.1371/journal.pone.0027752`$abstract
 #> [1] "Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking"
@@ -244,7 +243,7 @@ out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1
 ```r
 out$docs
 #> Source: local data frame [5 x 2]
-#> 
+#>
 #>                             id counter_total_all
 #>                          (chr)             (int)
 #> 1 10.1371/journal.pbio.1001805             17004
@@ -264,7 +263,7 @@ out$mlt
 #> 3 10.1371/journal.pone.0102159              1166
 #> 4 10.1371/journal.pone.0076063              3217
 #> 5 10.1371/journal.pone.0087380              1883
-#> 
+#>
 #> $`10.1371/journal.pbio.0020440`
 #>                             id counter_total_all
 #> 1 10.1371/journal.pone.0035964              5524
@@ -272,7 +271,7 @@ out$mlt
 #> 3 10.1371/journal.pone.0003259              2784
 #> 4 10.1371/journal.pone.0068814              7503
 #> 5 10.1371/journal.pone.0101568              2648
-#> 
+#>
 #> $`10.1371/journal.pone.0087217`
 #>                             id counter_total_all
 #> 1 10.1371/journal.pone.0131665               403
@@ -280,7 +279,7 @@ out$mlt
 #> 3 10.1371/journal.pone.0133941               463
 #> 4 10.1371/journal.pone.0123774               990
 #> 5 10.1371/journal.pone.0140306               321
-#> 
+#>
 #> $`10.1371/journal.pbio.1002191`
 #>                             id counter_total_all
 #> 1 10.1371/journal.pbio.1002232              1936
@@ -288,7 +287,7 @@ out$mlt
 #> 3 10.1371/journal.pone.0070448              1607
 #> 4 10.1371/journal.pone.0144763               483
 #> 5 10.1371/journal.pone.0062824              2531
-#> 
+#>
 #> $`10.1371/journal.pone.0040117`
 #>                             id counter_total_all
 #> 1 10.1371/journal.pone.0069352              2743
@@ -336,7 +335,7 @@ Function Queries allow you to query on actual numeric fields in the SOLR databas
 solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
   rows=5, fl='id,title', fq='doc_type:full')
 #> Source: local data frame [5 x 2]
-#> 
+#>
 #>                             id
 #>                          (chr)
 #> 1 10.1371/journal.pmed.0020124
@@ -354,7 +353,7 @@ Here, we search for the papers with the most citations
 solr_search(q='_val_:"max(counter_total_all)"',
     rows=5, fl='id,counter_total_all', fq='doc_type:full')
 #> Source: local data frame [5 x 2]
-#> 
+#>
 #>                             id counter_total_all
 #>                          (chr)             (int)
 #> 1 10.1371/journal.pmed.0020124           1553063
@@ -371,7 +370,7 @@ Or with the most tweets
 solr_search(q='_val_:"max(alm_twitterCount)"',
     rows=5, fl='id,alm_twitterCount', fq='doc_type:full')
 #> Source: local data frame [5 x 2]
-#> 
+#>
 #>                             id alm_twitterCount
 #>                          (chr)            (int)
 #> 1 10.1371/journal.pone.0061981             2383
@@ -392,7 +391,7 @@ The occurrences service
 invisible(solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select"))
 solr_search(q='*:*', fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
 #> Source: local data frame [2 x 3]
-#> 
+#>
 #>   decimalLongitude decimalLatitude        scientificName
 #>              (dbl)           (dbl)                 (chr)
 #> 1         -98.2376         29.5502   Nyctanassa violacea
