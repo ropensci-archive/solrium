@@ -91,7 +91,10 @@ obj_POST <- function(base, body, args, ...) {
 
 # check if core/collection exists, if not stop
 stop_if_absent <- function(x) {
-  tmp <- vapply(list(core_exists, collection_exists), function(z) z(x), logical(1))
+  tmp <- vapply(list(core_exists, collection_exists), function(z) {
+    tmp <- tryCatch(z(x), error = function(e) e)
+    if (is(tmp, "error")) FALSE else tmp
+  }, logical(1))
   if (!any(tmp)) {
     stop(x, " doesn't exist - create it first.\n See core_create() or collection_create()", 
          call. = FALSE)
@@ -112,7 +115,7 @@ get_ctype <- function(x) {
   switch(x, 
          xml = content_type_xml(),
          json = content_type_json(),
-         csv = content_type("text/plain; charset=utf-8")
+         csv = content_type("application/csv; charset=utf-8")
   )
 }
 

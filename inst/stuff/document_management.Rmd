@@ -20,20 +20,20 @@ Document management
 Stable version from CRAN
 
 ```{r eval=FALSE}
-install.packages("solr")
+install.packages("solrium")
 ```
 
 Or the development version from GitHub
 
 ```{r, eval=FALSE}
 install.packages("devtools")
-devtools::install_github("ropensci/solr")
+devtools::install_github("ropensci/solrium")
 ```
 
 Load
 
 ```{r}
-library("solr")
+library("solrium")
 ```
 
 Initialize connection. By default, you connect to `http://localhost:8983`
@@ -49,23 +49,19 @@ For now, only lists and data.frame's supported.
 ### data.frame
 
 ```{r}
-file <- system.file("examples", "books.csv", package = "solr")
-(x <- read.csv(file))
-```
-
-```{r}
-add(x, "gettingstarted")
+df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
+add(df, "books")
 ```
 
 ### list
 
 ```{r echo=FALSE, results='hide'}
-delete_by_id(1:2, "gettingstarted")
+delete_by_id(1:2, "books")
 ```
 
 ```{r}
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, "gettingstarted")
+add(ss, "books")
 ```
 
 ## Delete documents
@@ -139,25 +135,11 @@ This approach is best if you have many different things you want to do at once, 
 
 There are separate functions for each of the data types as they take slightly different parameters - and to make it more clear that those are the three input options for data types.
 
-### XML
-
-```{r}
-file <- system.file("examples", "books.xml", package = "solr")
-update_xml(file, "books")
-```
-
 ### JSON
 
 ```{r}
-file <- system.file("examples", "books.json", package = "solr")
+file <- system.file("examples", "books.json", package = "solrium")
 update_json(file, "books")
-```
-
-### CSV
-
-```{r}
-file <- system.file("examples", "books.csv", package = "solr")
-update_csv(file, "books")
 ```
 
 ### Add and delete in the same file
@@ -172,7 +154,7 @@ add(ss, "books")
 Now add a new document, and delete the one we just made
 
 ```{r}
-file <- system.file("examples", "add_delete.xml", package = "solr")
+file <- system.file("examples", "add_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\n")
 update_xml(file, "books")
 ```

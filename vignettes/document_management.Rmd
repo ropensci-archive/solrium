@@ -15,7 +15,7 @@ Stable version from CRAN
 
 
 ```r
-install.packages("solr")
+install.packages("solrium")
 ```
 
 Or the development version from GitHub
@@ -23,14 +23,14 @@ Or the development version from GitHub
 
 ```r
 install.packages("devtools")
-devtools::install_github("ropensci/solr")
+devtools::install_github("ropensci/solrium")
 ```
 
 Load
 
 
 ```r
-library("solr")
+library("solrium")
 ```
 
 Initialize connection. By default, you connect to `http://localhost:8983`
@@ -56,38 +56,8 @@ For now, only lists and data.frame's supported.
 
 
 ```r
-file <- system.file("examples", "books.csv", package = "solr")
-(x <- read.csv(file))
-```
-
-```
-#>            id  cat                  name price inStock             author
-#> 1  0553573403 book     A Game of Thrones  7.99    true George R.R. Martin
-#> 2  0553579908 book      A Clash of Kings  7.99    true George R.R. Martin
-#> 3  055357342X book     A Storm of Swords  7.99    true George R.R. Martin
-#> 4  0553293354 book            Foundation  7.99    true       Isaac Asimov
-#> 5  0812521390 book     The Black Company  6.99   false          Glen Cook
-#> 6  0812550706 book          Ender's Game  6.99    true   Orson Scott Card
-#> 7  0441385532 book                Jhereg  7.95   false       Steven Brust
-#> 8  0380014300 book Nine Princes In Amber  6.99    true      Roger Zelazny
-#> 9  0805080481 book     The Book of Three  5.99    true    Lloyd Alexander
-#> 10 080508049X book    The Black Cauldron  5.99    true    Lloyd Alexander
-#>                               series_t sequence_i genre_s
-#> 1               A Song of Ice and Fire          1 fantasy
-#> 2               A Song of Ice and Fire          2 fantasy
-#> 3               A Song of Ice and Fire          3 fantasy
-#> 4                    Foundation Novels          1   scifi
-#> 5  The Chronicles of The Black Company          1 fantasy
-#> 6                                Ender          1   scifi
-#> 7                          Vlad Taltos          1 fantasy
-#> 8              the Chronicles of Amber          1 fantasy
-#> 9            The Chronicles of Prydain          1 fantasy
-#> 10           The Chronicles of Prydain          2 fantasy
-```
-
-
-```r
-add(x, "gettingstarted")
+df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
+add(df, "books")
 ```
 
 ```
@@ -96,7 +66,7 @@ add(x, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 58
+#> [1] 112
 ```
 
 ### list
@@ -106,7 +76,7 @@ add(x, "gettingstarted")
 
 ```r
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, "gettingstarted")
+add(ss, "books")
 ```
 
 ```
@@ -115,7 +85,7 @@ add(ss, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 24
+#> [1] 16
 ```
 
 ## Delete documents
@@ -140,7 +110,7 @@ add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 17
+#> [1] 18
 ```
 
 And the documents are now in your Solr database
@@ -151,17 +121,13 @@ tail(solr_search(name = "gettingstarted", "*:*", base = "http://localhost:8983/s
 ```
 
 ```
-#> Source: local data frame [6 x 10]
+#> Source: local data frame [3 x 4]
 #> 
-#>           id  cat                  name   price inStock          author
-#> 1 0380014300 book Nine Princes In Amber    6.99    TRUE   Roger Zelazny
-#> 2 0805080481 book     The Book of Three    5.99    TRUE Lloyd Alexander
-#> 3 080508049X book    The Black Cauldron    5.99    TRUE Lloyd Alexander
-#> 4          1   NA                 brown  100.00      NA              NA
-#> 5          2   NA                  blue  500.00      NA              NA
-#> 6          3   NA                  pink 2000.00      NA              NA
-#> Variables not shown: series_t (chr), sequence_i (int), genre_s (chr),
-#>   _version_ (dbl)
+#>      id price  name    _version_
+#>   (chr) (int) (chr)        (dbl)
+#> 1     1   100 brown 1.525729e+18
+#> 2     2   500  blue 1.525729e+18
+#> 3     3  2000  pink 1.525729e+18
 ```
 
 Now delete those documents just added
@@ -177,7 +143,7 @@ delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 9
+#> [1] 24
 ```
 
 And now they are gone
@@ -188,17 +154,7 @@ tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/sel
 ```
 
 ```
-#> Source: local data frame [6 x 10]
-#> 
-#>           id  cat                  name price inStock           author
-#> 1 0812521390 book     The Black Company  6.99   FALSE        Glen Cook
-#> 2 0812550706 book          Ender's Game  6.99    TRUE Orson Scott Card
-#> 3 0441385532 book                Jhereg  7.95   FALSE     Steven Brust
-#> 4 0380014300 book Nine Princes In Amber  6.99    TRUE    Roger Zelazny
-#> 5 0805080481 book     The Book of Three  5.99    TRUE  Lloyd Alexander
-#> 6 080508049X book    The Black Cauldron  5.99    TRUE  Lloyd Alexander
-#> Variables not shown: series_t (chr), sequence_i (int), genre_s (chr),
-#>   _version_ (dbl)
+#> Source: local data frame [0 x 0]
 ```
 
 ### By query
@@ -227,17 +183,13 @@ tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/sel
 ```
 
 ```
-#> Source: local data frame [6 x 10]
+#> Source: local data frame [3 x 4]
 #> 
-#>           id  cat                  name   price inStock          author
-#> 1 0380014300 book Nine Princes In Amber    6.99    TRUE   Roger Zelazny
-#> 2 0805080481 book     The Book of Three    5.99    TRUE Lloyd Alexander
-#> 3 080508049X book    The Black Cauldron    5.99    TRUE Lloyd Alexander
-#> 4          1   NA                 brown  100.00      NA              NA
-#> 5          2   NA                  blue  500.00      NA              NA
-#> 6          3   NA                  pink 2000.00      NA              NA
-#> Variables not shown: series_t (chr), sequence_i (int), genre_s (chr),
-#>   _version_ (dbl)
+#>      id price  name    _version_
+#>   (chr) (int) (chr)        (dbl)
+#> 1     1   100 brown 1.525729e+18
+#> 2     2   500  blue 1.525729e+18
+#> 3     3  2000  pink 1.525729e+18
 ```
 
 Now delete those documents just added
@@ -253,7 +205,7 @@ delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 11
+#> [1] 12
 ```
 
 And now they are gone
@@ -264,17 +216,11 @@ tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/sel
 ```
 
 ```
-#> Source: local data frame [6 x 10]
+#> Source: local data frame [1 x 4]
 #> 
-#>           id  cat                  name  price inStock           author
-#> 1 0812550706 book          Ender's Game   6.99    TRUE Orson Scott Card
-#> 2 0441385532 book                Jhereg   7.95   FALSE     Steven Brust
-#> 3 0380014300 book Nine Princes In Amber   6.99    TRUE    Roger Zelazny
-#> 4 0805080481 book     The Book of Three   5.99    TRUE  Lloyd Alexander
-#> 5 080508049X book    The Black Cauldron   5.99    TRUE  Lloyd Alexander
-#> 6          1   NA                 brown 100.00      NA               NA
-#> Variables not shown: series_t (chr), sequence_i (int), genre_s (chr),
-#>   _version_ (dbl)
+#>      id price  name    _version_
+#>   (chr) (int) (chr)        (dbl)
+#> 1     1   100 brown 1.525729e+18
 ```
 
 ## Update documents from files
@@ -287,28 +233,11 @@ This approach is best if you have many different things you want to do at once, 
 
 There are separate functions for each of the data types as they take slightly different parameters - and to make it more clear that those are the three input options for data types.
 
-### XML
-
-
-```r
-file <- system.file("examples", "books.xml", package = "solr")
-update_xml(file, "books")
-```
-
-```
-#> $responseHeader
-#> $responseHeader$status
-#> [1] 0
-#> 
-#> $responseHeader$QTime
-#> [1] 64
-```
-
 ### JSON
 
 
 ```r
-file <- system.file("examples", "books.json", package = "solr")
+file <- system.file("examples", "books.json", package = "solrium")
 update_json(file, "books")
 ```
 
@@ -318,24 +247,7 @@ update_json(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 40
-```
-
-### CSV
-
-
-```r
-file <- system.file("examples", "books.csv", package = "solr")
-update_csv(file, "books")
-```
-
-```
-#> $responseHeader
-#> $responseHeader$status
-#> [1] 0
-#> 
-#> $responseHeader$QTime
-#> [1] 16
+#> [1] 39
 ```
 
 ### Add and delete in the same file
@@ -354,14 +266,14 @@ add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 23
+#> [1] 19
 ```
 
 Now add a new document, and delete the one we just made
 
 
 ```r
-file <- system.file("examples", "add_delete.xml", package = "solr")
+file <- system.file("examples", "add_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\n")
 ```
 
@@ -397,7 +309,7 @@ update_xml(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 20
+#> [1] 23
 ```
 
 ### Notes

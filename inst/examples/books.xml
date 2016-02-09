@@ -20,7 +20,7 @@
     <field name="sequence_i">2</field>
     <field name="genre_s">fantasy</field>
     <field name="inStock">TRUE</field>
-    <field name="price">6.49</field>
+    <field name="price">6.5</field>
     <field name="pages_i">304</field>
   </doc>
   <doc>
@@ -32,7 +32,7 @@
     <field name="sequence_i">1</field>
     <field name="genre_s">fantasy</field>
     <field name="inStock">TRUE</field>
-    <field name="price">3.07</field>
+    <field name="price">3.7</field>
     <field name="pages_i">64</field>
   </doc>
   <doc>

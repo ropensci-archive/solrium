@@ -46,5 +46,5 @@ update_xml <- function(files, name, commit = TRUE, optimize = FALSE, max_segment
   args <- sc(list(commit = asl(commit), optimize = asl(optimize), maxSegments = max_segments,
                   expungeDeletes = asl(expunge_deletes), waitSearcher = asl(wait_searcher),
                   softCommit = asl(soft_commit), prepareCommit = prepare_commit, wt = wt))
-  docreate(file.path(conn$url, sprintf('solr/%s/update', name)), files, args, 'xml', raw, ...)
+  docreate(file.path(conn$url, sprintf('solr/%s/update', name)), files, args, content = 'xml', raw, ...)
 }

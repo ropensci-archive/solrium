@@ -15,7 +15,7 @@ Stable version from CRAN
 
 
 ```r
-install.packages("solr")
+install.packages("solrium")
 ```
 
 Or the development version from GitHub
@@ -23,14 +23,14 @@ Or the development version from GitHub
 
 ```r
 install.packages("devtools")
-devtools::install_github("ropensci/solr")
+devtools::install_github("ropensci/solrium")
 ```
 
 Load
 
 
 ```r
-library("solr")
+library("solrium")
 ```
 
 Initialize connection

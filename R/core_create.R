@@ -32,9 +32,9 @@
 #' solr_connect()
 #'
 #' # Create a core
-#' path <- "~/solr-5.3.0/server/solr/newcore/conf"
+#' path <- "~/solr-5.4.1/server/solr/newcore/conf"
 #' dir.create(path, recursive = TRUE)
-#' files <- list.files("~/solr-5.2.1/server/solr/configsets/data_driven_schema_configs/conf/",
+#' files <- list.files("~/solr-5.4.1/server/solr/configsets/data_driven_schema_configs/conf/",
 #' full.names = TRUE)
 #' file.copy(files, path, recursive = TRUE)
 #' core_create(name = "newcore", instanceDir = "newcore", configSet = "basic_configs")
