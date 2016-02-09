@@ -42,6 +42,11 @@ modes, respectively)
 \dontrun{
 solr_connect()
 
+# create the boooks collection
+if (!collection_exists("books")) {
+  collection_create(name = "books", numShards = 2)
+}
+
 # Documents in a list
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
 add(ss, name = "books")
@@ -55,14 +60,17 @@ add(x = df, "books")
 
 ## More complex example, get file from package examples
 # start Solr in Schemaless mode first: bin/solr start -e schemaless
-file <- system.file("examples", "books.csv", package = "solr")
+file <- system.file("examples", "books.csv", package = "solrium")
 x <- read.csv(file, stringsAsFactors = FALSE)
 class(x)
 head(x)
-add(x, "gettingstarted")
+if (!collection_exists("mybooks")) {
+  collection_create(name = "mybooks", numShards = 2)
+}
+add(x, "mybooks")
 
 # Use modifiers
-add(x, "gettingstarted", commit_within = 5000)
+add(x, "mybooks", commit_within = 5000)
 
 # Get back XML instead of a list
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))

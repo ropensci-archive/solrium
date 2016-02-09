@@ -45,13 +45,17 @@ specified if the replica is to be created in a specific node
 solr_connect()
 
 # create collection
-collection_create(name = "foobar", numShards = 2) # bin/solr create -c foobar
+if (!collection_exists("foobar")) {
+  collection_create(name = "foobar", numShards = 2) # bin/solr create -c foobar
+}
 
 # status
 collection_clusterstatus()$cluster$collections$foobar
 
 # add replica
-collection_addreplica(name = "foobar", shard = "shard1")
+if (!collection_exists("foobar")) {
+  collection_addreplica(name = "foobar", shard = "shard1")
+}
 
 # status again
 collection_clusterstatus()$cluster$collections$foobar

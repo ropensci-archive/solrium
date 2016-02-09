@@ -83,14 +83,21 @@ Add a collection
 \examples{
 \dontrun{
 solr_connect()
-collection_create(name = "helloWorld", numShards = 2)
-collection_create(name = "tablesChairs")
+
+if (!collection_exists("foobar")) {
+  collection_delete(name = "helloWorld")
+  collection_create(name = "helloWorld", numShards = 2)
+}
+if (!collection_exists("foobar")) {
+  collection_delete(name = "tablesChairs")
+  collection_create(name = "tablesChairs")
+}
 
 # you may have to do this if you don't want to use 
 # bin/solr or use zookeeper directly
-path <- "~/solr-5.3.0/server/solr/newcore/conf"
+path <- "~/solr-5.4.1/server/solr/newcore/conf"
 dir.create(path, recursive = TRUE)
-files <- list.files("~/solr-5.3.0/server/solr/configsets/data_driven_schema_configs/conf/",
+files <- list.files("~/solr-5.4.1/server/solr/configsets/data_driven_schema_configs/conf/",
 full.names = TRUE)
 invisible(file.copy(files, path, recursive = TRUE))
 collection_create(name = "newcore", collection.configName = "newcore")
