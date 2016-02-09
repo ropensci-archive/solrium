@@ -1,6 +1,8 @@
 context("core_create")
 
 test_that("core_create works", {
+  skip_on_cran()
+  
   solr_connect(verbose = FALSE)
   
   core_name <- "slamcore"
