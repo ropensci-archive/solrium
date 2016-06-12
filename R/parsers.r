@@ -77,7 +77,7 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
     ffout <- lapply(nodes, parselist)
     names(ffout) <- sapply(nodes, xmlAttrs)
   }
-  
+
   # facet pivot
   if(wt=='json'){
     pivot_input <- jsonlite::fromJSON(input, simplifyDataFrame = TRUE, simplifyMatrix = FALSE)$facet_count$facet_pivot[[1]]
@@ -187,7 +187,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',')
     })
     if(parsetype=='df'){
       # highout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
-      highout <- rbind_all(lapply(tmptmp, as_data_frame))
+      highout <- bind_rows(lapply(tmptmp, as_data_frame))
 #       dois <- xpathApply(input, '//lst[@name="highlighting"]//lst')
 #       dois <- sapply(dois, function(x) xmlAttrs(x)['name'], USE.NAMES=FALSE)
 #       nodes <- xpathApply(input, '//arr')
@@ -231,7 +231,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
         })
       })
       # datout <- do.call(rbind.fill, lapply(dat2, data.frame, stringsAsFactors=FALSE))
-      datout <- rbind_all(lapply(dat2, as_data_frame))
+      datout <- bind_rows(lapply(dat2, as_data_frame))
     } else {
       datout <- input
     }
@@ -249,7 +249,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
     })
     if (parsetype == 'df') {
       # datout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
-      datout <- rbind_all(lapply(tmptmp, as_data_frame))
+      datout <- bind_rows(lapply(tmptmp, as_data_frame))
     } else {
       datout <- tmptmp
     }
@@ -285,7 +285,7 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
       })
 #       resdat <- data.frame(do.call(rbind.fill, lapply(reslist, data.frame)),
 #                            stringsAsFactors=FALSE)
-      resdat <- rbind_all(lapply(reslist, as_data_frame))
+      resdat <- bind_rows(lapply(reslist, as_data_frame))
 
       dat <- input$moreLikeThis
       dat2 <- lapply(dat, function(x){
@@ -346,7 +346,7 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
 
     if (parsetype == 'df') {
       # datout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
-      datout <- rbind_all(lapply(tmptmp, as_data_frame))
+      datout <- bind_rows(lapply(tmptmp, as_data_frame))
     } else
     {
       datout <- tmptmp
@@ -370,12 +370,12 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$stats$stats_fields
-      
+
       dat2 <- lapply(dat, function(x){
         data.frame(x[!names(x) %in% 'facets'])
       })
       dat_reg <- do.call(rbind, dat2)
-        
+
       # parse the facets
       if (length(dat[[1]]$facets) == 0) {
         dat_facet <- NULL
@@ -401,9 +401,9 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
           return(df)
         })
       }
-      
+
       datout <- list(data = dat_reg, facet = dat_facet)
-      
+
     } else {
       dat <- input$stats$stats_fields
       # w/o facets
@@ -574,15 +574,15 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
 }
 
 #' Flatten facet.pivot responses
-#' 
-#' Convert a nested hierarchy of facet.pivot elements 
+#'
+#' Convert a nested hierarchy of facet.pivot elements
 #' to tabular data (rows and columns)
-#' 
-#' @param df_w_pivot a \code{data.frame} with another 
-#' \code{data.frame} nested inside representing a 
+#'
+#' @param df_w_pivot a \code{data.frame} with another
+#' \code{data.frame} nested inside representing a
 #' pivot reponse
 #' @return a \code{data.frame}
-#' 
+#'
 #' @keywords internal
 pivot_flatten_tabular <- function(df_w_pivot){
   # drop last column assumed to be named "pivot"
@@ -601,33 +601,33 @@ pivot_flatten_tabular <- function(df_w_pivot){
 }
 
 #' Collapse Pivot Field and Value Columns
-#' 
-#' Convert a table consisting of columns in sets of 3 
+#'
+#' Convert a table consisting of columns in sets of 3
 #' into 2 columns assuming that the first column of every set of 3
-#' (field) is duplicated throughout all rows and should be removed. 
+#' (field) is duplicated throughout all rows and should be removed.
 #' This type of structure is usually returned by facet.pivot responses.
-#' 
+#'
 #' @param data a \code{data.frame} with every 2 columns
 #' representing a field and value and the final representing
 #' a count
 #' @return a \code{data.frame}
-#' 
+#'
 #' @keywords internal
 collapse_pivot_names <- function(data){
-  
+
   # shift field name to the column name to its right
   for (i in seq(1, ncol(data) - 1, by = 3)) {
     names(data)[i + 1] <- data[1, i]
   }
-  
+
   # remove columns with duplicating information (anything named field)
   data <- data[-c(seq(1, ncol(data) - 1, by = 3))]
-  
+
   # remove vestigial count columns
   if (ncol(data) > 2) {
     data <- data[-c(seq(0, ncol(data) - 1, by = 2))]
   }
-  
+
   names(data)[length(data)] <- 'count'
   return(data)
 }

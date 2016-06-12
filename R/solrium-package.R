@@ -58,7 +58,7 @@
 #' xmlGetAttr
 #' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
-#' @importFrom dplyr rbind_all as_data_frame tbl_df
+#' @importFrom dplyr bind_rows as_data_frame tbl_df
 #' @name solrium-package
 #' @aliases solrium
 #' @docType package

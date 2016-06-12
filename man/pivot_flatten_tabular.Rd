@@ -7,15 +7,15 @@
 pivot_flatten_tabular(df_w_pivot)
 }
 \arguments{
-\item{df_w_pivot}{a \code{data.frame} with another 
-\code{data.frame} nested inside representing a 
+\item{df_w_pivot}{a \code{data.frame} with another
+\code{data.frame} nested inside representing a
 pivot reponse}
 }
 \value{
 a \code{data.frame}
 }
 \description{
-Convert a nested hierarchy of facet.pivot elements 
+Convert a nested hierarchy of facet.pivot elements
 to tabular data (rows and columns)
 }
 \keyword{internal}

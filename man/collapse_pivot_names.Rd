@@ -15,9 +15,9 @@ a count}
 a \code{data.frame}
 }
 \description{
-Convert a table consisting of columns in sets of 3 
+Convert a table consisting of columns in sets of 3
 into 2 columns assuming that the first column of every set of 3
-(field) is duplicated throughout all rows and should be removed. 
+(field) is duplicated throughout all rows and should be removed.
 This type of structure is usually returned by facet.pivot responses.
 }
 \keyword{internal}
