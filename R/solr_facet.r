@@ -27,6 +27,10 @@
 #' # Using facet.pivot to simulate SQL group by counts
 #' solr_facet(q='alcohol', facet.pivot='journal,subject', 
 #'              facet.pivot.mincount=10)
+#' ## two or more fields are required - you can pass in as a single character string
+#' solr_facet(facet.pivot = "journal,subject", facet.limit =  3)
+#' ## Or, pass in as a vector of length 2 or greater
+#' solr_facet(facet.pivot = c("journal", "subject"), facet.limit =  3)
 #'
 #' # Date faceting
 #' solr_facet(q='*:*', facet.date='publication_date',
@@ -74,12 +78,12 @@
 #' }
 
 solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
-   facet.prefix = NA,facet.sort = NA,facet.limit = NA,facet.offset = NA,
-   facet.mincount = NA,facet.missing = NA,facet.method = NA,facet.enum.cache.minDf = NA,
-   facet.threads = NA,facet.date = NA,facet.date.start = NA,facet.date.end = NA,
-   facet.date.gap = NA,facet.date.hardend = NA,facet.date.other = NA,
-   facet.date.include = NA,facet.range = NA,facet.range.start = NA,facet.range.end = NA,
-   facet.range.gap = NA,facet.range.hardend = NA,facet.range.other = NA,facet.range.include = NA,
+   facet.prefix = NA, facet.sort = NA, facet.limit = NA, facet.offset = NA,
+   facet.mincount = NA, facet.missing = NA, facet.method = NA, facet.enum.cache.minDf = NA,
+   facet.threads = NA, facet.date = NA, facet.date.start = NA, facet.date.end = NA,
+   facet.date.gap = NA, facet.date.hardend = NA, facet.date.other = NA,
+   facet.date.include = NA, facet.range = NA, facet.range.start = NA, facet.range.end = NA,
+   facet.range.gap = NA, facet.range.hardend = NA, facet.range.other = NA, facet.range.include = NA,
    facet.pivot = NA, facet.pivot.mincount = NA, start=NA, rows=NA, key=NA, wt='json',
    raw=FALSE, callopts=list(), ...) {
 
@@ -101,8 +105,17 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
 
   # additional parameters
   args <- c(args, list(...))
+  if (length(args[names(args) %in% "facet.pivot"]) > 1) {
+    xx <- paste0(unlist(unname(args[names(args) %in% "facet.pivot"])), collapse = ",")
+    args[names(args) %in% "facet.pivot"] <- NULL
+    args$facet.pivot <- xx
+  }
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
-                   class="sr_facet", wt=wt)
-  if (raw){ return( out ) } else { solr_parse(out) }
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
+                   class = "sr_facet", wt = wt)
+  if (raw) {
+    return( out )
+  } else {
+    solr_parse(out)
+  }
 }

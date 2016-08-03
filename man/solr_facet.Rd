@@ -304,6 +304,10 @@ solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'))
 # Using facet.pivot to simulate SQL group by counts
 solr_facet(q='alcohol', facet.pivot='journal,subject', 
              facet.pivot.mincount=10)
+## two or more fields are required - you can pass in as a single character string
+solr_facet(facet.pivot = "journal,subject", facet.limit =  3)
+## Or, pass in as a vector of length 2 or greater
+solr_facet(facet.pivot = c("journal", "subject"), facet.limit =  3)
 
 # Date faceting
 solr_facet(q='*:*', facet.date='publication_date',
