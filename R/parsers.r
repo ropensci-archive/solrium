@@ -506,54 +506,70 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',')
                   xml = xmlParse(input),
                   json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
-  if(wt=='json'){
-    if(parsetype=='df'){
-      if(names(input) == 'response'){
-        datout <- cbind(data.frame(numFound=input[[1]]$numFound,
-                                   start=input[[1]]$start),
-                        do.call(rbind.fill, lapply(input[[1]]$docs, data.frame, stringsAsFactors=FALSE)))
+  if (wt == 'json') {
+    if (parsetype == 'df') {
+      if ('response' %in% names(input)) {
+        datout <- cbind(data.frame(
+          numFound = input[[1]]$numFound,
+          start = input[[1]]$start),
+          do.call(rbind.fill, lapply(input[[1]]$docs, 
+                                     data.frame, 
+                                     stringsAsFactors = FALSE))
+        )
       } else {
         dat <- input$grouped
-        if(length(dat)==1){
-          if('groups' %in% names(dat[[1]])){
+        if (length(dat) == 1) {
+          if ('groups' %in% names(dat[[1]])) {
             datout <- dat[[1]]$groups
             datout <- do.call(rbind.fill, lapply(datout, function(x){
-              df <- data.frame(groupValue=ifelse(is.null(x$groupValue),"none",x$groupValue),
-                               numFound=x$doclist$numFound,
-                               start=x$doclist$start)
+              df <- data.frame(groupValue = ifelse(is.null(x$groupValue),"none",x$groupValue),
+                               numFound = x$doclist$numFound,
+                               start = x$doclist$start)
               cbind(df, do.call(rbind.fill,
-                lapply(x$doclist$docs, function(z){
-                  data.frame(lapply(z, function(zz){
-                    if(length(zz) > 1){
-                      paste(zz, collapse=concat)
-                    } else { zz }
-                  }), stringsAsFactors=FALSE)
+                lapply(x$doclist$docs, function(z) {
+                  data.frame(lapply(z, function(zz) {
+                    if (length(zz) > 1) {
+                      paste(zz, collapse = concat)
+                    } else { 
+                      zz 
+                    }
+                  }), stringsAsFactors = FALSE)
                 })
               ))
             }))
-          } else
-          {
-            datout <- cbind(data.frame(numFound=dat[[1]]$doclist$numFound,
-                                       start=dat[[1]]$doclist$start),
-                            do.call(rbind.fill, lapply(dat[[1]]$doclist$docs, data.frame, stringsAsFactors=FALSE)))
+          } else {
+            datout <- cbind(data.frame(numFound = dat[[1]]$doclist$numFound,
+                                       start = dat[[1]]$doclist$start),
+                            do.call(rbind.fill, lapply(dat[[1]]$doclist$docs, 
+                                                       data.frame, 
+                                                       stringsAsFactors = FALSE)))
           }
         } else {
-          if('groups' %in% names(dat[[1]])){
-            datout <- lapply(dat, function(y){
+          if ('groups' %in% names(dat[[1]])) {
+            datout <- lapply(dat, function(y) {
               y <- y$groups
               do.call(rbind.fill, lapply(y, function(x){
-                df <- data.frame(groupValue=ifelse(is.null(x$groupValue),"none",x$groupValue),
-                                 numFound=x$doclist$numFound,
-                                 start=x$doclist$start, stringsAsFactors=FALSE)
-                cbind(df, do.call(rbind.fill, lapply(x$doclist$docs, data.frame, stringsAsFactors=FALSE)))
+                df <- data.frame(
+                  groupValue = ifelse(is.null(x$groupValue), "none", x$groupValue),
+                  numFound = x$doclist$numFound,
+                  start = x$doclist$start, 
+                  stringsAsFactors = FALSE
+                )
+                cbind(df, do.call(rbind.fill, lapply(x$doclist$docs, 
+                                                     data.frame, 
+                                                     stringsAsFactors = FALSE)))
               }))
             })
-          } else
-          {
+          } else {
             datout <- do.call(rbind.fill, lapply(dat, function(x){
-              df <- data.frame(numFound=x$doclist$numFound,
-                               start=x$doclist$start, stringsAsFactors=FALSE)
-              cbind(df, do.call(rbind.fill, lapply(x$doclist$docs, data.frame, stringsAsFactors=FALSE)))
+              df <- data.frame(
+                numFound = x$doclist$numFound,
+                start = x$doclist$start, 
+                stringsAsFactors = FALSE
+              )
+              cbind(df, do.call(rbind.fill, lapply(x$doclist$docs, 
+                                                   data.frame, 
+                                                   stringsAsFactors = FALSE)))
             }))
           }
         }
