@@ -14,12 +14,13 @@ BugReports: http://www.github.com/ropensci/solrium/issues
 VignetteBuilder: knitr
 Imports:
     utils,
-    dplyr,
-    plyr,
-    httr (>= 1.0.0),
-    XML,
-    jsonlite
+    dplyr (>= 0.5.0),
+    plyr (>= 1.8.4),
+    httr (>= 1.2.0),
+    XML (>= 3.98-1.4),
+    jsonlite (>= 1.0)
 Suggests:
+    roxygen2 (>= 5.0.1),
     testthat,
     knitr
 RoxygenNote: 5.0.1
