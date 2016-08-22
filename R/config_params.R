@@ -63,6 +63,6 @@ name_by <- function(x, y) {
   if (is.null(x)) {
     NULL
   } else {
-    setNames(list(y = x), y)
+    stats::setNames(list(y = x), y)
   }
 }

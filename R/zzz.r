@@ -93,7 +93,7 @@ obj_POST <- function(base, body, args, ...) {
 stop_if_absent <- function(x) {
   tmp <- vapply(list(core_exists, collection_exists), function(z) {
     tmp <- tryCatch(z(x), error = function(e) e)
-    if (is(tmp, "error")) FALSE else tmp
+    if (inherits(tmp, "error")) FALSE else tmp
   }, logical(1))
   if (!any(tmp)) {
     stop(x, " doesn't exist - create it first.\n See core_create() or collection_create()", 
@@ -174,7 +174,7 @@ objcreate <- function(base, dat, args, raw, ...) {
 }
 
 check_conn <- function(x) {
-  if (!is(x, "solr_connection")) {
+  if (!inherits(x, "solr_connection")) {
     stop("Input to conn parameter must be an object of class solr_connection", 
          call. = FALSE)
   }

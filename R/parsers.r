@@ -41,7 +41,7 @@ solr_parse.update <- function(input, parsetype=NULL, concat=',') {
 #' @rdname solr_parse
 solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
 {
-  stopifnot(is(input, "sr_facet"))
+  stopifnot(inherits(input, "sr_facet"))
   wt <- attributes(input)$wt
   input_parsed <- switch(wt,
                          xml = xmlParse(input),
@@ -157,7 +157,7 @@ solr_parse.sr_facet <- function(input, parsetype=NULL, concat=',')
 #' @rdname solr_parse
 solr_parse.sr_high <- function(input, parsetype='list', concat=',')
 {
-  stopifnot(is(input, "sr_high"))
+  stopifnot(inherits(input, "sr_high"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -209,7 +209,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
 
-  stopifnot(is(input, "sr_search"))
+  stopifnot(inherits(input, "sr_search"))
   wt <- attributes(input)$wt
   input <- switch(wt,
     xml = xmlParse(input),
@@ -227,7 +227,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
           } else {
             y
           }
-          if (is(y, "list")) unlist(tmp) else tmp
+          if (inherits(y, "list")) unlist(tmp) else tmp
         })
       })
       # datout <- do.call(rbind.fill, lapply(dat2, data.frame, stringsAsFactors=FALSE))
@@ -265,7 +265,7 @@ solr_parse.sr_search <- function(input, parsetype='list', concat=',') {
 #' @rdname solr_parse
 solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
 {
-  stopifnot(is(input, "sr_mlt"))
+  stopifnot(inherits(input, "sr_mlt"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -361,7 +361,7 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
 {
-  stopifnot(is(input, "sr_stats"))
+  stopifnot(inherits(input, "sr_stats"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),
@@ -500,7 +500,7 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',')
 #' @rdname solr_parse
 solr_parse.sr_group <- function(input, parsetype='list', concat=',')
 {
-  stopifnot(is(input, "sr_group"))
+  stopifnot(inherits(input, "sr_group"))
   wt <- attributes(input)$wt
   input <- switch(wt,
                   xml = xmlParse(input),

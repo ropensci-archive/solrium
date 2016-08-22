@@ -34,7 +34,7 @@ ping <- function(name, wt = 'json', verbose = TRUE, raw = FALSE, ...) {
   check_conn(conn)
   res <- tryCatch(solr_GET(file.path(conn$url, sprintf('solr/%s/admin/ping', name)), 
            args = list(wt = wt), verbose = verbose, conn$proxy, ...), error = function(e) e)
-  if (is(res, "error")) {
+  if (inherits(res, "error")) {
     return(list(status = "not found"))
   } else {
     out <- structure(res, class = "ping", wt = wt)

@@ -51,7 +51,7 @@ solr_connect <- function(url = "http://localhost:8983", proxy = NULL,
   
   # ping server
   res <- tryCatch(GET(Sys.getenv("SOLR_URL")), error = function(e) e)
-  if (is(res, "error")) {
+  if (inherits(res, "error")) {
     stop(sprintf("\n  Failed to connect to %s\n  Remember to start Solr before connecting",
                  url), call. = FALSE)
   }

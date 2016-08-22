@@ -49,9 +49,7 @@
 #'
 #' Let us know if there's any further performance improvements we can make.
 #'
-#' @importFrom stats setNames
 #' @importFrom utils URLdecode head modifyList read.table
-#' @importFrom methods is
 #' @importFrom httr GET POST stop_for_status content content_type_json
 #' content_type_xml content_type upload_file http_condition http_status
 #' @importFrom XML xmlParse xpathApply xmlToList xmlAttrs xmlChildren xmlValue

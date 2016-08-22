@@ -79,7 +79,7 @@ core_split <- function(name, path = NULL, targetCore = NULL, ranges = NULL, spli
 
 make_args <- function(x) {
   if (!is.null(x)) {
-    as.list(setNames(x, rep(deparse(substitute(x)), length(x))))
+    as.list(stats::setNames(x, rep(deparse(substitute(x)), length(x))))
   } else {
     NULL
   }
@@ -94,7 +94,7 @@ do_ranges <- function(x) {
 }
 
 make_hex <- function(x) {
-  if (is(x, "list")) {
+  if (inherits(x, "list")) {
     clzz <- sapply(x, class)
     if (clzz[1] == "character") {
       paste0(x, collapse = ",")
