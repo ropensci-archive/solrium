@@ -312,6 +312,9 @@ solr_facet(facet.pivot = c("journal", "subject"), facet.limit =  3)
 # Date faceting
 solr_facet(q='*:*', facet.date='publication_date',
 facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY')
+## two variables
+solr_facet(q='*:*', facet.date=c('publication_date', 'timestamp'),
+facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY')
 
 # Range faceting
 solr_facet(q='*:*', facet.range='counter_total_all',

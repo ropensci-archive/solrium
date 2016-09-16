@@ -8,6 +8,9 @@
 #' @param raw (logical) If TRUE, returns raw data in format specified by wt param
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' 
+#' @return if \code{wt="xml"} an object of class \code{xml_document}, if
+#' \code{wt="json"} an object of class \code{list}
+#' 
 #' @details You likely may not be able to run this function against many public Solr 
 #' services as they hopefully don't expose their admin interface to the public, but 
 #' works locally.

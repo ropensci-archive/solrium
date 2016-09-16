@@ -18,6 +18,10 @@ makemultiargs <- function(x){
   }
 }
 
+popp <- function(x, nms) {
+  x[!names(x) %in% nms]
+}
+
 #' Function to make a list of args passing arg names through multiargs function.
 #' @param x Value
 collectargs <- function(x){

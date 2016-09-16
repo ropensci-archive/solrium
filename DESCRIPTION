@@ -5,7 +5,7 @@ Description: Provides a set of functions for querying and parsing data
     remote), including search, 'faceting', 'highlighting', 'stats', and 
     'more like this'. In addition, some functionality is included for 
     creating, deleting, and updating documents in a 'Solr' 'database'.
-Version: 0.3.0.9330
+Version: 0.3.8.9000
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 License: MIT + file LICENSE
@@ -18,7 +18,9 @@ Imports:
     plyr (>= 1.8.4),
     httr (>= 1.2.0),
     XML (>= 3.98-1.4),
-    jsonlite (>= 1.0)
+    xml2 (>= 1.0.0),
+    jsonlite (>= 1.0),
+    tibble (>= 1.2)
 Suggests:
     roxygen2 (>= 5.0.1),
     testthat,

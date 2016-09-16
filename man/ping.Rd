@@ -18,6 +18,10 @@ ping(name, wt = "json", verbose = TRUE, raw = FALSE, ...)
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
+\value{
+if \code{wt="xml"} an object of class \code{xml_document}, if
+\code{wt="json"} an object of class \code{list}
+}
 \description{
 Ping a Solr instance
 }
