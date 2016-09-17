@@ -2,8 +2,12 @@ language: r
 sudo: required
 cache: packages
 
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
 before_install:
-  - java install oraclejdk8
   - wget http://archive.apache.org/dist/lucene/solr/6.2.0/solr-6.2.0.tgz
   - tar -zxf solr-6.2.0.tgz
   - cd solr-6.2.0
