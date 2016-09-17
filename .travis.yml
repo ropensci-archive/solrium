@@ -1,30 +1,18 @@
-language: c
+language: r
 sudo: required
+cache: packages
 
 before_install:
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
-  - chmod 755 pkg-build.sh
-  - ./pkg-build.sh bootstrap
-  - wget http://archive.apache.org/dist/lucene/solr/5.4.1/solr-5.4.1.tgz
-  - tar -zxf solr-5.4.1.tgz
-  - cd solr-5.4.1
+  - wget http://archive.apache.org/dist/lucene/solr/6.2.0/solr-6.2.0.tgz
+  - tar -zxf solr-6.2.0.tgz
+  - cd solr-6.2.0
   - bin/solr start
   - bin/solr create -c gettingstarted
   - bin/post -c gettingstarted example/exampledocs/*.xml
   - cd ../
 
-install:
-  - ./pkg-build.sh install_deps
-  - ./pkg-build.sh install_github jimhester/covr
-
-script:
-  - ./pkg-build.sh run_tests
-
-after_failure:
-  - ./pkg-build.sh dump_logs
-
 after_success:
-  - if [[ ! -z "$COVERAGE" ]];then ./pkg-build.sh run_script -e 'covr::codecov()'; fi
+- Rscript -e 'covr::codecov()'
 
 notifications:
   email:
@@ -32,9 +20,3 @@ notifications:
     on_failure: change
   slack:
       secure: K0pppSYESNGYdlG3OsjjyJRboEGdcxsl6GxjbHvJE7EsxKTJ5mH506tv6YjeXUcYRJ76D5G1UoKV/sCDC5/Bfz6RpDTAkuzOQyIlAatjuFKSAvx1G+y/PZjaGywb3cBZhYO93oG2TbAehMlXpIAnQcptc3YqhmocJrItnsU9T0M=
-
-env:
-  matrix:
-    - RVERSION=oldrel
-    - RVERSION=release
-    - RVERSION=devel COVERAGE=true
