@@ -387,20 +387,25 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
         dat_facet <- lapply(dat, function(x){
           facetted <- x[names(x) %in% 'facets'][[1]]
           if (length(facetted) == 1) {
-            df <- do.call(rbind, lapply(facetted[[1]], function(z) data.frame(z[!names(z) %in% 'facets'])))
-            df <- data.frame(df, row.names(df))
-            names(df)[ncol(df)] <- names(facetted)
-            row.names(df) <- NULL
+            df <- bind_rows(
+              lapply(facetted[[1]], function(z) {
+                as_data_frame( 
+                  lapply(z[!names(z) %in% 'facets'], function(w) {
+                    if (length(w) == 0) "" else w
+                  })
+                )
+              })
+            , .id = names(facetted))
           } else {
-            df <- lapply(seq.int(length(facetted)), function(n){
-              z <- facetted[[n]]
-              dd <- do.call(rbind, lapply(z, function(zz) data.frame(zz[!names(zz) %in% 'facets'])))
-              dd <- data.frame(dd, row.names(dd))
-              row.names(dd) <- NULL
-              names(dd)[ncol(dd)] <- names(facetted)[n]
-              dd
-            })
-            names(df) <- names(facetted)
+            df <- stats::setNames(lapply(seq.int(length(facetted)), function(n) {
+              bind_rows(lapply(facetted[[n]], function(b) {
+                as_data_frame( 
+                  lapply(b[!names(b) %in% 'facets'], function(w) {
+                    if (length(w) == 0) "" else w
+                  })
+                )
+              }), .id = names(facetted)[n])
+            }), names(facetted))
           }
           return(df)
         })

@@ -3,21 +3,24 @@
 #' @export
 #' @param name (character) Name of a collection or core. Required.
 #' @param wt (character) One of json (default) or xml. If json, uses 
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to parse
+#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+#' \code{\link[XML]{xmlParse}} to parse
 #' @param verbose If TRUE (default) the url call used printed to console.
-#' @param raw (logical) If TRUE, returns raw data in format specified by wt param
+#' @param raw (logical) If TRUE, returns raw data in format specified by 
+#' \code{wt} param
 #' @param ... curl options passed on to \code{\link[httr]{GET}}
 #' 
 #' @return if \code{wt="xml"} an object of class \code{xml_document}, if
 #' \code{wt="json"} an object of class \code{list}
 #' 
-#' @details You likely may not be able to run this function against many public Solr 
-#' services as they hopefully don't expose their admin interface to the public, but 
-#' works locally.
+#' @details You likely may not be able to run this function against many public 
+#' Solr services as they hopefully don't expose their admin interface to the 
+#' public, but works locally.
 #' 
 #' @examples \dontrun{
 #' # start Solr, in your CLI, run: `bin/solr start -e cloud -noprompt`
-#' # after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
+#' # after that, if you haven't run `bin/post -c gettingstarted docs/` yet, 
+#' # do so
 #' 
 #' # connect: by default we connect to localhost, port 8983
 #' solr_connect()

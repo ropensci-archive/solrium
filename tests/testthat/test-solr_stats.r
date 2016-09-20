@@ -60,3 +60,51 @@ test_that("solr_stats works using wt=xml", {
   expect_is(cc$facet[[1]][[1]], "data.frame")
   expect_equal(attr(aa, "wt"), "xml")
 })
+
+test_that("solr_stats works with HathiTrust", {
+  skip_on_cran()
+  
+  url_hathi <- "http://chinkapin.pti.indiana.edu:9994/solr/meta/select"
+  invisible(solr_connect(url = url_hathi, verbose = FALSE))
+  
+  a <- solr_stats(q='*:*', stats.field = 'htrc_wordCount', raw = TRUE)
+  b <- solr_stats(q = '*:*', stats.field = c('htrc_wordCount', 'htrc_pageCount'))
+  c <- solr_stats(q = '*:*', stats.field = 'htrc_charCount')
+  d <- solr_parse(a) # list
+  
+  # correct dimenions
+  expect_equal(length(a), 1)
+  expect_equal(length(b), 2)
+  expect_equal(nrow(b$data), 2)
+  expect_equal(length(c), 2)
+  expect_equal(length(d), 2)
+  expect_equal(length(d$data$htrc_wordCount), 8)
+  
+  # classes
+  expect_is(a, "sr_stats")
+  expect_is(b, "list")
+  expect_is(b$data, "data.frame")
+  expect_is(d, "list")
+})
+
+test_that("solr_stats works with Datacite", {
+  skip_on_cran()
+  
+  url_dc <- "http://search.datacite.org/api"
+  invisible(solr_connect(url = url_dc, verbose = FALSE))
+  
+  a <- solr_stats(q='*:*', stats.field='publicationYear', raw=TRUE)
+  b <- solr_stats(q='*:*', stats.field='publicationYear', stats.facet = "prefix")
+  
+  # correct dimenions
+  expect_equal(length(a), 1)
+  expect_equal(length(b), 2)
+  expect_equal(nrow(b$data), 1)
+  expect_equal(NCOL(b$facet$publicationYear), 5)
+  
+  # classes
+  expect_is(a, "sr_stats")
+  expect_is(b, "list")
+  expect_is(b$data, "data.frame")
+  expect_is(b$facet$publicationYear, "data.frame")
+})
