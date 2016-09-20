@@ -59,7 +59,7 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr bind_rows
-#' @importFrom tibble data_frame as_data_frame as_tibble
+#' @importFrom tibble data_frame as_data_frame as_tibble add_column
 #' @name solrium-package
 #' @aliases solrium
 #' @docType package

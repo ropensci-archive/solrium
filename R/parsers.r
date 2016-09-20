@@ -325,7 +325,7 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
     }))
 
     temp <- xml_find_all(input, '//lst[@name="moreLikeThis"]')
-    tmptmp <- setNames(lapply(xml_children(temp), function(z) {
+    tmptmp <- stats::setNames(lapply(xml_children(temp), function(z) {
       lapply(xml_find_all(z, "doc"), function(w) {
         sapply(xml_children(w), nmtxt)
       })
