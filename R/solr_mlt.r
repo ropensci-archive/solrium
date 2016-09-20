@@ -2,26 +2,31 @@
 #' 
 #' @description Returns only more like this items
 #'
+#' @export
 #' @template mlt
 #' @return XML, JSON, a list, or data.frame
 #' @references See \url{http://wiki.apache.org/solr/MoreLikeThis} for more
 #' information.
-#' @export
 #' @examples \dontrun{
 #' # connect
 #' solr_connect('http://api.plos.org/search')
 #'
 #' # more like this search
-#' solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full")
-#' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='alm_twitterCount')
-#' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1,
-#'    fl='counter_total_all', rows=5)
+#' solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', 
+#'   fq="doc_type:full")
+#' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, 
+#'   fl='alm_twitterCount')
+#' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, 
+#'   mlt.mintf=1, fl='counter_total_all', rows=5)
 #' solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5)
-#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
-#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), rows=5)
+#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), 
+#'   rows=5)
+#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), 
+#'   rows=5, wt = "xml")
 #'
 #' # get raw data, and parse later if needed
-#' out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, raw=TRUE)
+#' out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', 
+#'  rows=2, raw=TRUE)
 #' library('jsonlite')
 #' jsonlite::fromJSON(out)
 #' solr_parse(out, "df")

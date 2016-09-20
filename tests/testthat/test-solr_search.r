@@ -24,7 +24,7 @@ test_that("solr_search fails well", {
   
   expect_error(solr_search(q = "*:*", rows = "asdf"), "500 - For input string")
   expect_error(solr_search(q = "*:*", sort = "down"), 
-               "Error : 400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
+               "400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
   expect_error(solr_search(q='*:*', fl=c('alm_twitterCount','id'), 
                            fq='alm_notafield:[5 TO 50]', rows=10), 
                "undefined field")

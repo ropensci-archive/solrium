@@ -256,29 +256,15 @@ solr_parse.sr_search <- function(input, parsetype = 'list', concat = ',') {
   return( datout )
 }
 
-nmtxt <- function(x) {
-  as.list(stats::setNames(xml2::xml_text(x), xml2::xml_attr(x, "name")))
-}
-
-add_atts <- function(x, atts = NULL) {
-  if (!is.null(atts)) {
-    for (i in seq_along(atts)) {
-      attr(x, names(atts)[i]) <- atts[[i]]
-    }
-    return(x)
-  } else {
-    return(x)
-  }
-}
-
 #' @export
 #' @rdname solr_parse
-solr_parse.sr_mlt <- function(input, parsetype='list', concat=',') {
+solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
   stopifnot(inherits(input, "sr_mlt"))
   wt <- attributes(input)$wt
-  input <- switch(wt,
-                  xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
+  input <- switch(
+    wt,
+    xml = read_xml(unclass(input)),
+    json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   if (wt == 'json') {
     if (parsetype == 'df') {
@@ -292,8 +278,6 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',') {
           }
         })
       })
-#       resdat <- data.frame(do.call(rbind.fill, lapply(reslist, data.frame)),
-#                            stringsAsFactors=FALSE)
       resdat <- bind_rows(lapply(reslist, as_data_frame))
 
       dat <- input$moreLikeThis
@@ -311,54 +295,66 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',') {
 
       datmlt <- list()
       for (i in seq_along(dat)) {
-        datmlt[[names(dat[i])]] <-
-        do.call(rbind.fill, lapply(dat[[i]]$docs, function(y) {
-          data.frame(lapply(y, function(z) {
+        attsdf <- as_data_frame(popp(dat[[i]], "docs"))
+        df <- bind_rows(lapply(dat[[i]]$docs, function(y) {
+          as_data_frame(lapply(y, function(z) {
             if (length(z) > 1) {
               paste(z, collapse = concat)
             } else {
               z
             }
-          }), stringsAsFactors = FALSE)
+          }))
         }))
+        if (NROW(df) == 0) {
+          df <- attsdf
+        } else {
+          df <- as_tibble(cbind(attsdf, df))
+        }
+        datmlt[[names(dat[i])]] <- df
       }
 
-#       datmlt <- do.call(rbind.fill, lapply(dat2, data.frame, stringsAsFactors=FALSE))
-#       row.names(datmlt) <- NULL
       datout <- list(docs = resdat, mlt = datmlt)
-    } else
-    {
+    } else {
       datout <- input$moreLikeThis
     }
-  } else
-  {
-    res <- xpathApply(input, '//result[@name="response"]//doc')
-    resdat <- do.call(rbind.fill, lapply(res, function(x){
-      tmp <- xmlChildren(x)
-      tmp2 <- sapply(tmp, xmlValue)
-      names2 <- sapply(tmp, xmlGetAttr, name = "name")
-      names(tmp2) <- names2
-      data.frame(as.list(tmp2), stringsAsFactors = FALSE)
+  } else {
+    res <- xml_find_all(input, '//result[@name="response"]//doc')
+    resdat <- bind_rows(lapply(res, function(x){
+      tmp <- sapply(xml_children(x), nmtxt)
+      as_data_frame(tmp)
     }))
 
-    temp <- xpathApply(input, '//doc')
-    tmptmp <- lapply(temp, function(x){
-      tt <- xmlToList(x)
-      uu <- lapply(tt, function(y){
-        u <- y$text[[1]]
-        names(u) <- y$.attrs[[1]]
-        u
+    temp <- xml_find_all(input, '//lst[@name="moreLikeThis"]')
+    tmptmp <- setNames(lapply(xml_children(temp), function(z) {
+      lapply(xml_find_all(z, "doc"), function(w) {
+        sapply(xml_children(w), nmtxt)
       })
-      names(uu) <- NULL
-      as.list(unlist(uu))
-    })
-
+    }), xml_attr(xml_children(temp), "name"))
+    tmptmp <- Map(function(x, y) {
+      atts <- as.list(xml_attrs(y))
+      for (i in seq_along(atts)) {
+        attr(x, names(atts)[i]) <- atts[[i]]
+      }
+      x
+    }, 
+      tmptmp, 
+      xml_children(temp)
+    )
+    
     if (parsetype == 'df') {
-      # datout <- do.call(rbind.fill, lapply(tmptmp, data.frame, stringsAsFactors=FALSE))
-      datout <- bind_rows(lapply(tmptmp, as_data_frame))
-    } else
-    {
-      datout <- tmptmp
+      datmlt <- lapply(tmptmp, function(z) {
+        df <- bind_rows(lapply(z, as_data_frame))
+        atts <- attributes(z)
+        attsdf <- as_data_frame(atts)
+        if (NROW(df) == 0) {
+          attsdf
+        } else {
+          as_tibble(cbind(attsdf, df))
+        }
+      })
+      datout <- list(docs = resdat, mlt = datmlt)
+    } else {
+      datout <- list(docs = resdat, mlt = tmptmp)
     }
   }
 
@@ -367,13 +363,14 @@ solr_parse.sr_mlt <- function(input, parsetype='list', concat=',') {
 
 #' @export
 #' @rdname solr_parse
-solr_parse.sr_stats <- function(input, parsetype='list', concat=',') {
+solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
   stopifnot(inherits(input, "sr_stats"))
   wt <- attributes(input)$wt
-  input <- switch(wt,
-                  xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
-
+  input <- switch(
+    wt,
+    xml = read_xml(unclass(input)),
+    json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
+  
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$stats$stats_fields
@@ -432,69 +429,36 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',') {
       datout <- list(data = dat_reg, facet = dat_facet)
     }
   } else {
-    temp <- xpathApply(input, '//lst/lst[@name="stats_fields"]/lst')
+    temp <- xml_find_all(input, '//lst/lst[@name="stats_fields"]/lst')
     if (parsetype == 'df') {
       # w/o facets
-      dat_reg <- do.call(rbind.fill, lapply(temp, function(h){
-        tt <- xmlChildren(h)
-        uu <- tt[!names(tt) %in% 'lst']
-        vals <- sapply(uu, xmlValue)
-        names2 <- sapply(uu, xmlGetAttr, name = "name")
-        names(vals) <- names2
-        data.frame(rbind(vals), stringsAsFactors = FALSE)
-      }))
+      dat_reg <- bind_rows(stats::setNames(lapply(temp, function(h){
+        as_data_frame(popp(sapply(xml_children(h), nmtxt), "facets"))
+      }), xml_attr(temp, "name")), .id = "stat")
       # just facets
-      dat_facet <- lapply(temp, function(e){
-        tt <- xmlChildren(e)
-        uu <- tt[names(tt) %in% 'lst']
-        lapply(xmlChildren(uu$lst), function(f){
-          do.call(rbind.fill, lapply(xmlChildren(f), function(g){
-            ttt <- xmlChildren(g)
-            uuu <- ttt[!names(ttt) %in% 'lst']
-            vals <- sapply(uuu, xmlValue)
-            names2 <- sapply(uuu, xmlGetAttr, name = "name")
-            names(vals) <- names2
-            data.frame(rbind(vals), stringsAsFactors = FALSE)
-          }))
-        })
-      })
+      dat_facet <- stats::setNames(lapply(temp, function(e){
+        tt <- xml_find_first(e, 'lst[@name="facets"]')
+        stats::setNames(lapply(xml_children(tt), function(f){
+          bind_rows(stats::setNames(lapply(xml_children(f), function(g){
+            as_data_frame(popp(sapply(xml_children(g), nmtxt), "facets"))
+          }), xml_attr(xml_children(f), "name")), .id = xml_attr(f, "name"))
+        }), xml_attr(xml_children(tt), "name"))
+      }), xml_attr(temp, "name"))
       datout <- list(data = dat_reg, facet = dat_facet)
     } else {
-      dat_reg <- lapply(temp, function(h){
-        title <- xmlAttrs(h)[[1]]
-        tt <- xmlChildren(h)
-        uu <- tt[!names(tt) %in% 'lst']
-        vals <- sapply(uu, xmlValue)
-        names2 <- sapply(uu, xmlGetAttr, name = "name")
-        names(vals) <- names2
-        ss <- list(x = as.list(vals))
-        names(ss) <- title
-        ss
-      })
+      # w/o facets
+      dat_reg <- stats::setNames(lapply(temp, function(h){
+        popp(sapply(xml_children(h), nmtxt), "facets")
+      }), xml_attr(temp, "name"))
       # just facets
-      dat_facet <- lapply(temp, function(e){
-        title1 <- xmlAttrs(e)[[1]]
-        tt <- xmlChildren(e)
-        uu <- tt[names(tt) %in% 'lst']
-        ssss <- lapply(xmlChildren(uu$lst), function(f){
-          title2 <- xmlAttrs(f)[[1]]
-          sss <- lapply(xmlChildren(f), function(g){
-            title3 <- xmlAttrs(g)[[1]]
-            ttt <- xmlChildren(g)
-            uuu <- ttt[!names(ttt) %in% 'lst']
-            vals <- sapply(uuu, xmlValue)
-            names2 <- sapply(uuu, xmlGetAttr, name = "name")
-            names(vals) <- names2
-            ss <- list(x = as.list(vals))
-            names(ss) <- eval(title3)
-            ss
-          })
-          names(sss) <- rep(eval(title2), length(names(sss)))
-          sss
-        })
-        names(ssss) <- rep(eval(title1), length(names(ssss)))
-        ssss
-      })
+      dat_facet <- stats::setNames(lapply(temp, function(e){
+        tt <- xml_find_first(e, 'lst[@name="facets"]')
+        stats::setNames(lapply(xml_children(tt), function(f){
+          stats::setNames(lapply(xml_children(f), function(g){
+            popp(sapply(xml_children(g), nmtxt), "facets")
+          }), xml_attr(xml_children(f), "name"))
+        }), xml_attr(xml_children(tt), "name"))
+      }), xml_attr(temp, "name"))
       datout <- list(data = dat_reg, facet = dat_facet)
     }
   }
@@ -504,12 +468,13 @@ solr_parse.sr_stats <- function(input, parsetype='list', concat=',') {
 
 #' @export
 #' @rdname solr_parse
-solr_parse.sr_group <- function(input, parsetype='list', concat=',') {
+solr_parse.sr_group <- function(input, parsetype = 'list', concat = ',') {
   stopifnot(inherits(input, "sr_group"))
   wt <- attributes(input)$wt
-  input <- switch(wt,
-                  xml = xmlParse(input),
-                  json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
+  input <- switch(
+    wt,
+    xml = read_xml(unclass(input)),
+    json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE))
 
   if (wt == 'json') {
     if (parsetype == 'df') {
@@ -583,17 +548,63 @@ solr_parse.sr_group <- function(input, parsetype='list', concat=',') {
       datout <- input$grouped
     }
   } else {
-    temp <- xpathApply(input, '//lst/lst[@name="grouped"]/lst')
+    temp <- xml_find_all(input, '//lst[@name="grouped"]/lst')
     if (parsetype == 'df') {
-      datout <- "not done yet"
+      datout <- stats::setNames(lapply(temp, function(e){
+        tt <- xml_find_first(e, 'arr[@name="groups"]')
+        bind_rows(stats::setNames(lapply(xml_children(tt), function(f){
+          docc <- xml_find_all(f, 'result[@name="doclist"]/doc')
+          df <- bind_rows(lapply(docc, function(g){
+            as_data_frame(sapply(xml_children(g), nmtxt))
+          }))
+          add_column(
+            df, 
+            numFound = xml_attr(xml_find_first(f, "result"), "numFound"),
+            start = xml_attr(xml_find_first(f, "result"), "start"),
+            .before = TRUE
+          )
+        }), vapply(xml_children(tt), function(z) xml_text(xml_find_first(z, "str")) %||% "", "")),
+        .id = "group"
+        )
+      }), xml_attr(temp, "name"))
     } else {
-      datout <- "not done yet"
+      datout <- stats::setNames(lapply(temp, function(e){
+        tt <- xml_find_first(e, 'arr[@name="groups"]')
+        stats::setNames(lapply(xml_children(tt), function(f){
+          docc <- xml_find_all(f, 'result[@name="doclist"]/doc')
+          lst <- lapply(docc, function(g){
+            sapply(xml_children(g), nmtxt)
+          })
+          list(
+            docs = lst, 
+            numFound = xml_attr(xml_find_first(f, "result"), "numFound"),
+            start = xml_attr(xml_find_first(f, "result"), "start")
+          )
+        }), vapply(xml_children(tt), function(z) xml_text(xml_find_first(z, "str")) %||% "", ""))
+      }), xml_attr(temp, "name"))
     }
   }
 
   return( datout )
 }
 
+# helper fxns ---------------------
+nmtxt <- function(x) {
+  as.list(stats::setNames(xml2::xml_text(x), xml2::xml_attr(x, "name")))
+}
+
+add_atts <- function(x, atts = NULL) {
+  if (!is.null(atts)) {
+    for (i in seq_along(atts)) {
+      attr(x, names(atts)[i]) <- atts[[i]]
+    }
+    return(x)
+  } else {
+    return(x)
+  }
+}
+
+# facet.pivot helpers --------------
 #' Flatten facet.pivot responses
 #'
 #' Convert a nested hierarchy of facet.pivot elements

@@ -69,8 +69,8 @@ solr_parse(out, 'df') # data.frame
 ## xml
 out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
    stats.facet=c('journal','volume'), raw=TRUE, wt="xml")
-library("XML")
-XML::xmlParse(out)
+library("xml2")
+xml2::read_xml(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 

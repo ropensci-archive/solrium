@@ -97,8 +97,10 @@ Returns only group items
 solr_connect('http://api.plos.org/search')
 
 # Basic group query
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'))
-solr_group(q='ecology', group.field='journal', group.limit=3, fl='article_type')
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'))
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl='article_type')
 
 # Different ways to sort (notice diff btw sort of group.sort)
 # note that you can only sort on a field if you return that field
@@ -107,28 +109,51 @@ solr_group(q='ecology', group.field='journal', group.limit=3,
 solr_group(q='ecology', group.field='journal', group.limit=3,
    fl=c('id','score','alm_twitterCount'), group.sort='alm_twitterCount desc')
 solr_group(q='ecology', group.field='journal', group.limit=3,
-   fl=c('id','score','alm_twitterCount'), sort='score asc', group.sort='alm_twitterCount desc')
+   fl=c('id','score','alm_twitterCount'), sort='score asc', 
+   group.sort='alm_twitterCount desc')
 
 # Two group.field values
-out <- solr_group(q='ecology', group.field=c('journal','article_type'), group.limit=3,
-   fl='id', raw=TRUE)
+out <- solr_group(q='ecology', group.field=c('journal','article_type'), 
+  group.limit=3,
+  fl='id', raw=TRUE)
 solr_parse(out)
 solr_parse(out, 'df')
 
-# Get two groups, one with alm_twitterCount of 0-10, and another group with 10 to infinity
+# Get two groups, one with alm_twitterCount of 0-10, and another group 
+# with 10 to infinity
 solr_group(q='ecology', group.limit=3, fl=c('id','alm_twitterCount'),
  group.query=c('alm_twitterCount:[0 TO 10]','alm_twitterCount:[10 TO *]'))
 
 # Use of group.format and group.simple.
 ## The raw data structure of these two calls are slightly different, but
-## the parsing inside the function outputs the same results. You can of course
-## set raw=TRUE to get back what the data actually look like
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-   group.format='simple')
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-   group.format='grouped')
-solr_group(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
-   group.format='grouped', group.main='true')
+## the parsing inside the function outputs the same results. You can 
+## of course set raw=TRUE to get back what the data actually look like
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'), group.format='simple')
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'), group.format='grouped')
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'), group.format='grouped', group.main='true')
+  
+# xml back   
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'), wt = "xml")
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'), wt = "xml", parsetype = "list")
+res <- solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl=c('id','score'), wt = "xml", raw = TRUE)
+library("xml2")
+xml2::read_xml(unclass(res))
+      
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl='article_type', wt = "xml")
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl='article_type', wt = "xml", parsetype = "list")
+  
+# examples with Dryad's Solr instance
+solr_connect("http://datadryad.org/solr/search/select")
+solr_group(q='ecology', group.field='journal', group.limit=3, 
+  fl='article_type') 
 }
 }
 \references{

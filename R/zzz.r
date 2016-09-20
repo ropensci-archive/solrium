@@ -235,3 +235,5 @@ unbox_if <- function(x, recursive = FALSE) {
     NULL
   }
 }
+
+`%||%` <- function(x, y) if (is.na(x) || is.null(x)) y else x

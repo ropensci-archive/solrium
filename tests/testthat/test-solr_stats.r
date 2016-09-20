@@ -49,7 +49,7 @@ test_that("solr_stats works using wt=xml", {
   expect_equal(length(aa), 1)
   expect_equal(length(bb), 2)
   expect_equal(NROW(bb$data), 1)
-  expect_named(cc$facet[[1]], c("lst", "lst"))
+  expect_named(cc$facet[[1]], c("volume", "journal"))
   expect_equal(length(cc), 2)
   
   # classes

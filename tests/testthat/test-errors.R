@@ -46,5 +46,5 @@ test_that("setting error levels gives correct effect - complete errors", {
   expect_error(solr_search(q = "*:*", rows = "asdf"), errmssg)
   expect_error(solr_search(q = "*:*", start = "asdf"), errmssg)
   expect_error(solr_search(q = "*:*", sort = "down"), 
-    "Error : 400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down', pos=4\nAPI stack trace\n - no stack trace\n")
+    "400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
 })

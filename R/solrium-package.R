@@ -54,10 +54,12 @@
 #' content_type_xml content_type upload_file http_condition http_status
 #' @importFrom XML xmlParse xpathApply xmlToList xmlAttrs xmlChildren xmlValue
 #' xmlGetAttr
+#' @importFrom xml2 read_xml xml_children xml_find_first xml_find_all
+#' xml_name xml_text xml_attr xml_attrs
 #' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr bind_rows
-#' @importFrom tibble data_frame as_data_frame
+#' @importFrom tibble data_frame as_data_frame as_tibble
 #' @name solrium-package
 #' @aliases solrium
 #' @docType package

@@ -22,7 +22,7 @@ test_that("ping gives raw data correctly", {
   expect_is(ping("gettingstarted", raw = TRUE), "ping")
   expect_is(ping("gettingstarted", raw = FALSE), "list")
   expect_is(ping("gettingstarted", wt = "xml", raw = TRUE), "ping")
-  expect_is(ping("gettingstarted", wt = "xml", raw = FALSE), "XMLInternalDocument")
+  expect_is(ping("gettingstarted", wt = "xml", raw = FALSE), "xml_document")
 })
 
 test_that("ping fails well", {
