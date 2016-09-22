@@ -54,7 +54,7 @@ mean no time restriction. Partial results may be returned (if there are any).}
 \item{qt}{Which query handler used. Options: dismax, others?}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}}
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}}
 to parse. You can't use \code{csv} because the point of this function}
 
 \item{NOW}{Set a fixed time for evaluating Date based expresions}

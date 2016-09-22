@@ -14,22 +14,21 @@ schema. Default: solrconfig}
 
 \item{wt}{(character) One of json (default) or xml. Data type returned.
 If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[XML]{xmlParse}} to parse.}
+\code{\link[xml2]{read_xml}} to parse.}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt}}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \value{
-A list, XMLInternalDocument/XMLInternalElementNode, or character 
-string.
+A list, \code{xml_document}, or character
 }
 \description{
 Get Solr configuration details
 }
 \details{
-Note that if \code{raw=TRUE}, \code{what} is ignored. That is, 
+Note that if \code{raw=TRUE}, \code{what} is ignored. That is,
 you get all the data when \code{raw=TRUE}.
 }
 \examples{

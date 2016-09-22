@@ -15,15 +15,16 @@ add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable. 
 Default: \code{TRUE}}
 
-\item{commit_within}{(numeric) Milliseconds to commit the change, the document will be added 
-within that time. Default: NULL}
+\item{commit_within}{(numeric) Milliseconds to commit the change, the 
+document will be added within that time. Default: NULL}
 
-\item{overwrite}{(logical) Overwrite documents with matching keys. Default: \code{TRUE}}
+\item{overwrite}{(logical) Overwrite documents with matching keys. 
+Default: \code{TRUE}}
 
 \item{boost}{(numeric) Boost factor. Default: NULL}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to 
 parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 

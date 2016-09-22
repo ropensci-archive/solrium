@@ -1,13 +1,13 @@
 #' @title Solr search
-#' 
-#' @description Returns only matched documents, and doesn't return other items, 
+#'
+#' @description Returns only matched documents, and doesn't return other items,
 #' including facets, groups, mlt, stats, and highlights.
 #'
 #' @template search
 #' @return XML, JSON, a list, or data.frame
 #' @param wt (character) One of json, xml, or csv. Data type returned, defaults to 'csv'.
 #' If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-#' \code{\link[XML]{xmlParse}} to parse. If csv, uses \code{\link{read.table}} to parse.
+#' \code{\link[xml2]{read_xml}} to parse. If csv, uses \code{\link{read.table}} to parse.
 #' \code{wt=csv} gives the fastest performance at least in all the cases we have
 #' tested in, thus it's the default value for \code{wt}.
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
@@ -99,7 +99,7 @@
 #' dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
 #' library('jsonlite')
 #' head( jsonlite::fromJSON(dat)$items )
-#' 
+#'
 #' # Connect to a local Solr instance
 #' ## not run - replace with your local Solr URL and collection/core name
 #' # solr_connect("localhost:8889")
@@ -120,7 +120,7 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
       pageScore = pageScore, fl = fl, defType = defType,
       timeAllowed = timeAllowed, qt = qt, wt = wt, NOW = NOW, TZ = TZ,
       echoHandler = echoHandler, echoParams = echoParams))
-  
+
   # args that can be repeated
   todonames <- "fq"
   args <- c(args, collectargs(todonames))
@@ -131,7 +131,7 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
     args <- args[!names(args) %in% "q"]
   }
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
                    class = "sr_search", wt = wt)
   if (raw) {
     return( out )

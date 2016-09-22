@@ -1,10 +1,10 @@
 #' @title All purpose search
-#' 
+#'
 #' @description Includes documents, facets, groups, mlt, stats, and highlights.
 #'
 #' @template search
 #' @param wt (character) One of json (default) or xml. If json, uses
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}}
+#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}}
 #' to parse. You can't use \code{csv} because the point of this function
 #' @return XML, JSON, a list, or data.frame
 #' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
@@ -64,7 +64,7 @@ solr_all <- function(name = NULL, q='*:*', sort=NULL, start=0, rows=NULL, pageDo
   # additional parameters
   args <- c(args, list(...))
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
                    class = "sr_search", wt = wt)
   if (raw) {
     return( out )

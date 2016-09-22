@@ -55,7 +55,7 @@ mean no time restriction. Partial results may be returned (if there are any).}
 
 \item{wt}{(character) One of json, xml, or csv. Data type returned, defaults to 'csv'.
 If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[XML]{xmlParse}} to parse. If csv, uses \code{\link{read.table}} to parse.
+\code{\link[xml2]{read_xml}} to parse. If csv, uses \code{\link{read.table}} to parse.
 \code{wt=csv} gives the fastest performance at least in all the cases we have
 tested in, thus it's the default value for \code{wt}.}
 
@@ -94,7 +94,7 @@ is more complicated in XML format, but you can do that on your own.}
 XML, JSON, a list, or data.frame
 }
 \description{
-Returns only matched documents, and doesn't return other items, 
+Returns only matched documents, and doesn't return other items,
 including facets, groups, mlt, stats, and highlights.
 }
 \note{

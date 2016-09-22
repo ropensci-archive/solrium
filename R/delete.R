@@ -11,7 +11,7 @@
 #' @param overwrite (logical) Overwrite documents with matching keys. Default: \code{TRUE}
 #' @param boost (numeric) Boost factor. Default: NULL
 #' @param wt (character) One of json (default) or xml. If json, uses
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
+#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
 #' parse
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by
 #' \code{wt} param

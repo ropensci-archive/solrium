@@ -11,15 +11,15 @@ solr_get(ids, name, fl = NULL, wt = "json", raw = FALSE, ...)
 
 \item{name}{(character) A collection or core name. Required.}
 
-\item{fl}{Fields to return, can be a character vector like \code{c('id', 'title')}, 
-or a single character vector with one or more comma separated names, like 
+\item{fl}{Fields to return, can be a character vector like \code{c('id', 'title')},
+or a single character vector with one or more comma separated names, like
 \code{'id,title'}}
 
 \item{wt}{(character) One of json (default) or xml. Data type returned.
 If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[XML]{xmlParse}} to parse.}
+\code{\link[xml2]{read_xml}} to parse.}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}

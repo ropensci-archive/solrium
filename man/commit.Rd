@@ -12,18 +12,18 @@ commit(name, expunge_deletes = FALSE, wait_searcher = TRUE,
 
 \item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
 
-\item{wait_searcher}{block until a new searcher is opened and registered as the 
+\item{wait_searcher}{block until a new searcher is opened and registered as the
 main query searcher, making the changes visible. Default: \code{TRUE}}
 
-\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the 
-index in a more performant manner, but without "on-disk" guarantees. 
+\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the
+index in a more performant manner, but without "on-disk" guarantees.
 Default: \code{FALSE}}
 
-\item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
+\item{wt}{(character) One of json (default) or xml. If json, uses
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
 parse}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
