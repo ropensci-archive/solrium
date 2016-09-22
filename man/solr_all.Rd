@@ -8,7 +8,7 @@ solr_all(name = NULL, q = "*:*", sort = NULL, start = 0, rows = NULL,
   pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
-  key = NULL, callopts = list(), raw = FALSE, parsetype = "list",
+  key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
   concat = ",", ...)
 }
 \arguments{

@@ -1,5 +1,5 @@
 #' @title Solr stats
-#' 
+#'
 #' @description Returns only stat items
 #'
 #' @template stats
@@ -45,20 +45,23 @@
 #'    callopts=verbose())
 #' }
 
-solr_stats <- function(name = NULL, q='*:*', stats.field=NULL, stats.facet=NULL, 
+solr_stats <- function(name = NULL, q='*:*', stats.field=NULL, stats.facet=NULL,
   wt='json', start=0, rows=0, key = NULL, callopts=list(), raw=FALSE, parsetype='df') {
 
   conn <- solr_settings()
   check_conn(conn)
+  check_wt(wt)
   todonames <- c("q", "stats.field", "stats.facet", "start", "rows", "key", "wt")
   args <- collectargs(todonames)
   args$stats <- 'true'
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
                    class = "sr_stats", wt = wt)
-  if (raw) { 
-    return( out ) 
-  } else { 
-    solr_parse(out, parsetype) 
+  if (raw) {
+    return( out )
+  } else {
+    parsed <- cont_parse(out, wt)
+    parsed <- structure(parsed, class = c(class(parsed), "sr_stats"))
+    solr_parse(out, parsetype)
   }
 }

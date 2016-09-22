@@ -25,7 +25,7 @@ test_that("solr_facet works", {
   expect_equal(names(c$facet_pivot), c('journal', 'journal,subject'))
   expect_equal(names(c$facet_pivot$journal), c('journal', 'count'))
   expect_equal(names(c$facet_pivot$`journal,subject`), c('journal', 'subject', 'count'))
-  expect_true(min(c$facet_pivot$`journal,subject`$count) >= 10)
+  expect_true(min(unlist(c$facet_pivot$`journal,subject`$count)) >= 10)
   
   # correct classes
   expect_is(a, "list")
@@ -57,7 +57,7 @@ test_that("faceting works against HathiTrust", {
   expect_equal(names(c$facet_pivot), c('genre', 'genre,publisher'))
   expect_named(c$facet_pivot$genre, c('genre', 'count'))
   expect_named(c$facet_pivot$`genre,publisher`, c('genre', 'publisher', 'count'))
-  expect_true(min(c$facet_pivot$`genre,publisher`$count) >= 10)
+  expect_true(min(unlist(c$facet_pivot$`genre,publisher`$count)) >= 10)
   
   # correct classes
   expect_is(a, "list")

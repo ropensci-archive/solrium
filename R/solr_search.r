@@ -136,7 +136,9 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
   if (raw) {
     return( out )
   } else {
-    solr_parse(out, parsetype, concat)
+    parsed <- cont_parse(out, wt)
+    parsed <- structure(parsed, class = c(class(parsed), "sr_search"))
+    solr_parse(parsed, parsetype, concat)
   }
 }
 

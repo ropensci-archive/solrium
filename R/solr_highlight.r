@@ -1,7 +1,7 @@
 #' @title Highlighting search
 #'
 #' @description Returns only highlight items
-#' 
+#'
 #' @export
 #' @template high
 #' @return XML, JSON, a list, or data.frame
@@ -45,6 +45,7 @@ solr_highlight <- function(name = NULL, q, hl.fl = NULL, hl.snippets = NULL, hl.
 
   conn <- solr_settings()
   check_conn(conn)
+  check_wt(wt)
   if(!is.null(hl.fl)) names(hl.fl) <- rep("hl.fl", length(hl.fl))
   args <- sc(list(wt=wt, q=q, start=start, rows=rows, hl='true',
      hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
@@ -63,7 +64,13 @@ solr_highlight <- function(name = NULL, q, hl.fl = NULL, hl.snippets = NULL, hl.
      hl.regex.maxAnalyzedChars = hl.regex.maxAnalyzedChars))
   args <- c(args, hl.fl)
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
-                   class="sr_high", wt=wt)
-  if(raw){ return( out ) } else { return( solr_parse(out, parsetype) ) }
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
+                   class = "sr_high", wt = wt)
+  if (raw) {
+    return(out)
+  } else {
+    parsed <- cont_parse(out, wt)
+    parsed <- structure(parsed, class = c(class(parsed), "sr_high"))
+    solr_parse(out, parsetype)
+  }
 }

@@ -1,5 +1,5 @@
 #' @title Faceted search
-#' 
+#'
 #' @description Returns only facet items
 #'
 #' @template facet
@@ -23,9 +23,9 @@
 #'
 #' # Using facet.query to get counts
 #' solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'))
-#' 
+#'
 #' # Using facet.pivot to simulate SQL group by counts
-#' solr_facet(q='alcohol', facet.pivot='journal,subject', 
+#' solr_facet(q='alcohol', facet.pivot='journal,subject',
 #'              facet.pivot.mincount=10)
 #' ## two or more fields are required - you can pass in as a single character string
 #' solr_facet(facet.pivot = "journal,subject", facet.limit =  3)
@@ -93,14 +93,15 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
   check_defunct(...)
   conn <- solr_settings()
   check_conn(conn)
+  check_wt(wt)
   todonames <- c("q",  "facet.query",  "facet.field",
      "facet.prefix", "facet.sort", "facet.limit", "facet.offset",
      "facet.mincount", "facet.missing", "facet.method", "facet.enum.cache.minDf",
      "facet.threads", "facet.date", "facet.date.start", "facet.date.end",
      "facet.date.gap", "facet.date.hardend", "facet.date.other",
      "facet.date.include", "facet.range", "facet.range.start", "facet.range.end",
-     "facet.range.gap", "facet.range.hardend", "facet.range.other", 
-     "facet.range.include", "facet.pivot", "facet.pivot.mincount", 
+     "facet.range.gap", "facet.range.hardend", "facet.range.other",
+     "facet.range.include", "facet.pivot", "facet.pivot.mincount",
      "start", "rows", "key", "wt")
   args <- collectargs(todonames)
   args$fl <- 'DOES_NOT_EXIST'
@@ -119,6 +120,8 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
   if (raw) {
     return( out )
   } else {
-    solr_parse(out)
+    parsed <- cont_parse(out, wt)
+    parsed <- structure(parsed, class = c(class(parsed), "sr_facet"))
+    solr_parse(parsed)
   }
 }

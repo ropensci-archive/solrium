@@ -12,7 +12,7 @@
 #' more information.
 #' @export
 #' @examples \dontrun{
- #' # connect
+#' # connect
 #' solr_connect('http://api.plos.org/search')
 #'
 #' solr_all(q='*:*', rows=2, fl='id')
@@ -50,11 +50,12 @@
 solr_all <- function(name = NULL, q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
-  callopts=list(), raw=FALSE, parsetype='list', concat=',', ...) {
+  callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
 
   check_defunct(...)
   conn <- solr_settings()
   check_conn(conn)
+  check_wt(wt)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
   args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
                        pageScore = pageScore, fl = fl, fq = fq, defType = defType,
@@ -65,10 +66,12 @@ solr_all <- function(name = NULL, q='*:*', sort=NULL, start=0, rows=NULL, pageDo
   args <- c(args, list(...))
 
   out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
-                   class = "sr_search", wt = wt)
+                   class = "sr_all", wt = wt)
   if (raw) {
     return( out )
   } else {
-    solr_parse(out, parsetype, concat)
+    parsed <- cont_parse(out, wt)
+    parsed <- structure(parsed, class = c(class(parsed), "sr_all"))
+    solr_parse(parsed, parsetype, concat)
   }
 }

@@ -1,5 +1,5 @@
 #' @title "more like this" search
-#' 
+#'
 #' @description Returns only more like this items
 #'
 #' @export
@@ -12,24 +12,23 @@
 #' solr_connect('http://api.plos.org/search')
 #'
 #' # more like this search
-#' solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', 
+#' solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score',
 #'   fq="doc_type:full")
-#' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1, 
+#' solr_mlt(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, mlt.mintf=1,
 #'   fl='alm_twitterCount')
-#' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, 
+#' solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1,
 #'   mlt.mintf=1, fl='counter_total_all', rows=5)
 #' solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5)
-#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), 
+#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'),
 #'   rows=5)
-#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'), 
+#' solr_mlt(q='ecology', mlt.fl='abstract', fl=c('score','eissn'),
 #'   rows=5, wt = "xml")
 #'
 #' # get raw data, and parse later if needed
-#' out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', 
+#' out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title',
 #'  rows=2, raw=TRUE)
 #' library('jsonlite')
-#' jsonlite::fromJSON(out)
-#' solr_parse(out, "df")
+#' solr_parse(jsonlite::fromJSON(out), "df")
 #' }
 
 solr_mlt <- function(name = NULL, q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL,
@@ -39,6 +38,7 @@ solr_mlt <- function(name = NULL, q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NUL
 
   conn <- solr_settings()
   check_conn(conn)
+  check_wt(wt)
   fl_str <- paste0(fl, collapse = ",")
   if (any(grepl('id', fl))) {
     fl2 <- fl_str
@@ -50,7 +50,13 @@ solr_mlt <- function(name = NULL, q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NUL
     mlt.maxwl = mlt.maxwl, mlt.maxqt = mlt.maxqt, mlt.maxntp = mlt.maxntp,
     mlt.boost = mlt.boost, mlt.qf = mlt.qf, start = start, rows = rows, wt = wt))
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy), 
+  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
                    class = "sr_mlt", wt = wt)
-  if (raw) { return( out ) } else { solr_parse(out, parsetype, concat) }
+  if (raw) {
+    return( out )
+  } else {
+    parsed <- cont_parse(out, wt)
+    parsed <- structure(parsed, class = c(class(parsed), "sr_mlt"))
+    solr_parse(parsed, parsetype, concat)
+  }
 }
