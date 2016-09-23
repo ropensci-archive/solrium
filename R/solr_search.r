@@ -73,12 +73,12 @@
 #' solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full')
 #'
 #' # using a proxy
-#' prox <- list(url = "186.249.1.146", port = 80)
-#' solr_connect(url = 'http://api.plos.org/search', proxy = prox)
-#' solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
+#' # prox <- list(url = "186.249.1.146", port = 80)
+#' # solr_connect(url = 'http://api.plos.org/search', proxy = prox)
+#' # solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
 #' ## vs. w/o a proxy
-#' solr_connect(url = 'http://api.plos.org/search')
-#' solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
+#' # solr_connect(url = 'http://api.plos.org/search')
+#' # solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
 #'
 #' # Pass on curl options to modify request
 #' solr_connect(url = 'http://api.plos.org/search')

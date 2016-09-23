@@ -28,7 +28,7 @@
 #' out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title',
 #'  rows=2, raw=TRUE)
 #' library('jsonlite')
-#' solr_parse(jsonlite::fromJSON(out), "df")
+#' solr_parse(out, "df")
 #' }
 
 solr_mlt <- function(name = NULL, q='*:*', fq = NULL, mlt.count=NULL, mlt.fl=NULL, mlt.mintf=NULL,

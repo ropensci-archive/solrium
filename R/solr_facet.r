@@ -67,17 +67,16 @@
 #'    wt='xml')
 #' solr_parse(out)
 #'
-#' # Using the USGS BISON API (http://bison.usgs.ornl.gov/services.html#solr)
+#' # Using the USGS BISON API (https://bison.usgs.gov/#solr)
 #' ## The occurrence endpoint
-#' solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select")
+#' solr_connect("https://bison.usgs.gov/solr/occurrences/select")
 #' solr_facet(q='*:*', facet.field='year')
-#' solr_facet(q='*:*', facet.field='state_code')
-#' solr_facet(q='*:*', facet.field='basis_of_record')
+#' solr_facet(q='*:*', facet.field='computedStateFips')
 #'
 #' # using a proxy
-#' prox <- list(url = "54.195.48.153", port = 8888)
-#' solr_connect(url = 'http://api.plos.org/search', proxy = prox)
-#' solr_facet(facet.field='journal', callopts=verbose())
+#' # prox <- list(url = "54.195.48.153", port = 8888)
+#' # solr_connect(url = 'http://api.plos.org/search', proxy = prox)
+#' # solr_facet(facet.field='journal', callopts=verbose())
 #' }
 
 solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,

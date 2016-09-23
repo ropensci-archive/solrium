@@ -137,7 +137,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
   rangesout <- NULL
   if (wt == 'json') {
     if (length(input$facet_counts$facet_ranges) != 0) {
-      rangesout <- lapply(input_parsed$facet_counts$facet_ranges, function(x){
+      rangesout <- lapply(input$facet_counts$facet_ranges, function(x){
         x <- x[!names(x) %in% c('gap','start','end')]$counts
         stats::setNames(as_data_frame(do.call(rbind, lapply(seq(1, length(x), by = 2), function(y){
           x[c(y, y + 1)]
@@ -145,7 +145,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
       })
     }
   } else {
-    nodes <- xml_find_all(input_parsed, '//lst[@name="facet_ranges"]//lst[not(@name="counts")]')
+    nodes <- xml_find_all(input, '//lst[@name="facet_ranges"]//lst[not(@name="counts")]')
     if (length(nodes) != 0) {
       rangesout <- stats::setNames(lapply(nodes, function(z) {
         z <- xml_children(xml_find_first(z, 'lst[@name="counts"]'))
@@ -609,7 +609,7 @@ parse_it <- function(x, wt) {
     },
     csv = {
       tibble::as_data_frame(
-        read.table(text = input, sep = ",", stringsAsFactors = FALSE,
+        read.table(text = x, sep = ",", stringsAsFactors = FALSE,
                    header = TRUE, fill = TRUE, comment.char = "")
       )
     }
