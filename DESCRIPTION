@@ -23,5 +23,6 @@ Imports:
 Suggests:
     roxygen2 (>= 5.0.1),
     testthat,
-    knitr
+    knitr,
+    covr
 RoxygenNote: 5.0.1
