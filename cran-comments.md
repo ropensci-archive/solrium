@@ -1,9 +1,28 @@
-I have read and agree to the the CRAN policies at
-http://cran.r-project.org/web/packages/policies.html
+## Test environments
 
-R CMD CHECK passed on my local OS X install with R 3.2.3 and
-R development version, Ubuntu running on Travis-CI, and WinBuilder.
+* local OS X install, R 3.3.1
+* ubuntu 12.04 (on travis-ci), R 3.3.1
+* win-builder (devel and release)
 
-This is a new package.
+## R CMD check results
 
-Thanks! Scott Chamberlain
+0 errors | 0 warnings | 1 note
+
+   License components with restrictions and base license permitting such:
+     MIT + file LICENSE
+   File 'LICENSE':
+     YEAR: 2016
+     COPYRIGHT HOLDER: Scott Chamberlain
+
+## Reverse dependencies
+
+* I have run R CMD check on the 2 downstream dependencies.
+  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>), 
+  with no problems caused.
+
+-----
+
+This release includes many minor improvements
+
+Thanks! 
+Scott Chamberlain
