@@ -17,3 +17,5 @@ solr-5.2.1/*
 ^CONDUCT\.md$
 cran-comments.md
 solr-5.4.1
+^revdep$
+
