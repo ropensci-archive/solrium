@@ -6,6 +6,7 @@ solrium
 [![Build Status](https://api.travis-ci.org/ropensci/solrium.png)](https://travis-ci.org/ropensci/solrium)
 [![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
+[![cran version](http://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
