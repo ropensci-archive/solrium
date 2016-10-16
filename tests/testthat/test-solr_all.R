@@ -17,7 +17,7 @@ test_that("solr_all works", {
   expect_is(a$search, "tbl_df")
   expect_is(b, "list")
   expect_is(b$search, "tbl_df")
-  
+
   # right slot names
   expect_named(a, c('search','facet','high','mlt','group','stats'))
   expect_named(b, c('search','facet','high','mlt','group','stats'))
@@ -59,7 +59,7 @@ test_that("solr_all works with HathiTrust", {
   expect_is(a$group, "data.frame")
   expect_null(b$stats)
   expect_null(b$facet)
-  
+
   expect_is(b, "list")
   expect_is(a$search, "data.frame")
   expect_is(b$high, "data.frame")
@@ -71,16 +71,16 @@ test_that("solr_all works with HathiTrust", {
   expect_named(a$search, "id")
 })
 
-test_that("solr_all works with Datacite", {
-  skip_on_cran()
+# test_that("solr_all works with Datacite", {
+#   skip_on_cran()
 
-  url_dc <- "http://search.datacite.org/api"
-  invisible(solr_connect(url = url_dc, verbose = FALSE))
+#   url_dc <- "http://search.datacite.org/api"
+#   invisible(solr_connect(url = url_dc, verbose = FALSE))
 
-  a <- solr_all(q = '*:*', rows = 2)
-  b <- solr_all(q = 'publisher:Data', rows = 5)
+#   a <- solr_all(q = '*:*', rows = 2)
+#   b <- solr_all(q = 'publisher:Data', rows = 5)
 
-  # correct dimensions
-  expect_equal(NROW(a$search), 2)
-  expect_equal(NROW(b$search), 5)
-})
+#   # correct dimensions
+#   expect_equal(NROW(a$search), 2)
+#   expect_equal(NROW(b$search), 5)
+# })
