@@ -1,9 +1,12 @@
 language: r
 sudo: required
+dist: trusty
 cache: packages
 
-jdk:
-  - oraclejdk8
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 
 env:
   matrix:
