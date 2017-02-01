@@ -2,14 +2,14 @@
 % Please edit documentation in R/update_xml.R
 \name{update_xml}
 \alias{update_xml}
-\title{Update documents using XML}
+\title{Update documents with XML data}
 \usage{
 update_xml(files, name, commit = TRUE, optimize = FALSE, max_segments = 1,
   expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
   prepare_commit = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
-\item{files}{Path to file to load into Solr}
+\item{files}{Path to a single file to load into Solr}
 
 \item{name}{(character) Name of the core or collection}
 
@@ -43,7 +43,7 @@ parse}
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
-Update documents using XML
+Update documents with XML data
 }
 \details{
 You likely may not be able to run this function against many public Solr 
@@ -51,10 +51,13 @@ services, but should work locally.
 }
 \examples{
 \dontrun{
-# start Solr in Schemaless mode: bin/solr start -e schemaless
+# start Solr in Cloud mode: bin/solr start -e cloud -noprompt
 
 # connect
 solr_connect()
+
+# create a collection
+collection_create("books")
 
 # Add documents
 file <- system.file("examples", "books.xml", package = "solrium")
@@ -68,7 +71,8 @@ cat(readLines(file), sep = "\\n")
 update_xml(file, "books")
 
 ## Delete files
-file <- system.file("examples", "updatecommands_delete.xml", package = "solrium")
+file <- system.file("examples", "updatecommands_delete.xml", 
+package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_xml(file, "books")
 
@@ -83,7 +87,8 @@ update_xml(file, "books")
 }
 }
 \seealso{
-Other update: \code{\link{update_csv}},
-  \code{\link{update_json}}
+Other update: \code{\link{update_atomic_json}},
+  \code{\link{update_atomic_xml}},
+  \code{\link{update_csv}}, \code{\link{update_json}}
 }
 

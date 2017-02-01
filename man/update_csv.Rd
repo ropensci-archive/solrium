@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_csv.R
 \name{update_csv}
 \alias{update_csv}
-\title{Update documents using CSV}
+\title{Update documents with CSV data}
 \usage{
 update_csv(files, name, separator = ",", header = TRUE, fieldnames = NULL,
   skip = NULL, skipLines = 0, trim = FALSE, encapsulator = NULL,
@@ -11,7 +11,7 @@ update_csv(files, name, separator = ",", header = TRUE, fieldnames = NULL,
   commit = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
-\item{files}{Path to file to load into Solr}
+\item{files}{Path to a single file to load into Solr}
 
 \item{name}{(character) Name of the core or collection}
 
@@ -83,14 +83,16 @@ with &overwrite=false.}
 default is commit=false to avoid the potential performance impact of frequent commits.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to parse}
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+\code{\link[xml2]{read_xml}} to parse}
 
-\item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
+\item{raw}{(logical) If TRUE, returns raw data in format specified by 
+\code{wt} param}
 
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
-Update documents using CSV
+Update documents with CSV data
 }
 \note{
 SOLR v1.2 was first version to support csv. See
@@ -103,6 +105,13 @@ SOLR v1.2 was first version to support csv. See
 # connect
 solr_connect()
 
+path <- "~/solr-6.4.0/server/solr/newcore/conf"
+dir.create(path, recursive = TRUE)
+files <- list.files("~/solr-6.4.0/server/solr/configsets/data_driven_schema_configs/conf/",
+full.names = TRUE)
+invisible(file.copy(files, path, recursive = TRUE))
+core_create(name = "books", instanceDir = "newcore", configSet = "basic_configs")
+
 df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
 write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
 update_csv("df.csv", "books")
@@ -114,7 +123,8 @@ update_csv("df.csv", "books", wt = "xml", raw = FALSE)
 }
 }
 \seealso{
-Other update: \code{\link{update_json}},
-  \code{\link{update_xml}}
+Other update: \code{\link{update_atomic_json}},
+  \code{\link{update_atomic_xml}},
+  \code{\link{update_json}}, \code{\link{update_xml}}
 }
 

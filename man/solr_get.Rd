@@ -11,9 +11,9 @@ solr_get(ids, name, fl = NULL, wt = "json", raw = FALSE, ...)
 
 \item{name}{(character) A collection or core name. Required.}
 
-\item{fl}{Fields to return, can be a character vector like \code{c('id', 'title')},
-or a single character vector with one or more comma separated names, like
-\code{'id,title'}}
+\item{fl}{Fields to return, can be a character vector like 
+\code{c('id', 'title')}, or a single character vector with one or more 
+comma separated names, like \code{'id,title'}}
 
 \item{wt}{(character) One of json (default) or xml. Data type returned.
 If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses

@@ -2,13 +2,13 @@
 #'
 #' @param input Output from solr_facet
 #' @param parsetype One of 'list' or 'df' (data.frame)
-#' @param concat Character to conactenate strings by, e.g,. ',' (character). Used
-#' in solr_parse.sr_search only.
-#' @details This is the parser used internally in solr_facet, but if you output raw
-#' data from solr_facet using raw=TRUE, then you can use this function to parse that
-#' data (a sr_facet S3 object) after the fact to a list of data.frame's for easier
-#' consumption. The data format type is detected from the attribute "wt" on the
-#' sr_facet object.
+#' @param concat Character to conactenate strings by, e.g,. ',' (character). 
+#' Used in solr_parse.sr_search only.
+#' @details This is the parser used internally in solr_facet, but if you 
+#' output raw data from solr_facet using raw=TRUE, then you can use this 
+#' function to parse that data (a sr_facet S3 object) after the fact to a 
+#' list of data.frame's for easier consumption. The data format type is 
+#' detected from the attribute "wt" on the sr_facet object.
 #' @export
 solr_parse <- function(input, parsetype = NULL, concat) {
   UseMethod("solr_parse")
@@ -30,14 +30,18 @@ solr_parse.update <- function(input, parsetype=NULL, concat=',') {
   wt <- attributes(input)$wt
   switch(wt,
          xml = xml2::read_xml(unclass(input)),
-         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE),
-         csv = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
+         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, 
+                                   simplifyMatrix = FALSE),
+         csv = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, 
+                                  simplifyMatrix = FALSE)
   )
 }
 
 #' @export
 solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
-  if (inherits(unclass(input), "character")) input <- parse_ch(input, parsetype, concat)
+  if (inherits(unclass(input), "character")) {
+    input <- parse_ch(input, parsetype, concat)
+  }
   wt <- attributes(input)$wt
   
   # Facet queries

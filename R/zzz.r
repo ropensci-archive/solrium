@@ -100,14 +100,17 @@ stop_if_absent <- function(x) {
     if (inherits(tmp, "error")) FALSE else tmp
   }, logical(1))
   if (!any(tmp)) {
-    stop(x, " doesn't exist - create it first.\n See core_create() or collection_create()", 
-         call. = FALSE)
+    stop(
+      x, 
+      " doesn't exist - create it first.\n See core_create()/collection_create()", 
+      call. = FALSE)
   }
 }
 
 # helper for POSTing from R objects
 obj_proc <- function(url, body, args, raw, ...) {
-  out <- structure(obj_POST(url, body, args, ...), class = "update", wt = args$wt)
+  out <- structure(obj_POST(url, body, args, ...), class = "update", 
+                   wt = args$wt)
   if (raw) {
     out
   } else {
@@ -125,7 +128,8 @@ get_ctype <- function(x) {
 
 get_response <- function(x, as = "text") {
   if (x$status_code > 201) {
-    err <- jsonlite::fromJSON(httr::content(x, "text", encoding = "UTF-8"))$error
+    err <- jsonlite::fromJSON(httr::content(x, "text", 
+                                            encoding = "UTF-8"))$error
     stop(sprintf("%s: %s", err$code, err$msg), call. = FALSE)
   } else {
     content(x, as = as, encoding = "UTF-8")
@@ -160,21 +164,25 @@ asl <- function(z) {
 }
 
 docreate <- function(base, files, args, content, raw, ...) {
-  out <- structure(solr_POST(base, files, args, content, ...), class = "update", wt = args$wt)
-  if (raw) { 
-    return(out) 
-  } else { 
-    solr_parse(out) 
-  } 
+  out <- structure(solr_POST(base, files, args, content, ...), 
+                   class = "update", wt = args$wt)
+  if (raw) return(out)
+  solr_parse(out)
+}
+
+doatomiccreate <- function(base, body, args, content, raw, ...) {
+  ctype <- get_ctype(content)
+  out <- structure(solr_POST_body(base, body, args, ctype, ...), 
+                   class = "update", wt = args$wt)
+  if (raw) return(out)
+  solr_parse(out)
 }
 
 objcreate <- function(base, dat, args, raw, ...) {
-  out <- structure(solr_POST(base, dat, args, "json", ...), class = "update", wt = args$wt)
-  if (raw) { 
-    return(out) 
-  } else { 
-    solr_parse(out) 
-  } 
+  out <- structure(solr_POST(base, dat, args, "json", ...), 
+                   class = "update", wt = args$wt)
+  if (raw) return(out)
+  solr_parse(out)
 }
 
 check_conn <- function(x) {

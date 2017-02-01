@@ -5,12 +5,12 @@ Description: Provides a set of functions for querying and parsing data
     remote), including search, 'faceting', 'highlighting', 'stats', and 
     'more like this'. In addition, some functionality is included for 
     creating, deleting, and updating documents in a 'Solr' 'database'.
-Version: 0.4.0.9000
+Version: 0.4.1.9200
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/solrium
-BugReports: http://www.github.com/ropensci/solrium/issues
+BugReports: https://github.com/ropensci/solrium/issues
 VignetteBuilder: knitr
 Imports:
     utils,

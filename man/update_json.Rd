@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_json.R
 \name{update_json}
 \alias{update_json}
-\title{Update documents using JSON}
+\title{Update documents with JSON data}
 \usage{
 update_json(files, name, commit = TRUE, optimize = FALSE,
   max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
@@ -10,7 +10,7 @@ update_json(files, name, commit = TRUE, optimize = FALSE,
   ...)
 }
 \arguments{
-\item{files}{Path to file to load into Solr}
+\item{files}{Path to a single file to load into Solr}
 
 \item{name}{(character) Name of the core or collection}
 
@@ -44,7 +44,7 @@ parse}
 \item{...}{curl options passed on to \code{\link[httr]{GET}}}
 }
 \description{
-Update documents using JSON
+Update documents with JSON data
 }
 \details{
 You likely may not be able to run this function against many public Solr 
@@ -64,12 +64,14 @@ update_json(file, "books")
 
 # Update commands - can include many varying commands
 ## Add file
-file <- system.file("examples", "updatecommands_add.json", package = "solrium")
+file <- system.file("examples", "updatecommands_add.json", 
+  package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_json(file, "books")
 
 ## Delete file
-file <- system.file("examples", "updatecommands_delete.json", package = "solrium")
+file <- system.file("examples", "updatecommands_delete.json", 
+  package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_json(file, "books")
 
@@ -84,7 +86,8 @@ update_json(file, "books")
 }
 }
 \seealso{
-Other update: \code{\link{update_csv}},
-  \code{\link{update_xml}}
+Other update: \code{\link{update_atomic_json}},
+  \code{\link{update_atomic_xml}},
+  \code{\link{update_csv}}, \code{\link{update_xml}}
 }
 
