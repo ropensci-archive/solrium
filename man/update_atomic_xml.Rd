@@ -7,45 +7,21 @@
 update_atomic_xml(body, name, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{body}{(character) XML as a character string}
+
 \item{name}{(character) Name of the core or collection}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-parse}
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+\code{\link[xml2]{read_xml}} to parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
-
-\item{commit}{(logical) If \code{TRUE}, documents immediately searchable. 
-Deafult: \code{TRUE}}
-
-\item{optimize}{Should index optimization be performed before the method returns. 
-Default: \code{FALSE}}
-
-\item{max_segments}{optimizes down to at most this number of segments. Default: 1}
-
-\item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
-
-\item{wait_searcher}{block until a new searcher is opened and registered as the 
-main query searcher, making the changes visible. Default: \code{TRUE}}
-
-\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the 
-index in a more performant manner, but without "on-disk" guarantees. 
-Default: \code{FALSE}}
-
-\item{prepare_commit}{The prepareCommit command is an expert-level API that 
-calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
-
-\item{files}{Path to a single file to load into Solr}
+\item{...}{curl options passed on to \code{\link[httr]{POST}}}
 }
 \description{
 Atomic updates with XML data
-}
-\details{
-You likely may not be able to run this function against many public Solr 
-services, but should work locally.
 }
 \examples{
 \dontrun{
@@ -93,10 +69,5 @@ update_atomic_xml(body, "books")
 # get the document again
 solr_get(ids = 343334534545, "books", wt = "xml")
 }
-}
-\seealso{
-Other update: \code{\link{update_atomic_json}},
-  \code{\link{update_csv}}, \code{\link{update_json}},
-  \code{\link{update_xml}}
 }
 

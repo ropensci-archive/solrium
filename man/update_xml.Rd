@@ -34,20 +34,20 @@ Default: \code{FALSE}}
 calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-parse}
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+\code{\link[xml2]{read_xml}} to parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \code{\link[httr]{POST}}}
 }
 \description{
 Update documents with XML data
 }
 \details{
-You likely may not be able to run this function against many public Solr 
-services, but should work locally.
+You likely may not be able to run this function against many 
+public Solr services, but should work locally.
 }
 \examples{
 \dontrun{
@@ -87,8 +87,7 @@ update_xml(file, "books")
 }
 }
 \seealso{
-Other update: \code{\link{update_atomic_json}},
-  \code{\link{update_atomic_xml}},
-  \code{\link{update_csv}}, \code{\link{update_json}}
+Other update: \code{\link{update_csv}},
+  \code{\link{update_json}}
 }
 

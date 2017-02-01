@@ -1,10 +1,14 @@
 #' Atomic updates with JSON data
 #'
 #' @export
-#' @family update
-#' @template update
-#' @template commitcontrol
-#' @param files Path to a single file to load into Solr
+#' @param body (character) JSON as a character string
+#' @param name (character) Name of the core or collection
+#' @param wt (character) One of json (default) or xml. If json, uses 
+#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+#' \code{\link[xml2]{read_xml}} to parse
+#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
+#' \code{wt} param
+#' @param ... curl options passed on to \code{\link[httr]{POST}}
 #' @examples \dontrun{
 #' # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
 #' 

@@ -123,8 +123,7 @@ update_csv("df.csv", "books", wt = "xml", raw = FALSE)
 }
 }
 \seealso{
-Other update: \code{\link{update_atomic_json}},
-  \code{\link{update_atomic_xml}},
-  \code{\link{update_json}}, \code{\link{update_xml}}
+Other update: \code{\link{update_json}},
+  \code{\link{update_xml}}
 }
 
