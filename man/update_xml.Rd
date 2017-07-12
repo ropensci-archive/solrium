@@ -90,4 +90,3 @@ update_xml(file, "books")
 Other update: \code{\link{update_csv}},
   \code{\link{update_json}}
 }
-

@@ -46,4 +46,3 @@ collection_balanceshardunique("mycollection", property = "preferredLeader")
 collection_clusterstatus()$cluster$collections$mycollection
 }
 }
-

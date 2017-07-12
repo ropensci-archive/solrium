@@ -30,4 +30,3 @@ core_reload("gettingstarted")
 core_status("gettingstarted")
 }
 }
-

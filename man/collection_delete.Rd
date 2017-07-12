@@ -23,4 +23,3 @@ collection_create(name = "helloWorld")
 collection_delete(name = "helloWorld")
 }
 }
-

@@ -35,4 +35,3 @@ config_overlay("gettingstarted")
 config_overlay("gettingstarted", omitHeader = TRUE)
 }
 }
-

@@ -63,4 +63,3 @@ collection_clusterstatus()$cluster$collections$foobar$shards
 collection_clusterstatus()$cluster$collections$foobar$shards$shard1
 }
 }
-

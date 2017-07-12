@@ -81,4 +81,3 @@ rgs <- list(c(0, 500), c(501, 1000))
 core_split("splitcoretest0", targetCore = c("splitcoretest1", "splitcoretest2"), ranges = rgs)
 }
 }
-

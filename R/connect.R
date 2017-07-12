@@ -106,9 +106,8 @@ make_proxy <- function(args) {
   if (is.null(args)) {
     NULL
   } else {
-    httr::use_proxy(url = args$url, port = args$port, 
-                    username = args$username, password = args$password, 
-                    auth = args$auth)
+    crul::proxy(url = args$url, user = args$user, 
+                pwd = args$pwd, auth = args$auth %||% "basic")
   }
 }
 

@@ -8,6 +8,9 @@ addons:
     packages:
       - oracle-java8-installer
 
+r_github_packages:
+  - jimhester/covr
+
 env:
   matrix:
   - SOLR_VERSION=5.4.1

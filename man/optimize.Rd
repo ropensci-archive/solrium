@@ -45,4 +45,3 @@ optimize("gettingstarted", wt = "xml")
 optimize("gettingstarted", wt = "xml", raw = TRUE)
 }
 }
-

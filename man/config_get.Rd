@@ -64,4 +64,3 @@ config_get("gettingstarted", "requestHandler", wt = "xml")
 config_get("gettingstarted", raw = TRUE)
 }
 }
-

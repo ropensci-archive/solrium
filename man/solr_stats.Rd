@@ -88,4 +88,3 @@ more information on Solr stats.
 \code{\link{solr_highlight}}, \code{\link{solr_facet}},
 \code{\link{solr_search}}, \code{\link{solr_mlt}}
 }
-

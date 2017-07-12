@@ -199,4 +199,3 @@ See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
 \seealso{
 \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 }
-

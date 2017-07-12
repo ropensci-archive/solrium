@@ -26,4 +26,3 @@ collection_deletealias("tstuff")
 collection_clusterstatus()$cluster$collections$thingsstuff$aliases # gone
 }
 }
-

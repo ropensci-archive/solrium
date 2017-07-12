@@ -49,4 +49,3 @@ config_set("gettingstarted", set = list(
 )
 }
 }
-

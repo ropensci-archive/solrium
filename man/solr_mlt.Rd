@@ -109,4 +109,3 @@ solr_parse(out, "df")
 See \url{http://wiki.apache.org/solr/MoreLikeThis} for more
 information.
 }
-

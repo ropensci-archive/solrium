@@ -142,10 +142,10 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
   }
 }
 
-handle_url <- function(conn, name) {
+handle_url <- function(url, name) {
   if (is.null(name)) {
-    conn$url
+    url
   } else {
-    file.path(conn$url, "solr", name, "select")
+    file.path(url, "solr", name, "select")
   }
 }

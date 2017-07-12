@@ -3,6 +3,7 @@
 \name{delete}
 \alias{delete}
 \alias{delete_by_id}
+\alias{delete}
 \alias{delete_by_query}
 \title{Delete documents by ID or query}
 \usage{
@@ -62,4 +63,3 @@ add(ss, name = "gettingstarted")
 # delete_by_query(query = "manu:bank")
 }
 }
-

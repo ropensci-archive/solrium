@@ -38,4 +38,3 @@ names(collection_clusterstatus()$cluster$collections$buffalo$shards)
 collection_deleteshard(name = "buffalo", shard = "shard1_1")
 }
 }
-

@@ -85,4 +85,3 @@ add(ss, name = "books", wt = "xml", raw = TRUE)
 \code{\link{update_json}}, \code{\link{update_xml}}, 
 \code{\link{update_csv}} for adding documents from files
 }
-

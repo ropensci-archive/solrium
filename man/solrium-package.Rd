@@ -2,8 +2,8 @@
 % Please edit documentation in R/solrium-package.R
 \docType{package}
 \name{solrium-package}
-\alias{solrium}
 \alias{solrium-package}
+\alias{solrium}
 \title{General purpose R interface to Solr.}
 \description{
 This package has support for all the search endpoints, as well as a suite
@@ -65,8 +65,8 @@ this R client.
 
 Let us know if there's any further performance improvements we can make.
 }
+
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com}
 }
 \keyword{package}
-

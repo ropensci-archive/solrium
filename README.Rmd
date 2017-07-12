@@ -17,11 +17,11 @@ knitr::opts_chunk$set(
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
-Development is now following Solr v5 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v5.
+Development is now following Solr v6 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v6.
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
-> Currently developing against Solr `v5.4.1`
+> Currently developing against Solr `v6.6.0`
 
 > Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
 
@@ -56,28 +56,31 @@ library("solrium")
 
 ## Setup
 
-Use `solr_connect()` to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
+Use `SolrClient$new()` to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
 
 ```{r}
-invisible(solr_connect('http://api.plos.org/search'))
+(cli <- SolrClient$new(host = 'http://api.plos.org/search', port = NULL))
 ```
 
 You can also set whether you want simple or detailed error messages (via `errors`), and whether you want URLs used in each function call or not (via `verbose`), and your proxy settings (via `proxy`) if needed. For example:
 
 ```{r eval=FALSE}
-solr_connect("localhost:8983", errors = "complete", verbose = FALSE)
+SolrClient$new(host = "localhost", port = 8983, errors = "complete")
 ```
 
-Then you can get your settings like
+Your settings are printed in the print method for the connection object
 
-```{r eval=FALSE}
-solr_settings()
-#> <solr_connection>
-#>   url:    localhost:8983
-#>   errors: complete
-#>   verbose: FALSE
-#>   proxy:
+```{r}
+cli
 ```
+
+For local Solr server setup:
+
+```
+bin/solr start -e cloud -noprompt
+bin/post -c gettingstarted example/exampledocs/*.xml
+```
+
 
 ## Search
 
@@ -272,4 +275,4 @@ delete_by_query(query = "manu:bank")
 * Get citation information for `solrium` in R doing `citation(package = 'solrium')`
 * Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
+[![ropensci_footer](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)

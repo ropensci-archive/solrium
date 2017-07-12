@@ -218,4 +218,3 @@ more information on highlighting.
 \seealso{
 \code{\link{solr_search}}, \code{\link{solr_facet}}
 }
-

@@ -44,4 +44,3 @@ commit("gettingstarted", wt = "xml")
 commit("gettingstarted", wt = "xml", raw = TRUE)
 }
 }
-

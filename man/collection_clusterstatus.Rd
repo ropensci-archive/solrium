@@ -33,4 +33,3 @@ res$cluster$collections$gettingstarted
 res$cluster$live_nodes
 }
 }
-

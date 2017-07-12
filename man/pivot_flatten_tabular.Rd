@@ -19,4 +19,3 @@ Convert a nested hierarchy of facet.pivot elements
 to tabular data (rows and columns)
 }
 \keyword{internal}
-

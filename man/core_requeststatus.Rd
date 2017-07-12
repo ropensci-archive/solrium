@@ -25,4 +25,3 @@ Request status of asynchronous CoreAdmin API call
 # core_requeststatus(requestid = 1)
 }
 }
-

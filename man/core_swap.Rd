@@ -54,4 +54,3 @@ core_status("swapcoretest1", FALSE)
 core_status("swapcoretest2", FALSE)
 }
 }
-

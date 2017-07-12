@@ -32,22 +32,23 @@ collectargs <- function(x){
   as.list(unlist(sc(outlist)))
 }
 
-# GET helper fxn
-solr_GET <- function(base, args, callopts = NULL, ...){
-  tt <- GET(base, query = args, callopts, ...)
-  if (solr_settings()$verbose) message(URLdecode(tt$url))
-  if (tt$status_code > 201) {
-    solr_error(tt)
+solr_GET <- function(base, path, args, callopts = NULL, ...) {
+  cli <- crul::HttpClient$new(url = base, opts = callopts)
+  res <- cli$get(path = path, query = args)
+  if (res$status_code > 201) {
+    solr_error(res)
   } else {
-    content(tt, as = "text", encoding = "UTF-8")
+    res$parse("UTF-8")
   }
 }
 
 solr_error <- function(x) {
-  if (grepl("html", x$headers$`content-type`)) {
-    stop(http_status(x)$message, call. = FALSE)
+  if (grepl("html", x$response_headers$`content-type`)) {
+    stat <- x$status_http()
+    stop(sprintf('(%s) %s - %s', 
+                 stat$status_code, stat$message, stat$explanation))
   } else { 
-    err <- jsonlite::fromJSON(content(x, "text", encoding = "UTF-8"))
+    err <- jsonlite::fromJSON(x$parse("UTF-8"))
     erropt <- Sys.getenv("SOLR_ERRORS")
     if (erropt == "simple" || erropt == "") {
       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
@@ -77,11 +78,21 @@ solr_POST <- function(base, body, args, content, ...) {
 }
 
 # POST helper fxn - just a body
-solr_POST_body <- function(base, body, args, ...) {
+solr_POST_body <- function(base, path, body, args, ...) {
   invisible(match.arg(args$wt, c("xml", "json")))
-  tt <- POST(base, query = args, body = body, 
-             content_type_json(), encode = "json", ...)
-  get_response(tt)
+  httpcli <- crul::HttpClient$new(
+    url = base, opts = list(verbose = TRUE)
+    #headers = list(`Content-Type` = "application/json")
+  )
+  res <- httpcli$post(path = path, query = args, body = body, encode = "form")
+  if (res$status_code > 201) {
+    solr_error(res)
+  } else {
+    res$parse("UTF-8")
+  }
+  # tt <- POST(base, query = args, body = body, 
+  #            content_type_json(), encode = "json", ...)
+  #get_response(tt)
 }
 
 # POST helper fxn for R objects
@@ -244,4 +255,4 @@ unbox_if <- function(x, recursive = FALSE) {
   }
 }
 
-`%||%` <- function(x, y) if (is.na(x) || is.null(x)) y else x
+`%||%` <- function(x, y) if (suppressWarnings(is.na(x)) || is.null(x)) y else x

@@ -46,4 +46,3 @@ collection_rebalanceleaders("mycollection2")
 collection_clusterstatus()$cluster$collections$mycollection2
 }
 }
-

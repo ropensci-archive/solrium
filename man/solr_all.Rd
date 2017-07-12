@@ -138,4 +138,3 @@ more information.
 \seealso{
 \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 }
-

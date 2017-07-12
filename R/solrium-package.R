@@ -55,12 +55,14 @@
 #' @importFrom utils URLdecode head modifyList read.table
 #' @importFrom httr GET POST stop_for_status content content_type_json
 #' content_type_xml content_type upload_file http_condition http_status
+#' @importFrom crul HttpClient
 #' @importFrom xml2 read_xml xml_children xml_find_first xml_find_all
 #' xml_name xml_text xml_attr xml_attrs
 #' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble data_frame as_data_frame as_tibble add_column
+#' @importFrom R6 R6Class
 #' @name solrium-package
 #' @aliases solrium
 #' @docType package

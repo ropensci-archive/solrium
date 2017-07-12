@@ -51,4 +51,3 @@ library("httr")
 ping("gettingstarted", wt="xml", config = verbose())
 }
 }
-

@@ -40,4 +40,3 @@ core_status("gettingstarted", indexInfo = TRUE)
 core_status("gettingstarted", indexInfo = FALSE)
 }
 }
-

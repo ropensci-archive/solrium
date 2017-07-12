@@ -38,4 +38,3 @@ library("httr")
 collections(config = verbose())
 }
 }
-

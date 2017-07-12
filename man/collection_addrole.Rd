@@ -35,4 +35,3 @@ nodes <- collection_clusterstatus()$cluster$live_nodes
 collection_addrole(node = nodes[1])
 }
 }
-

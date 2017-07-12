@@ -70,4 +70,3 @@ update_atomic_xml(body, "books")
 solr_get(ids = 343334534545, "books", wt = "xml")
 }
 }
-
