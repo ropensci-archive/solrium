@@ -20,7 +20,10 @@
 #' solr_connect('http://api.plos.org/search')
 #'
 #' # search
-#' solr_search(q='*:*', rows=2, fl='id')
+#' solr_search(q='*:*', rows=2)
+#' 
+#' # use HTTP POST method instead of GET
+#' solr_search(q='*:*', rows=2, http_method = "post")
 #'
 #' # Search for word ecology in title and cell in the body
 #' solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5)
@@ -109,7 +112,7 @@
 solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
-  callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
+  callopts=list(), raw=FALSE, parsetype='df', concat=',', http_method="GET", ...) {
 
   check_defunct(...)
   conn <- solr_settings()
@@ -131,8 +134,18 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
     args <- args[!names(args) %in% "q"]
   }
 
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
-                   class = "sr_search", wt = wt)
+  callres <- switch(tolower(http_method), 
+    get = solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
+    post = {
+      args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
+      body <- jsonlite::toJSON(args, auto_unbox = TRUE)
+      tt <- httr::POST(
+        handle_url(conn, name), body = args, query = list(wt = "json"), 
+        encode = "form", conn$proxy, callopts)
+      get_response(tt)
+    }
+  )
+  out <- structure(callres, class = "sr_search", wt = wt)
   if (raw) {
     return( out )
   } else {
