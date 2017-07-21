@@ -109,6 +109,26 @@
 solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
+  callopts=list(), raw=FALSE, parsetype='df', concat=',',
+  optimizeMaxRows=TRUE, minOptimizedRows=50000, ...) {
+
+  if (!is.null(rows) & (optimizeMaxRows)) {
+    if (rows>minOptimizedRows) {
+      out <- solr_search_exec(name=name, q=q, rows='0', wt='json', raw='TRUE')
+      outJson <- fromJSON(out)
+      rows <- outJson$response$numFound
+    }
+  }
+
+  solr_search_exec(name, q, sort, start, rows, pageDoc,
+    pageScore, fq, fl, defType, timeAllowed,
+    qt, wt, NOW, TZ, echoHandler, echoParams,
+    key, callopts, raw, parsetype, concat, ...)
+}
+
+solr_search_exec <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
+  pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
+  wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
 
   check_defunct(...)
