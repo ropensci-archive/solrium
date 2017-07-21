@@ -119,10 +119,10 @@ solr_search_all <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NU
     }
   } 
 
-  solr_search(name=name, q=q, sort=sort, start=start, rows=rows, pageDoc=pageDoc,
-    pageScore=pageScore, fq=fq, fl=fl, defType=defType, timeAllowed=timeAllowed,
-    qt=qt, wt=wt, NOW=NOW, TZ=TZ, echoHandler=echoHandler, echoParam=echoParam,
-    key=key, callopts=callopts, raw=raw, parsetype=parsetype, concat=concat, ...)
+  solr_search(name, q, sort, start, rows, pageDoc,
+    pageScore, fq, fl, defType, timeAllowed,
+    qt, wt, NOW, TZ, echoHandler, echoParams,
+    key, callopts, raw, parsetype, concat, ...)
   
 }
 
