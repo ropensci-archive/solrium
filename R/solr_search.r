@@ -122,7 +122,7 @@ solr_search_optimized_rows <- function(name = NULL, q='*:*', sort=NULL, start=NU
     args <- args[!names(args) %in% "q"]
   }
  
-  if (maxRowOptimize) {
+  if (maxRowsOptimize) {
     if (is.null(rows) | (!is.null(rows) & (rows<maxOptimizedRows))) {
       out <- solr_search(name, q, sort, start, '0', pageDoc,
         pageScore, fq, fl, defType, timeAllowed, qt, 'json', NOW,
