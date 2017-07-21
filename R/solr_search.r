@@ -109,18 +109,17 @@ solr_search_all <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NU
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='df', concat=',', 
-  maxRowsOptimize=TRUE, maxOptimizedRows=50000, ...) {
+  maxRowsOptimize=TRUE, minOptimizedRows=50000, ...) {
 
   if (maxRowsOptimize) {
-    if (is.null(rows) | (!is.null(rows) & (rows<maxOptimizedRows))) {
-      out <- solr_search(name=name, q=q, rows='0', wt='json',raw='TRUE')
+    if (is.null(rows) | (!is.null(rows) & (rows>minOptimizedRows))) {
+      out <- solr_search(name=name, q=q, rows='0', wt='json', raw='TRUE')
       outJson <- fromJSON(out)
-      maxRows <- outJson$responseHeader$numFound
+      rows <- outJson$responseHeader$numFound
     }
-  } else {
-    maxRows <- rows
-  }
-  solr_search(name, q, sort, start, maxRows, pageDoc,
+  } 
+
+  solr_search(name, q, sort, start, rows, pageDoc,
     pageScore, fq, fl, defType, timeAllowed, qt, wt, NOW,
     TZ, echoHandler, echoParam, key, callopts, raw, 
     parsetype, concat, ...)
