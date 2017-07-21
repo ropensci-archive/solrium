@@ -105,30 +105,28 @@
 #' # solr_connect("localhost:8889")
 #' # solr_search("gettingstarted")
 #' }
-solr_search_all <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
+
+solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='df', concat=',', 
-  maxRowsOptimize=TRUE, minOptimizedRows=50000, ...) {
+  optimizeMaxRows=TRUE, minOptimizedRows=50000, ...) {
 
-  if (maxRowsOptimize) {
-    if (is.null(rows) | (!is.null(rows) & (rows>minOptimizedRows))) {
+  if (optimizeMaxRows) {
+    if (!is.null(rows) & (rows>minOptimizedRows)) {
       out <- solr_search(name=name, q=q, rows='0', wt='json', raw='TRUE')
       outJson <- fromJSON(out)
       rows <- outJson$response$numFound
     }
   } 
 
-  solr_search(name, q, sort, start, rows, pageDoc,
+  solr_search_exec(name, q, sort, start, rows, pageDoc,
     pageScore, fq, fl, defType, timeAllowed,
     qt, wt, NOW, TZ, echoHandler, echoParams,
     key, callopts, raw, parsetype, concat, ...)
-  
 }
 
-
-
-solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
+solr_search_exec <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
   callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
