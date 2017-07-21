@@ -105,6 +105,43 @@
 #' # solr_connect("localhost:8889")
 #' # solr_search("gettingstarted")
 #' }
+solr_search_optimized_rows <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
+  pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
+  wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
+  callopts=list(), raw=FALSE, parsetype='df', concat=',', 
+  maxRowsOptimize=TRUE, maxOptimizedRows=50000, ...) {
+
+  check_defunct(...)
+  # args that can be repeated
+  todonames <- "fq"
+  args <- c(args, collectargs(todonames))
+
+  # additional parameters
+  args <- c(args, list(...))
+  if ('query' %in% names(args)) {
+    args <- args[!names(args) %in% "q"]
+  }
+ 
+  if (maxRowOptimize) {
+    if (is.null(rows) | (!is.null(rows) & (rows<maxOptimizedRows))) {
+      out <- solr_search(name, q, sort, start, '0', pageDoc,
+        pageScore, fq, fl, defType, timeAllowed, qt, 'json', NOW,
+        TZ, echoHandler, echoParam, key, callopts, 'TRUE', 
+        parsetype, concat, ...)
+      outJson <- fromJSON(out)
+      maxRows <- out$responseHeader$numFound
+    }
+  } else {
+    maxRows <- rows
+  }
+  solr_search(name, q, sort, start, maxRows, pageDoc,
+    pageScore, fq, fl, defType, timeAllowed, qt, wt, NOW,
+    TZ, echoHandler, echoParam, key, callopts, 'TRUE', 
+    parsetype, concat, ...)
+  
+}
+
+
 
 solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
