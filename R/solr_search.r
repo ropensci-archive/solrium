@@ -113,7 +113,7 @@ solr_search_all <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NU
 
   if (maxRowsOptimize) {
     if (is.null(rows) | (!is.null(rows) & (rows>minOptimizedRows))) {
-      out <- solr_search(name=name, q=q, rows='0', wt='json', raw='TRUE'==)
+      out <- solr_search(name=name, q=q, rows='0', wt='json', raw='TRUE')
       outJson <- fromJSON(out)
       rows <- outJson$response$numFound
     }
