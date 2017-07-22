@@ -47,4 +47,9 @@
 #' @param concat (character) Character to concatenate elements of longer than length 1. 
 #' Note that this only works reliably when data format is json (wt='json'). The parsing
 #' is more complicated in XML format, but you can do that on your own.
+#' @param optimizeMaxRows (logical) If TRUE, then rows parameter will be adjusted to the number of returned
+#' results by the same constraints. It will only be applied if rows parameter is higher
+#' than minOptimizedRows. Default: TRUE
+#' @param minOptimizedRows minOptimizedRows parameter is used by optimizedMaxRows parameter.
+#' Default: 50000
 #' @param ... Further args.
