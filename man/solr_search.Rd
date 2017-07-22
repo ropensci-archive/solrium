@@ -9,7 +9,7 @@ solr_search(name = NULL, q = "*:*", sort = NULL, start = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
-  concat = ",", ...)
+  concat = ",", optimizeMaxRows = TRUE, minOptimizedRows = 50000, ...)
 }
 \arguments{
 \item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
@@ -87,6 +87,13 @@ include:
 \item{concat}{(character) Character to concatenate elements of longer than length 1. 
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
+
+\item{optimizeMaxRows}{(logical) If TRUE, then rows parameter will be adjusted to the number of returned
+results by the same constraints. It will only be applied if rows parameter is higher
+than minOptimizedRows. Default: TRUE}
+
+\item{minOptimizedRows}{minOptimizedRows parameter is used by optimizedMaxRows parameter.
+Default: 50000}
 
 \item{...}{Further args.}
 }
@@ -199,4 +206,3 @@ See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
 \seealso{
 \code{\link{solr_highlight}}, \code{\link{solr_facet}}
 }
-
