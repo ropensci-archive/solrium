@@ -105,10 +105,10 @@ test_that("solr_search optimize max rows with rows -1", {
   solr_connect('http://api.plos.org/search', verbose = FALSE)
 
   a <- solr_search(q='*:*', rows=1, fl='id')
-  query <- c('id:', a$id)
+  query <- paste0('id:', a$id)
+  a <- solr_search(q=query, rows=1, fl='id')
   b <- solr_search(q=query, rows=-1, fl='id')
-
-  expect_true(identical(a, b))
+  expect_identical(a, b)
 })
 
 test_that("solr_search optimize max rows with rows 50000", {
@@ -117,10 +117,11 @@ test_that("solr_search optimize max rows with rows 50000", {
   solr_connect('http://api.plos.org/search', verbose = FALSE)
 
   a <- solr_search(q='*:*', rows=1, fl='id')
-  query <- c('id:', a$id)
+  query <- paste0('id:', a$id)
+  a <- solr_search(q=query, rows=1, fl='id')
   b <- solr_search(q=query, rows=50000, fl='id')
 
-  expect_true(identical(a, b))
+  expect_identical(a, b)
 })
 
 test_that("solr_search optimize max rows with rows 50001", {
@@ -129,10 +130,11 @@ test_that("solr_search optimize max rows with rows 50001", {
   solr_connect('http://api.plos.org/search', verbose = FALSE)
 
   a <- solr_search(q='*:*', rows=1, fl='id')
-  query <- c('id:', a$id)
+  query <- paste0('id:', a$id)
+  a <- solr_search(q=query, rows=1, fl='id')
   b <- solr_search(q=query, rows=50001, fl='id')
 
-  expect_true(identical(a, b))
+  expect_identical(a, b)
 })
 
 test_that("solr_search fails if optimize max rows is disabled with rows -1", {
