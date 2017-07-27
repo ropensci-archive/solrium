@@ -99,45 +99,60 @@ test_that("solr_search works with Dryad", {
   expect_true(all(grepl("ecolog", b$dc.title.en, ignore.case = TRUE)))
 })
 
-test_that("solr_search optimize max rows with rows -1", {
+test_that("solr_search optimize max rows with lower boundary", {
   skip_on_cran()
 
   solr_connect('http://api.plos.org/search', verbose = FALSE)
 
   a <- solr_search(q='*:*', rows=1, fl='id')
   query <- paste0('id:', a$id)
-  a <- solr_search(q=query, rows=1, fl='id')
-  b <- solr_search(q=query, rows=-1, fl='id')
-  expect_identical(a, b)
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=-1, fl='id')
+
+  expect_identical(b, c)
 })
 
-test_that("solr_search optimize max rows with rows 50000", {
+test_that("solr_search optimize max rows with upper boundary", {
   skip_on_cran()
 
   solr_connect('http://api.plos.org/search', verbose = FALSE)
 
   a <- solr_search(q='*:*', rows=1, fl='id')
   query <- paste0('id:', a$id)
-  a <- solr_search(q=query, rows=1, fl='id')
-  b <- solr_search(q=query, rows=50000, fl='id')
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=50000, fl='id')
 
-  expect_identical(a, b)
+  expect_identical(b, c)
 })
 
-test_that("solr_search optimize max rows with rows 50001", {
+test_that("solr_search optimize max rows with rows higher than upper boundary", {
   skip_on_cran()
 
   solr_connect('http://api.plos.org/search', verbose = FALSE)
 
   a <- solr_search(q='*:*', rows=1, fl='id')
   query <- paste0('id:', a$id)
-  a <- solr_search(q=query, rows=1, fl='id')
-  b <- solr_search(q=query, rows=50001, fl='id')
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=50001, fl='id')
 
-  expect_identical(a, b)
+  expect_identical(b, c)
 })
 
-test_that("solr_search fails if optimize max rows is disabled with rows -1", {
+test_that("solr_search optimize max rows with rows=31 and minOptimizedRows=30", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- paste0('id:', a$id)
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=31, fl='id', optimizeMaxRows=TRUE, minOptimizedRows=30)
+
+  expect_identical(b, c)
+})
+
+
+test_that("solr_search fails if optimize max rows is disabled with rows equal to -1", {
   skip_on_cran()
 
   solr_connect('http://api.plos.org/search', verbose = FALSE)
