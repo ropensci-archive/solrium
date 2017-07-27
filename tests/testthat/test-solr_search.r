@@ -98,3 +98,49 @@ test_that("solr_search works with Dryad", {
   # correct content
   expect_true(all(grepl("ecolog", b$dc.title.en, ignore.case = TRUE)))
 })
+
+test_that("solr_search optimize max rows with rows -1", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- c('id:', a$id)
+  b <- solr_search(q=query, rows=-1, fl='id')
+
+  expect_true(identical(a, b))
+})
+
+test_that("solr_search optimize max rows with rows 50000", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- c('id:', a$id)
+  b <- solr_search(q=query, rows=50000, fl='id')
+
+  expect_true(identical(a, b))
+})
+
+test_that("solr_search optimize max rows with rows 50001", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- c('id:', a$id)
+  b <- solr_search(q=query, rows=50001, fl='id')
+
+  expect_true(identical(a, b))
+})
+
+test_that("solr_search fails if optimize max rows is disabled with rows -1", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=-1, fl='id', optimizeMaxRows=FALSE)
+
+  expect_that(length(a), equals(0))
+})
