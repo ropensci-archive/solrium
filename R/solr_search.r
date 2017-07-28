@@ -119,7 +119,7 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
     if (rows > minOptimizedRows || rows < 0) {
       out <- solr_search_exec(name=name, q=q, rows='0', wt='json', raw='TRUE')
       outJson <- fromJSON(out)
-      if (rows > outJson$response$numFound || rows < 0) rows <- outJson$response$numFound
+      if (rows > outJson$response$numFound || rows < 0) rows <- as.double(outJson$response$numFound)
     }
   }
 
