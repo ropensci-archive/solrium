@@ -89,4 +89,3 @@ update_json(file, "books")
 Other update: \code{\link{update_csv}},
   \code{\link{update_xml}}
 }
-

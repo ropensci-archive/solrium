@@ -63,4 +63,3 @@ file.copy(files, path, recursive = TRUE)
 core_create(name = "newcore", instanceDir = "newcore", configSet = "basic_configs")
 }
 }
-

@@ -37,4 +37,3 @@ core_status("testcore") # core missing
 core_status("newtestcore", FALSE) # not missing
 }
 }
-

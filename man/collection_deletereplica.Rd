@@ -56,4 +56,3 @@ collection_deletereplica(name = "foobar2", shard = "shard1", replica = nms[1])
 collection_clusterstatus()$cluster$collections$foobar2$shards$shard1
 }
 }
-

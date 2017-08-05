@@ -21,4 +21,3 @@ collection_list()
 collection_list()$collections
 }
 }
-

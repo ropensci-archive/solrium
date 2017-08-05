@@ -64,4 +64,3 @@ update_atomic_json(body, "books")
 solr_get(ids = 343334534545, "books")
 }
 }
-

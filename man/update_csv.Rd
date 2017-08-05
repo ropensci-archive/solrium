@@ -126,4 +126,3 @@ update_csv("df.csv", "books", wt = "xml", raw = FALSE)
 Other update: \code{\link{update_json}},
   \code{\link{update_xml}}
 }
-

@@ -41,4 +41,3 @@ collection_splitshard(name = "trees", shard = "shard1")
 names(collection_clusterstatus()$cluster$collections$trees$shards)
 }
 }
-

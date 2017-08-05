@@ -58,4 +58,3 @@ config_params("gettingstarted", param = "myFacets")
 config_params("gettingstarted")
 }
 }
-

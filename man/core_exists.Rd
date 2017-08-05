@@ -36,4 +36,3 @@ core_exists("gettingstarted")
 core_exists("hhhhhh")
 }
 }
-

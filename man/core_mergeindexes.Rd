@@ -45,4 +45,3 @@ core_mergeindexes(core="new_core_name", indexDir = c("/solr_home/core1/data/inde
 core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
 }
 }
-

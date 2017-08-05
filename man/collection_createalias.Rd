@@ -28,4 +28,3 @@ collection_createalias("tstuff", "thingsstuff")
 collection_clusterstatus()$cluster$collections$thingsstuff$aliases # new alias
 }
 }
-

@@ -53,4 +53,3 @@ collection_clusterstatus()$cluster$collections$addrep$shards
 collection_clusterstatus()$cluster$collections$addrep$shards$shard1$replicas$core_node1
 }
 }
-

@@ -103,4 +103,3 @@ invisible(file.copy(files, path, recursive = TRUE))
 collection_create(name = "newcore", collection.configName = "newcore")
 }
 }
-

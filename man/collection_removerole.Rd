@@ -30,4 +30,3 @@ collection_addrole(node = nodes[1])
 collection_removerole(node = nodes[1])
 }
 }
-

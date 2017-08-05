@@ -49,4 +49,3 @@ solr_get(ids = 1, "gettingstarted", raw = TRUE, wt = "json")
 solr_get(ids = 1, "gettingstarted", raw = TRUE, wt = "xml")
 }
 }
-

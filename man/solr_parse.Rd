@@ -2,12 +2,12 @@
 % Please edit documentation in R/parsers.R
 \name{solr_parse}
 \alias{solr_parse}
-\alias{solr_parse.sr_all}
-\alias{solr_parse.sr_group}
 \alias{solr_parse.sr_high}
-\alias{solr_parse.sr_mlt}
 \alias{solr_parse.sr_search}
+\alias{solr_parse.sr_all}
+\alias{solr_parse.sr_mlt}
 \alias{solr_parse.sr_stats}
+\alias{solr_parse.sr_group}
 \title{Parse raw data from solr_search, solr_facet, or solr_highlight.}
 \usage{
 solr_parse(input, parsetype = NULL, concat)
@@ -42,4 +42,3 @@ function to parse that data (a sr_facet S3 object) after the fact to a
 list of data.frame's for easier consumption. The data format type is 
 detected from the attribute "wt" on the sr_facet object.
 }
-

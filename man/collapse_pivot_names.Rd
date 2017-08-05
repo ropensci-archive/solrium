@@ -21,4 +21,3 @@ into 2 columns assuming that the first column of every set of 3
 This type of structure is usually returned by facet.pivot responses.
 }
 \keyword{internal}
-

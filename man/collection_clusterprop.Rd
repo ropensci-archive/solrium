@@ -39,4 +39,3 @@ collection_clusterstatus()$cluster$properties
 collection_clusterprop(name = "urlScheme", val = "")
 }
 }
-

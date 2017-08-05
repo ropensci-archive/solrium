@@ -55,4 +55,3 @@ Sys.getenv("SOLR_URL")
 Sys.getenv("SOLR_ERRORS")
 }
 }
-

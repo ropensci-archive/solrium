@@ -52,4 +52,3 @@ collection_deletereplicaprop(name = "deleterep", shard = "shard1",
 collection_clusterstatus()$cluster$collections$deleterep$shards$shard1$replicas$core_node1
 }
 }
-

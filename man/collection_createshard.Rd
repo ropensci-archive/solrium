@@ -32,4 +32,3 @@ solr_connect()
 # collection_createshard(name = "trees", shard = "newshard")
 }
 }
-

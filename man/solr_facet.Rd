@@ -363,4 +363,3 @@ more information on faceting.
 \seealso{
 \code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse}}
 }
-
