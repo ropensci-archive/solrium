@@ -113,6 +113,11 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
     args[names(args) %in% "facet.pivot"] <- NULL
     args$facet.pivot <- xx
   }
+  
+  # check if any facet.* fields - if none, stop with message
+  if (!any(grepl("facet\\.", names(args)))) {
+    stop("didn't detect any facet. fields - at least 1 required")
+  }
 
   out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
                    class = "sr_facet", wt = wt)

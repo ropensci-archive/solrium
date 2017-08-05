@@ -67,3 +67,9 @@ test_that("faceting works against HathiTrust", {
   expect_is(c$facet_pivot$`genre,publisher`, "data.frame")  
 })
 
+
+test_that("faceting fails well", {
+  solr_connect("https://search.datacite.org/api")
+  expect_error(suppressMessages(solr_facet(q = "*:*")), 
+               "didn't detect any facet. fields - at least 1 required")
+})
