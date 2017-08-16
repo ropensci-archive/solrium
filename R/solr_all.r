@@ -57,7 +57,7 @@ solr_all <- function(name = NULL, q='*:*', sort=NULL, start=0, rows=NULL, pageDo
   check_conn(conn)
   check_wt(wt)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
-  args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
+  args <- sc(list(q = q, sort = sort, start = start, rows = cn(rows), pageDoc = pageDoc,
                        pageScore = pageScore, fl = fl, fq = fq, defType = defType,
                        timeAllowed = timeAllowed, qt = qt, wt = wt, NOW = NOW, TZ = TZ,
                        echoHandler = echoHandler, echoParams = echoParams))

@@ -116,6 +116,9 @@ solr_connect('http://api.plos.org/search')
 # search
 solr_search(q='*:*', rows=2, fl='id')
 
+# search and return all rows
+solr_search(q='*:*', rows=-1, fl='id')
+
 # Search for word ecology in title and cell in the body
 solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5)
 

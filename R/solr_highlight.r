@@ -47,7 +47,7 @@ solr_highlight <- function(name = NULL, q, hl.fl = NULL, hl.snippets = NULL, hl.
   check_conn(conn)
   check_wt(wt)
   if(!is.null(hl.fl)) names(hl.fl) <- rep("hl.fl", length(hl.fl))
-  args <- sc(list(wt=wt, q=q, start=start, rows=rows, hl='true',
+  args <- sc(list(wt=wt, q=q, start=start, rows=cn(rows), hl='true',
      hl.snippets=hl.snippets, hl.fragsize=hl.fragsize, fl=fl, fq=fq,
      hl.mergeContiguous = hl.mergeContiguous, hl.requireFieldMatch = hl.requireFieldMatch,
      hl.maxAnalyzedChars = hl.maxAnalyzedChars, hl.alternateField = hl.alternateField,

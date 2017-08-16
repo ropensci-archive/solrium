@@ -83,6 +83,7 @@ solr_group <- function(name = NULL, q='*:*', start=0, rows = NA, sort = NA, fq =
   conn <- solr_settings()
   check_conn(conn)
   check_wt(wt)
+  rows <- cn(rows)
   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
   todonames <- c("group.query","group.field", 'q', 'start', 'rows', 'sort',
     'fq', 'wt', 'group.limit', 'group.offset', 'group.sort', 'group.sort',

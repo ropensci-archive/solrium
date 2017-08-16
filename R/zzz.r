@@ -245,3 +245,19 @@ unbox_if <- function(x, recursive = FALSE) {
 }
 
 `%||%` <- function(x, y) if (is.na(x) || is.null(x)) y else x
+
+cn <- function(x) {
+  name <- substitute(x)
+  if (!is.null(x)) {
+    tryx <- tryCatch(as.numeric(as.character(x)), warning = function(e) e)
+    if ("warning" %in% class(tryx)) {
+      stop(name, " should be a numeric or integer class value", call. = FALSE)
+    }
+    if (!inherits(tryx, "numeric") | is.na(tryx))
+      stop(name, " should be a numeric or integer class value", call. = FALSE)
+    return( format(x, digits = 22, scientific = FALSE) )
+  } else {
+    NULL
+  }
+}
+

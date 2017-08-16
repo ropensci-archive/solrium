@@ -93,6 +93,7 @@ solr_facet <- function(name = NULL, q="*:*", facet.query=NA, facet.field=NA,
   conn <- solr_settings()
   check_conn(conn)
   check_wt(wt)
+  rows <- cn(rows)
   todonames <- c("q",  "facet.query",  "facet.field",
      "facet.prefix", "facet.sort", "facet.limit", "facet.offset",
      "facet.mincount", "facet.missing", "facet.method", "facet.enum.cache.minDf",

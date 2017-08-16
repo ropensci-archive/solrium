@@ -115,6 +115,7 @@ solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, 
   callopts=list(), raw=FALSE, parsetype='df', concat=',',
   optimizeMaxRows=TRUE, minOptimizedRows=50000, ...) {
 
+  rows <- cn(rows)
   if (!is.null(rows) && optimizeMaxRows) {
     if (rows > minOptimizedRows || rows < 0) {
       out <- solr_search_exec(name=name, q=q, rows='0', wt='json', raw='TRUE')
