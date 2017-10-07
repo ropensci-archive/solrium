@@ -7,13 +7,15 @@
 \alias{delete_by_query}
 \title{Delete documents by ID or query}
 \usage{
-delete_by_id(ids, name, commit = TRUE, commit_within = NULL,
+delete_by_id(conn, ids, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 
-delete_by_query(query, name, commit = TRUE, commit_within = NULL,
+delete_by_query(conn, query, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{ids}{Document IDs, one or more in a vector or list}
 
 \item{name}{(character) A collection or core name. Required.}
@@ -21,21 +23,22 @@ delete_by_query(query, name, commit = TRUE, commit_within = NULL,
 \item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Deafult: \code{TRUE}}
 
-\item{commit_within}{(numeric) Milliseconds to commit the change, the document will be added
-within that time. Default: NULL}
+\item{commit_within}{(numeric) Milliseconds to commit the change, the
+document will be added within that time. Default: \code{NULL}}
 
-\item{overwrite}{(logical) Overwrite documents with matching keys. Default: \code{TRUE}}
+\item{overwrite}{(logical) Overwrite documents with matching keys.
+Default: \code{TRUE}}
 
-\item{boost}{(numeric) Boost factor. Default: NULL}
+\item{boost}{(numeric) Boost factor. Default: \code{NULL}}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses \code{\link[xml2:read_xml]{xml2::read_xml()}} to
 parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 
 \item{query}{Query to use to delete documents}
 }
@@ -47,19 +50,19 @@ We use json internally as data interchange format for this function.
 }
 \examples{
 \dontrun{
-solr_connect()
+(cli <- SolrClient$new()) 
 
 # add some documents first
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, name = "gettingstarted")
+cli$add(ss, name = "gettingstarted")
 
 # Now, delete them
 # Delete by ID
-# delete_by_id(ids = 9)
+cli$delete_by_id(ids = 1, "gettingstarted")
 ## Many IDs
-# delete_by_id(ids = c(3, 4))
+cli$delete_by_id(ids = c(3, 4), "gettingstarted")
 
 # Delete by query
-# delete_by_query(query = "manu:bank")
+cli$delete_by_query(query = "manu:bank", "gettingstarted")
 }
 }

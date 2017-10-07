@@ -17,11 +17,11 @@ knitr::opts_chunk$set(
 
 **A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
 
-Development is now following Solr v6 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v6.
+Development is now following Solr v7 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v7.
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
-> Currently developing against Solr `v6.6.0`
+> Currently developing against Solr `v7.0.0`
 
 > Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
 
@@ -35,6 +35,66 @@ Be aware that currently some functions will only work in certain Solr modes, e.g
 + [Grouping/Feild collapsing](http://wiki.apache.org/solr/FieldCollapsing)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 + [Solr csv writer](http://wiki.apache.org/solr/CSVResponseWriter)
+
+## Package API and ways of using the package
+
+The first thing to look at is `SolrClient` to instantiate a client connection
+to your Solr instance. `ping` and `schema` are helpful functions to look 
+at after instantiating your client.
+
+There are two ways to use `solrium`:
+
+1. Call functions on the `SolrClient` object
+2. Pass the `SolrClient` object to functions
+
+For example, if we instantiate a client like `conn <- SolrClient$new()`, then 
+to use the first way we can do `conn$search(...)`, and the second way by doing
+`solr_search(conn, ...)`. These two ways of using the package hopefully 
+make the package more user friendly for more people, those that prefer a more
+object oriented approach, and those that prefer more of a functional approach.
+
+**Collections**
+
+Functions that start with `collection` work with Solr collections when in 
+cloud mode. Note that these functions won't work when in Solr standard mode 
+
+**Cores**
+
+Functions that start with `core` work with Solr cores when in standard Solr 
+mode. Note that these functions won't work when in Solr cloud mode
+
+**Documents**
+
+The following functions work with documents in Solr
+
+```
+#>  - add
+#>  - delete_by_id
+#>  - delete_by_query
+#>  - update_atomic_json
+#>  - update_atomic_xml
+#>  - update_csv
+#>  - update_json
+#>  - update_xml
+```
+
+**Search**
+
+Search functions, including `solr_parse` for parsing results from different 
+functions appropriately
+
+```
+#>  - solr_all
+#>  - solr_facet
+#>  - solr_get
+#>  - solr_group
+#>  - solr_highlight
+#>  - solr_mlt
+#>  - solr_parse
+#>  - solr_search
+#>  - solr_stats
+```
+
 
 ## Install
 
@@ -59,13 +119,13 @@ library("solrium")
 Use `SolrClient$new()` to initialize your connection. These examples use a remote Solr server, but work on any local Solr server.
 
 ```{r}
-(cli <- SolrClient$new(host = 'http://api.plos.org/search', port = NULL))
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 ```
 
 You can also set whether you want simple or detailed error messages (via `errors`), and whether you want URLs used in each function call or not (via `verbose`), and your proxy settings (via `proxy`) if needed. For example:
 
 ```{r eval=FALSE}
-SolrClient$new(host = "localhost", port = 8983, errors = "complete")
+SolrClient$new(errors = "complete")
 ```
 
 Your settings are printed in the print method for the connection object
@@ -85,7 +145,7 @@ bin/post -c gettingstarted example/exampledocs/*.xml
 ## Search
 
 ```{r}
-solr_search(q='*:*', rows=2, fl='id')
+cli$search(params = list(q='*:*', rows=2, fl='id'))
 ```
 
 ### Search grouped data
@@ -93,43 +153,54 @@ solr_search(q='*:*', rows=2, fl='id')
 Most recent publication by journal
 
 ```{r}
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=1, group.sort='publication_date desc', fl='publication_date, score')
+cli$group(params = list(q='*:*', group.field='journal', rows=5, group.limit=1,
+                        group.sort='publication_date desc', 
+                        fl='publication_date, score'))
 ```
 
 First publication by journal
 
 ```{r}
-solr_group(q='*:*', group.field='journal', group.limit=1, group.sort='publication_date asc', fl='publication_date, score', fq="publication_date:[1900-01-01T00:00:00Z TO *]")
+cli$group(params = list(q = '*:*', group.field = 'journal', group.limit = 1,
+                        group.sort = 'publication_date asc', 
+                        fl = c('publication_date', 'score'),
+                        fq = "publication_date:[1900-01-01T00:00:00Z TO *]"))
 ```
 
 Search group query : Last 3 publications of 2013.
 
 ```{r}
-solr_group(q='*:*', group.query='publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]', group.limit = 3, group.sort='publication_date desc', fl='publication_date')
+gq <- 'publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]'
+cli$group(
+  params = list(q='*:*', group.query = gq, 
+                group.limit = 3, group.sort = 'publication_date desc', 
+                fl = 'publication_date'))
 ```
 
 Search group with format simple
 
 ```{r}
-solr_group(q='*:*', group.field='journal', rows=5, group.limit=3, group.sort='publication_date desc', group.format='simple', fl='journal, publication_date')
+cli$group(params = list(q='*:*', group.field='journal', rows=5, 
+                        group.limit=3, group.sort='publication_date desc',
+                        group.format='simple', fl='journal, publication_date'))
 ```
 
 ### Facet
 
 ```{r}
-solr_facet(q='*:*', facet.field='journal', facet.query='cell,bird')
+cli$facet(params = list(q='*:*', facet.field='journal', facet.query=c('cell', 'bird')))
 ```
 
 ### Highlight
 
 ```{r}
-solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2)
+cli$highlight(params = list(q='alcohol', hl.fl = 'abstract', rows=2))
 ```
 
 ### Stats
 
 ```{r}
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal')
+out <- cli$stats(params = list(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'), stats.facet='journal'))
 ```
 
 ```{r}
@@ -141,7 +212,7 @@ out$data
 `solr_mlt` is a function to return similar documents to the one
 
 ```{r}
-out <- solr_mlt(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5)
+out <- cli$mlt(params = list(q='title:"ecology" AND body:"cell"', mlt.fl='title', mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5))
 ```
 
 ```{r}
@@ -159,7 +230,8 @@ out$mlt
 For example:
 
 ```{r}
-(out <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=2, raw=TRUE))
+(out <- cli$highlight(params = list(q='alcohol', hl.fl = 'abstract', rows=2),
+                      raw=TRUE))
 ```
 
 Then parse
@@ -173,22 +245,22 @@ solr_parse(out, 'df')
 Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to stort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"
 
 ```{r}
-solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
-  rows=5, fl='id,title', fq='doc_type:full')
+cli$search(params = list(q='_val_:"product(counter_total_all,alm_twitterCount)"',
+  rows=5, fl='id,title', fq='doc_type:full'))
 ```
 
 Here, we search for the papers with the most citations
 
 ```{r}
-solr_search(q='_val_:"max(counter_total_all)"',
-    rows=5, fl='id,counter_total_all', fq='doc_type:full')
+cli$search(params = list(q='_val_:"max(counter_total_all)"',
+    rows=5, fl='id,counter_total_all', fq='doc_type:full'))
 ```
 
 Or with the most tweets
 
 ```{r}
-solr_search(q='_val_:"max(alm_twitterCount)"',
-    rows=5, fl='id,alm_twitterCount', fq='doc_type:full')
+cli$search(params = list(q='_val_:"max(alm_twitterCount)"',
+    rows=5, fl='id,alm_twitterCount', fq='doc_type:full'))
 ```
 
 ### Using specific data sources
@@ -198,15 +270,15 @@ __USGS BISON service__
 The occurrences service
 
 ```{r}
-invisible(solr_connect("http://bison.usgs.ornl.gov/solrstaging/occurrences/select"))
-solr_search(q='*:*', fl=c('decimalLatitude','decimalLongitude','scientificName'), rows=2)
+conn <- SolrClient$new(scheme = "https", host = "bison.usgs.gov", path = "solr/occurrences/select", port = NULL)
+conn$search(params = list(q = '*:*', fl = c('decimalLatitude','decimalLongitude','scientificName'), rows = 2))
 ```
 
 The species names service
 
 ```{r}
-invisible(solr_connect("http://bisonapi.usgs.ornl.gov/solr/scientificName/select"))
-solr_search(q='*:*', raw=TRUE)
+conn <- SolrClient$new(scheme = "https", host = "bison.usgs.gov", path = "solr/scientificName/select", port = NULL)
+conn$search(params = list(q = '*:*'))
 ```
 
 __PLOS Search API__
@@ -219,6 +291,10 @@ This isn't as complete as searching functions show above, but we're getting ther
 
 ### Cores
 
+```{r eval=FALSE}
+conn <- SolrClient$new()
+```
+
 Many functions, e.g.:
 
 * `core_create()`
@@ -229,7 +305,7 @@ Many functions, e.g.:
 Create a core
 
 ```{r eval=FALSE}
-core_create(name = "foo_bar")
+conn$core_create(name = "foo_bar")
 ```
 
 ### Collections
@@ -244,7 +320,7 @@ Many functions, e.g.:
 Create a collection
 
 ```{r eval=FALSE}
-collection_create(name = "hello_world")
+conn$collection_create(name = "hello_world")
 ```
 
 ### Add documents
@@ -253,19 +329,19 @@ Add documents, supports adding from files (json, xml, or csv format), and from R
 
 ```{r eval=FALSE}
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(df, name = "books")
+conn$add(df, name = "books")
 ```
 
 Delete documents, by id
 
 ```{r eval=FALSE}
-delete_by_id(ids = c(3, 4))
+conn$delete_by_id(name = "books", ids = c(3, 4))
 ```
 
 Or by query
 
 ```{r eval=FALSE}
-delete_by_query(query = "manu:bank")
+conn$delete_by_query(name = "books", query = "manu:bank")
 ```
 
 ## Meta

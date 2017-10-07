@@ -4,22 +4,28 @@
 \alias{collection_overseerstatus}
 \title{Get overseer status}
 \usage{
-collection_overseerstatus(raw = FALSE, ...)
+collection_overseerstatus(conn, raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
-Returns the current status of the overseer, performance statistics
-of various overseer APIs as well as last 10 failures per operation type.
+Returns the current status of the overseer, performance
+statistics of various overseer APIs as well as last 10 failures per
+operation type.
 }
 \examples{
 \dontrun{
-solr_connect()
-collection_overseerstatus()
-res <- collection_overseerstatus()
+(conn <- SolrClient$new())
+conn$collection_overseerstatus()
+res <- conn$collection_overseerstatus()
 res$responseHeader
 res$leader
 res$overseer_queue_size

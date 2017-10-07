@@ -4,27 +4,19 @@
 #' assigned using \code{\link{collection_addrole}}
 #'
 #' @export
-#' @param role (character) Required. The name of the role. The only supported role
-#' as of now is overseer (set as default).
+#' @param role (character) Required. The name of the role. The only supported
+#' role as of now is overseer (set as default).
 #' @param node (character) Required. The name of the node.
-#' @param raw (logical) If \code{TRUE}, returns raw data
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' @inheritParams collection_create
 #' @examples \dontrun{
-#' solr_connect()
+#' (conn <- SolrClient$new())
 #'
 #' # get list of nodes
-#' nodes <- collection_clusterstatus()$cluster$live_nodes
-#' collection_addrole(node = nodes[1])
-#' collection_removerole(node = nodes[1])
+#' nodes <- conn$collection_clusterstatus()$cluster$live_nodes
+#' conn$collection_addrole(node = nodes[1])
+#' conn$collection_removerole(node = nodes[1])
 #' }
-collection_removerole <- function(role = "overseer", node, raw = FALSE, ...) {
-  conn <- solr_settings()
-  check_conn(conn)
-  args <- sc(list(action = 'REMOVEROLE', role = role, node = node, wt = 'json'))
-  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, conn$proxy, ...)
-  if (raw) {
-    return(res)
-  } else {
-    jsonlite::fromJSON(res)
-  }
+collection_removerole <- function(conn, role = "overseer", node, raw = FALSE, 
+                                  ...) {
+  conn$collection_removerole(role, node, raw, ...)
 }

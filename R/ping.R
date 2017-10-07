@@ -1,17 +1,16 @@
 #' Ping a Solr instance
 #'
 #' @export
+#' @param conn A solrium connection object, see [SolrClient]
 #' @param name (character) Name of a collection or core. Required.
 #' @param wt (character) One of json (default) or xml. If json, uses
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-#' \code{\link[xml2]{read_xml}} to parse
-#' @param verbose If TRUE (default) the url call used printed to console.
-#' @param raw (logical) If TRUE, returns raw data in format specified by
-#' \code{wt} param
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' [jsonlite::fromJSON()] to parse. If xml, uses [xml2::read_xml)] to parse
+#' @param raw (logical) If `TRUE`, returns raw data in format specified by
+#' `wt` param
+#' @param ... curl options passed on to [crul::HttpClient]
 #'
-#' @return if \code{wt="xml"} an object of class \code{xml_document}, if
-#' \code{wt="json"} an object of class \code{list}
+#' @return if `wt="xml"` an object of class `xml_document`, if
+#' `wt="json"` an object of class `list`
 #'
 #' @details You likely may not be able to run this function against many public
 #' Solr services as they hopefully don't expose their admin interface to the
@@ -23,31 +22,17 @@
 #' # do so
 #'
 #' # connect: by default we connect to localhost, port 8983
-#' solr_connect()
+#' (cli <- SolrClient$new())
 #'
 #' # ping the gettingstarted index
-#' ping("gettingstarted")
-#' ping("gettingstarted", wt = "xml")
-#' ping("gettingstarted", verbose = FALSE)
-#' ping("gettingstarted", raw = TRUE)
+#' cli$ping("gettingstarted")
+#' ping(cli, "gettingstarted")
+#' ping(cli, "gettingstarted", wt = "xml")
+#' ping(cli, "gettingstarted", verbose = FALSE)
+#' ping(cli, "gettingstarted", raw = TRUE)
 #'
-#' library("httr")
-#' ping("gettingstarted", wt="xml", config = verbose())
+#' ping(cli, "gettingstarted", wt="xml", verbose = TRUE)
 #' }
-
-ping <- function(name, wt = 'json', verbose = TRUE, raw = FALSE, ...) {
-  conn <- solr_settings()
-  check_conn(conn)
-  res <- tryCatch(solr_GET(file.path(conn$url, sprintf('solr/%s/admin/ping', name)),
-           args = list(wt = wt), verbose = verbose, conn$proxy, ...), error = function(e) e)
-  if (inherits(res, "error")) {
-    return(list(status = "not found"))
-  } else {
-    out <- structure(res, class = "ping", wt = wt)
-    if (raw) {
-      return( out )
-    } else {
-      solr_parse(out)
-    }
-  }
+ping <- function(conn, name, wt = 'json', raw = FALSE, ...) {
+  conn$ping(name = name, wt = wt, raw = raw, ...)
 }

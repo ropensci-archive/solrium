@@ -4,9 +4,11 @@
 \alias{config_get}
 \title{Get Solr configuration details}
 \usage{
-config_get(name, what = NULL, wt = "json", raw = FALSE, ...)
+config_get(conn, name, what = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) The name of the core. If not given, all cores.}
 
 \item{what}{(character) What you want to look at. One of solrconfig or
@@ -19,7 +21,7 @@ If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt}}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 A list, \code{xml_document}, or character
@@ -38,29 +40,29 @@ you get all the data when \code{raw=TRUE}.
 # where <corename> is the name for your core - or creaate as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # all config settings
-config_get("gettingstarted")
+conn$config_get("gettingstarted")
 
 # just znodeVersion
-config_get("gettingstarted", "znodeVersion")
+conn$config_get("gettingstarted", "znodeVersion")
 
 # just znodeVersion
-config_get("gettingstarted", "luceneMatchVersion")
+conn$config_get("gettingstarted", "luceneMatchVersion")
 
 # just updateHandler
-config_get("gettingstarted", "updateHandler")
+conn$config_get("gettingstarted", "updateHandler")
 
 # just updateHandler
-config_get("gettingstarted", "requestHandler")
+conn$config_get("gettingstarted", "requestHandler")
 
 ## Get XML
-config_get("gettingstarted", wt = "xml")
-config_get("gettingstarted", "updateHandler", wt = "xml")
-config_get("gettingstarted", "requestHandler", wt = "xml")
+conn$config_get("gettingstarted", wt = "xml")
+conn$config_get("gettingstarted", "updateHandler", wt = "xml")
+conn$config_get("gettingstarted", "requestHandler", wt = "xml")
 
 ## Raw data - what param ignored when raw=TRUE
-config_get("gettingstarted", raw = TRUE)
+conn$config_get("gettingstarted", raw = TRUE)
 }
 }

@@ -4,21 +4,22 @@
 \alias{ping}
 \title{Ping a Solr instance}
 \usage{
-ping(name, wt = "json", verbose = TRUE, raw = FALSE, ...)
+ping(conn, name, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) Name of a collection or core. Required.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[xml2]{read_xml}} to parse}
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses [xml2::read_xml)] to parse
 
-\item{verbose}{If TRUE (default) the url call used printed to console.}
+[xml2::read_xml)]: R:xml2::read_xml)}
 
-\item{raw}{(logical) If TRUE, returns raw data in format specified by
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 if \code{wt="xml"} an object of class \code{xml_document}, if
@@ -39,15 +40,15 @@ public, but works locally.
 # do so
 
 # connect: by default we connect to localhost, port 8983
-solr_connect()
+(cli <- SolrClient$new())
 
 # ping the gettingstarted index
-ping("gettingstarted")
-ping("gettingstarted", wt = "xml")
-ping("gettingstarted", verbose = FALSE)
-ping("gettingstarted", raw = TRUE)
+cli$ping("gettingstarted")
+ping(cli, "gettingstarted")
+ping(cli, "gettingstarted", wt = "xml")
+ping(cli, "gettingstarted", verbose = FALSE)
+ping(cli, "gettingstarted", raw = TRUE)
 
-library("httr")
-ping("gettingstarted", wt="xml", config = verbose())
+ping(cli, "gettingstarted", wt="xml", verbose = TRUE)
 }
 }

@@ -1,21 +1,13 @@
 #' List collections
 #'
 #' @export
-#' @param raw (logical) If \code{TRUE}, returns raw data
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' @inheritParams ping
 #' @examples \dontrun{
-#' solr_connect()
-#' collection_list()
-#' collection_list()$collections
+#' (conn <- SolrClient$new())
+#' conn$collection_list()
+#' conn$collection_list()$collections
+#' conn$collection_list(cli)
 #' }
-collection_list <- function(raw = FALSE, ...) {
-  conn <- solr_settings()
-  check_conn(conn)
-  args <- sc(list(action = 'LIST', wt = 'json'))
-  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, conn$proxy, ...)
-  if (raw) {
-    return(res)
-  } else {
-    jsonlite::fromJSON(res)
-  }
+collection_list <- function(conn, raw = FALSE, ...) {
+  conn$collection_list(raw = raw, ...)
 }

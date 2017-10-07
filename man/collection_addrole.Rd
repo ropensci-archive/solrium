@@ -4,9 +4,11 @@
 \alias{collection_addrole}
 \title{Add a role to a node}
 \usage{
-collection_addrole(role = "overseer", node, raw = FALSE, ...)
+collection_addrole(conn, role = "overseer", node, raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{role}{(character) Required. The name of the role. The only supported role
 as of now is overseer (set as default).}
 
@@ -15,7 +17,7 @@ role even before that node is started.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Assign a role to a given node in the cluster. The only supported role
@@ -28,7 +30,7 @@ are up and running
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # get list of nodes
 nodes <- collection_clusterstatus()$cluster$live_nodes

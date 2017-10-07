@@ -4,31 +4,36 @@
 \alias{collection_requeststatus}
 \title{Get request status}
 \usage{
-collection_requeststatus(requestid, raw = FALSE, ...)
+collection_requeststatus(conn, requestid, raw = FALSE, ...)
 }
 \arguments{
-\item{requestid}{(character) Required. The user defined request-id for the request.
-This can be used to track the status of the submitted asynchronous task. \code{-1}
-is a special request id which is used to cleanup the stored states for all of the
-already completed/failed tasks.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{requestid}{(character) Required. The user defined request-id for the
+request. This can be used to track the status of the submitted asynchronous
+task. \code{-1} is a special request id which is used to cleanup the stored
+states for all of the already completed/failed tasks.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
-Request the status of an already submitted Asynchronous Collection
-API call. This call is also used to clear up the stored statuses.
+Request the status of an already submitted Asynchronous
+Collection API call. This call is also used to clear up the stored statuses.
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # invalid requestid
-collection_requeststatus(requestid = "xxx")
+conn$collection_requeststatus(requestid = "xxx")
 
 # valid requestid
-collection_requeststatus(requestid = "xxx")
+conn$collection_requeststatus(requestid = "xxx")
 res$responseHeader
 res$xxx
 }

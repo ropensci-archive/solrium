@@ -4,21 +4,22 @@
 \alias{update_atomic_json}
 \title{Atomic updates with JSON data}
 \usage{
-update_atomic_json(body, name, wt = "json", raw = FALSE, ...)
+update_atomic_json(conn, body, name, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{body}{(character) JSON as a character string}
 
 \item{name}{(character) Name of the core or collection}
 
-\item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
-\code{\link[xml2]{read_xml}} to parse}
+\item{wt}{(character) One of json (default) or xml. If json, uses
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses \code{\link[xml2:read_xml]{xml2::read_xml()}} to parse}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{POST}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Atomic updates with JSON data
@@ -28,10 +29,10 @@ Atomic updates with JSON data
 # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # create a collection
-collection_create("books") 
+collection_create("books")
 
 # Add documents
 file <- system.file("examples", "books2.json", package = "solrium")

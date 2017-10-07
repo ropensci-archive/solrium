@@ -4,51 +4,55 @@
 \alias{collection_deletereplicaprop}
 \title{Delete a replica property}
 \usage{
-collection_deletereplicaprop(name, shard, replica, property, raw = FALSE,
-  callopts = list())
+collection_deletereplicaprop(conn, name, shard, replica, property,
+  raw = FALSE, callopts = list())
 }
 \arguments{
-\item{name}{(character) Required. The name of the collection this replica belongs to.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{shard}{(character) Required. The name of the shard the replica belongs to.}
+\item{name}{(character) The name of the core to be created. Required}
+
+\item{shard}{(character) Required. The name of the shard the replica
+belongs to.}
 
 \item{replica}{(character) Required. The replica, e.g. core_node1.}
 
-\item{property}{(character) Required. The property to delete. Note: this will have the
-literal 'property.' prepended to distinguish it from system-maintained properties.
-So these two forms are equivalent: \code{property=special} and
-\code{property=property.special}}
+\item{property}{(character) Required. The property to delete. Note: this
+will have the literal 'property.' prepended to distinguish it from
+system-maintained properties. So these two forms are equivalent:
+\code{property=special} and  \code{property=property.special}}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Deletes an arbitrary property from a particular replica.
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # create collection
-collection_create(name = "deleterep", numShards = 2) # bin/solr create -c deleterep
+conn$collection_create(name = "deleterep", numShards = 2) 
+# OR bin/solr create -c deleterep
 
 # status
-collection_clusterstatus()$cluster$collections$deleterep$shards
+conn$collection_clusterstatus()$cluster$collections$deleterep$shards
 
 # add the value bar to the property foo
-collection_addreplicaprop(name = "deleterep", shard = "shard1", replica = "core_node1",
-   property = "foo", property.value = "bar")
+conn$collection_addreplicaprop(name = "deleterep", shard = "shard1", 
+  replica = "core_node1", property = "foo", property.value = "bar")
 
 # check status
-collection_clusterstatus()$cluster$collections$deleterep$shards
-collection_clusterstatus()$cluster$collections$deleterep$shards$shard1$replicas$core_node1
+conn$collection_clusterstatus()$cluster$collections$deleterep$shards
+conn$collection_clusterstatus()$cluster$collections$deleterep$shards$shard1$replicas$core_node1
 
 # delete replica property
-collection_deletereplicaprop(name = "deleterep", shard = "shard1",
+conn$collection_deletereplicaprop(name = "deleterep", shard = "shard1",
    replica = "core_node1", property = "foo")
 
 # check status - foo should be gone
-collection_clusterstatus()$cluster$collections$deleterep$shards$shard1$replicas$core_node1
+conn$collection_clusterstatus()$cluster$collections$deleterep$shards$shard1$replicas$core_node1
 }
 }

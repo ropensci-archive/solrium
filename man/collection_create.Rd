@@ -4,7 +4,7 @@
 \alias{collection_create}
 \title{Add a collection}
 \usage{
-collection_create(name, numShards = 2, maxShardsPerNode = 1,
+collection_create(conn, name, numShards = 2, maxShardsPerNode = 1,
   createNodeSet = NULL, collection.configName = NULL,
   replicationFactor = 1, router.name = NULL, shards = NULL,
   createNodeSet.shuffle = TRUE, router.field = NULL,
@@ -12,7 +12,9 @@ collection_create(name, numShards = 2, maxShardsPerNode = 1,
   ...)
 }
 \arguments{
-\item{name}{The name of the collection to be created. Required}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{numShards}{(integer) The number of shards to be created as part of the
 collection. This is a required parameter when using the 'compositeId' router.}
@@ -59,7 +61,7 @@ if createNodeSet is not also specified. Default: \code{TRUE}}
 value of the field in an input document to compute the hash and identify a shard instead of
 looking at the uniqueKey field. If the field specified is null in the document, the document
 will be rejected. Please note that RealTime Get or retrieval by id would also require the
-parameter _route_ (or shard.keys) to avoid a distributed search.}
+parameter \emph{route} (or shard.keys) to avoid a distributed search.}
 
 \item{autoAddReplicas}{(logical)    When set to true, enables auto addition of replicas on
 shared file systems. See the section autoAddReplicas Settings for more details on settings
@@ -70,36 +72,37 @@ asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
-core property name to value. See the section Defining core.properties for details on
-supported properties and values.
-(https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)}
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
 Add a collection
 }
 \examples{
 \dontrun{
-solr_connect()
+# connect
+(cli <- SolrClient$new())
 
-if (!collection_exists("foobar")) {
-  collection_delete(name = "helloWorld")
-  collection_create(name = "helloWorld", numShards = 2)
+if (!cli$collection_exists("things")) {
+  cli$collection_delete(name = "helloWorld")
+  cli$collection_create(name = "helloWorld", numShards = 2)
 }
-if (!collection_exists("foobar")) {
-  collection_delete(name = "tablesChairs")
-  collection_create(name = "tablesChairs")
+if (!cli$collection_exists("foobar")) {
+  cli$collection_delete(name = "tablesChairs")
+  cli$collection_create(name = "tablesChairs")
 }
 
-# you may have to do this if you don't want to use 
+# you may have to do this if you don't want to use
 # bin/solr or use zookeeper directly
 path <- "~/solr-5.4.1/server/solr/newcore/conf"
 dir.create(path, recursive = TRUE)
 files <- list.files("~/solr-5.4.1/server/solr/configsets/data_driven_schema_configs/conf/",
 full.names = TRUE)
 invisible(file.copy(files, path, recursive = TRUE))
-collection_create(name = "newcore", collection.configName = "newcore")
+cli$collection_create(name = "newcore", collection.configName = "newcore")
 }
 }

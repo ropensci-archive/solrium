@@ -4,17 +4,22 @@
 \alias{collection_removerole}
 \title{Remove a role from a node}
 \usage{
-collection_removerole(role = "overseer", node, raw = FALSE, ...)
+collection_removerole(conn, role = "overseer", node, raw = FALSE, ...)
 }
 \arguments{
-\item{role}{(character) Required. The name of the role. The only supported role
-as of now is overseer (set as default).}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{role}{(character) Required. The name of the role. The only supported
+role as of now is overseer (set as default).}
 
 \item{node}{(character) Required. The name of the node.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
 Remove an assigned role. This API is used to undo the roles
@@ -22,11 +27,11 @@ assigned using \code{\link{collection_addrole}}
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # get list of nodes
-nodes <- collection_clusterstatus()$cluster$live_nodes
-collection_addrole(node = nodes[1])
-collection_removerole(node = nodes[1])
+nodes <- conn$collection_clusterstatus()$cluster$live_nodes
+conn$collection_addrole(node = nodes[1])
+conn$collection_removerole(node = nodes[1])
 }
 }

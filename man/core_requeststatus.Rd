@@ -4,24 +4,27 @@
 \alias{core_requeststatus}
 \title{Request status of asynchronous CoreAdmin API call}
 \usage{
-core_requeststatus(requestid, raw = FALSE, callopts = list())
+core_requeststatus(conn, requestid, raw = FALSE, callopts = list())
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{requestid}{The name of one of the cores to be removed. Required}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Request status of asynchronous CoreAdmin API call
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#   bin/solr start -e schemaless
 
 # FIXME: not tested yet...
-# solr_connect()
-# core_requeststatus(requestid = 1)
+# (conn <- SolrClient$new())
+# conn$core_requeststatus(requestid = 1)
 }
 }

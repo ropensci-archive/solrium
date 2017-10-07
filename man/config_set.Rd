@@ -4,18 +4,20 @@
 \alias{config_set}
 \title{Set Solr configuration details}
 \usage{
-config_set(name, set = NULL, unset = NULL, ...)
+config_set(conn, name, set = NULL, unset = NULL, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) The name of the core. If not given, all cores.}
 
-\item{set}{(list) List of key:value pairs of what to set. Default: NULL 
+\item{set}{(list) List of key:value pairs of what to set. Default: NULL
 (nothing passed)}
 
-\item{unset}{(list) One or more character strings of keys to unset. Default: NULL 
+\item{unset}{(list) One or more character strings of keys to unset. Default: NULL
 (nothing passed)}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 A list with response from server
@@ -30,19 +32,21 @@ Set Solr configuration details
 # where <corename> is the name for your core - or creaate as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # set a property
-config_set("gettingstarted", set = list(query.filterCache.autowarmCount = 1000))
+conn$config_set("gettingstarted", 
+  set = list(query.filterCache.autowarmCount = 1000))
 
 # unset a property
-config_set("gettingstarted", unset = "query.filterCache.size", config = verbose())
+conn$config_set("gettingstarted", unset = "query.filterCache.size", 
+  verbose = TRUE)
 
 # both set a property and unset a property
-config_set("gettingstarted", unset = "enableLazyFieldLoading")
+conn$config_set("gettingstarted", unset = "enableLazyFieldLoading")
 
 # many properties
-config_set("gettingstarted", set = list(
+conn$config_set("gettingstarted", set = list(
    query.filterCache.autowarmCount = 1000,
    query.commitWithin.softCommit = 'false'
  )

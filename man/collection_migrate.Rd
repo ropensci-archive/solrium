@@ -4,12 +4,13 @@
 \alias{collection_migrate}
 \title{Migrate documents to another collection}
 \usage{
-collection_migrate(name, target.collection, split.key, forward.timeout = NULL,
-  async = NULL, raw = FALSE, ...)
+collection_migrate(conn, name, target.collection, split.key,
+  forward.timeout = NULL, async = NULL, raw = FALSE, ...)
 }
 \arguments{
-\item{name}{(character) Required. The name of the source collection from which
-documents will be split}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{target.collection}{(character) Required. The name of the target collection
 to which documents will be migrated}
@@ -26,28 +27,31 @@ asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
 Migrate documents to another collection
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # create collection
-collection_create(name = "migrate_from") # bin/solr create -c migrate_from
+conn$collection_create(name = "migrate_from") # bin/solr create -c migrate_from
 
 # create another collection
-collection_create(name = "migrate_to") # bin/solr create -c migrate_to
+conn$collection_create(name = "migrate_to") # bin/solr create -c migrate_to
 
 # add some documents
 file <- system.file("examples", "books.csv", package = "solr")
 x <- read.csv(file, stringsAsFactors = FALSE)
-add(x, "migrate_from")
+conn$add(x, "migrate_from")
 
 # migrate some documents from one collection to the other
 ## FIXME - not sure if this is actually working....
-collection_migrate("migrate_from", "migrate_to", split.key = "05535")
+conn$collection_migrate("migrate_from", "migrate_to", split.key = "05535")
 }
 }

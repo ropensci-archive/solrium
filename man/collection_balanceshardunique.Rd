@@ -4,37 +4,43 @@
 \alias{collection_balanceshardunique}
 \title{Balance a property}
 \usage{
-collection_balanceshardunique(name, property, onlyactivenodes = TRUE,
+collection_balanceshardunique(conn, name, property, onlyactivenodes = TRUE,
   shardUnique = NULL, raw = FALSE, ...)
 }
 \arguments{
-\item{name}{(character) Required. The name of the collection to balance the property in}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{property}{(character) Required. The property to balance. The literal "property."
-is prepended to this property if not specified explicitly.}
+\item{name}{(character) The name of the core to be created. Required}
 
-\item{onlyactivenodes}{(logical) Normally, the property is instantiated on active
-nodes only. If \code{FALSE}, then inactive nodes are also included for distribution.
-Default: \code{TRUE}}
+\item{property}{(character) Required. The property to balance. The literal
+"property." is prepended to this property if not specified explicitly.}
 
-\item{shardUnique}{(logical) Something of a safety valve. There is one pre-defined
-property (preferredLeader) that defaults this value to \code{TRUE}. For all other
-properties that are balanced, this must be set to \code{TRUE} or an error message is
-returned}
+\item{onlyactivenodes}{(logical) Normally, the property is instantiated
+on active nodes only. If \code{FALSE}, then inactive nodes are also included
+for distribution. Default: \code{TRUE}}
+
+\item{shardUnique}{(logical) Something of a safety valve. There is one
+pre-defined property (preferredLeader) that defaults this value to \code{TRUE}.
+For all other properties that are balanced, this must be set to \code{TRUE} or
+an error message is returned}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
-Insures that a particular property is distributed evenly amongst the
-physical nodes that make up a collection. If the property already exists on a replica,
-every effort is made to leave it there. If the property is not on any replica on a
-shard one is chosen and the property is added.
+Insures that a particular property is distributed evenly
+amongst the physical nodes that make up a collection. If the property
+already exists on a replica, every effort is made to leave it there. If the
+property is not on any replica on a shard one is chosen and the property
+is added.
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # create collection
 collection_create(name = "mycollection") # bin/solr create -c mycollection

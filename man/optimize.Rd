@@ -4,36 +4,39 @@
 \alias{optimize}
 \title{Optimize}
 \usage{
-optimize(name, max_segments = 1, wait_searcher = TRUE,
+optimize(conn, name, max_segments = 1, wait_searcher = TRUE,
   soft_commit = FALSE, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) A collection or core name. Required.}
 
-\item{max_segments}{optimizes down to at most this number of segments. Default: 1}
+\item{max_segments}{optimizes down to at most this number of segments.
+Default: 1}
 
-\item{wait_searcher}{block until a new searcher is opened and registered as the
-main query searcher, making the changes visible. Default: \code{TRUE}}
+\item{wait_searcher}{block until a new searcher is opened and registered
+as the main query searcher, making the changes visible. Default: \code{TRUE}}
 
-\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the
-index in a more performant manner, but without "on-disk" guarantees.
+\item{soft_commit}{perform a soft commit - this will refresh the 'view'
+of the index in a more performant manner, but without "on-disk" guarantees.
 Default: \code{FALSE}}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses \code{\link[xml2:read_xml]{xml2::read_xml()}} to
 parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Optimize
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 optimize("gettingstarted")
 optimize("gettingstarted", max_segments = 2)

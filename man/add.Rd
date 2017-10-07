@@ -4,60 +4,63 @@
 \alias{add}
 \title{Add documents from R objects}
 \usage{
-add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+add(x, conn, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
   boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{x}{Documents, either as rows in a data.frame, or a list.}
 
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) A collection or core name. Required.}
 
-\item{commit}{(logical) If \code{TRUE}, documents immediately searchable. 
+\item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Default: \code{TRUE}}
 
-\item{commit_within}{(numeric) Milliseconds to commit the change, the 
+\item{commit_within}{(numeric) Milliseconds to commit the change, the
 document will be added within that time. Default: NULL}
 
-\item{overwrite}{(logical) Overwrite documents with matching keys. 
+\item{overwrite}{(logical) Overwrite documents with matching keys.
 Default: \code{TRUE}}
 
 \item{boost}{(numeric) Boost factor. Default: NULL}
 
-\item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to 
+\item{wt}{(character) One of json (default) or xml. If json, uses
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
 parse}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Add documents from R objects
 }
 \details{
-Works for Collections as well as Cores (in SolrCloud and Standalone 
+Works for Collections as well as Cores (in SolrCloud and Standalone
 modes, respectively)
 }
 \examples{
 \dontrun{
-solr_connect()
+(cli <- SolrClient$new())
 
 # create the boooks collection
-if (!collection_exists("books")) {
-  collection_create(name = "books", numShards = 2)
+if (!collection_exists(cli, "books")) {
+  collection_create(cli, name = "books", numShards = 2)
 }
 
 # Documents in a list
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, name = "books")
+add(ss, cli, name = "books")
+cli$get(c(1, 2), "books")
 
 # Documents in a data.frame
 ## Simple example
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(x = df, "books")
+add(df, cli, "books")
 df <- data.frame(id = c(77, 78), price = c(1, 2.40))
-add(x = df, "books")
+add(df, "books")
 
 ## More complex example, get file from package examples
 # start Solr in Schemaless mode first: bin/solr start -e schemaless
@@ -82,6 +85,6 @@ add(ss, name = "books", wt = "xml", raw = TRUE)
 }
 }
 \seealso{
-\code{\link{update_json}}, \code{\link{update_xml}}, 
+\code{\link{update_json}}, \code{\link{update_xml}},
 \code{\link{update_csv}} for adding documents from files
 }

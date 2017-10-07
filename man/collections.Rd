@@ -5,36 +5,36 @@
 \alias{cores}
 \title{List collections or cores}
 \usage{
-collections(...)
+collections(conn, ...)
 
-cores(...)
+cores(conn, ...)
 }
 \arguments{
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
-A character vector
+character vector
 }
 \description{
 List collections or cores
 }
 \details{
-Calls \code{\link{collection_list}} or \code{\link{core_status}} internally, 
+Calls \code{\link[=collection_list]{collection_list()}} or \code{\link[=core_status]{core_status()}} internally,
 and parses out names for you.
 }
 \examples{
 \dontrun{
 # connect
-solr_connect(verbose = FALSE)
+(conn <- SolrClient$new())
 
 # list collections
-collections()
+conn$collection_list()
+collections(conn)
 
 # list cores
-cores()
-
-# curl options
-library("httr")
-collections(config = verbose())
+conn$core_status()
+cores(conn)
 }
 }

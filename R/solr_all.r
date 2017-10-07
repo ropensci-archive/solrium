@@ -1,77 +1,64 @@
 #' @title All purpose search
 #'
-#' @description Includes documents, facets, groups, mlt, stats, and highlights.
+#' @description Includes documents, facets, groups, mlt, stats, and highlights
 #'
-#' @template search
-#' @param wt (character) One of json (default) or xml. If json, uses
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}}
-#' to parse. You can't use \code{csv} because the point of this function
-#' @return XML, JSON, a list, or data.frame
-#' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}}
-#' @references See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for
-#' more information.
 #' @export
+#' @template search
+#' @param conn A solrium connection object, see [SolrClient]
+#' @param params (list) a named list of parameters, results in a GET reqeust
+#' as long as no body parameters given
+#' @param body (list) a named list of parameters, if given a POST request 
+#' will be performed
+#' @return XML, JSON, a list, or data.frame
+#' @seealso [solr_highlight()], [solr_facet()]
+#' @references See <http://wiki.apache.org/solr/#Search_and_Indexing> for
+#' more information.
 #' @examples \dontrun{
 #' # connect
-#' solr_connect('http://api.plos.org/search')
+#' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
 #'
-#' solr_all(q='*:*', rows=2, fl='id')
+#' solr_all(cli, params = list(q='*:*', rows=2, fl='id'))
 #'
 #' # facets
-#' solr_all(q='*:*', rows=2, fl='id', facet="true", facet.field="journal")
+#' solr_all(cli, params = list(q='*:*', rows=2, fl='id', facet="true", 
+#'   facet.field="journal"))
 #'
 #' # mlt
-#' solr_all(q='ecology', rows=2, fl='id', mlt='true', mlt.count=2, mlt.fl='abstract')
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', mlt='true', 
+#'   mlt.count=2, mlt.fl='abstract'))
 #'
 #' # facets and mlt
-#' solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
-#' mlt='true', mlt.count=2, mlt.fl='abstract')
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
+#'   facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract'))
 #'
 #' # stats
-#' solr_all(q='ecology', rows=2, fl='id', stats='true', stats.field='counter_total_all')
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', stats='true', 
+#'   stats.field='counter_total_all'))
 #'
 #' # facets, mlt, and stats
-#' solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
-#' mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all')
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
+#'   facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract', 
+#'   stats='true', stats.field='counter_total_all'))
 #'
 #' # group
-#' solr_all(q='ecology', rows=2, fl='id', group='true',
-#'    group.field='journal', group.limit=3)
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', group='true',
+#'  group.field='journal', group.limit=3))
 #'
 #' # facets, mlt, stats, and groups
-#' solr_all(q='ecology', rows=2, fl='id', facet="true", facet.field="journal",
-#'    mlt='true', mlt.count=2, mlt.fl='abstract', stats='true', stats.field='counter_total_all',
-#'    group='true', group.field='journal', group.limit=3)
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
+#'  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract', 
+#'  stats='true', stats.field='counter_total_all', group='true', 
+#'  group.field='journal', group.limit=3))
 #'
 #' # using wt = xml
-#' solr_all(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="xml", raw=TRUE)
+#' solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'), 
+#'   fq='doc_type:full', wt="xml"), raw=TRUE)
 #' }
 
-solr_all <- function(name = NULL, q='*:*', sort=NULL, start=0, rows=NULL, pageDoc=NULL,
-  pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
-  wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
-  callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
-
-  check_defunct(...)
-  conn <- solr_settings()
-  check_conn(conn)
-  check_wt(wt)
-  if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
-  args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
-                       pageScore = pageScore, fl = fl, fq = fq, defType = defType,
-                       timeAllowed = timeAllowed, qt = qt, wt = wt, NOW = NOW, TZ = TZ,
-                       echoHandler = echoHandler, echoParams = echoParams))
-
-  # additional parameters
-  args <- c(args, list(...))
-
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
-                   class = "sr_all", wt = wt)
-  if (raw) {
-    return( out )
-  } else {
-    parsed <- cont_parse(out, wt)
-    parsed <- structure(parsed, class = c(class(parsed), "sr_all"))
-    solr_parse(parsed, parsetype, concat)
-  }
+solr_all <- function(conn, name = NULL, params = NULL, body = NULL, 
+                     callopts=list(), raw=FALSE, parsetype='df', 
+                     concat=',', ...) {
+  
+  conn$all(name = name, params = params, body = body, callopts = callopts, 
+             raw = raw, parsetype = parsetype, concat = concat, ...)
 }

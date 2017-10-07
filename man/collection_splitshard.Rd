@@ -4,40 +4,45 @@
 \alias{collection_splitshard}
 \title{Create a shard}
 \usage{
-collection_splitshard(name, shard, ranges = NULL, split.key = NULL,
+collection_splitshard(conn, name, shard, ranges = NULL, split.key = NULL,
   async = NULL, raw = FALSE, ...)
 }
 \arguments{
-\item{name}{(character) Required. The name of the collection that includes the shard
-to be split}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{shard}{(character) Required. The name of the shard to be split}
 
-\item{ranges}{(character) A comma-separated list of hash ranges in hexadecimal
-e.g. ranges=0-1f4,1f5-3e8,3e9-5dc}
+\item{ranges}{(character) A comma-separated list of hash ranges in
+hexadecimal e.g. ranges=0-1f4,1f5-3e8,3e9-5dc}
 
 \item{split.key}{(character) The key to use for splitting the index}
 
-\item{async}{(character) Request ID to track this action which will be processed
-asynchronously}
+\item{async}{(character) Request ID to track this action which will be
+processed asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
 Create a shard
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
+
 # create collection
-collection_create(name = "trees")
+conn$collection_create(name = "trees")
 # find shard names
-names(collection_clusterstatus()$cluster$collections$trees$shards)
+names(conn$collection_clusterstatus()$cluster$collections$trees$shards)
 # split a shard by name
-collection_splitshard(name = "trees", shard = "shard1")
+conn$collection_splitshard(name = "trees", shard = "shard1")
 # now we have three shards
-names(collection_clusterstatus()$cluster$collections$trees$shards)
+names(conn$collection_clusterstatus()$cluster$collections$trees$shards)
 }
 }

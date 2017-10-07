@@ -4,12 +4,14 @@
 \alias{collection_exists}
 \title{Check if a collection exists}
 \usage{
-collection_exists(name, ...)
+collection_exists(conn, name, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) The name of the core. If not given, all cores.}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 A single boolean, \code{TRUE} or \code{FALSE}
@@ -18,21 +20,19 @@ A single boolean, \code{TRUE} or \code{FALSE}
 Check if a collection exists
 }
 \details{
-Simply calls \code{\link{collection_list}} internally
+Simply calls \code{\link[=collection_list]{collection_list()}} internally
 }
 \examples{
 \dontrun{
 # start Solr with Cloud mode via the schemaless eg: bin/solr -e cloud
 # you can create a new core like: bin/solr create -c corename
 # where <corename> is the name for your core - or creaate as below
-
-# connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # exists
-collection_exists("gettingstarted")
+conn$collection_exists("gettingstarted")
 
 # doesn't exist
-collection_exists("hhhhhh")
+conn$collection_exists("hhhhhh")
 }
 }

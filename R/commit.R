@@ -1,41 +1,32 @@
 #' Commit
 #'
 #' @export
+#' @param conn A solrium connection object, see [SolrClient]
 #' @param name (character) A collection or core name. Required.
-#' @param expunge_deletes merge segments with deletes away. Default: \code{FALSE}
-#' @param wait_searcher block until a new searcher is opened and registered as the
-#' main query searcher, making the changes visible. Default: \code{TRUE}
-#' @param soft_commit  perform a soft commit - this will refresh the 'view' of the
-#' index in a more performant manner, but without "on-disk" guarantees.
-#' Default: \code{FALSE}
+#' @param expunge_deletes merge segments with deletes away. Default: `FALSE`
+#' @param wait_searcher block until a new searcher is opened and registered as
+#' the main query searcher, making the changes visible. Default: `TRUE`
+#' @param soft_commit  perform a soft commit - this will refresh the 'view' of
+#' the index in a more performant manner, but without "on-disk" guarantees.
+#' Default: `FALSE`
 #' @param wt (character) One of json (default) or xml. If json, uses
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
-#' parse
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by
-#' \code{wt} param
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' [jsonlite::fromJSON()] to parse. If xml, uses [xml2::read_xml()] to parse
+#' @param raw (logical) If `TRUE`, returns raw data in format specified by
+#' `wt` param
+#' @param ... curl options passed on to [crul::HttpClient]
 #' @examples \dontrun{
-#' solr_connect()
+#' (conn <- SolrClient$new())
 #'
-#' commit("gettingstarted")
-#' commit("gettingstarted", wait_searcher = FALSE)
+#' conn$commit("gettingstarted")
+#' conn$commit("gettingstarted", wait_searcher = FALSE)
 #'
 #' # get xml back
-#' commit("gettingstarted", wt = "xml")
+#' conn$commit("gettingstarted", wt = "xml")
 #' ## raw xml
-#' commit("gettingstarted", wt = "xml", raw = TRUE)
+#' conn$commit("gettingstarted", wt = "xml", raw = TRUE)
 #' }
-commit <- function(name, expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
-                   wt = 'json', raw = FALSE, ...) {
+commit <- function(conn, name, expunge_deletes = FALSE, wait_searcher = TRUE,
+                   soft_commit = FALSE, wt = 'json', raw = FALSE, ...) {
 
-  conn <- solr_settings()
-  check_conn(conn)
-  obj_proc(file.path(conn$url, sprintf('solr/%s/update', name)),
-           body = list(commit =
-                         list(expungeDeletes = asl(expunge_deletes),
-                              waitSearcher = asl(wait_searcher),
-                              softCommit = asl(soft_commit))),
-           args = list(wt = wt),
-           raw = raw,
-           conn$proxy, ...)
+  conn$commit(name, expunge_deletes, wait_searcher, soft_commit, wt, raw, ...)
 }

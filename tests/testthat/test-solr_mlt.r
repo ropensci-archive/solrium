@@ -3,12 +3,10 @@ context("solr_mlt")
 test_that("solr_mlt works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search', verbose=FALSE)
+  a <- conn_plos$mlt(params = list(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full"))
+  c <- conn_plos$mlt(params = list(q='ecology', mlt.fl='abstract', fl='title', rows=5))
 
-  a <- solr_mlt(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score', fq="doc_type:full")
-  c <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=5)
-
-  out <- solr_mlt(q='ecology', mlt.fl='abstract', fl='title', rows=2, raw=TRUE, wt="xml")
+  out <- conn_plos$mlt(params = list(q='ecology', mlt.fl='abstract', fl='title', rows=2, wt="xml"), raw=TRUE)
   library("xml2")
   outxml <- read_xml(unclass(out))
   outdf <- solr_parse(out, "df")

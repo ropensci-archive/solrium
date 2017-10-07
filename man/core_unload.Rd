@@ -4,12 +4,14 @@
 \alias{core_unload}
 \title{Unload (delete) a core}
 \usage{
-core_unload(name, deleteIndex = FALSE, deleteDataDir = FALSE,
+core_unload(conn, name, deleteIndex = FALSE, deleteDataDir = FALSE,
   deleteInstanceDir = FALSE, async = NULL, raw = FALSE,
   callopts = list())
 }
 \arguments{
-\item{name}{The name of one of the cores to be removed. Required}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{deleteIndex}{(logical)    If \code{TRUE}, will remove the index when unloading
 the core. Default: \code{FALSE}}
@@ -18,30 +20,34 @@ the core. Default: \code{FALSE}}
 sub-directories. Default: \code{FALSE}}
 
 \item{deleteInstanceDir}{(logical)    If \code{TRUE}, removes everything related to
-the core, including the index directory, configuration files and other related
-files. Default: \code{FALSE}}
+the core, including the index directory, configuration files and other
+related files. Default: \code{FALSE}}
 
-\item{async}{(character) Request ID to track this action which will be processed
-asynchronously}
+\item{async}{(character) Request ID to track this action which will be
+processed asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Unload (delete) a core
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#   bin/solr start -e schemaless
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # Create a core
-core_create(name = "thingsstuff")
+conn$core_create(name = "books")
 
 # Unload a core
-core_unload(name = "fart")
+conn$core_unload(name = "books")
+## not found
+# conn$core_unload(name = "books")
+# > Error: 400 - Cannot unload non-existent core [books]
 }
 }

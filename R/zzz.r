@@ -18,16 +18,33 @@ makemultiargs <- function(x){
   }
 }
 
+make_multiargs <- function(z, lst) {
+  value <- lst[[z]]
+  if (length(value) == 0) { 
+    return(NULL)
+  } else {
+    if (any(sapply(value, is.na))) { 
+      return(NULL)
+    } else {
+      if ( !is.character(value) ) { 
+        value <- as.character(value)
+      }
+      names(value) <- rep(z, length(value))
+      value
+    }
+  }
+}
+
 popp <- function(x, nms) {
   x[!names(x) %in% nms]
 }
 
-#' Function to make a list of args passing arg names through multiargs function.
-#' @param x Value
-collectargs <- function(x){
+# Function to make a list of args passing arg names through multiargs function
+collectargs <- function(x, lst){
   outlist <- list()
   for (i in seq_along(x)) {
-    outlist[[i]] <- makemultiargs(x[[i]])
+    #outlist[[i]] <- makemultiargs(x[[i]])
+    outlist[[i]] <- make_multiargs(x[[i]], lst)
   }
   as.list(unlist(sc(outlist)))
 }
@@ -69,38 +86,34 @@ pluck_trace <- function(x) {
 }
 
 # POST helper fxn
-solr_POST <- function(base, body, args, content, ...) {
+solr_POST <- function(base, path, body, args, content, ...) {
   invisible(match.arg(args$wt, c("xml", "json", "csv")))
-  ctype <- get_ctype(content)
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
-  tt <- POST(base, query = args, body = upload_file(path = body), ctype)
+  cli <- crul::HttpClient$new(url = base, opts = list(...))
+  tt <- cli$post(path, query = args, body = body)
   get_response(tt)
 }
 
 # POST helper fxn - just a body
-solr_POST_body <- function(base, path, body, args, ...) {
+solr_POST_body <- function(base, path, body, args, callopts, ...) {
   invisible(match.arg(args$wt, c("xml", "json")))
   httpcli <- crul::HttpClient$new(
-    url = base, opts = list(verbose = TRUE)
-    #headers = list(`Content-Type` = "application/json")
-  )
+    url = base, 
+    headers = list(`Content-Type` = "application/json"), opts = callopts)
   res <- httpcli$post(path = path, query = args, body = body, encode = "form")
-  if (res$status_code > 201) {
-    solr_error(res)
-  } else {
-    res$parse("UTF-8")
-  }
-  # tt <- POST(base, query = args, body = body, 
-  #            content_type_json(), encode = "json", ...)
-  #get_response(tt)
+  if (res$status_code > 201) solr_error(res) else res$parse("UTF-8")
 }
 
 # POST helper fxn for R objects
-obj_POST <- function(base, body, args, ...) {
+obj_POST <- function(base, path, body, args, ...) {
   invisible(match.arg(args$wt, c("xml", "json", "csv")))
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
   body <- jsonlite::toJSON(body, auto_unbox = TRUE)
-  tt <- POST(base, query = args, body = body, content_type_json(), ...)
+  cli <- crul::HttpClient$new(
+    url = base, 
+    headers = list(`Content-Type` = "application/json")
+  )
+  tt <- cli$post(path, query = args, body = body, encode = "form", ...)
   get_response(tt)
 }
 
@@ -119,8 +132,8 @@ stop_if_absent <- function(x) {
 }
 
 # helper for POSTing from R objects
-obj_proc <- function(url, body, args, raw, ...) {
-  out <- structure(obj_POST(url, body, args, ...), class = "update", 
+obj_proc <- function(base, path, body, args, raw, ...) {
+  out <- structure(obj_POST(base, path, body, args, ...), class = "update", 
                    wt = args$wt)
   if (raw) {
     out
@@ -129,21 +142,12 @@ obj_proc <- function(url, body, args, raw, ...) {
   }
 }
 
-get_ctype <- function(x) {
-  switch(x, 
-         xml = content_type_xml(),
-         json = content_type_json(),
-         csv = content_type("application/csv; charset=utf-8")
-  )
-}
-
-get_response <- function(x, as = "text") {
+get_response <- function(x) {
   if (x$status_code > 201) {
-    err <- jsonlite::fromJSON(httr::content(x, "text", 
-                                            encoding = "UTF-8"))$error
+    err <- jsonlite::fromJSON(x$parse("UTF-8"))$error
     stop(sprintf("%s: %s", err$code, err$msg), call. = FALSE)
   } else {
-    content(x, as = as, encoding = "UTF-8")
+    x$parse("UTF-8")
   }
 }
 
@@ -174,23 +178,23 @@ asl <- function(z) {
   }
 }
 
-docreate <- function(base, files, args, content, raw, ...) {
-  out <- structure(solr_POST(base, files, args, content, ...), 
+docreate <- function(base, path, files, args, content, raw, ...) {
+  out <- structure(solr_POST(base, path, files, args, content, ...), 
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
 }
 
-doatomiccreate <- function(base, body, args, content, raw, ...) {
+doatomiccreate <- function(base, path, body, args, content, raw, ...) {
   ctype <- get_ctype(content)
-  out <- structure(solr_POST_body(base, body, args, ctype, ...), 
+  out <- structure(solr_POST_body(base, path, body, args, ctype, ...), 
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
 }
 
-objcreate <- function(base, dat, args, raw, ...) {
-  out <- structure(solr_POST(base, dat, args, "json", ...), 
+objcreate <- function(base, path, dat, args, raw, ...) {
+  out <- structure(solr_POST(base, path, dat, args, "json", ...), 
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
@@ -208,10 +212,12 @@ check_conn <- function(x) {
 }
 
 check_wt <- function(x) {
-  if (!x %in% c('json', 'xml', 'csv')) {
-    stop("wt must be one of: json, xml, csv", 
-         call. = FALSE)
-  }  
+  if (!is.null(x)) {
+    if (!x %in% c('json', 'xml', 'csv')) {
+      stop("wt must be one of: json, xml, csv", 
+           call. = FALSE)
+    }  
+  }
 }
 
 check_defunct <- function(...) {
@@ -224,15 +230,13 @@ check_defunct <- function(...) {
 }
 
 is_in_cloud_mode <- function(x) {
-  res <- GET(file.path(x$url, "solr/admin/collections"), 
-             query = list(wt = 'json'))
+  xx <- crul::HttpClient$new(url = x$make_url())
+  res <- xx$get("solr/admin/collections", 
+                query = list(action = 'LIST', wt = 'json'))
   if (res$status_code > 201) return(FALSE)
-  msg <- jsonlite::fromJSON(content(res, "text", encoding = "UTF-8"))$error$msg
-  if (grepl("not running", msg)) {
-    FALSE
-  } else {
-    TRUE
-  }
+  msg <- jsonlite::fromJSON(res$parse("UTF-8"))$error$msg
+  if (is.null(msg)) return(TRUE)
+  !grepl("not running", msg)
 }
 
 json_parse <- function(x, raw) {
@@ -256,3 +260,11 @@ unbox_if <- function(x, recursive = FALSE) {
 }
 
 `%||%` <- function(x, y) if (suppressWarnings(is.na(x)) || is.null(x)) y else x
+
+url_handle <- function(name) {
+  if (is.null(name)) {
+    ""
+  } else {
+    file.path("solr", name, "select")
+  }
+}

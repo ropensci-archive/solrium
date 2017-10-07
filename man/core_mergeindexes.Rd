@@ -4,22 +4,24 @@
 \alias{core_mergeindexes}
 \title{Merge indexes (cores)}
 \usage{
-core_mergeindexes(name, indexDir = NULL, srcCore = NULL, async = NULL,
-  raw = FALSE, callopts = list())
+core_mergeindexes(conn, name, indexDir = NULL, srcCore = NULL,
+  async = NULL, raw = FALSE, callopts = list())
 }
 \arguments{
-\item{name}{The name of the target core/index. Required}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{indexDir}{(character)    Multi-valued, directories that would be merged.}
 
 \item{srcCore}{(character)    Multi-valued, source cores that would be merged.}
 
-\item{async}{(character) Request ID to track this action which will be processed
-asynchronously}
+\item{async}{(character) Request ID to track this action which will be
+processed asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Merges one or more indexes to another index. The indexes must
@@ -30,18 +32,20 @@ more indexes that will be merged to it.
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#  bin/solr start -e schemaless
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 ## FIXME: not tested yet
 
 # use indexDir parameter
-core_mergeindexes(core="new_core_name", indexDir = c("/solr_home/core1/data/index",
+conn$core_mergeindexes(core="new_core_name",
+   indexDir = c("/solr_home/core1/data/index",
    "/solr_home/core2/data/index"))
 
 # use srcCore parameter
-core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
+conn$core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
 }
 }

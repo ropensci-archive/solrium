@@ -4,164 +4,36 @@
 \alias{solr_facet}
 \title{Faceted search}
 \usage{
-solr_facet(name = NULL, q = "*:*", facet.query = NA, facet.field = NA,
-  facet.prefix = NA, facet.sort = NA, facet.limit = NA,
-  facet.offset = NA, facet.mincount = NA, facet.missing = NA,
-  facet.method = NA, facet.enum.cache.minDf = NA, facet.threads = NA,
-  facet.date = NA, facet.date.start = NA, facet.date.end = NA,
-  facet.date.gap = NA, facet.date.hardend = NA, facet.date.other = NA,
-  facet.date.include = NA, facet.range = NA, facet.range.start = NA,
-  facet.range.end = NA, facet.range.gap = NA, facet.range.hardend = NA,
-  facet.range.other = NA, facet.range.include = NA, facet.pivot = NA,
-  facet.pivot.mincount = NA, start = NA, rows = NA, key = NA,
-  wt = "json", raw = FALSE, callopts = list(), ...)
+solr_facet(conn, name = NULL, params = list(q = "*:*"), body = NULL,
+  callopts = list(), raw = FALSE, parsetype = "df", concat = ",", ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
 
-\item{q}{Query terms. See examples.}
+\item{params}{(list) a named list of parameters, results in a GET reqeust
+as long as no body parameters given}
 
-\item{facet.query}{This param allows you to specify an arbitrary query in the
-Lucene default syntax to generate a facet count. By default, faceting returns
-a count of the unique terms for a "field", while facet.query allows you to
-determine counts for arbitrary terms or expressions. This parameter can be
-specified multiple times to indicate that multiple queries should be used as
-separate facet constraints. It can be particularly useful for numeric range
-based facets, or prefix based facets -- see example below (i.e. price:[* TO 500]
-and  price:[501 TO *]).}
+\item{body}{(list) a named list of parameters, if given a POST request
+will be performed}
 
-\item{facet.field}{This param allows you to specify a field which should be
-treated as a facet. It will iterate over each Term in the field and generate a
-facet count using that Term as the constraint. This parameter can be specified
-multiple times to indicate multiple facet fields. None of the other params in
-this section will have any effect without specifying at least one field name
-using this param.}
-
-\item{facet.prefix}{Limits the terms on which to facet to those starting with
-the given string prefix. Note that unlike fq, this does not change the search
-results -- it merely reduces the facet values returned to those beginning with
-the specified prefix. This parameter can be specified on a per field basis.}
-
-\item{facet.sort}{See Details.}
-
-\item{facet.limit}{This param indicates the maximum number of constraint counts
-that should be returned for the facet fields. A negative value means unlimited.
-Default: 100. Can be specified on a per field basis.}
-
-\item{facet.offset}{This param indicates an offset into the list of constraints
-to allow paging. Default: 0. This parameter can be specified on a per field basis.}
-
-\item{facet.mincount}{This param indicates the minimum counts for facet fields
-should be included in the response. Default: 0. This parameter can be specified
-on a per field basis.}
-
-\item{facet.missing}{Set to "true" this param indicates that in addition to the
-Term based constraints of a facet field, a count of all matching results which
-have no value for the field should be computed. Default: FALSE. This parameter
-can be specified on a per field basis.}
-
-\item{facet.method}{See Details.}
-
-\item{facet.enum.cache.minDf}{This param indicates the minimum document frequency
-(number of documents matching a term) for which the filterCache should be used
-when determining the constraint count for that term. This is only used when
-facet.method=enum method of faceting. A value greater than zero will decrease
-memory usage of the filterCache, but increase the query time. When faceting on
-a field with a very large number of terms, and you wish to decrease memory usage,
-try a low value of 25 to 50 first. Default: 0, causing the filterCache to be used
-for all terms in the field. This parameter can be specified on a per field basis.}
-
-\item{facet.threads}{This param will cause loading the underlying fields used in
-faceting to be executed in parallel with the number of threads specified. Specify
-as facet.threads=# where # is the maximum number of threads used. Omitting this
-parameter or specifying the thread count as 0 will not spawn any threads just as
-before. Specifying a negative number of threads will spin up to Integer.MAX_VALUE
-threads. Currently this is limited to the fields, range and query facets are not
-yet supported. In at least one case this has reduced warmup times from 20 seconds
-to under 5 seconds.}
-
-\item{facet.date}{Specify names of fields (of type DateField) which should be
-treated as date facets. Can be specified multiple times to indicate multiple
-date facet fields.}
-
-\item{facet.date.start}{The lower bound for the first date range for all Date
-Faceting on this field. This should be a single date expression which may use
-the DateMathParser syntax. Can be specified on a per field basis.}
-
-\item{facet.date.end}{The minimum upper bound for the last date range for all
-Date Faceting on this field (see facet.date.hardend for an explanation of what
-the actual end value may be greater). This should be a single date expression
-which may use the DateMathParser syntax. Can be specified on a per field basis.}
-
-\item{facet.date.gap}{The size of each date range expressed as an interval to
-be added to the lower bound using the DateMathParser syntax. Eg:
-facet.date.gap=+1DAY. Can be specified on a per field basis.}
-
-\item{facet.date.hardend}{A Boolean parameter instructing Solr what to do in the
-event that facet.date.gap does not divide evenly between facet.date.start and
-facet.date.end. If this is true, the last date range constraint will have an
-upper bound of facet.date.end; if false, the last date range will have the smallest
-possible upper bound greater then facet.date.end such that the range is exactly
-facet.date.gap wide. Default: FALSE. This parameter can be specified on a per
-field basis.}
-
-\item{facet.date.other}{See Details.}
-
-\item{facet.date.include}{See Details.}
-
-\item{facet.range}{Indicates what field to create range facets for. Example:
-facet.range=price&facet.range=age}
-
-\item{facet.range.start}{The lower bound of the ranges. Can be specified on a
-per field basis. Example: f.price.facet.range.start=0.0&f.age.facet.range.start=10}
-
-\item{facet.range.end}{The upper bound of the ranges. Can be specified on a per
-field basis. Example: f.price.facet.range.end=1000.0&f.age.facet.range.start=99}
-
-\item{facet.range.gap}{The size of each range expressed as a value to be added
-to the lower bound. For date fields, this should be expressed using the
-DateMathParser syntax. (ie: facet.range.gap=+1DAY). Can be specified
-on a per field basis. Example: f.price.facet.range.gap=100&f.age.facet.range.gap=10}
-
-\item{facet.range.hardend}{A Boolean parameter instructing Solr what to do in the
-event that facet.range.gap does not divide evenly between facet.range.start and
-facet.range.end. If this is true, the last range constraint will have an upper
-bound of facet.range.end; if false, the last range will have the smallest possible
-upper bound greater then facet.range.end such that the range is exactly
-facet.range.gap wide. Default: FALSE. This parameter can be specified on a
-per field basis.}
-
-\item{facet.range.other}{See Details.}
-
-\item{facet.range.include}{See Details.}
-
-\item{facet.pivot}{This param allows you to specify a single comma-separated string 
-of fields to allow you to facet within the results of the parent facet to return 
-counts in the format of SQL group by operation}
-
-\item{facet.pivot.mincount}{This param indicates the minimum counts for facet fields
-to be included in the response. Default: 0. This parameter should only be specified 
-once.}
-
-\item{start}{Record to start at, default to beginning.}
-
-\item{rows}{Number of records to return.}
-
-\item{key}{API key, if needed.}
-
-\item{wt}{(character) Data type returned, defaults to 'json'. One of json or xml. If json, 
-uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.}
+\item{callopts}{Call options passed on to [crul::HttpClient]}
 
 \item{raw}{(logical) If TRUE (default) raw json or xml returned. If FALSE,
 parsed data returned.}
 
-\item{callopts}{Call options passed on to httr::GET}
+\item{parsetype}{(character) One of 'list' or 'df'}
+
+\item{concat}{(character) Character to concatenate elements of longer than length 1. 
+Note that this only works reliably when data format is json (wt='json'). The parsing
+is more complicated in XML format, but you can do that on your own.}
 
 \item{...}{Further args, usually per field arguments for faceting.}
 }
 \value{
-Raw json or xml, or a list of length 4 parsed elements (usually data.frame's).
+Raw json or xml, or a list of length 4 parsed elements
+(usually data.frame's).
 }
 \description{
 Returns only facet items
@@ -284,76 +156,211 @@ Can be specified on a per field basis. Can be specified multiple times to indica
 multiple choices. If you want to ensure you don't double-count, don't choose both
 lower & upper, don't choose outer, and don't choose all.
 }
+\section{Facet parameters}{
+
+\itemize{
+ \item name Name of a collection or core. Or leave as \code{NULL} if not needed.
+ \item q Query terms. See examples.
+ \item facet.query This param allows you to specify an arbitrary query in the
+Lucene default syntax to generate a facet count. By default, faceting returns
+a count of the unique terms for a "field", while facet.query allows you to
+determine counts for arbitrary terms or expressions. This parameter can be
+specified multiple times to indicate that multiple queries should be used as
+separate facet constraints. It can be particularly useful for numeric range
+based facets, or prefix based facets -- see example below (i.e. price:[* TO 500]
+and  price:[501 TO *]).
+ \item facet.field This param allows you to specify a field which should be
+treated as a facet. It will iterate over each Term in the field and generate a
+facet count using that Term as the constraint. This parameter can be specified
+multiple times to indicate multiple facet fields. None of the other params in
+this section will have any effect without specifying at least one field name
+using this param.
+ \item facet.prefix Limits the terms on which to facet to those starting with
+the given string prefix. Note that unlike fq, this does not change the search
+results -- it merely reduces the facet values returned to those beginning with
+the specified prefix. This parameter can be specified on a per field basis.
+ \item facet.sort See Details.
+ \item facet.limit This param indicates the maximum number of constraint counts
+that should be returned for the facet fields. A negative value means unlimited.
+Default: 100. Can be specified on a per field basis.
+ \item facet.offset This param indicates an offset into the list of constraints
+to allow paging. Default: 0. This parameter can be specified on a per field basis.
+ \item facet.mincount This param indicates the minimum counts for facet fields
+should be included in the response. Default: 0. This parameter can be specified
+on a per field basis.
+ \item facet.missing Set to "true" this param indicates that in addition to the
+Term based constraints of a facet field, a count of all matching results which
+have no value for the field should be computed. Default: FALSE. This parameter
+can be specified on a per field basis.
+ \item facet.method See Details.
+ \item facet.enum.cache.minDf This param indicates the minimum document frequency
+(number of documents matching a term) for which the filterCache should be used
+when determining the constraint count for that term. This is only used when
+facet.method=enum method of faceting. A value greater than zero will decrease
+memory usage of the filterCache, but increase the query time. When faceting on
+a field with a very large number of terms, and you wish to decrease memory usage,
+try a low value of 25 to 50 first. Default: 0, causing the filterCache to be used
+for all terms in the field. This parameter can be specified on a per field basis.
+ \item facet.threads This param will cause loading the underlying fields used in
+faceting to be executed in parallel with the number of threads specified. Specify
+as facet.threads=# where # is the maximum number of threads used. Omitting this
+parameter or specifying the thread count as 0 will not spawn any threads just as
+before. Specifying a negative number of threads will spin up to Integer.MAX_VALUE
+threads. Currently this is limited to the fields, range and query facets are not
+yet supported. In at least one case this has reduced warmup times from 20 seconds
+to under 5 seconds.
+ \item facet.date Specify names of fields (of type DateField) which should be
+treated as date facets. Can be specified multiple times to indicate multiple
+date facet fields.
+ \item facet.date.start The lower bound for the first date range for all Date
+Faceting on this field. This should be a single date expression which may use
+the DateMathParser syntax. Can be specified on a per field basis.
+ \item facet.date.end The minimum upper bound for the last date range for all
+Date Faceting on this field (see facet.date.hardend for an explanation of what
+the actual end value may be greater). This should be a single date expression
+which may use the DateMathParser syntax. Can be specified on a per field basis.
+ \item facet.date.gap The size of each date range expressed as an interval to
+be added to the lower bound using the DateMathParser syntax. Eg:
+facet.date.gap=+1DAY. Can be specified on a per field basis.
+ \item facet.date.hardend A Boolean parameter instructing Solr what to do in the
+event that facet.date.gap does not divide evenly between facet.date.start and
+facet.date.end. If this is true, the last date range constraint will have an
+upper bound of facet.date.end; if false, the last date range will have the smallest
+possible upper bound greater then facet.date.end such that the range is exactly
+facet.date.gap wide. Default: FALSE. This parameter can be specified on a per
+field basis.
+ \item facet.date.other See Details.
+ \item facet.date.include See Details.
+ \item facet.range Indicates what field to create range facets for. Example:
+facet.range=price&facet.range=age
+ \item facet.range.start The lower bound of the ranges. Can be specified on a
+per field basis. Example: f.price.facet.range.start=0.0&f.age.facet.range.start=10
+ \item facet.range.end The upper bound of the ranges. Can be specified on a per
+field basis. Example: f.price.facet.range.end=1000.0&f.age.facet.range.start=99
+ \item facet.range.gap The size of each range expressed as a value to be added
+to the lower bound. For date fields, this should be expressed using the
+DateMathParser syntax. (ie: facet.range.gap=+1DAY). Can be specified
+on a per field basis. Example: f.price.facet.range.gap=100&f.age.facet.range.gap=10
+ \item facet.range.hardend A Boolean parameter instructing Solr what to do in the
+event that facet.range.gap does not divide evenly between facet.range.start and
+facet.range.end. If this is true, the last range constraint will have an upper
+bound of facet.range.end; if false, the last range will have the smallest possible
+upper bound greater then facet.range.end such that the range is exactly
+facet.range.gap wide. Default: FALSE. This parameter can be specified on a
+per field basis.
+ \item facet.range.other See Details.
+ \item facet.range.include See Details.
+ \item facet.pivot This param allows you to specify a single comma-separated string
+of fields to allow you to facet within the results of the parent facet to return
+counts in the format of SQL group by operation
+ \item facet.pivot.mincount This param indicates the minimum counts for facet fields
+to be included in the response. Default: 0. This parameter should only be specified
+once.
+ \item start Record to start at, default to beginning.
+ \item rows Number of records to return.
+ \item key API key, if needed.
+ \item wt (character) Data type returned, defaults to 'json'. One of json or xml. If json,
+  uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to
+  parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.
+}
+}
+
 \examples{
 \dontrun{
-# connect
-solr_connect('http://api.plos.org/search')
+# connect - local Solr instance
+(cli <- SolrClient$new())
+cli$facet("gettingstarted", params = list(q="*:*", facet.field='name'))
+cli$facet("gettingstarted", params = list(q="*:*", facet.field='name'), 
+  callopts = list(verbose = TRUE))
+cli$facet("gettingstarted", body = list(q="*:*", facet.field='name'), 
+  callopts = list(verbose = TRUE))
 
 # Facet on a single field
-solr_facet(q='*:*', facet.field='journal')
+solr_facet(cli, "gettingstarted", params = list(q='*:*', facet.field='name'))
+
+# Remote instance
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
 
 # Facet on multiple fields
-solr_facet(q='alcohol', facet.field=c('journal','subject'))
+solr_facet(cli, params = list(q='alcohol', 
+  facet.field = c('journal','subject')))
 
 # Using mincount
-solr_facet(q='alcohol', facet.field='journal', facet.mincount='500')
+solr_facet(cli, params = list(q='alcohol', facet.field='journal', 
+  facet.mincount='500'))
 
 # Using facet.query to get counts
-solr_facet(q='*:*', facet.field='journal', facet.query=c('cell','bird'))
+solr_facet(cli, params = list(q='*:*', facet.field='journal', 
+  facet.query=c('cell','bird')))
 
 # Using facet.pivot to simulate SQL group by counts
-solr_facet(q='alcohol', facet.pivot='journal,subject',
-             facet.pivot.mincount=10)
-## two or more fields are required - you can pass in as a single character string
-solr_facet(facet.pivot = "journal,subject", facet.limit =  3)
+solr_facet(cli, params = list(q='alcohol', facet.pivot='journal,subject',
+             facet.pivot.mincount=10))
+## two or more fields are required - you can pass in as a single 
+## character string
+solr_facet(cli, params = list(q='*:*', facet.pivot = "journal,subject", 
+  facet.limit =  3))
 ## Or, pass in as a vector of length 2 or greater
-solr_facet(facet.pivot = c("journal", "subject"), facet.limit =  3)
+solr_facet(cli, params = list(q='*:*', facet.pivot = c("journal", "subject"), 
+  facet.limit =  3))
 
 # Date faceting
-solr_facet(q='*:*', facet.date='publication_date',
-facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY')
+solr_facet(cli, params = list(q='*:*', facet.date='publication_date',
+  facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', 
+  facet.date.gap='+1DAY'))
 ## two variables
-solr_facet(q='*:*', facet.date=c('publication_date', 'timestamp'),
-facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', facet.date.gap='+1DAY')
+solr_facet(cli, params = list(q='*:*', 
+  facet.date=c('publication_date', 'timestamp'),
+  facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', 
+  facet.date.gap='+1DAY'))
 
 # Range faceting
-solr_facet(q='*:*', facet.range='counter_total_all',
-facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
+solr_facet(cli, params = list(q='*:*', facet.range='counter_total_all',
+  facet.range.start=5, facet.range.end=1000, facet.range.gap=10))
 
 # Range faceting with > 1 field, same settings
-solr_facet(q='*:*', facet.range=c('counter_total_all','alm_twitterCount'),
-facet.range.start=5, facet.range.end=1000, facet.range.gap=10)
+solr_facet(cli, params = list(q='*:*', 
+  facet.range=c('counter_total_all','alm_twitterCount'),
+  facet.range.start=5, facet.range.end=1000, facet.range.gap=10))
 
 # Range faceting with > 1 field, different settings
-solr_facet(q='*:*', facet.range=c('counter_total_all','alm_twitterCount'),
-f.counter_total_all.facet.range.start=5, f.counter_total_all.facet.range.end=1000,
-f.counter_total_all.facet.range.gap=10, f.alm_twitterCount.facet.range.start=5,
-f.alm_twitterCount.facet.range.end=1000, f.alm_twitterCount.facet.range.gap=10)
+solr_facet(cli, params = list(q='*:*', 
+  facet.range=c('counter_total_all','alm_twitterCount'),
+  f.counter_total_all.facet.range.start=5, 
+  f.counter_total_all.facet.range.end=1000,
+  f.counter_total_all.facet.range.gap=10, 
+  f.alm_twitterCount.facet.range.start=5,
+  f.alm_twitterCount.facet.range.end=1000, 
+  f.alm_twitterCount.facet.range.gap=10))
 
 # Get raw json or xml
 ## json
-solr_facet(q='*:*', facet.field='journal', raw=TRUE)
+solr_facet(cli, params = list(q='*:*', facet.field='journal'), raw=TRUE)
 ## xml
-solr_facet(q='*:*', facet.field='journal', raw=TRUE, wt='xml')
+solr_facet(cli, params = list(q='*:*', facet.field='journal', wt='xml'), 
+  raw=TRUE)
 
 # Get raw data back, and parse later, same as what goes on internally if
 # raw=FALSE (Default)
-out <- solr_facet(q='*:*', facet.field='journal', raw=TRUE)
+out <- solr_facet(cli, params = list(q='*:*', facet.field='journal'), 
+  raw=TRUE)
 solr_parse(out)
-out <- solr_facet(q='*:*', facet.field='journal', raw=TRUE,
-   wt='xml')
+out <- solr_facet(cli, params = list(q='*:*', facet.field='journal', 
+  wt = 'xml'), raw=TRUE)
 solr_parse(out)
 
 # Using the USGS BISON API (https://bison.usgs.gov/#solr)
 ## The occurrence endpoint
-solr_connect("https://bison.usgs.gov/solr/occurrences/select")
-solr_facet(q='*:*', facet.field='year')
-solr_facet(q='*:*', facet.field='computedStateFips')
+(cli <- SolrClient$new(host = "bison.usgs.gov", scheme = "https", 
+  path = "solr/occurrences/select", port = NULL)) 
+solr_facet(cli, params = list(q='*:*', facet.field='year'))
+solr_facet(cli, params = list(q='*:*', facet.field='computedStateFips'))
 
 # using a proxy
-# prox <- list(url = "54.195.48.153", port = 8888)
-# solr_connect(url = 'http://api.plos.org/search', proxy = prox)
-# solr_facet(facet.field='journal', callopts=verbose())
+# cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL,
+#   proxy = list(url = "http://54.195.48.153:8888"))
+# solr_facet(cli, params = list(facet.field='journal'), 
+#   callopts=list(verbose=TRUE))
 }
 }
 \references{
@@ -361,5 +368,5 @@ See \url{http://wiki.apache.org/solr/SimpleFacetParameters} for
 more information on faceting.
 }
 \seealso{
-\code{\link{solr_search}}, \code{\link{solr_highlight}}, \code{\link{solr_parse}}
+\code{\link[=solr_search]{solr_search()}}, \code{\link[=solr_highlight]{solr_highlight()}}, \code{\link[=solr_parse]{solr_parse()}}
 }

@@ -3,13 +3,11 @@ context("solr_stats")
 test_that("solr_stats works", {
   skip_on_cran()
 
-  invisible(solr_connect('http://api.plos.org/search', verbose=FALSE))
-
-  a <- solr_stats(q='science', stats.field='counter_total_all', raw=TRUE)
-  b <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-                  stats.facet=c('journal','volume'))
-  c <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-                  stats.facet=c('journal','volume'), raw=TRUE)
+  a <- conn_plos$stats(params = list(q='science', stats.field='counter_total_all'), raw=TRUE)
+  b <- conn_plos$stats(params = list(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+                  stats.facet=c('journal','volume')))
+  c <- conn_plos$stats(params = list(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
+                  stats.facet=c('journal','volume')), raw=TRUE)
   d <- solr_parse(c) # list
   e <- solr_parse(c, 'df') # data.frame
 
@@ -38,12 +36,10 @@ test_that("solr_stats works", {
 test_that("solr_stats works using wt=xml", {
   skip_on_cran()
 
-  invisible(solr_connect('http://api.plos.org/search', verbose = FALSE))
-
-  aa <- solr_stats(q='science', wt="xml", stats.field='counter_total_all', raw=TRUE)
-  bb <- solr_stats(q='science', wt="xml", stats.field='counter_total_all')
-  cc <- solr_stats(q='science', wt="xml", stats.field=c('counter_total_all','alm_twitterCount'),
-                   stats.facet=c('journal','volume'))
+  aa <- conn_plos$stats(params = list(q='science', wt="xml", stats.field='counter_total_all'), raw=TRUE)
+  bb <- conn_plos$stats(params = list(q='science', wt="xml", stats.field='counter_total_all'))
+  cc <- conn_plos$stats(params = list(q='science', wt="xml", stats.field=c('counter_total_all','alm_twitterCount'),
+                   stats.facet=c('journal','volume')))
 
   # correct dimenions
   expect_equal(length(aa), 1)
@@ -64,12 +60,9 @@ test_that("solr_stats works using wt=xml", {
 test_that("solr_stats works with HathiTrust", {
   skip_on_cran()
 
-  url_hathi <- "http://chinkapin.pti.indiana.edu:9994/solr/meta/select"
-  invisible(solr_connect(url = url_hathi, verbose = FALSE))
-
-  a <- solr_stats(q='*:*', stats.field = 'htrc_wordCount', raw = TRUE)
-  b <- solr_stats(q = '*:*', stats.field = c('htrc_wordCount', 'htrc_pageCount'))
-  c <- solr_stats(q = '*:*', stats.field = 'htrc_charCount')
+  a <- conn_hathi$stats(params = list(q='*:*', stats.field = 'htrc_wordCount'), raw = TRUE)
+  b <- conn_hathi$stats(params = list(q = '*:*', stats.field = c('htrc_wordCount', 'htrc_pageCount')))
+  c <- conn_hathi$stats(params = list(q = '*:*', stats.field = 'htrc_charCount'))
   d <- solr_parse(a) # list
 
   # correct dimenions

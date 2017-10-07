@@ -3,14 +3,12 @@ context("solr_facet")
 test_that("solr_facet works", {
   skip_on_cran()
 
-  invisible(solr_connect('http://api.plos.org/search', verbose=FALSE))
-
-  a <- solr_facet(q='*:*', facet.field='journal')
-  b <- solr_facet(q='*:*', facet.date='publication_date', 
+  a <- conn_plos$facet(params = list(q='*:*', facet.field='journal'))
+  b <- conn_plos$facet(params = list(q='*:*', facet.date='publication_date', 
                   facet.date.start='NOW/DAY-5DAYS', facet.date.end='NOW', 
-                  facet.date.gap='+1DAY')
-  c <- solr_facet(q='alcohol', facet.pivot='journal,subject', 
-                  facet.pivot.mincount=10)
+                  facet.date.gap='+1DAY'))
+  c <- conn_plos$facet(params = list(q='alcohol', facet.pivot='journal,subject', 
+                  facet.pivot.mincount=10))
 
   # correct dimenions
   expect_equal(length(a), 5)
@@ -40,14 +38,11 @@ test_that("solr_facet works", {
 
 
 test_that("faceting works against HathiTrust", {
-  url_hathi <- "http://chinkapin.pti.indiana.edu:9994/solr/meta/select"
-  invisible(solr_connect(url = url_hathi, verbose = FALSE))
-  
   # regular facet
-  a <- solr_facet(q = '*:*', facet.field = 'genre')
+  a <- conn_hathi$facet(params = list(q = '*:*', facet.field = 'genre'))
   # pivot facet
-  c <- solr_facet(q = '*:*', facet.pivot = 'genre,publisher', 
-                  facet.pivot.mincount = 10)
+  c <- conn_hathi$facet(params = list(q = '*:*', facet.pivot = 'genre,publisher', 
+                  facet.pivot.mincount = 10))
   
   expect_equal(length(a), 5)
   expect_equal(length(a$facet_queries), 0)
