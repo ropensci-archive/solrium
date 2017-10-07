@@ -239,6 +239,8 @@ is_in_cloud_mode <- function(x) {
   !grepl("not running", msg)
 }
 
+is_not_in_cloud_mode <- function(x) !is_in_cloud_mode(x)
+
 json_parse <- function(x, raw) {
   if (raw) {
     x

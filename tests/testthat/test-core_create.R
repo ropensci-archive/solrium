@@ -3,7 +3,7 @@ context("core_create")
 test_that("core_create works", {
   skip_on_cran()
   skip_on_travis()
-  skip_if_not(!is_in_cloud_mode(conn))
+  skip_if_not(is_not_in_cloud_mode(conn))
   
   core_name <- "slamcore"
 
