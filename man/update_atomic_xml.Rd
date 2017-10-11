@@ -22,7 +22,7 @@ update_atomic_xml(conn, body, name, wt = "json", raw = FALSE, ...)
 \item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
-Atomic updates with XML data
+Atomic updates to parts of Solr documents
 }
 \examples{
 \dontrun{
@@ -32,42 +32,47 @@ Atomic updates with XML data
 (conn <- SolrClient$new())
 
 # create a collection
-collection_create("books")
+if (!conn$collection_exists("books")) {
+  conn$collection_delete("books")
+  conn$collection_create("books")
+}
 
 # Add documents
 file <- system.file("examples", "books.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file, "books")
+conn$update_xml(file, "books")
 
 # get a document
-solr_get(ids = 343334534545, "books", wt = "xml")
+conn$get(ids = '978-0641723445', "books", wt = "xml")
 
 # atomic update
 body <- '
 <add>
  <doc>
-   <field name="id">343334534545</field>
+   <field name="id">978-0641723445</field>
    <field name="genre_s" update="set">mystery</field>
    <field name="pages_i" update="inc">1</field>
-   <field name="year" update="add">2009</field>
  </doc>
 </add>'
-update_atomic_xml(body, name="books")
+conn$update_atomic_xml(body, name="books")
 
 # get the document again
-solr_get(ids = 343334534545, "books", wt = "xml")
+conn$get(ids = '978-0641723445', "books", wt = "xml")
 
 # another atomic update
 body <- '
 <add>
  <doc>
-   <field name="id">343334534545</field>
-   <field name="year" update="remove">2009</field>
+   <field name="id">978-0641723445</field>
+   <field name="price" update="remove">12.5</field>
  </doc>
 </add>'
-update_atomic_xml(body, "books")
+conn$update_atomic_xml(body, "books")
 
 # get the document again
-solr_get(ids = 343334534545, "books", wt = "xml")
+conn$get(ids = '978-0641723445', "books", wt = "xml")
 }
+}
+\references{
+\url{https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html}
 }

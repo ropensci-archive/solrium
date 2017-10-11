@@ -34,7 +34,7 @@ We use json internally as data interchange format for this function.
 }
 \examples{
 \dontrun{
-(cli <- SolrClient$new()) 
+(cli <- SolrClient$new())
 
 # add some documents first
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))

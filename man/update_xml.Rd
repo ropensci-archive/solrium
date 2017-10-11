@@ -74,7 +74,7 @@ cat(readLines(file), sep = "\\n")
 conn$update_xml(file, "books")
 
 ## Delete files
-file <- system.file("examples", "updatecommands_delete.xml", 
+file <- system.file("examples", "updatecommands_delete.xml",
 package = "solrium")
 cat(readLines(file), sep = "\\n")
 conn$update_xml(file, "books")

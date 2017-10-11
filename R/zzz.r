@@ -198,17 +198,6 @@ objcreate <- function(base, path, dat, args, raw, ...) {
   solr_parse(out)
 }
 
-check_conn <- function(x) {
-  if (!inherits(x, "solr_connection")) {
-    stop("Input to conn parameter must be an object of class solr_connection",
-         call. = FALSE)
-  }
-  if (is.null(x)) {
-    stop("You must provide a connection object",
-         call. = FALSE)
-  }
-}
-
 check_wt <- function(x) {
   if (!is.null(x)) {
     if (!x %in% c('json', 'xml', 'csv')) {
@@ -222,7 +211,7 @@ check_defunct <- function(...) {
   calls <- names(sapply(match.call(), deparse))[-1]
   calls_vec <- "verbose" %in% calls
   if (any(calls_vec)) {
-    stop("The parameter verbose has been removed - see ?solr_connect",
+    stop("The parameter verbose has been removed - see ?SolrClient",
          call. = FALSE)
   }
 }

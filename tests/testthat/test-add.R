@@ -3,7 +3,7 @@ context("add")
 skip_on_cran()
 
 if (!collection_exists(conn, "books")) {
-  collection_create(conn, name = "books", numShards = 1)
+  collection_create(conn, name = "books")
 }
 
 test_that("add works with a list", {

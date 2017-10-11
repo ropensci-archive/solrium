@@ -10,6 +10,13 @@
 #' as long as no body parameters given
 #' @param body (list) a named list of parameters, if given a POST request
 #' will be performed
+#' @param optimizeMaxRows (logical) If `TRUE`, then rows parameter will be
+#' adjusted to the number of returned results by the same constraints.
+#' It will only be applied if rows parameter is higher
+#' than `minOptimizedRows`. Default: `TRUE`
+#' @param minOptimizedRows used by `optimizedMaxRows` parameter, the minimum
+#' optimized rows. Default: 50000
+#'
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
 #' @references See <http://wiki.apache.org/solr/#Search_and_Indexing>
@@ -125,73 +132,10 @@
 
 solr_search <- function(conn, name = NULL, params = list(q = '*:*'),
   body = NULL, callopts = list(), raw = FALSE,  parsetype = 'df',
-  concat = ',', ...) {
+  concat = ',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
 
   conn$search(name = name, params = params, body = body, callopts = callopts,
-              raw = raw, parsetype = parsetype, concat = concat, ...)
+              raw = raw, parsetype = parsetype, concat = concat,
+              optimizeMaxRows = optimizeMaxRows,
+              minOptimizedRows = minOptimizedRows, ...)
 }
-
-# solr_search <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
-#   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
-#   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key=NULL,
-#   callopts=list(), raw=FALSE, parsetype='df', concat=',',
-#   optimizeMaxRows=TRUE, minOptimizedRows=50000, ...) {
-
-#   rows <- cn(rows)
-#   if (!is.null(rows) && optimizeMaxRows) {
-#     if (rows > minOptimizedRows || rows < 0) {
-#       out <- solr_search_exec(name=name, q=q, rows='0', wt='json', raw='TRUE')
-#       outJson <- fromJSON(out)
-#       if (rows > outJson$response$numFound || rows < 0) rows <- as.double(outJson$response$numFound)
-#     }
-#   }
-
-#   solr_search_exec(name, q, sort, start, rows, pageDoc,
-#     pageScore, fq, fl, defType, timeAllowed,
-#     qt, wt, NOW, TZ, echoHandler, echoParams,
-#     key, callopts, raw, parsetype, concat, ...)
-# }
-
-# solr_search_exec <- function(name = NULL, q='*:*', sort=NULL, start=NULL, rows=NULL, pageDoc=NULL,
-#   pageScore=NULL, fq=NULL, fl=NULL, defType=NULL, timeAllowed=NULL, qt=NULL,
-#   wt='json', NOW=NULL, TZ=NULL, echoHandler=NULL, echoParams=NULL, key = NULL,
-#   callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
-
-#   check_defunct(...)
-#   conn <- solr_settings()
-#   check_conn(conn)
-#   check_wt(wt)
-#   if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
-#   args <- sc(list(q = q, sort = sort, start = start, rows = rows, pageDoc = pageDoc,
-#       pageScore = pageScore, fl = fl, defType = defType,
-#       timeAllowed = timeAllowed, qt = qt, wt = wt, NOW = NOW, TZ = TZ,
-#       echoHandler = echoHandler, echoParams = echoParams))
-
-#   # args that can be repeated
-#   todonames <- "fq"
-#   args <- c(args, collectargs(todonames))
-
-#   # additional parameters
-#   args <- c(args, list(...))
-#   if ('query' %in% names(args)) {
-#     args <- args[!names(args) %in% "q"]
-#   }
-
-#   out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
-#                    class = "sr_search", wt = wt)
-#   if (raw) {
-#     return( out )
-#   } else {
-#     parsed <- cont_parse(out, wt)
-#     parsed <- structure(parsed, class = c(class(parsed), "sr_search"))
-#     solr_parse(parsed, parsetype, concat)
-#   }
-# }
-
-# handle_url <- function(conn, name) {
-#   if (is.null(name)) {
-#     conn$url
-#   } else {
-#     file.path(conn$url, "solr", name, "select")
-#   }
-# }

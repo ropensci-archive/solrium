@@ -67,13 +67,13 @@ update_json(conn, files = file, name = "books")
 
 # Update commands - can include many varying commands
 ## Add file
-file <- system.file("examples", "updatecommands_add.json", 
+file <- system.file("examples", "updatecommands_add.json",
   package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_json(file, "books")
 
 ## Delete file
-file <- system.file("examples", "updatecommands_delete.json", 
+file <- system.file("examples", "updatecommands_delete.json",
   package = "solrium")
 cat(readLines(file), sep = "\\n")
 update_json(file, "books")

@@ -86,22 +86,22 @@ a term query or a match all query this cache has a negative impact on performanc
 \examples{
 \dontrun{
 # connect
-(cli <- SolrClient$new()) 
+(cli <- SolrClient$new())
 
 # by default we do a GET request
-cli$group("gettingstarted", 
+cli$group("gettingstarted",
   params = list(q='*:*', group.field='compName_s'))
 # OR
-solr_group(cli, "gettingstarted", 
+solr_group(cli, "gettingstarted",
   params = list(q='*:*', group.field='compName_s'))
-  
+
 # connect
-(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 
 # Basic group query
-solr_group(cli, params = list(q='ecology', group.field='journal', 
+solr_group(cli, params = list(q='ecology', group.field='journal',
   group.limit=3, fl=c('id','score')))
-solr_group(cli, params = list(q='ecology', group.field='journal', 
+solr_group(cli, params = list(q='ecology', group.field='journal',
   group.limit=3, fl='article_type'))
 
 # Different ways to sort (notice diff btw sort of group.sort)

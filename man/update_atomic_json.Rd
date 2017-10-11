@@ -22,7 +22,7 @@ update_atomic_json(conn, body, name, wt = "json", raw = FALSE, ...)
 \item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
-Atomic updates with JSON data
+Atomic updates to parts of Solr documents
 }
 \examples{
 \dontrun{
@@ -32,36 +32,41 @@ Atomic updates with JSON data
 (conn <- SolrClient$new())
 
 # create a collection
-collection_create("books")
+if (!conn$collection_exists("books")) {
+  conn$collection_delete("books")
+  conn$collection_create("books")
+}
 
 # Add documents
 file <- system.file("examples", "books2.json", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file, "books")
+conn$update_json(file, "books")
 
 # get a document
-solr_get(ids = 343334534545, "books")
+conn$get(ids = 343334534545, "books")
 
 # atomic update
 body <- '[{
  "id": "343334534545",
  "genre_s": {"set": "mystery" },
- "pages_i": {"inc": 1 },
- "year": {"add": "2009" }
+ "pages_i": {"inc": 1 }
 }]'
-update_atomic_json(body, "books")
+conn$update_atomic_json(body, "books")
 
 # get the document again
-solr_get(ids = 343334534545, "books")
+conn$get(ids = 343334534545, "books")
 
 # another atomic update
 body <- '[{
  "id": "343334534545",
- "year": {"remove": "2009" }
+ "price": {"remove": "12.5" }
 }]'
-update_atomic_json(body, "books")
+conn$update_atomic_json(body, "books")
 
 # get the document again
-solr_get(ids = 343334534545, "books")
+conn$get(ids = 343334534545, "books")
 }
+}
+\references{
+\url{https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html}
 }

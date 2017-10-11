@@ -29,13 +29,6 @@ Note that this only works reliably when data format is json (wt='json'). The par
 is more complicated in XML format, but you can do that on your own.}
 
 \item{...}{Further args.}
-
-\item{optimizeMaxRows}{(logical) If TRUE, then rows parameter will be adjusted to the number of returned
-results by the same constraints. It will only be applied if rows parameter is higher
-than minOptimizedRows. Default: TRUE}
-
-\item{minOptimizedRows}{minOptimizedRows parameter is used by optimizedMaxRows parameter.
-Default: 50000}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -87,8 +80,8 @@ include:
    \item all - include all parameters involved in this request, either specified explicitly
    by the client, or implicit because of the request handler configuration.
  }
-\item wt (character) One of json, xml, or csv. Data type returned, defaults 
-  to 'csv'. If json, uses [jsonlite::fromJSON()] to parse. If xml, 
+\item wt (character) One of json, xml, or csv. Data type returned, defaults
+  to 'csv'. If json, uses [jsonlite::fromJSON()] to parse. If xml,
   uses [xml2::read_xml()] to parse. If csv, uses [read.table()] to parse.
   `wt=csv` gives the fastest performance at least in all the cases we have
   tested in, thus it's the default value for `wt`
@@ -98,29 +91,29 @@ include:
 \examples{
 \dontrun{
 # connect
-(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 
 solr_all(cli, params = list(q='*:*', rows=2, fl='id'))
 
 # facets
-solr_all(cli, params = list(q='*:*', rows=2, fl='id', facet="true", 
+solr_all(cli, params = list(q='*:*', rows=2, fl='id', facet="true",
   facet.field="journal"))
 
 # mlt
-solr_all(cli, params = list(q='ecology', rows=2, fl='id', mlt='true', 
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', mlt='true',
   mlt.count=2, mlt.fl='abstract'))
 
 # facets and mlt
-solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
   facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract'))
 
 # stats
-solr_all(cli, params = list(q='ecology', rows=2, fl='id', stats='true', 
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', stats='true',
   stats.field='counter_total_all'))
 
 # facets, mlt, and stats
-solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
-  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract', 
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract',
   stats='true', stats.field='counter_total_all'))
 
 # group
@@ -128,13 +121,13 @@ solr_all(cli, params = list(q='ecology', rows=2, fl='id', group='true',
  group.field='journal', group.limit=3))
 
 # facets, mlt, stats, and groups
-solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
- facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract', 
- stats='true', stats.field='counter_total_all', group='true', 
+solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+ facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract',
+ stats='true', stats.field='counter_total_all', group='true',
  group.field='journal', group.limit=3))
 
 # using wt = xml
-solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'), 
+solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
   fq='doc_type:full', wt="xml"), raw=TRUE)
 }
 }

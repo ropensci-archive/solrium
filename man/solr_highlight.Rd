@@ -150,11 +150,11 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \examples{
 \dontrun{
 # connect
-(conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+(conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 
 # highlight search
 solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10))
-solr_highlight(conn, params = list(q='alcohol', hl.fl = c('abstract','title'), 
+solr_highlight(conn, params = list(q='alcohol', hl.fl = c('abstract','title'),
   rows=3))
 
 # Raw data back
@@ -162,11 +162,11 @@ solr_highlight(conn, params = list(q='alcohol', hl.fl = c('abstract','title'),
 solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10),
    raw=TRUE)
 ## xml
-solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10, 
+solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10,
    wt='xml'), raw=TRUE)
 ## parse after getting data back
-out <- solr_highlight(conn, params = list(q='alcohol', 
-   hl.fl = c('abstract','title'), hl.fragsize=30, rows=10, wt='xml'), 
+out <- solr_highlight(conn, params = list(q='alcohol',
+   hl.fl = c('abstract','title'), hl.fragsize=30, rows=10, wt='xml'),
    raw=TRUE)
 solr_parse(out, parsetype='df')
 }
