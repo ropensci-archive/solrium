@@ -47,7 +47,7 @@ modes, respectively)
 
 # create the boooks collection
 if (!collection_exists(cli, "books")) {
-  collection_create(cli, name = "books", numShards = 2)
+  collection_create(cli, name = "books", numShards = 1)
 }
 
 # Documents in a list
