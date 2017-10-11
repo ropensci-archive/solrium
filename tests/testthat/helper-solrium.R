@@ -10,6 +10,9 @@ conn_dryad <- SolrClient$new(host = "datadryad.org", path = "solr/search/select"
                              port = NULL)
 
 # cloud mode: create collection "gettingstarted"
-if (!conn$collection_exists("gettingstarted")) {
-  conn$collection_create("gettingstarted")
+up <- tryCatch(conn$collection_exists("gettingstarted"), error = function(e) e)
+if (!inherits(up, "error")) {
+  if (!conn$collection_exists("gettingstarted")) {
+    conn$collection_create("gettingstarted")
+  }
 }
