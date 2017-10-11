@@ -4,25 +4,27 @@
 \alias{config_params}
 \title{Set Solr configuration params}
 \usage{
-config_params(name, param = NULL, set = NULL, unset = NULL,
+config_params(conn, name, param = NULL, set = NULL, unset = NULL,
   update = NULL, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) The name of the core. If not given, all cores.}
 
 \item{param}{(character) Name of a parameter}
 
-\item{set}{(list) List of key:value pairs of what to set. Create or overwrite 
+\item{set}{(list) List of key:value pairs of what to set. Create or overwrite
 a parameter set map. Default: NULL (nothing passed)}
 
-\item{unset}{(list) One or more character strings of keys to unset. Default: NULL 
+\item{unset}{(list) One or more character strings of keys to unset. Default: NULL
 (nothing passed)}
 
-\item{update}{(list) List of key:value pairs of what to update. Updates a parameter 
-set map. This essentially overwrites the old parameter set, so all parameters must 
+\item{update}{(list) List of key:value pairs of what to update. Updates a parameter
+set map. This essentially overwrites the old parameter set, so all parameters must
 be sent in each update request.}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 A list with response from server
@@ -31,21 +33,21 @@ A list with response from server
 Set Solr configuration params
 }
 \details{
-The Request Parameters API allows creating parameter sets that can 
-override or take the place of parameters defined in solrconfig.xml. It is 
-really another endpoint of the Config API instead of a separate API, and 
-has distinct commands. It does not replace or modify any sections of 
-solrconfig.xml, but instead provides another approach to handling parameters 
-used in requests. It behaves in the same way as the Config API, by storing 
-parameters in another file that will be used at runtime. In this case, 
-the parameters are stored in a file named params.json. This file is kept in 
+The Request Parameters API allows creating parameter sets that can
+override or take the place of parameters defined in solrconfig.xml. It is
+really another endpoint of the Config API instead of a separate API, and
+has distinct commands. It does not replace or modify any sections of
+solrconfig.xml, but instead provides another approach to handling parameters
+used in requests. It behaves in the same way as the Config API, by storing
+parameters in another file that will be used at runtime. In this case,
+the parameters are stored in a file named params.json. This file is kept in
 ZooKeeper or in the conf directory of a standalone Solr instance.
 }
 \examples{
 \dontrun{
 # start Solr in standard or Cloud mode
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # set a parameter set
 myFacets <- list(myFacets = list(facet = TRUE, facet.limit = 5))

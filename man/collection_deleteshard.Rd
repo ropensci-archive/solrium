@@ -4,9 +4,11 @@
 \alias{collection_deleteshard}
 \title{Delete a shard}
 \usage{
-collection_deleteshard(name, shard, raw = FALSE, ...)
+collection_deleteshard(conn, name, shard, raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) Required. The name of the collection that includes the shard
 to be deleted}
 
@@ -14,7 +16,7 @@ to be deleted}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Deleting a shard will unload all replicas of the shard and remove
@@ -23,18 +25,18 @@ which have no range given for custom sharding.
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 # create collection
-# collection_create(name = "buffalo") # bin/solr create -c buffalo
+# conn$collection_create(name = "buffalo") # bin/solr create -c buffalo
 
 # find shard names
-names(collection_clusterstatus()$cluster$collections$buffalo$shards)
+names(conn$collection_clusterstatus()$cluster$collections$buffalo$shards)
 # split a shard by name
 collection_splitshard(name = "buffalo", shard = "shard1")
 # now we have three shards
-names(collection_clusterstatus()$cluster$collections$buffalo$shards)
+names(conn$collection_clusterstatus()$cluster$collections$buffalo$shards)
 
 # delete shard
-collection_deleteshard(name = "buffalo", shard = "shard1_1")
+conn$collection_deleteshard(name = "buffalo", shard = "shard1_1")
 }
 }

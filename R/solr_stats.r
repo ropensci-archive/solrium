@@ -2,66 +2,60 @@
 #'
 #' @description Returns only stat items
 #'
-#' @template stats
-#' @return XML, JSON, a list, or data.frame
-#' @seealso \code{\link{solr_highlight}}, \code{\link{solr_facet}},
-#' \code{\link{solr_search}}, \code{\link{solr_mlt}}
-#' @references See \url{http://wiki.apache.org/solr/StatsComponent} for
-#' more information on Solr stats.
 #' @export
+#' @template stats
+#' @param conn A solrium connection object, see [SolrClient]
+#' @param params (list) a named list of parameters, results in a GET reqeust
+#' as long as no body parameters given
+#' @param body (list) a named list of parameters, if given a POST request 
+#' will be performed
+#' @return XML, JSON, a list, or data.frame
+#' @seealso [solr_highlight()], [solr_facet()], [solr_search()], [solr_mlt()]
+#' @references See <http://wiki.apache.org/solr/StatsComponent> for
+#' more information on Solr stats.
 #' @examples \dontrun{
 #' # connect
-#' solr_connect('http://api.plos.org/search')
+#' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
 #'
 #' # get stats
-#' solr_stats(q='science', stats.field='counter_total_all', raw=TRUE)
-#' solr_stats(q='title:"ecology" AND body:"cell"',
-#'    stats.field=c('counter_total_all','alm_twitterCount'))
-#' solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-#'    stats.facet='journal')
-#' solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-#'    stats.facet=c('journal','volume'))
+#' solr_stats(cli, params = list(q='science', stats.field='counter_total_all'), 
+#'   raw=TRUE)
+#' solr_stats(cli, params = list(q='title:"ecology" AND body:"cell"',
+#'    stats.field=c('counter_total_all','alm_twitterCount')))
+#' solr_stats(cli, params = list(q='ecology', 
+#'   stats.field=c('counter_total_all','alm_twitterCount'),
+#'   stats.facet='journal'))
+#' solr_stats(cli, params = list(q='ecology', 
+#'   stats.field=c('counter_total_all','alm_twitterCount'),
+#'   stats.facet=c('journal','volume')))
 #'
 #' # Get raw data, then parse later if you feel like it
 #' ## json
-#' out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-#'    stats.facet=c('journal','volume'), raw=TRUE)
+#' out <- solr_stats(cli, params = list(q='ecology', 
+#'   stats.field=c('counter_total_all','alm_twitterCount'),
+#'   stats.facet=c('journal','volume')), raw=TRUE)
 #' library("jsonlite")
 #' jsonlite::fromJSON(out)
 #' solr_parse(out) # list
 #' solr_parse(out, 'df') # data.frame
 #'
 #' ## xml
-#' out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-#'    stats.facet=c('journal','volume'), raw=TRUE, wt="xml")
+#' out <- solr_stats(cli, params = list(q='ecology', 
+#'   stats.field=c('counter_total_all','alm_twitterCount'),
+#'   stats.facet=c('journal','volume'), wt="xml"), raw=TRUE)
 #' library("xml2")
 #' xml2::read_xml(unclass(out))
 #' solr_parse(out) # list
 #' solr_parse(out, 'df') # data.frame
 #'
 #' # Get verbose http call information
-#' library("httr")
-#' solr_stats(q='ecology', stats.field='alm_twitterCount',
-#'    callopts=verbose())
+#' solr_stats(cli, params = list(q='ecology', stats.field='alm_twitterCount'),
+#'    callopts=list(verbose=TRUE))
 #' }
-
-solr_stats <- function(name = NULL, q='*:*', stats.field=NULL, stats.facet=NULL,
-  wt='json', start=0, rows=0, key = NULL, callopts=list(), raw=FALSE, parsetype='df') {
-
-  conn <- solr_settings()
-  check_conn(conn)
-  check_wt(wt)
-  todonames <- c("q", "stats.field", "stats.facet", "start", "rows", "key", "wt")
-  args <- collectargs(todonames)
-  args$stats <- 'true'
-
-  out <- structure(solr_GET(handle_url(conn, name), args, callopts, conn$proxy),
-                   class = "sr_stats", wt = wt)
-  if (raw) {
-    return( out )
-  } else {
-    parsed <- cont_parse(out, wt)
-    parsed <- structure(parsed, class = c(class(parsed), "sr_stats"))
-    solr_parse(out, parsetype)
-  }
+solr_stats <- function(conn, name = NULL, params = list(q = '*:*', 
+  stats.field = NULL, stats.facet = NULL), body = NULL, callopts=list(), 
+  raw=FALSE, parsetype='df') {
+  
+  conn$stats(name = name, params = params, body = body, callopts = callopts, 
+             raw = raw, parsetype = parsetype)
 }

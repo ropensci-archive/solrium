@@ -4,14 +4,16 @@
 \alias{config_overlay}
 \title{Get Solr configuration overlay}
 \usage{
-config_overlay(name, omitHeader = FALSE, ...)
+config_overlay(conn, name, omitHeader = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) The name of the core. If not given, all cores.}
 
 \item{omitHeader}{(logical) If \code{TRUE}, omit header. Default: \code{FALSE}}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 A list with response from server
@@ -26,12 +28,12 @@ Get Solr configuration overlay
 # where <corename> is the name for your core - or creaate as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # get config overlay
-config_overlay("gettingstarted")
+conn$config_overlay("gettingstarted")
 
 # without header
-config_overlay("gettingstarted", omitHeader = TRUE)
+conn$config_overlay("gettingstarted", omitHeader = TRUE)
 }
 }

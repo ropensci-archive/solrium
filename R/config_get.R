@@ -2,15 +2,16 @@
 #'
 #' @export
 #'
+#' @param conn A solrium connection object, see [SolrClient]
 #' @param name (character) The name of the core. If not given, all cores.
 #' @param what (character) What you want to look at. One of solrconfig or
 #' schema. Default: solrconfig
 #' @param wt (character) One of json (default) or xml. Data type returned.
 #' If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
 #' \code{\link[xml2]{read_xml}} to parse.
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by
+#' @param raw (logical) If `TRUE`, returns raw data in format specified by
 #' \code{wt}
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' @param ... curl options passed on to [crul::HttpClient]
 #' @return A list, \code{xml_document}, or character
 #' @details Note that if \code{raw=TRUE}, \code{what} is ignored. That is,
 #' you get all the data when \code{raw=TRUE}.
@@ -20,37 +21,33 @@
 #' # where <corename> is the name for your core - or creaate as below
 #'
 #' # connect
-#' solr_connect()
+#' (conn <- SolrClient$new())
 #'
 #' # all config settings
-#' config_get("gettingstarted")
+#' conn$config_get("gettingstarted")
 #'
 #' # just znodeVersion
-#' config_get("gettingstarted", "znodeVersion")
+#' conn$config_get("gettingstarted", "znodeVersion")
 #'
 #' # just znodeVersion
-#' config_get("gettingstarted", "luceneMatchVersion")
+#' conn$config_get("gettingstarted", "luceneMatchVersion")
 #'
 #' # just updateHandler
-#' config_get("gettingstarted", "updateHandler")
+#' conn$config_get("gettingstarted", "updateHandler")
 #'
 #' # just updateHandler
-#' config_get("gettingstarted", "requestHandler")
+#' conn$config_get("gettingstarted", "requestHandler")
 #'
 #' ## Get XML
-#' config_get("gettingstarted", wt = "xml")
-#' config_get("gettingstarted", "updateHandler", wt = "xml")
-#' config_get("gettingstarted", "requestHandler", wt = "xml")
+#' conn$config_get("gettingstarted", wt = "xml")
+#' conn$config_get("gettingstarted", "updateHandler", wt = "xml")
+#' conn$config_get("gettingstarted", "requestHandler", wt = "xml")
 #'
 #' ## Raw data - what param ignored when raw=TRUE
-#' config_get("gettingstarted", raw = TRUE)
+#' conn$config_get("gettingstarted", raw = TRUE)
 #' }
-config_get <- function(name, what = NULL, wt = "json", raw = FALSE, ...) {
-  conn <- solr_settings()
-  check_conn(conn)
-  args <- sc(list(wt = wt))
-  res <- solr_GET(file.path(conn$url, sprintf('solr/%s/config', name)), args, conn$proxy, ...)
-  config_parse(res, what, wt, raw)
+config_get <- function(conn, name, what = NULL, wt = "json", raw = FALSE, ...) {
+  conn$config_get(name, what, wt, raw, ...)
 }
 
 config_parse <- function(x, what = NULL, wt, raw) {

@@ -4,87 +4,36 @@
 \alias{solr_search}
 \title{Solr search}
 \usage{
+<<<<<<< HEAD
+solr_search(conn, name = NULL, params = list(q = "*:*"), body = NULL,
+  callopts = list(), raw = FALSE, parsetype = "df", concat = ",", ...)
+=======
 solr_search(name = NULL, q = "*:*", sort = NULL, start = NULL,
   rows = NULL, pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
   defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
   NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
   key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
   concat = ",", optimizeMaxRows = TRUE, minOptimizedRows = 50000, ...)
+>>>>>>> master
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
 
-\item{q}{Query terms, defaults to '*:*', or everything.}
+\item{params}{(list) a named list of parameters, results in a GET reqeust
+as long as no body parameters given}
 
-\item{sort}{Field to sort on. You can specify ascending (e.g., score desc) or 
-descending (e.g., score asc), sort by two fields (e.g., score desc, price asc), 
-or sort by a function (e.g., sum(x_f, y_f) desc, which sorts by the sum of 
-x_f and y_f in a descending order).}
+\item{body}{(list) a named list of parameters, if given a POST request
+will be performed}
 
-\item{start}{Record to start at, default to beginning.}
-
-\item{rows}{Number of records to return. Default: 10.}
-
-\item{pageDoc}{If you expect to be paging deeply into the results (say beyond page 10, 
-assuming rows=10) and you are sorting by score, you may wish to add the pageDoc 
-and pageScore parameters to your request. These two parameters tell Solr (and Lucene) 
-what the last result (Lucene internal docid and score) of the previous page was, 
-so that when scoring the query for the next set of pages, it can ignore any results 
-that occur higher than that item. To get the Lucene internal doc id, you will need 
-to add [docid] to the &fl list. 
-e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score}
-
-\item{pageScore}{See pageDoc notes.}
-
-\item{fq}{Filter query, this does not affect the search, only what gets returned. 
-This parameter can accept multiple items in a lis or vector. You can't pass more than 
-one parameter of the same name, so we get around it by passing multiple queries 
-and we parse internally}
-
-\item{fl}{Fields to return, can be a character vector like \code{c('id', 'title')}, 
-or a single character vector with one or more comma separated names, like 
-\code{'id,title'}}
-
-\item{defType}{Specify the query parser to use with this request.}
-
-\item{timeAllowed}{The time allowed for a search to finish. This value only applies 
-to the search and not to requests in general. Time is in milliseconds. Values <= 0 
-mean no time restriction. Partial results may be returned (if there are any).}
-
-\item{qt}{Which query handler used. Options: dismax, others?}
-
-\item{wt}{(character) One of json, xml, or csv. Data type returned, defaults to 'csv'.
-If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[xml2]{read_xml}} to parse. If csv, uses \code{\link{read.table}} to parse.
-\code{wt=csv} gives the fastest performance at least in all the cases we have
-tested in, thus it's the default value for \code{wt}.}
-
-\item{NOW}{Set a fixed time for evaluating Date based expresions}
-
-\item{TZ}{Time zone, you can override the default.}
-
-\item{echoHandler}{If \code{TRUE}, Solr places the name of the handle used in the 
-response to the client for debugging purposes. Default:}
-
-\item{echoParams}{The echoParams parameter tells Solr what kinds of Request 
-parameters should be included in the response for debugging purposes, legal values 
-include:
-\itemize{
- \item none - don't include any request parameters for debugging
- \item explicit - include the parameters explicitly specified by the client in the request
- \item all - include all parameters involved in this request, either specified explicitly 
- by the client, or implicit because of the request handler configuration.
-}}
-
-\item{key}{API key, if needed.}
-
-\item{callopts}{Call options passed on to httr::GET}
+\item{callopts}{Call options passed on to [crul::HttpClient]}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
 
 \item{parsetype}{(character) One of 'list' or 'df'}
 
-\item{concat}{(character) Character to concatenate elements of longer than length 1. 
+\item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
 
@@ -108,104 +57,170 @@ including facets, groups, mlt, stats, and highlights.
 SOLR v1.2 was first version to support csv. See
 \url{https://issues.apache.org/jira/browse/SOLR-66}
 }
+\section{Parameters}{
+
+\itemize{
+ \item q Query terms, defaults to '*:*', or everything.
+ \item sort Field to sort on. You can specify ascending (e.g., score desc) or
+descending (e.g., score asc), sort by two fields (e.g., score desc, price asc),
+or sort by a function (e.g., sum(x_f, y_f) desc, which sorts by the sum of
+x_f and y_f in a descending order).
+ \item start Record to start at, default to beginning.
+ \item rows Number of records to return. Default: 10.
+ \item pageDoc If you expect to be paging deeply into the results (say beyond page 10,
+assuming rows=10) and you are sorting by score, you may wish to add the pageDoc
+and pageScore parameters to your request. These two parameters tell Solr (and Lucene)
+what the last result (Lucene internal docid and score) of the previous page was,
+so that when scoring the query for the next set of pages, it can ignore any results
+that occur higher than that item. To get the Lucene internal doc id, you will need
+to add [docid] to the &fl list.
+e.g., q=*:*&start=10&pageDoc=5&pageScore=1.345&fl=[docid],score
+ \item pageScore See pageDoc notes.
+ \item fq Filter query, this does not affect the search, only what gets returned.
+This parameter can accept multiple items in a lis or vector. You can't pass more than
+one parameter of the same name, so we get around it by passing multiple queries
+and we parse internally
+ \item fl Fields to return, can be a character vector like \code{c('id', 'title')},
+or a single character vector with one or more comma separated names, like
+\code{'id,title'}
+ \item defType Specify the query parser to use with this request.
+ \item timeAllowed The time allowed for a search to finish. This value only applies
+to the search and not to requests in general. Time is in milliseconds. Values <= 0
+mean no time restriction. Partial results may be returned (if there are any).
+ \item qt Which query handler used. Options: dismax, others?
+ \item NOW Set a fixed time for evaluating Date based expresions
+ \item TZ Time zone, you can override the default.
+ \item echoHandler If \code{TRUE}, Solr places the name of the handle used in the
+response to the client for debugging purposes. Default:
+ \item echoParams The echoParams parameter tells Solr what kinds of Request
+parameters should be included in the response for debugging purposes, legal values
+include:
+  \itemize{
+   \item none - don't include any request parameters for debugging
+   \item explicit - include the parameters explicitly specified by the client in the request
+   \item all - include all parameters involved in this request, either specified explicitly
+   by the client, or implicit because of the request handler configuration.
+ }
+\item wt (character) One of json, xml, or csv. Data type returned, defaults 
+  to 'csv'. If json, uses [jsonlite::fromJSON()] to parse. If xml, 
+  uses [xml2::read_xml()] to parse. If csv, uses [read.table()] to parse.
+  `wt=csv` gives the fastest performance at least in all the cases we have
+  tested in, thus it's the default value for `wt`
+}
+}
+
 \examples{
 \dontrun{
-# connect
-solr_connect('http://api.plos.org/search')
+# Connect to a local Solr instance
+(cli <- SolrClient$new())
+cli$search("gettingstarted")
+cli$search("gettingstarted", q = "features:notes")
+
+solr_search(cli, "gettingstarted")
+solr_search(cli, "gettingstarted", params = list(q = "features:notes"))
+solr_search(cli, "gettingstarted", body = list(q = "features:notes"))
+
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
+cli$search(params = list(q = "*:*"))
+cli$search(params = list(q = "title:golgi", fl = c('id', 'title')))
+
+cli$search(params = list(q = "*:*", facet = TRUE))
+
 
 # search
-solr_search(q='*:*', rows=2, fl='id')
+solr_search(cli, params = list(q='*:*', rows=2, fl='id'))
 
 # search and return all rows
 solr_search(q='*:*', rows=-1, fl='id')
 
 # Search for word ecology in title and cell in the body
-solr_search(q='title:"ecology" AND body:"cell"', fl='title', rows=5)
+solr_search(cli, params = list(q='title:"ecology" AND body:"cell"', 
+  fl='title', rows=5))
 
 # Search for word "cell" and not "body" in the title field
-solr_search(q='title:"cell" -title:"lines"', fl='title', rows=5)
+solr_search(cli, params = list(q='title:"cell" -title:"lines"', fl='title', 
+  rows=5))
 
 # Wildcards
 ## Search for word that starts with "cell" in the title field
-solr_search(q='title:"cell*"', fl='title', rows=5)
+solr_search(cli, params = list(q='title:"cell*"', fl='title', rows=5))
 
 # Proximity searching
 ## Search for words "sports" and "alcohol" within four words of each other
-solr_search(q='everything:"sports alcohol"~7', fl='abstract', rows=3)
+solr_search(cli, params = list(q='everything:"sports alcohol"~7', 
+  fl='abstract', rows=3))
 
 # Range searches
 ## Search for articles with Twitter count between 5 and 10
-solr_search(q='*:*', fl=c('alm_twitterCount','id'), fq='alm_twitterCount:[5 TO 50]',
-rows=10)
+solr_search(cli, params = list(q='*:*', fl=c('alm_twitterCount','id'), 
+  fq='alm_twitterCount:[5 TO 50]', rows=10))
 
 # Boosts
-## Assign higher boost to title matches than to body matches (compare the two calls)
-solr_search(q='title:"cell" abstract:"science"', fl='title', rows=3)
-solr_search(q='title:"cell"^1.5 AND abstract:"science"', fl='title', rows=3)
+## Assign higher boost to title matches than to body matches 
+## (compare the two calls)
+solr_search(cli, params = list(q='title:"cell" abstract:"science"', 
+  fl='title', rows=3))
+solr_search(cli, params = list(q='title:"cell"^1.5 AND abstract:"science"', 
+  fl='title', rows=3))
 
 # FunctionQuery queries
-## This kind of query allows you to use the actual values of fields to calculate
-## relevancy scores for returned documents
+## This kind of query allows you to use the actual values of fields to 
+## calculate relevancy scores for returned documents
 
 ## Here, we search on the product of counter_total_all and alm_twitterCount
 ## metrics for articles in PLOS Journals
-solr_search(q="{!func}product($v1,$v2)", v1 = 'sqrt(counter_total_all)',
-   v2 = 'log(alm_twitterCount)', rows=5, fl=c('id','title'), fq='doc_type:full')
+solr_search(cli, params = list(q="{!func}product($v1,$v2)", 
+  v1 = 'sqrt(counter_total_all)',
+  v2 = 'log(alm_twitterCount)', rows=5, fl=c('id','title'), 
+  fq='doc_type:full'))
 
-## here, search on the product of counter_total_all and alm_twitterCount, using
-## a new temporary field "_val_"
-solr_search(q='_val_:"product(counter_total_all,alm_twitterCount)"',
-   rows=5, fl=c('id','title'), fq='doc_type:full')
+## here, search on the product of counter_total_all and alm_twitterCount,
+## using a new temporary field "_val_"
+solr_search(cli, 
+  params = list(q='_val_:"product(counter_total_all,alm_twitterCount)"',
+  rows=5, fl=c('id','title'), fq='doc_type:full'))
 
 ## papers with most citations
-solr_search(q='_val_:"max(counter_total_all)"',
-   rows=5, fl=c('id','counter_total_all'), fq='doc_type:full')
+solr_search(cli, params = list(q='_val_:"max(counter_total_all)"',
+   rows=5, fl=c('id','counter_total_all'), fq='doc_type:full'))
 
 ## papers with most tweets
-solr_search(q='_val_:"max(alm_twitterCount)"',
-   rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full')
+solr_search(cli, params = list(q='_val_:"max(alm_twitterCount)"',
+   rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full'))
 
 ## using wt = csv
-solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full', wt="csv")
-solr_search(q='*:*', rows=50, fl=c('id','score'), fq='doc_type:full')
+solr_search(cli, params = list(q='*:*', rows=50, fl=c('id','score'), 
+  fq='doc_type:full', wt="csv"))
+solr_search(cli, params = list(q='*:*', rows=50, fl=c('id','score'), 
+  fq='doc_type:full'))
 
 # using a proxy
-# prox <- list(url = "186.249.1.146", port = 80)
-# solr_connect(url = 'http://api.plos.org/search', proxy = prox)
-# solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
-## vs. w/o a proxy
-# solr_connect(url = 'http://api.plos.org/search')
-# solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
+# cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL,
+#   proxy = list(url = "http://186.249.1.146:80"))
+# solr_search(cli, q='*:*', rows=2, fl='id', callopts=list(verbose=TRUE))
 
 # Pass on curl options to modify request
-solr_connect(url = 'http://api.plos.org/search')
 ## verbose
-solr_search(q='*:*', rows=2, fl='id', callopts=verbose())
-## progress
-res <- solr_search(q='*:*', rows=200, fl='id', callopts=progress())
+solr_search(q='*:*', rows=2, fl='id', callopts = list(verbose=TRUE))
 ## timeout
-# solr_search(q='*:*', rows=200, fl='id', callopts=timeout(0.01))
-## combine curl options using the c() function
-opts <- c(verbose(), progress())
-res <- solr_search(q='*:*', rows=200, fl='id', callopts=opts)
+# solr_search(q='*:*', rows=200, fl='id', callopts=list(timeout_ms=1))
 
 ## Searching Europeana
-### They don't return the expected Solr output, so we can get raw data, then parse separately
-solr_connect('http://europeana.eu/api/v2/search.json')
+### They don't return the expected Solr output, so we can get raw data, 
+### then parse separately
+(cli <- SolrClient$new(host = "www.europeana.eu", 
+  path = "api/v2/search.json", port = NULL))
 key <- getOption("eu_key")
-dat <- solr_search(query='*:*', rows=5, wskey = key, raw=TRUE)
+dat <- solr_search(cli, params = list(query='*:*', rows=5, wskey=key), 
+  raw = TRUE)
 library('jsonlite')
 head( jsonlite::fromJSON(dat)$items )
-
-# Connect to a local Solr instance
-## not run - replace with your local Solr URL and collection/core name
-# solr_connect("localhost:8889")
-# solr_search("gettingstarted")
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/#Search_and_Indexing} for more information.
+See \url{http://wiki.apache.org/solr/#Search_and_Indexing}
+for more information.
 }
 \seealso{
-\code{\link{solr_highlight}}, \code{\link{solr_facet}}
+\code{\link[=solr_highlight]{solr_highlight()}}, \code{\link[=solr_facet]{solr_facet()}}
 }

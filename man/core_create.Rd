@@ -4,11 +4,13 @@
 \alias{core_create}
 \title{Create a core}
 \usage{
-core_create(name, instanceDir = NULL, config = NULL, schema = NULL,
+core_create(conn, name, instanceDir = NULL, config = NULL, schema = NULL,
   dataDir = NULL, configSet = NULL, collection = NULL, shard = NULL,
   async = NULL, raw = FALSE, callopts = list(), ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) The name of the core to be created. Required}
 
 \item{instanceDir}{(character) Path to instance directory}
@@ -17,49 +19,54 @@ core_create(name, instanceDir = NULL, config = NULL, schema = NULL,
 
 \item{schema}{(character) Path to schema file}
 
-\item{dataDir}{(character) Name of the data directory relative to instanceDir.}
+\item{dataDir}{(character) Name of the data directory relative to
+instanceDir.}
 
-\item{configSet}{(character) Name of the configset to use for this core. For more
-information, see https://cwiki.apache.org/confluence/display/solr/Config+Sets}
+\item{configSet}{(character) Name of the configset to use for this core.
+For more information, see
+https://lucene.apache.org/solr/guide/6_6/config-sets.html}
 
-\item{collection}{(character) The name of the collection to which this core belongs.
-The default is the name of the core. collection.<param>=<val ue> causes a property of
-<param>=<value> to be set if a new collection is being created. Use collection.configNa
-me=<configname> to point to the configuration for a new collection.}
+\item{collection}{(character) The name of the collection to which this core
+belongs. The default is the name of the core. collection.<param>=<val ue>
+causes a property of <param>=<value> to be set if a new collection is being
+created. Use collection.configNa me=<configname> to point to the
+configuration for a new collection.}
 
-\item{shard}{(character) The shard id this core represents. Normally you want to be
-auto-assigned a shard id.}
+\item{shard}{(character) The shard id this core represents. Normally you
+want to be auto-assigned a shard id.}
 
 \item{async}{(character) Request ID to track this action which will be
 processed asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
-core property name to value. See the section Defining core.properties for details on
-supported properties and values.
-(https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)}
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/6_6/defining-core-properties.html)}
 }
 \description{
 Create a core
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#   bin/solr start -e schemaless
 # you can create a new core like: bin/solr create -c corename
 # where <corename> is the name for your core - or create as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # Create a core
-path <- "~/solr-5.4.1/server/solr/newcore/conf"
+path <- "~/solr-7.0.0/server/solr/newcore/conf"
 dir.create(path, recursive = TRUE)
-files <- list.files("~/solr-5.4.1/server/solr/configsets/data_driven_schema_configs/conf/",
+files <- list.files("~/solr-7.0.0/server/solr/configsets/sample_techproducts_configs/conf/",
 full.names = TRUE)
-file.copy(files, path, recursive = TRUE)
-core_create(name = "newcore", instanceDir = "newcore", configSet = "basic_configs")
+invisible(file.copy(files, path, recursive = TRUE))
+conn$core_create(name = "newcore", instanceDir = "newcore",
+  configSet = "sample_techproducts_configs")
 }
 }

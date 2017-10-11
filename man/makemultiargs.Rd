@@ -2,7 +2,7 @@
 % Please edit documentation in R/zzz.r
 \name{makemultiargs}
 \alias{makemultiargs}
-\title{Function to make make multiple args of the same name from a 
+\title{Function to make make multiple args of the same name from a
 single input with length > 1}
 \usage{
 makemultiargs(x)
@@ -11,6 +11,6 @@ makemultiargs(x)
 \item{x}{Value}
 }
 \description{
-Function to make make multiple args of the same name from a 
+Function to make make multiple args of the same name from a
 single input with length > 1
 }

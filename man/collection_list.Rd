@@ -4,20 +4,24 @@
 \alias{collection_list}
 \title{List collections}
 \usage{
-collection_list(raw = FALSE, ...)
+collection_list(conn, raw = FALSE, ...)
 }
 \arguments{
-\item{raw}{(logical) If \code{TRUE}, returns raw data}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
+\code{wt} param}
+
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 List collections
 }
 \examples{
 \dontrun{
-solr_connect()
-collection_list()
-collection_list()$collections
+(conn <- SolrClient$new())
+conn$collection_list()
+conn$collection_list()$collections
+conn$collection_list(cli)
 }
 }

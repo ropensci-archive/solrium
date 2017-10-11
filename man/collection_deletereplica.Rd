@@ -4,10 +4,12 @@
 \alias{collection_deletereplica}
 \title{Delete a replica}
 \usage{
-collection_deletereplica(name, shard = NULL, replica = NULL,
+collection_deletereplica(conn, name, shard = NULL, replica = NULL,
   onlyIfDown = FALSE, raw = FALSE, callopts = list(), ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) Required. The name of the collection.}
 
 \item{shard}{(character) Required. The name of the shard that includes the replica to
@@ -20,7 +22,7 @@ is active. Default: \code{FALSE}}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
 core property name to value. See the section Defining core.properties for details on
@@ -36,23 +38,23 @@ unregistered.
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # create collection
-collection_create(name = "foobar2", numShards = 2) # bin/solr create -c foobar2
+conn$collection_create(name = "foobar2", numShards = 2) # bin/solr create -c foobar2
 
 # status
-collection_clusterstatus()$cluster$collections$foobar2$shards$shard1
+conn$collection_clusterstatus()$cluster$collections$foobar2$shards$shard1
 
 # add replica
-collection_addreplica(name = "foobar2", shard = "shard1")
+conn$collection_addreplica(name = "foobar2", shard = "shard1")
 
 # delete replica
 ## get replica name
 nms <- names(collection_clusterstatus()$cluster$collections$foobar2$shards$shard1$replicas)
-collection_deletereplica(name = "foobar2", shard = "shard1", replica = nms[1])
+conn$collection_deletereplica(name = "foobar2", shard = "shard1", replica = nms[1])
 
 # status again
-collection_clusterstatus()$cluster$collections$foobar2$shards$shard1
+conn$collection_clusterstatus()$cluster$collections$foobar2$shards$shard1
 }
 }

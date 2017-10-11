@@ -4,12 +4,15 @@
 \alias{collection_createalias}
 \title{Create an alias for a collection}
 \usage{
-collection_createalias(alias, collections, raw = FALSE, ...)
+collection_createalias(conn, alias, collections, raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{alias}{(character) Required. The alias name to be created}
 
-\item{collections}{(character) Required. A character vector of collections to be aliased}
+\item{collections}{(character) Required. A character vector of collections
+to be aliased}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
@@ -22,9 +25,9 @@ alias, effectively acting like an atomic "MOVE" command.
 }
 \examples{
 \dontrun{
-solr_connect()
-collection_create(name = "thingsstuff", numShards = 2)
-collection_createalias("tstuff", "thingsstuff")
-collection_clusterstatus()$cluster$collections$thingsstuff$aliases # new alias
+(conn <- SolrClient$new())
+conn$collection_create(name = "thingsstuff", numShards = 2)
+conn$collection_createalias("tstuff", "thingsstuff")
+conn$collection_clusterstatus()$cluster$collections$thingsstuff$aliases 
 }
 }

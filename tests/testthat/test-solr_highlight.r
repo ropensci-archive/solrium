@@ -3,23 +3,36 @@ context("solr_highlight")
 test_that("solr_highlight works", {
   skip_on_cran()
 
-  solr_connect('http://api.plos.org/search', verbose=FALSE)
-
-  a <- solr_highlight(q='alcohol', hl.fl = 'abstract', rows=10)
-  b <- solr_highlight(q='alcohol', hl.fl = c('abstract','title'), rows=3)
+  a <- conn_plos$highlight(params = list(q='alcohol', hl.fl = 'abstract',
+                                         rows=10))
+  b <- conn_plos$highlight(params = list(q='alcohol',
+                                         hl.fl = c('abstract','title'),
+                                         rows=3))
 
   # correct dimensions
-  expect_that(length(a), equals(10))
-  expect_that(length(a[[1]]), equals(1))
-  expect_that(length(b), equals(3))
-  expect_that(length(b[[3]]), equals(2))
+  expect_that(NROW(a), equals(10))
+  expect_that(NCOL(a), equals(2))
+  expect_that(NROW(b), equals(3))
+  expect_that(NCOL(b), equals(3))
 
   # correct classes
-  expect_is(a, "list")
-  expect_is(a[[1]]$abstract, "character")
+  expect_is(a, "tbl_df")
+  expect_is(a$abstract, "character")
 
-  expect_is(b, "list")
-  expect_is(b[[1]], "list")
-  expect_is(b[[1]]$abstract, "character")
-  expect_is(b[[1]]$title, "character")
+  expect_is(b, "tbl_df")
+  expect_is(b$abstract, "character")
+  expect_is(b$title, "character")
+})
+
+test_that("solr_highlight old style works", {
+  expect_is(solr_highlight(conn_plos,
+    params = list(q='alcohol', hl.fl = 'abstract', rows=10)),
+    "tbl_df"
+  )
+
+  expect_is(solr_highlight(conn_plos,
+    params = list(q='alcohol',
+      hl.fl = c('abstract','title'), rows=3)),
+    "tbl_df"
+  )
 })

@@ -4,25 +4,27 @@
 \alias{solr_get}
 \title{Real time get}
 \usage{
-solr_get(ids, name, fl = NULL, wt = "json", raw = FALSE, ...)
+solr_get(conn, ids, name, fl = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{ids}{Document IDs, one or more in a vector or list}
 
 \item{name}{(character) A collection or core name. Required.}
 
-\item{fl}{Fields to return, can be a character vector like 
-\code{c('id', 'title')}, or a single character vector with one or more 
+\item{fl}{Fields to return, can be a character vector like
+\code{c('id', 'title')}, or a single character vector with one or more
 comma separated names, like \code{'id,title'}}
 
 \item{wt}{(character) One of json (default) or xml. Data type returned.
-If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[xml2]{read_xml}} to parse.}
+If json, uses \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses
+\code{\link[xml2:read_xml]{xml2::read_xml()}} to parse.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Get documents by id
@@ -32,20 +34,20 @@ We use json internally as data interchange format for this function.
 }
 \examples{
 \dontrun{
-solr_connect()
+(cli <- SolrClient$new()) 
 
 # add some documents first
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, name = "gettingstarted")
+add(cli, ss, name = "gettingstarted")
 
 # Now, get documents by id
-solr_get(ids = 1, "gettingstarted")
-solr_get(ids = 2, "gettingstarted")
-solr_get(ids = c(1, 2), "gettingstarted")
-solr_get(ids = "1,2", "gettingstarted")
+solr_get(cli, ids = 1, "gettingstarted")
+solr_get(cli, ids = 2, "gettingstarted")
+solr_get(cli, ids = c(1, 2), "gettingstarted")
+solr_get(cli, ids = "1,2", "gettingstarted")
 
 # Get raw JSON
-solr_get(ids = 1, "gettingstarted", raw = TRUE, wt = "json")
-solr_get(ids = 1, "gettingstarted", raw = TRUE, wt = "xml")
+solr_get(cli, ids = 1, "gettingstarted", raw = TRUE, wt = "json")
+solr_get(cli, ids = 1, "gettingstarted", raw = TRUE, wt = "xml")
 }
 }

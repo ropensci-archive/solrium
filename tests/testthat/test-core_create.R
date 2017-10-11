@@ -2,24 +2,25 @@ context("core_create")
 
 test_that("core_create works", {
   skip_on_cran()
-  
-  solr_connect(verbose = FALSE)
+  skip_on_travis()
+  skip_if_not(is_not_in_cloud_mode(conn))
   
   core_name <- "slamcore"
 
   # delete if exists
-  if (core_exists(core_name)) {
-    invisible(core_unload(core_name))
+  if (conn$core_exists(core_name)) {
+    invisible(conn$core_unload(core_name))
   }
   
   # write files in preparation
-  path <- sprintf("~/solr-5.4.1/server/solr/%s/conf", core_name)
+  path <- sprintf("~/solr-7.0.0/server/solr/%s/conf", core_name)
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
-  files <- list.files("~/solr-5.4.1/server/solr/configsets/data_driven_schema_configs/conf/", full.names = TRUE)
+  files <- list.files("~/solr-7.0.0/server/solr/configsets/sample_techproducts_configs/conf/", full.names = TRUE)
   invisible(file.copy(files, path, recursive = TRUE))
   
   # create the core
-  aa <- suppressMessages(core_create(name = core_name, instanceDir = core_name, configSet = "basic_configs"))
+  aa <- suppressMessages(conn$core_create(
+    name = core_name, instanceDir = core_name, configSet = "basic_configs"))
 
   expect_is(aa, "list")
   expect_is(aa$responseHeader, "list")

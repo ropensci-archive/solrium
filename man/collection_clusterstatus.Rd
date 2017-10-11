@@ -4,28 +4,34 @@
 \alias{collection_clusterstatus}
 \title{Get cluster status}
 \usage{
-collection_clusterstatus(name = NULL, shard = NULL, raw = FALSE, ...)
+collection_clusterstatus(conn, name = NULL, shard = NULL, raw = FALSE,
+  ...)
 }
 \arguments{
-\item{name}{(character) The collection name for which information is requested.
-If omitted, information on all collections in the cluster will be returned.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{shard}{(character) The shard(s) for which information is requested. Multiple
-shard names can be specified as a character vector.}
+\item{name}{(character) The name of the core to be created. Required}
+
+\item{shard}{(character) The shard(s) for which information is requested.
+Multiple shard names can be specified as a character vector.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
-Fetch the cluster status including collections, shards, replicas,
-configuration name as well as collection aliases and cluster properties.
+Fetch the cluster status including collections, shards,
+replicas, configuration name as well as collection aliases and cluster
+properties.
 }
 \examples{
 \dontrun{
-solr_connect()
-collection_clusterstatus()
-res <- collection_clusterstatus()
+(conn <- SolrClient$new())
+conn$collection_clusterstatus()
+res <- conn$collection_clusterstatus()
 res$responseHeader
 res$cluster
 res$cluster$collections

@@ -6,6 +6,6 @@
 #' \code{\link[xml2]{read_xml}} to parse
 #' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
 #' \code{wt} param
-#' @param ... curl options passed on to \code{\link[httr]{POST}}
+#' @param ... curl options passed on to \code{\link[crul]{HttpClient}}
 #' @details You likely may not be able to run this function against many 
 #' public Solr services, but should work locally.

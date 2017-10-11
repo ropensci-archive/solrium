@@ -1,33 +1,30 @@
 #' List collections or cores
-#' 
-#' @name collections
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
-#' @details Calls \code{\link{collection_list}} or \code{\link{core_status}} internally, 
+#'
+#' @export
+#' @inheritParams ping
+#' @details Calls [collection_list()] or [core_status()] internally,
 #' and parses out names for you.
-#' @return A character vector
+#' @return character vector
 #' @examples \dontrun{
 #' # connect
-#' solr_connect(verbose = FALSE)
-#' 
+#' (conn <- SolrClient$new())
+#'
 #' # list collections
-#' collections()
-#' 
+#' conn$collection_list()
+#' collections(conn)
+#'
 #' # list cores
-#' cores()
-#' 
-#' # curl options
-#' library("httr")
-#' collections(config = verbose())
+#' conn$core_status()
+#' cores(conn)
 #' }
-
-#' @export
-#' @rdname collections
-collections <- function(...) {
-  collection_list(...)$collections
+collections <- function(conn, ...) {
+	check_sr(conn)
+  as.character(conn$collection_list(...)$collections)
 }
 
 #' @export
 #' @rdname collections
-cores <- function(...) {
-  names(core_status(...)$status)
+cores <- function(conn, ...) {
+	check_sr(conn)
+  names(conn$core_status(...)$status)
 }

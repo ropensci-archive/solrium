@@ -1,58 +1,56 @@
 #' Atomic updates with JSON data
 #'
+#' Atomic updates to parts of Solr documents
+#'
 #' @export
 #' @param body (character) JSON as a character string
-#' @param name (character) Name of the core or collection
-#' @param wt (character) One of json (default) or xml. If json, uses 
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
-#' \code{\link[xml2]{read_xml}} to parse
-#' @param raw (logical) If \code{TRUE}, returns raw data in format specified by 
-#' \code{wt} param
-#' @param ... curl options passed on to \code{\link[httr]{POST}}
+#' @inheritParams update_atomic_xml
+#' @references
+#' <https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html>
 #' @examples \dontrun{
 #' # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
-#' 
+#'
 #' # connect
-#' solr_connect()
-#' 
+#' (conn <- SolrClient$new())
+#'
 #' # create a collection
-#' collection_create("books") 
-#' 
+#' if (!conn$collection_exists("books")) {
+#'   conn$collection_delete("books")
+#'   conn$collection_create("books")
+#' }
+#'
 #' # Add documents
 #' file <- system.file("examples", "books2.json", package = "solrium")
 #' cat(readLines(file), sep = "\n")
-#' update_json(file, "books")
-#' 
+#' conn$update_json(file, "books")
+#'
 #' # get a document
-#' solr_get(ids = 343334534545, "books")
+#' conn$get(ids = 343334534545, "books")
 #'
 #' # atomic update
 #' body <- '[{
 #'  "id": "343334534545",
 #'  "genre_s": {"set": "mystery" },
-#'  "pages_i": {"inc": 1 },
-#'  "year": {"add": "2009" }
+#'  "pages_i": {"inc": 1 }
 #' }]'
-#' update_atomic_json(body, "books")
-#' 
+#' conn$update_atomic_json(body, "books")
+#'
 #' # get the document again
-#' solr_get(ids = 343334534545, "books")
-#' 
+#' conn$get(ids = 343334534545, "books")
+#'
 #' # another atomic update
 #' body <- '[{
 #'  "id": "343334534545",
-#'  "year": {"remove": "2009" }
+#'  "price": {"remove": "12.5" }
 #' }]'
-#' update_atomic_json(body, "books")
-#' 
+#' conn$update_atomic_json(body, "books")
+#'
 #' # get the document again
-#' solr_get(ids = 343334534545, "books")
+#' conn$get(ids = 343334534545, "books")
 #' }
-update_atomic_json <- function(body, name, wt = 'json', raw = FALSE, ...) {
-  conn <- solr_settings()
-  check_conn(conn)
-  stop_if_absent(name)
-  args <- list(wt = wt)
-  doatomiccreate(file.path(conn$url, sprintf('solr/%s/update', name)), 
-           body, args, "json", raw, ...)
+update_atomic_json <- function(conn, body, name, wt = 'json',
+	  raw = FALSE, ...) {
+
+	check_sr(conn)
+  conn$update_atomic_json(body, name, wt, raw, ...)
 }

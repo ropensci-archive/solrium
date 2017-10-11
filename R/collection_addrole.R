@@ -9,27 +9,20 @@
 #' are up and running
 #'
 #' @export
+#' @param conn A solrium connection object, see [SolrClient]
 #' @param role (character) Required. The name of the role. The only supported role
 #' as of now is overseer (set as default).
 #' @param node (character) Required. The name of the node. It is possible to assign a
 #' role even before that node is started.
-#' @param raw (logical) If \code{TRUE}, returns raw data
-#' @param ... curl options passed on to \code{\link[httr]{GET}}
+#' @param raw (logical) If `TRUE`, returns raw data
+#' @param ... curl options passed on to [crul::HttpClient]
 #' @examples \dontrun{
-#' solr_connect()
+#' (conn <- SolrClient$new())
 #'
 #' # get list of nodes
 #' nodes <- collection_clusterstatus()$cluster$live_nodes
 #' collection_addrole(node = nodes[1])
 #' }
-collection_addrole <- function(role = "overseer", node, raw = FALSE, ...) {
-  conn <- solr_settings()
-  check_conn(conn)
-  args <- sc(list(action = 'ADDROLE', role = role, node = node, wt = 'json'))
-  res <- solr_GET(file.path(conn$url, 'solr/admin/collections'), args, conn$proxy, ...)
-  if (raw) {
-    return(res)
-  } else {
-    jsonlite::fromJSON(res)
-  }
+collection_addrole <- function(conn, role = "overseer", node, raw = FALSE, ...) {
+  conn$collection_addrole(role, node, raw, ...)
 }

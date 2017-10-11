@@ -4,20 +4,21 @@
 \alias{schema}
 \title{Get the schema for a collection or core}
 \usage{
-schema(name, what = "", raw = FALSE, verbose = TRUE, ...)
+schema(conn, name, what = "", raw = FALSE, ...)
 }
 \arguments{
-\item{name}{(character) Name of collection or core}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) Name of a collection or core. Required.}
 
 \item{what}{(character) What to retrieve. By default, we retrieve the entire
 schema. Options include: fields, dynamicfields, fieldtypes, copyfields, name,
 version, uniquekey, similarity, "solrqueryparser/defaultoperator"}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data}
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
+\code{wt} param}
 
-\item{verbose}{If TRUE (default) the url call used printed to console.}
-
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Get the schema for a collection or core
@@ -28,31 +29,31 @@ Get the schema for a collection or core
 # after that, if you haven't run `bin/post -c gettingstarted docs/` yet, do so
 
 # connect: by default we connect to localhost, port 8983
-solr_connect()
+(cli <- SolrClient$new())
 
 # get the schema for the gettingstarted index
-schema(name = "gettingstarted")
+schema(cli, name = "gettingstarted")
 
 # Get parts of the schema
-schema(name = "gettingstarted", "fields")
-schema(name = "gettingstarted", "dynamicfields")
-schema(name = "gettingstarted", "fieldtypes")
-schema(name = "gettingstarted", "copyfields")
-schema(name = "gettingstarted", "name")
-schema(name = "gettingstarted", "version")
-schema(name = "gettingstarted", "uniquekey")
-schema(name = "gettingstarted", "similarity")
-schema(name = "gettingstarted", "solrqueryparser/defaultoperator")
+schema(cli, name = "gettingstarted", "fields")
+schema(cli, name = "gettingstarted", "dynamicfields")
+schema(cli, name = "gettingstarted", "fieldtypes")
+schema(cli, name = "gettingstarted", "copyfields")
+schema(cli, name = "gettingstarted", "name")
+schema(cli, name = "gettingstarted", "version")
+schema(cli, name = "gettingstarted", "uniquekey")
+schema(cli, name = "gettingstarted", "similarity")
+schema(cli, name = "gettingstarted", "solrqueryparser/defaultoperator")
 
 # get raw data
-schema(name = "gettingstarted", "similarity", raw = TRUE)
-schema(name = "gettingstarted", "uniquekey", raw = TRUE)
+schema(cli, name = "gettingstarted", "similarity", raw = TRUE)
+schema(cli, name = "gettingstarted", "uniquekey", raw = TRUE)
 
 # start Solr in Schemaless mode: bin/solr start -e schemaless
-# schema("gettingstarted")
+# schema(cli, "gettingstarted")
 
 # start Solr in Standalone mode: bin/solr start
 # then add a core: bin/solr create -c helloWorld
-# schema("helloWorld")
+# schema(cli, "helloWorld")
 }
 }

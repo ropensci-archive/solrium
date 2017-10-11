@@ -1,9 +1,9 @@
 Package: solrium
 Title: General Purpose R Interface to 'Solr'
 Description: Provides a set of functions for querying and parsing data
-    from 'Solr' (<http://lucene.apache.org/solr>) 'endpoints' (local and 
-    remote), including search, 'faceting', 'highlighting', 'stats', and 
-    'more like this'. In addition, some functionality is included for 
+    from 'Solr' (<http://lucene.apache.org/solr>) 'endpoints' (local and
+    remote), including search, 'faceting', 'highlighting', 'stats', and
+    'more like this'. In addition, some functionality is included for
     creating, deleting, and updating documents in a 'Solr' 'database'.
 Version: 0.4.1.9252
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
@@ -12,17 +12,18 @@ License: MIT + file LICENSE
 URL: https://github.com/ropensci/solrium
 BugReports: https://github.com/ropensci/solrium/issues
 VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
 Imports:
     utils,
     dplyr (>= 0.5.0),
     plyr (>= 1.8.4),
-    httr (>= 1.2.0),
+    crul (>= 0.4.0),
     xml2 (>= 1.0.0),
     jsonlite (>= 1.0),
-    tibble (>= 1.2)
+    tibble (>= 1.2),
+    R6
 Suggests:
     roxygen2 (>= 5.0.1),
     testthat,
-    knitr,
-    covr
+    knitr
 RoxygenNote: 6.0.1

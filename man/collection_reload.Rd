@@ -4,22 +4,27 @@
 \alias{collection_reload}
 \title{Reload a collection}
 \usage{
-collection_reload(name, raw = FALSE, ...)
+collection_reload(conn, name, raw = FALSE, ...)
 }
 \arguments{
-\item{name}{The name of the collection to reload. Required}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
 Reload a collection
 }
 \examples{
 \dontrun{
-solr_connect()
-collection_create(name = "helloWorld")
-collection_reload(name = "helloWorld")
+(conn <- SolrClient$new())
+conn$collection_create(name = "helloWorld")
+conn$collection_reload(name = "helloWorld")
 }
 }

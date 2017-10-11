@@ -1,65 +1,65 @@
-#' @title Solr connection 
-#' 
+#' @title Solr connection
+#'
 #' @description Set Solr options, including base URL, proxy, and errors
-#' 
+#'
 #' @export
 #' @param url Base URL for Solr instance. For a local instance, this is likely going
 #' to be \code{http://localhost:8983} (also the default), or a different port if you
-#' set a different port. 
+#' set a different port.
 #' @param proxy List of arguments for a proxy connection, including one or more of:
-#' url, port, username, password, and auth. See \code{\link[httr]{use_proxy}} for 
+#' url, port, username, password, and auth. See [crul::proxy] for
 #' help, which is used to construct the proxy connection.
-#' @param errors (character) One of simple or complete. Simple gives http code and 
-#' error message on an error, while complete gives both http code and error message, 
+#' @param errors (character) One of simple or complete. Simple gives http code and
+#' error message on an error, while complete gives both http code and error message,
 #' and stack trace, if available.
-#' @param verbose (logical) Whether to print help messages or not. E.g., if 
-#' \code{TRUE}, we print the URL on each request to a Solr server for your 
+#' @param verbose (logical) Whether to print help messages or not. E.g., if
+#' \code{TRUE}, we print the URL on each request to a Solr server for your
 #' reference. Default: \code{TRUE}
 #' @details This function sets environment variables that we use internally
 #' within functions in this package to determine the right thing to do given your
-#' inputs. 
-#' 
-#' In addition, \code{solr_connect} does a quick \code{GET} request to the URL you 
+#' inputs.
+#'
+#' In addition, \code{solr_connect} does a quick \code{GET} request to the URL you
 #' provide to make sure the service is up.
 #' @examples \dontrun{
 #' # set solr settings
 #' solr_connect()
-#' 
+#'
 #' # set solr settings with a proxy
 #' prox <- list(url = "187.62.207.130", port = 3128)
 #' solr_connect(url = "http://localhost:8983", proxy = prox)
-#' 
+#'
 #' # get solr settings
 #' solr_settings()
-#' 
+#'
 #' # you can also check your settings via Sys.getenv()
 #' Sys.getenv("SOLR_URL")
 #' Sys.getenv("SOLR_ERRORS")
 #' }
-solr_connect <- function(url = "http://localhost:8983", proxy = NULL, 
+solr_connect <- function(url = "http://localhost:8983", proxy = NULL,
                          errors = "simple", verbose = TRUE) {
   # checks
   url <- checkurl(url)
   errors <- match.arg(errors, c('simple', 'complete'))
   check_proxy_args(proxy)
-  
+
   # set
   Sys.setenv("SOLR_URL" = url)
   Sys.setenv("SOLR_ERRORS" = errors)
   Sys.setenv("SOLR_VERBOSITY" = verbose)
   options(solr_proxy = proxy)
-  
+
   # ping server
   res <- tryCatch(GET(Sys.getenv("SOLR_URL")), error = function(e) e)
   if (inherits(res, "error")) {
     stop(sprintf("\n  Failed to connect to %s\n  Remember to start Solr before connecting",
                  url), call. = FALSE)
   }
-  
-  structure(list(url = Sys.getenv("SOLR_URL"), 
-                 proxy = make_proxy(proxy), 
-                 errors = Sys.getenv("SOLR_ERRORS"), 
-                 verbose = Sys.getenv("SOLR_VERBOSITY")), 
+
+  structure(list(url = Sys.getenv("SOLR_URL"),
+                 proxy = make_proxy(proxy),
+                 errors = Sys.getenv("SOLR_ERRORS"),
+                 verbose = Sys.getenv("SOLR_VERBOSITY")),
             class = "solr_connection")
 }
 
@@ -97,7 +97,7 @@ print.solr_connection <- function(x, ...) {
 
 check_proxy_args <- function(x) {
   if (!all(names(x) %in% c('url', 'port', 'username', 'password', 'auth'))) {
-    stop("Input to proxy can only contain: url, port, username, password, auth", 
+    stop("Input to proxy can only contain: url, port, username, password, auth",
          call. = FALSE)
   }
 }
@@ -106,9 +106,8 @@ make_proxy <- function(args) {
   if (is.null(args)) {
     NULL
   } else {
-    httr::use_proxy(url = args$url, port = args$port, 
-                    username = args$username, password = args$password, 
-                    auth = args$auth)
+    crul::proxy(url = args$url, user = args$user,
+                pwd = args$pwd, auth = args$auth %||% "basic")
   }
 }
 
@@ -131,11 +130,11 @@ checkurl <- function(x){
 # ### R6 version
 # library("R6")
 # library("httr")
-# 
+#
 # solr_connect <- function(url, proxy = NULL) {
 #   .solr_connection$new(url, proxy)
 # }
-# 
+#
 # .solr_connection <-
 #   R6::R6Class("solr_connection",
 #     public = list(
@@ -151,7 +150,7 @@ checkurl <- function(x){
 #     ),
 #     cloneable = FALSE
 # )
-# 
+#
 # conn <- solr_connect("http://scottchamberlain.info/")
 # # conn <- solr_connect$new(url = "http://localhost:8983")
 # # conn <- solr_connect$new(url = 'http://api.plos.org/search')

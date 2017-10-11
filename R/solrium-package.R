@@ -1,8 +1,8 @@
 #' General purpose R interface to Solr.
-#' 
+#'
 #' This package has support for all the search endpoints, as well as a suite
-#' of functions for managing a Solr database, including adding and deleting 
-#' documents. 
+#' of functions for managing a Solr database, including adding and deleting
+#' documents.
 #'
 #' @section Important search functions:
 #'
@@ -16,16 +16,16 @@
 #'   \item \code{\link{solr_group}} - Group search (w/o general search)
 #'   \item \code{\link{solr_stats}} - Stats search (w/o general search)
 #' }
-#' 
+#'
 #' @section Important Solr management functions:
 #'
 #' \itemize{
-#'   \item \code{\link{update_json}} - Add or delete documents using json in a 
+#'   \item \code{\link{update_json}} - Add or delete documents using json in a
 #'   file
 #'   \item \code{\link{add}} - Add documents via an R list or data.frame
 #'   \item \code{\link{delete_by_id}} - Delete documents by ID
 #'   \item \code{\link{delete_by_query}} - Delete documents by query
-#' } 
+#' }
 #'
 #' @section Vignettes:
 #'
@@ -34,33 +34,33 @@
 #' @section Performance:
 #'
 #' \code{v0.2} and above of this package will have \code{wt=csv} as the default.
-#' This  should give significant performance improvement over the previous 
-#' default of \code{wt=json}, which pulled down json, parsed to an R list, 
-#' then to a data.frame. With \code{wt=csv}, we pull down csv, and read that 
+#' This  should give significant performance improvement over the previous
+#' default of \code{wt=json}, which pulled down json, parsed to an R list,
+#' then to a data.frame. With \code{wt=csv}, we pull down csv, and read that
 #' in directly to a data.frame.
 #'
-#' The http library we use, \pkg{httr}, sets gzip compression header by 
-#' default. As long as compression is used server side, you're good to go on 
+#' The http library we use, \pkg{crul}, sets gzip compression header by
+#' default. As long as compression is used server side, you're good to go on
 #' compression, which should be a good peformance boost. See
 #' \url{https://wiki.apache.org/solr/SolrPerformanceFactors#Query_Response_Compression}
 #' for notes on how to enable compression.
 #'
 #' There are other notes about Solr performance at
-#' \url{https://wiki.apache.org/solr/SolrPerformanceFactors} that can be 
-#' used server side/in your Solr config, but aren't things to tune here in 
+#' \url{https://wiki.apache.org/solr/SolrPerformanceFactors} that can be
+#' used server side/in your Solr config, but aren't things to tune here in
 #' this R client.
 #'
 #' Let us know if there's any further performance improvements we can make.
 #'
 #' @importFrom utils URLdecode head modifyList read.table
-#' @importFrom httr GET POST stop_for_status content content_type_json
-#' content_type_xml content_type upload_file http_condition http_status
+#' @importFrom crul HttpClient
 #' @importFrom xml2 read_xml xml_children xml_find_first xml_find_all
 #' xml_name xml_text xml_attr xml_attrs
 #' @importFrom jsonlite fromJSON
 #' @importFrom plyr rbind.fill
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble data_frame as_data_frame as_tibble add_column
+#' @importFrom R6 R6Class
 #' @name solrium-package
 #' @aliases solrium
 #' @docType package

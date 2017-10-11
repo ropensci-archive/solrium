@@ -4,43 +4,44 @@
 \alias{commit}
 \title{Commit}
 \usage{
-commit(name, expunge_deletes = FALSE, wait_searcher = TRUE,
+commit(conn, name, expunge_deletes = FALSE, wait_searcher = TRUE,
   soft_commit = FALSE, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{name}{(character) A collection or core name. Required.}
 
 \item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
 
-\item{wait_searcher}{block until a new searcher is opened and registered as the
-main query searcher, making the changes visible. Default: \code{TRUE}}
+\item{wait_searcher}{block until a new searcher is opened and registered as
+the main query searcher, making the changes visible. Default: \code{TRUE}}
 
-\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the
-index in a more performant manner, but without "on-disk" guarantees.
+\item{soft_commit}{perform a soft commit - this will refresh the 'view' of
+the index in a more performant manner, but without "on-disk" guarantees.
 Default: \code{FALSE}}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
-parse}
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses \code{\link[xml2:read_xml]{xml2::read_xml()}} to parse}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Commit
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
-commit("gettingstarted")
-commit("gettingstarted", wait_searcher = FALSE)
+conn$commit("gettingstarted")
+conn$commit("gettingstarted", wait_searcher = FALSE)
 
 # get xml back
-commit("gettingstarted", wt = "xml")
+conn$commit("gettingstarted", wt = "xml")
 ## raw xml
-commit("gettingstarted", wt = "xml", raw = TRUE)
+conn$commit("gettingstarted", wt = "xml", raw = TRUE)
 }
 }

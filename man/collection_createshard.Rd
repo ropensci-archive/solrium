@@ -4,31 +4,37 @@
 \alias{collection_createshard}
 \title{Create a shard}
 \usage{
-collection_createshard(name, shard, createNodeSet = NULL, raw = FALSE, ...)
+collection_createshard(conn, name, shard, createNodeSet = NULL, raw = FALSE,
+  ...)
 }
 \arguments{
-\item{name}{(character) Required. The name of the collection that includes the shard
-that will be splitted.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{shard}{(character) Required. The name of the shard to be created.}
 
 \item{createNodeSet}{(character) Allows defining the nodes to spread the new
-collection across. If not provided, the CREATE operation will create shard-replica
-spread across all live Solr nodes. The format is a comma-separated list of
-node_names, such as localhost:8983_solr, localhost:8984_s olr, localhost:8985_solr.}
+collection across. If not provided, the CREATE operation will create
+shard-replica spread across all live Solr nodes. The format is a
+comma-separated list of node_names, such as localhost:8983_solr,
+localhost:8984_s olr, localhost:8985_solr.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{You can pass in parameters like \code{property.name=value}    to set
+core property name to value. See the section Defining core.properties for
+details on supported properties and values.
+(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
 }
 \description{
 Create a shard
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 ## FIXME - doesn't work right now
-# collection_create(name = "trees")
-# collection_createshard(name = "trees", shard = "newshard")
+# conn$collection_create(name = "trees")
+# conn$collection_createshard(name = "trees", shard = "newshard")
 }
 }

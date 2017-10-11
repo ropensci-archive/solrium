@@ -4,32 +4,26 @@
 \alias{solr_stats}
 \title{Solr stats}
 \usage{
-solr_stats(name = NULL, q = "*:*", stats.field = NULL,
-  stats.facet = NULL, wt = "json", start = 0, rows = 0, key = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df")
+solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field = NULL,
+  stats.facet = NULL), body = NULL, callopts = list(), raw = FALSE,
+  parsetype = "df")
 }
 \arguments{
-\item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{q}{Query terms, defaults to '*:*', or everything.}
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if 
+not needed.}
 
-\item{stats.field}{The number of similar documents to return for each result.}
+\item{params}{(list) a named list of parameters, results in a GET reqeust
+as long as no body parameters given}
 
-\item{stats.facet}{You can not facet on multi-valued fields.}
+\item{body}{(list) a named list of parameters, if given a POST request
+will be performed}
 
-\item{wt}{(character) Data type returned, defaults to 'json'. One of json or xml. If json, 
-uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[XML]{xmlParse}} to 
-parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_all}}.}
+\item{callopts}{Call options passed on to [crul::HttpClient]}
 
-\item{start}{Record to start at, default to beginning.}
-
-\item{rows}{Number of records to return. Defaults to 10.}
-
-\item{key}{API key, if needed.}
-
-\item{callopts}{Call options passed on to httr::GET}
-
-\item{raw}{(logical) If TRUE, returns raw data in format specified by wt param}
+\item{raw}{(logical) If TRUE, returns raw data in format specified by 
+wt param}
 
 \item{parsetype}{(character) One of 'list' or 'df'}
 }
@@ -39,45 +33,61 @@ XML, JSON, a list, or data.frame
 \description{
 Returns only stat items
 }
-\details{
-The \code{verbose} parameter dropped. See \code{\link{solr_connect}}, which
-can be used to set verbose status.
+\section{Stats parameters}{
+
+\itemize{
+ \item q Query terms, defaults to '*:*', or everything.
+ \item stats.field The number of similar documents to return for each result.
+ \item stats.facet You can not facet on multi-valued fields. 
+ \item wt (character) Data type returned, defaults to 'json'. One of json 
+ or xml. If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, 
+ uses \code{\link[XML]{xmlParse}} to parse. csv is only supported in 
+ \code{\link{solr_search}} and \code{\link{solr_all}}.
+ \item start Record to start at, default to beginning.
+ \item rows Number of records to return. Defaults to 10.
+ \item key API key, if needed.
 }
+}
+
 \examples{
 \dontrun{
 # connect
-solr_connect('http://api.plos.org/search')
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
 
 # get stats
-solr_stats(q='science', stats.field='counter_total_all', raw=TRUE)
-solr_stats(q='title:"ecology" AND body:"cell"',
-   stats.field=c('counter_total_all','alm_twitterCount'))
-solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet='journal')
-solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet=c('journal','volume'))
+solr_stats(cli, params = list(q='science', stats.field='counter_total_all'), 
+  raw=TRUE)
+solr_stats(cli, params = list(q='title:"ecology" AND body:"cell"',
+   stats.field=c('counter_total_all','alm_twitterCount')))
+solr_stats(cli, params = list(q='ecology', 
+  stats.field=c('counter_total_all','alm_twitterCount'),
+  stats.facet='journal'))
+solr_stats(cli, params = list(q='ecology', 
+  stats.field=c('counter_total_all','alm_twitterCount'),
+  stats.facet=c('journal','volume')))
 
 # Get raw data, then parse later if you feel like it
 ## json
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet=c('journal','volume'), raw=TRUE)
+out <- solr_stats(cli, params = list(q='ecology', 
+  stats.field=c('counter_total_all','alm_twitterCount'),
+  stats.facet=c('journal','volume')), raw=TRUE)
 library("jsonlite")
 jsonlite::fromJSON(out)
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 ## xml
-out <- solr_stats(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
-   stats.facet=c('journal','volume'), raw=TRUE, wt="xml")
+out <- solr_stats(cli, params = list(q='ecology', 
+  stats.field=c('counter_total_all','alm_twitterCount'),
+  stats.facet=c('journal','volume'), wt="xml"), raw=TRUE)
 library("xml2")
 xml2::read_xml(unclass(out))
 solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 # Get verbose http call information
-library("httr")
-solr_stats(q='ecology', stats.field='alm_twitterCount',
-   callopts=verbose())
+solr_stats(cli, params = list(q='ecology', stats.field='alm_twitterCount'),
+   callopts=list(verbose=TRUE))
 }
 }
 \references{
@@ -85,6 +95,5 @@ See \url{http://wiki.apache.org/solr/StatsComponent} for
 more information on Solr stats.
 }
 \seealso{
-\code{\link{solr_highlight}}, \code{\link{solr_facet}},
-\code{\link{solr_search}}, \code{\link{solr_mlt}}
+\code{\link[=solr_highlight]{solr_highlight()}}, \code{\link[=solr_facet]{solr_facet()}}, \code{\link[=solr_search]{solr_search()}}, \code{\link[=solr_mlt]{solr_mlt()}}
 }

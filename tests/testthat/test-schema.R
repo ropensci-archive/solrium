@@ -1,36 +1,44 @@
-# schema
-context("schema")
+context("schema - cloud mode")
+
+test_that("both R6 and normal function call work", {
+  expect_is(conn$schema, "function")
+  expect_equal(names(formals(schema))[1], "conn")
+})
 
 test_that("schema works against", {
   skip_on_cran()
+  skip_if_not(!is_in_cloud_mode(conn))
 
-  invisible(solr_connect(verbose = FALSE))
+  aa <- conn$schema(name = "gettingstarted")
+  bb <- conn$schema(name = "gettingstarted", what = "fields")
 
-  aa <- schema(name = "gettingstarted")
-  bb <- schema(name = "gettingstarted", "fields")
-  
-  expect_is(schema(name = "gettingstarted", "dynamicfields"), "list")
-  expect_is(schema(name = "gettingstarted", "fieldtypes"), "list")
-  expect_is(schema(name = "gettingstarted", "copyfields"), "list")
-  expect_is(schema(name = "gettingstarted", "name"), "list")
-  expect_is(schema(name = "gettingstarted", "version"), "list")
-  expect_is(schema(name = "gettingstarted", "uniquekey"), "list")
-  expect_is(schema(name = "gettingstarted", "similarity"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "dynamicfields"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "fieldtypes"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "copyfields"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "name"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "version"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "uniquekey"), "list")
+  expect_is(conn$schema(name = "gettingstarted", "similarity"), "list")
 
   expect_is(aa, "list")
   expect_is(aa$responseHeader, "list")
   expect_is(aa$schema, "list")
   expect_is(aa$schema$name, "character")
-  
+
   expect_is(bb, "list")
   expect_is(bb$fields, "data.frame")
 })
 
 test_that("schema fails well", {
   skip_on_cran()
-  
-  invisible(solr_connect(verbose = FALSE))
-  
-  expect_error(schema(), "argument \"name\" is missing")
-  expect_error(schema(name = "gettingstarted", "stuff"), "Client error")
+  skip_if_not(!is_in_cloud_mode(conn))
+
+  expect_error(conn$schema(), "argument \"name\" is missing")
+  expect_error(conn$schema(name = "gettingstarted", "stuff"), "Not Found")
+})
+
+test_that("schema old style works", {
+  expect_is(schema(conn, name = "gettingstarted"),
+    "list"
+  )
 })

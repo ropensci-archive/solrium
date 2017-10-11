@@ -4,11 +4,14 @@
 \alias{update_xml}
 \title{Update documents with XML data}
 \usage{
-update_xml(files, name, commit = TRUE, optimize = FALSE, max_segments = 1,
-  expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
-  prepare_commit = NULL, wt = "json", raw = FALSE, ...)
+update_xml(conn, files, name, commit = TRUE, optimize = FALSE,
+  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
+  soft_commit = FALSE, prepare_commit = NULL, wt = "json", raw = FALSE,
+  ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{files}{Path to a single file to load into Solr}
 
 \item{name}{(character) Name of the core or collection}
@@ -40,7 +43,7 @@ calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{POST}}}
+\item{...}{curl options passed on to \code{\link[crul]{HttpClient}}}
 }
 \description{
 Update documents with XML data
@@ -54,27 +57,27 @@ public Solr services, but should work locally.
 # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # create a collection
-collection_create("books")
+conn$collection_create("books")
 
 # Add documents
 file <- system.file("examples", "books.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_xml(file, "books")
+conn$update_xml(file, "books")
 
 # Update commands - can include many varying commands
 ## Add files
 file <- system.file("examples", "books2_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_xml(file, "books")
+conn$update_xml(file, "books")
 
 ## Delete files
 file <- system.file("examples", "updatecommands_delete.xml", 
 package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_xml(file, "books")
+conn$update_xml(file, "books")
 
 ## Add and delete in the same document
 ## Add a document first, that we can later delete

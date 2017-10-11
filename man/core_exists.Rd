@@ -4,12 +4,14 @@
 \alias{core_exists}
 \title{Check if a core exists}
 \usage{
-core_exists(name, callopts = list())
+core_exists(conn, name, callopts = list())
 }
 \arguments{
-\item{name}{(character) The name of the core. If not given, all cores.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{name}{(character) The name of the core to be created. Required}
+
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \value{
 A single boolean, \code{TRUE} or \code{FALSE}
@@ -18,21 +20,22 @@ A single boolean, \code{TRUE} or \code{FALSE}
 Check if a core exists
 }
 \details{
-Simply calls \code{\link{core_status}} internally
+Simply calls \code{\link[=core_status]{core_status()}} internally
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#   bin/solr start -e schemaless
 # you can create a new core like: bin/solr create -c corename
-# where <corename> is the name for your core - or creaate as below
+# where <corename> is the name for your core - or create as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # exists
-core_exists("gettingstarted")
+conn$core_exists("gettingstarted")
 
 # doesn't exist
-core_exists("hhhhhh")
+conn$core_exists("hhhhhh")
 }
 }

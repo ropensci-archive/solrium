@@ -8,39 +8,29 @@
 #'
 #' @export
 #'
-#' @param name The name of the target core/index. Required
+#' @inheritParams core_create
 #' @param indexDir (character)	Multi-valued, directories that would be merged.
 #' @param srcCore	(character)	Multi-valued, source cores that would be merged.
-#' @param async	(character) Request ID to track this action which will be processed
-#' asynchronously
-#' @param raw (logical) If \code{TRUE}, returns raw data
-#' @param callopts curl options passed on to \code{\link[httr]{GET}}
+#' @param async	(character) Request ID to track this action which will be
+#' processed asynchronously
 #' @examples \dontrun{
-#' # start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+#' # start Solr with Schemaless mode via the schemaless eg:
+#' #  bin/solr start -e schemaless
 #'
 #' # connect
-#' solr_connect()
+#' (conn <- SolrClient$new())
 #'
 #' ## FIXME: not tested yet
 #'
 #' # use indexDir parameter
-#' core_mergeindexes(core="new_core_name", indexDir = c("/solr_home/core1/data/index",
+#' conn$core_mergeindexes(core="new_core_name",
+#'    indexDir = c("/solr_home/core1/data/index",
 #'    "/solr_home/core2/data/index"))
 #'
 #' # use srcCore parameter
-#' core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
+#' conn$core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
 #' }
-core_mergeindexes <- function(name, indexDir = NULL, srcCore = NULL, async = NULL,
-                        raw = FALSE, callopts = list()) {
-
-  conn <- solr_settings()
-  check_conn(conn)
-  args <- sc(list(action = 'MERGEINDEXES', core = name, indexDir = indexDir,
-                  srcCore = srcCore, async = async, wt = 'json'))
-  res <- solr_GET(file.path(conn$url, 'solr/admin/cores'), args, callopts, conn$proxy)
-  if (raw) {
-    return(res)
-  } else {
-    jsonlite::fromJSON(res)
-  }
+core_mergeindexes <- function(conn, name, indexDir = NULL, srcCore = NULL,
+                              async = NULL, raw = FALSE, callopts = list()) {
+  conn$core_mergeindexes(name, indexDir, srcCore, async, raw, callopts)
 }

@@ -4,29 +4,32 @@
 \alias{core_reload}
 \title{Reload a core}
 \usage{
-core_reload(name, raw = FALSE, callopts = list())
+core_reload(conn, name, raw = FALSE, callopts = list())
 }
 \arguments{
-\item{name}{(character) The name of the core. Required}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Reload a core
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#  bin/solr start -e schemaless
 # you can create a new core like: bin/solr create -c corename
 # where <corename> is the name for your core - or creaate as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # Status of particular cores
-core_reload("gettingstarted")
-core_status("gettingstarted")
+conn$core_reload("gettingstarted")
+conn$core_status("gettingstarted")
 }
 }

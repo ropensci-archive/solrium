@@ -4,12 +4,14 @@
 \alias{collection_addreplica}
 \title{Add a replica}
 \usage{
-collection_addreplica(name, shard = NULL, route = NULL, node = NULL,
+collection_addreplica(conn, name, shard = NULL, route = NULL, node = NULL,
   instanceDir = NULL, dataDir = NULL, async = NULL, raw = FALSE,
   callopts = list(), ...)
 }
 \arguments{
-\item{name}{(character) The name of the collection. Required}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{shard}{(character) The name of the shard to which replica is to be added.
 If \code{shard} is not given, then \code{route} must be.}
@@ -29,7 +31,7 @@ asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
 core property name to value. See the section Defining core.properties for details on
@@ -42,24 +44,25 @@ specified if the replica is to be created in a specific node
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # create collection
-if (!collection_exists("foobar")) {
-  collection_create(name = "foobar", numShards = 2) # bin/solr create -c foobar
+if (!conn$collection_exists("foobar")) {
+  conn$collection_create(name = "foobar", numShards = 2) 
+  # OR bin/solr create -c foobar
 }
 
 # status
-collection_clusterstatus()$cluster$collections$foobar
+conn$collection_clusterstatus()$cluster$collections$foobar
 
 # add replica
-if (!collection_exists("foobar")) {
-  collection_addreplica(name = "foobar", shard = "shard1")
+if (!conn$collection_exists("foobar")) {
+  conn$collection_addreplica(name = "foobar", shard = "shard1")
 }
 
 # status again
-collection_clusterstatus()$cluster$collections$foobar
-collection_clusterstatus()$cluster$collections$foobar$shards
-collection_clusterstatus()$cluster$collections$foobar$shards$shard1
+conn$collection_clusterstatus()$cluster$collections$foobar
+conn$collection_clusterstatus()$cluster$collections$foobar$shards
+conn$collection_clusterstatus()$cluster$collections$foobar$shards$shard1
 }
 }

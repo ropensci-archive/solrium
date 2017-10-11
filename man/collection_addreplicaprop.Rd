@@ -4,30 +4,34 @@
 \alias{collection_addreplicaprop}
 \title{Add a replica property}
 \usage{
-collection_addreplicaprop(name, shard, replica, property, property.value,
+collection_addreplicaprop(conn, name, shard, replica, property, property.value,
   shardUnique = FALSE, raw = FALSE, callopts = list())
 }
 \arguments{
-\item{name}{(character) Required. The name of the collection this replica belongs to.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{shard}{(character) Required. The name of the shard the replica belongs to.}
+\item{name}{(character) The name of the core to be created. Required}
+
+\item{shard}{(character) Required. The name of the shard the replica
+belongs to}
 
 \item{replica}{(character) Required. The replica, e.g. core_node1.}
 
-\item{property}{(character) Required. The property to add. Note: this will have the
-literal 'property.' prepended to distinguish it from system-maintained properties.
-So these two forms are equivalent: \code{property=special} and
-\code{property=property.special}}
+\item{property}{(character) Required. The property to add. Note: this will
+have the literal 'property.' prepended to distinguish it from
+system-maintained properties. So these two forms are equivalent:
+\code{property=special} and \code{property=property.special}}
 
-\item{property.value}{(character) Required. The value to assign to the property.}
+\item{property.value}{(character) Required. The value to assign to
+the property}
 
 \item{shardUnique}{(logical) If \code{TRUE}, then setting this property in one
-replica will (1) remove the property from all other replicas in that shard.
+replica will (1) remove the property from all other replicas in that shard
 Default: \code{FALSE}}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Assign an arbitrary property to a particular replica and give it
@@ -36,20 +40,21 @@ with the new value.
 }
 \examples{
 \dontrun{
-solr_connect()
+(conn <- SolrClient$new())
 
 # create collection
-collection_create(name = "addrep", numShards = 2) # bin/solr create -c addrep
+conn$collection_create(name = "addrep", numShards = 1) 
+# OR bin/solr create -c addrep
 
 # status
-collection_clusterstatus()$cluster$collections$addrep$shards
+conn$collection_clusterstatus()$cluster$collections$addrep$shards
 
 # add the value world to the property hello
-collection_addreplicaprop(name = "addrep", shard = "shard1", replica = "core_node1",
-   property = "hello", property.value = "world")
+conn$collection_addreplicaprop(name = "addrep", shard = "shard1", 
+  replica = "core_node1", property = "hello", property.value = "world")
 
 # check status
-collection_clusterstatus()$cluster$collections$addrep$shards
-collection_clusterstatus()$cluster$collections$addrep$shards$shard1$replicas$core_node1
+conn$collection_clusterstatus()$cluster$collections$addrep$shards
+conn$collection_clusterstatus()$cluster$collections$addrep$shards$shard1$replicas$core_node1
 }
 }

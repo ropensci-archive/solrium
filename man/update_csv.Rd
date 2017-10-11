@@ -4,13 +4,15 @@
 \alias{update_csv}
 \title{Update documents with CSV data}
 \usage{
-update_csv(files, name, separator = ",", header = TRUE, fieldnames = NULL,
-  skip = NULL, skipLines = 0, trim = FALSE, encapsulator = NULL,
-  escape = NULL, keepEmpty = FALSE, literal = NULL, map = NULL,
-  split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
-  commit = NULL, wt = "json", raw = FALSE, ...)
+update_csv(conn, files, name, separator = ",", header = TRUE,
+  fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE,
+  encapsulator = NULL, escape = NULL, keepEmpty = FALSE, literal = NULL,
+  map = NULL, split = NULL, rowid = NULL, rowidOffset = NULL,
+  overwrite = NULL, commit = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{files}{Path to a single file to load into Solr}
 
 \item{name}{(character) Name of the core or collection}
@@ -83,13 +85,13 @@ with &overwrite=false.}
 default is commit=false to avoid the potential performance impact of frequent commits.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
 \code{\link[xml2]{read_xml}} to parse}
 
-\item{raw}{(logical) If TRUE, returns raw data in format specified by 
+\item{raw}{(logical) If TRUE, returns raw data in format specified by
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Update documents with CSV data
@@ -103,7 +105,7 @@ SOLR v1.2 was first version to support csv. See
 # start Solr in Schemaless mode: bin/solr start -e schemaless
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 path <- "~/solr-6.4.0/server/solr/newcore/conf"
 dir.create(path, recursive = TRUE)
@@ -114,7 +116,7 @@ core_create(name = "books", instanceDir = "newcore", configSet = "basic_configs"
 
 df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
 write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
-update_csv("df.csv", "books")
+conn$update_csv("df.csv", "books", verbose = TRUE)
 
 # give back xml
 update_csv("df.csv", "books", wt = "xml")

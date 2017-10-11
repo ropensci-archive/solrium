@@ -4,12 +4,14 @@
 \alias{update_json}
 \title{Update documents with JSON data}
 \usage{
-update_json(files, name, commit = TRUE, optimize = FALSE,
+update_json(conn, files, name, commit = TRUE, optimize = FALSE,
   max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
   soft_commit = FALSE, prepare_commit = NULL, wt = "json", raw = FALSE,
   ...)
 }
 \arguments{
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
 \item{files}{Path to a single file to load into Solr}
 
 \item{name}{(character) Name of the core or collection}
@@ -41,7 +43,7 @@ calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
 \code{wt} param}
 
-\item{...}{curl options passed on to \code{\link[httr]{POST}}}
+\item{...}{curl options passed on to \code{\link[crul]{HttpClient}}}
 }
 \description{
 Update documents with JSON data
@@ -55,12 +57,13 @@ public Solr services, but should work locally.
 # start Solr in Schemaless mode: bin/solr start -e schemaless
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # Add documents
 file <- system.file("examples", "books2.json", package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file, "books")
+conn$update_json(files = file, name = "books")
+update_json(conn, files = file, name = "books")
 
 # Update commands - can include many varying commands
 ## Add file

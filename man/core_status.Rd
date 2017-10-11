@@ -4,39 +4,42 @@
 \alias{core_status}
 \title{Get core status}
 \usage{
-core_status(name = NULL, indexInfo = TRUE, raw = FALSE,
+core_status(conn, name = NULL, indexInfo = TRUE, raw = FALSE,
   callopts = list())
 }
 \arguments{
-\item{name}{(character) The name of the core. If not given, all cores.}
+\item{conn}{A solrium connection object, see \link{SolrClient}}
+
+\item{name}{(character) The name of the core to be created. Required}
 
 \item{indexInfo}{(logical)}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{callopts}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Get core status
 }
 \examples{
 \dontrun{
-# start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
+# start Solr with Schemaless mode via the schemaless eg:
+#   bin/solr start -e schemaless
 # you can create a new core like: bin/solr create -c corename
 # where <corename> is the name for your core - or creaate as below
 
 # connect
-solr_connect()
+(conn <- SolrClient$new())
 
 # Status of all cores
-core_status()
+conn$core_status()
 
 # Status of particular cores
-core_status("gettingstarted")
+conn$core_status("gettingstarted")
 
 # Get index info or not
 ## Default: TRUE
-core_status("gettingstarted", indexInfo = TRUE)
-core_status("gettingstarted", indexInfo = FALSE)
+conn$core_status("gettingstarted", indexInfo = TRUE)
+conn$core_status("gettingstarted", indexInfo = FALSE)
 }
 }
