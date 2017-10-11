@@ -50,8 +50,8 @@
 #'    \item all - include all parameters involved in this request, either specified explicitly
 #'    by the client, or implicit because of the request handler configuration.
 #'  }
-#' \item wt (character) One of json, xml, or csv. Data type returned, defaults 
-#'   to 'csv'. If json, uses [jsonlite::fromJSON()] to parse. If xml, 
+#' \item wt (character) One of json, xml, or csv. Data type returned, defaults
+#'   to 'csv'. If json, uses [jsonlite::fromJSON()] to parse. If xml,
 #'   uses [xml2::read_xml()] to parse. If csv, uses [read.table()] to parse.
 #'   `wt=csv` gives the fastest performance at least in all the cases we have
 #'   tested in, thus it's the default value for `wt`

@@ -7,7 +7,7 @@
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param params (list) a named list of parameters, results in a GET reqeust
 #' as long as no body parameters given
-#' @param body (list) a named list of parameters, if given a POST request 
+#' @param body (list) a named list of parameters, if given a POST request
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
@@ -15,22 +15,22 @@
 #' information.
 #' @examples \dontrun{
 #' # connect
-#' (cli <- SolrClient$new()) 
-#' 
+#' (cli <- SolrClient$new())
+#'
 #' # by default we do a GET request
-#' cli$group("gettingstarted", 
+#' cli$group("gettingstarted",
 #'   params = list(q='*:*', group.field='compName_s'))
 #' # OR
-#' solr_group(cli, "gettingstarted", 
+#' solr_group(cli, "gettingstarted",
 #'   params = list(q='*:*', group.field='compName_s'))
-#'   
+#'
 #' # connect
-#' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+#' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 #'
 #' # Basic group query
-#' solr_group(cli, params = list(q='ecology', group.field='journal', 
+#' solr_group(cli, params = list(q='ecology', group.field='journal',
 #'   group.limit=3, fl=c('id','score')))
-#' solr_group(cli, params = list(q='ecology', group.field='journal', 
+#' solr_group(cli, params = list(q='ecology', group.field='journal',
 #'   group.limit=3, fl='article_type'))
 #'
 #' # Different ways to sort (notice diff btw sort of group.sort)
@@ -80,10 +80,10 @@
 #' solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
 #'   fl='article_type', wt = "xml"), parsetype = "list")
 #' }
-solr_group <- function(conn, name = NULL, params = NULL, body = NULL, 
-                       callopts=list(), raw=FALSE, parsetype='df', 
+solr_group <- function(conn, name = NULL, params = NULL, body = NULL,
+                       callopts=list(), raw=FALSE, parsetype='df',
                        concat=',', ...) {
 
-  conn$group(name = name, params = params, body = body, callopts = callopts, 
+  conn$group(name = name, params = params, body = body, callopts = callopts,
              raw = raw, parsetype = parsetype, concat = concat, ...)
 }

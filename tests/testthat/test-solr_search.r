@@ -105,3 +105,66 @@ test_that("solr_search works with Dryad", {
     solr_search(conn_dryad, params = list(q = 'dc.title.en:ecology', rows = 5)),
     "tbl_df")
 })
+
+test_that("solr_search optimize max rows with lower boundary", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- paste0('id:', a$id)
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=-1, fl='id')
+
+  expect_identical(b, c)
+})
+
+test_that("solr_search optimize max rows with upper boundary", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- paste0('id:', a$id)
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=50000, fl='id')
+
+  expect_identical(b, c)
+})
+
+test_that("solr_search optimize max rows with rows higher than upper boundary", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- paste0('id:', a$id)
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=50001, fl='id')
+
+  expect_identical(b, c)
+})
+
+test_that("solr_search optimize max rows with rows=31 and minOptimizedRows=30", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=1, fl='id')
+  query <- paste0('id:', a$id)
+  b <- solr_search(q=query, rows=1, fl='id')
+  c <- solr_search(q=query, rows=31, fl='id', optimizeMaxRows=TRUE, minOptimizedRows=30)
+
+  expect_identical(b, c)
+})
+
+
+test_that("solr_search fails if optimize max rows is disabled with rows equal to -1", {
+  skip_on_cran()
+
+  solr_connect('http://api.plos.org/search', verbose = FALSE)
+
+  a <- solr_search(q='*:*', rows=-1, fl='id', optimizeMaxRows=FALSE)
+
+  expect_that(length(a), equals(0))
+})

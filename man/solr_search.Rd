@@ -4,8 +4,17 @@
 \alias{solr_search}
 \title{Solr search}
 \usage{
+<<<<<<< HEAD
 solr_search(conn, name = NULL, params = list(q = "*:*"), body = NULL,
   callopts = list(), raw = FALSE, parsetype = "df", concat = ",", ...)
+=======
+solr_search(name = NULL, q = "*:*", sort = NULL, start = NULL,
+  rows = NULL, pageDoc = NULL, pageScore = NULL, fq = NULL, fl = NULL,
+  defType = NULL, timeAllowed = NULL, qt = NULL, wt = "json",
+  NOW = NULL, TZ = NULL, echoHandler = NULL, echoParams = NULL,
+  key = NULL, callopts = list(), raw = FALSE, parsetype = "df",
+  concat = ",", optimizeMaxRows = TRUE, minOptimizedRows = 50000, ...)
+>>>>>>> master
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -27,6 +36,13 @@ will be performed}
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
+
+\item{optimizeMaxRows}{(logical) If TRUE, then rows parameter will be adjusted to the number of returned
+results by the same constraints. It will only be applied if rows parameter is higher
+than minOptimizedRows. Default: TRUE}
+
+\item{minOptimizedRows}{minOptimizedRows parameter is used by optimizedMaxRows parameter.
+Default: 50000}
 
 \item{...}{Further args.}
 }
@@ -113,6 +129,9 @@ cli$search(params = list(q = "*:*", facet = TRUE))
 
 # search
 solr_search(cli, params = list(q='*:*', rows=2, fl='id'))
+
+# search and return all rows
+solr_search(q='*:*', rows=-1, fl='id')
 
 # Search for word ecology in title and cell in the body
 solr_search(cli, params = list(q='title:"ecology" AND body:"cell"', 

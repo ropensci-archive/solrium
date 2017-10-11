@@ -7,7 +7,7 @@
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param params (list) a named list of parameters, results in a GET reqeust
 #' as long as no body parameters given
-#' @param body (list) a named list of parameters, if given a POST request 
+#' @param body (list) a named list of parameters, if given a POST request
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
@@ -15,29 +15,29 @@
 #' more information.
 #' @examples \dontrun{
 #' # connect
-#' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+#' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 #'
 #' solr_all(cli, params = list(q='*:*', rows=2, fl='id'))
 #'
 #' # facets
-#' solr_all(cli, params = list(q='*:*', rows=2, fl='id', facet="true", 
+#' solr_all(cli, params = list(q='*:*', rows=2, fl='id', facet="true",
 #'   facet.field="journal"))
 #'
 #' # mlt
-#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', mlt='true', 
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', mlt='true',
 #'   mlt.count=2, mlt.fl='abstract'))
 #'
 #' # facets and mlt
-#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
 #'   facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract'))
 #'
 #' # stats
-#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', stats='true', 
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', stats='true',
 #'   stats.field='counter_total_all'))
 #'
 #' # facets, mlt, and stats
-#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
-#'   facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract', 
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+#'   facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract',
 #'   stats='true', stats.field='counter_total_all'))
 #'
 #' # group
@@ -45,20 +45,20 @@
 #'  group.field='journal', group.limit=3))
 #'
 #' # facets, mlt, stats, and groups
-#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true", 
-#'  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract', 
-#'  stats='true', stats.field='counter_total_all', group='true', 
+#' solr_all(cli, params = list(q='ecology', rows=2, fl='id', facet="true",
+#'  facet.field="journal", mlt='true', mlt.count=2, mlt.fl='abstract',
+#'  stats='true', stats.field='counter_total_all', group='true',
 #'  group.field='journal', group.limit=3))
 #'
 #' # using wt = xml
-#' solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'), 
+#' solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
 #'   fq='doc_type:full', wt="xml"), raw=TRUE)
 #' }
 
-solr_all <- function(conn, name = NULL, params = NULL, body = NULL, 
-                     callopts=list(), raw=FALSE, parsetype='df', 
+solr_all <- function(conn, name = NULL, params = NULL, body = NULL,
+                     callopts=list(), raw=FALSE, parsetype='df',
                      concat=',', ...) {
-  
-  conn$all(name = name, params = params, body = body, callopts = callopts, 
+
+  conn$all(name = name, params = params, body = body, callopts = callopts,
              raw = raw, parsetype = parsetype, concat = concat, ...)
 }
