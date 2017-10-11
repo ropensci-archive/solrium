@@ -7,9 +7,9 @@
 #' @param query Query to use to delete documents
 #' @param commit (logical) If `TRUE`, documents immediately searchable.
 #' Deafult: `TRUE`
-#' @param commit_within (numeric) Milliseconds to commit the change, the 
+#' @param commit_within (numeric) Milliseconds to commit the change, the
 #' document will be added within that time. Default: `NULL`
-#' @param overwrite (logical) Overwrite documents with matching keys. 
+#' @param overwrite (logical) Overwrite documents with matching keys.
 #' Default: `TRUE`
 #' @param boost (numeric) Boost factor. Default: `NULL`
 #' @param wt (character) One of json (default) or xml. If json, uses
@@ -20,7 +20,7 @@
 #' @param ... curl options passed on to [crul::HttpClient]
 #' @details We use json internally as data interchange format for this function.
 #' @examples \dontrun{
-#' (cli <- SolrClient$new()) 
+#' (cli <- SolrClient$new())
 #'
 #' # add some documents first
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
@@ -38,19 +38,21 @@
 
 #' @export
 #' @name delete
-delete_by_id <- function(conn, ids, name, commit = TRUE, commit_within = NULL, 
+delete_by_id <- function(conn, ids, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
 
-  conn$delete_by_id(ids, name, commit, commit_within, overwrite, boost, 
+	check_sr(conn)
+  conn$delete_by_id(ids, name, commit, commit_within, overwrite, boost,
                     wt, raw, ...)
 }
 
 #' @export
 #' @name delete
-delete_by_query <- function(conn, query, name, commit = TRUE, 
-  commit_within = NULL, overwrite = TRUE, boost = NULL, wt = 'json', 
+delete_by_query <- function(conn, query, name, commit = TRUE,
+  commit_within = NULL, overwrite = TRUE, boost = NULL, wt = 'json',
   raw = FALSE, ...) {
-  
-  conn$delete_by_query(query, name, commit, commit_within, overwrite, boost, 
+
+  check_sr(conn)
+  conn$delete_by_query(query, name, commit, commit_within, overwrite, boost,
                     wt, raw, ...)
 }

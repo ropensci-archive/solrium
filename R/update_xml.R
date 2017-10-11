@@ -8,10 +8,10 @@
 #' @param files Path to a single file to load into Solr
 #' @examples \dontrun{
 #' # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
-#' 
+#'
 #' # connect
 #' (conn <- SolrClient$new())
-#' 
+#'
 #' # create a collection
 #' conn$collection_create("books")
 #'
@@ -27,7 +27,7 @@
 #' conn$update_xml(file, "books")
 #'
 #' ## Delete files
-#' file <- system.file("examples", "updatecommands_delete.xml", 
+#' file <- system.file("examples", "updatecommands_delete.xml",
 #' package = "solrium")
 #' cat(readLines(file), sep = "\n")
 #' conn$update_xml(file, "books")
@@ -41,11 +41,12 @@
 #' cat(readLines(file), sep = "\n")
 #' update_xml(file, "books")
 #' }
-update_xml <- function(conn, files, name, commit = TRUE, optimize = FALSE, 
-  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE, 
+update_xml <- function(conn, files, name, commit = TRUE, optimize = FALSE,
+  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
   soft_commit = FALSE, prepare_commit = NULL, wt = 'json', raw = FALSE, ...) {
 
-  conn$update_xml(files, name, commit, optimize, max_segments, 
-                  expunge_deletes, wait_searcher, soft_commit, prepare_commit, 
+	check_sr(conn)
+  conn$update_xml(files, name, commit, optimize, max_segments,
+                  expunge_deletes, wait_searcher, soft_commit, prepare_commit,
                   wt, raw, ...)
 }

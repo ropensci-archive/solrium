@@ -13,12 +13,21 @@ test_that("solr_search works", {
   # correct classes
   expect_is(a, "data.frame")
   expect_is(b, "data.frame")
+
+  expect_is(
+    solr_search(conn_plos, params = list(q='*:*', rows=2, fl='id')),
+    "tbl_df")
+  expect_is(
+    solr_search(conn_plos, params = list(q='title:"ecology" AND body:"cell"',
+      fl='title', rows=5)), "tbl_df")
 })
 
 test_that("solr_search fails well", {
   skip_on_cran()
 
-  expect_error(conn_plos$search(params = list(q = "*:*", rows = "asdf")), 
+  expect_error(conn_plos$search(params = list(q = "*:*", rows = "asdf")),
+               "500 - For input string")
+  expect_error(solr_search(conn_plos, params = list(q = "*:*", rows = "asdf")),
                "500 - For input string")
   expect_error(conn_plos$search(params = list(q = "*:*", sort = "down")),
                "400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
@@ -88,4 +97,11 @@ test_that("solr_search works with Dryad", {
 
   # correct content
   expect_true(all(grepl("ecolog", b$dc.title.en, ignore.case = TRUE)))
+
+  # solr_search
+  expect_is(solr_search(conn_dryad, params = list(q = '*:*', rows = 2)),
+    "tbl_df")
+  expect_is(
+    solr_search(conn_dryad, params = list(q = 'dc.title.en:ecology', rows = 5)),
+    "tbl_df")
 })

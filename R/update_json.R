@@ -8,7 +8,7 @@
 #' @param files Path to a single file to load into Solr
 #' @examples \dontrun{
 #' # start Solr in Schemaless mode: bin/solr start -e schemaless
-#' 
+#'
 #' # connect
 #' (conn <- SolrClient$new())
 #'
@@ -20,13 +20,13 @@
 #'
 #' # Update commands - can include many varying commands
 #' ## Add file
-#' file <- system.file("examples", "updatecommands_add.json", 
+#' file <- system.file("examples", "updatecommands_add.json",
 #'   package = "solrium")
 #' cat(readLines(file), sep = "\n")
 #' update_json(file, "books")
 #'
 #' ## Delete file
-#' file <- system.file("examples", "updatecommands_delete.json", 
+#' file <- system.file("examples", "updatecommands_delete.json",
 #'   package = "solrium")
 #' cat(readLines(file), sep = "\n")
 #' update_json(file, "books")
@@ -40,11 +40,12 @@
 #' cat(readLines(file), sep = "\n")
 #' update_json(file, "books")
 #' }
-update_json <- function(conn, files, name, commit = TRUE, optimize = FALSE, 
-  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE, 
+update_json <- function(conn, files, name, commit = TRUE, optimize = FALSE,
+  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
   soft_commit = FALSE, prepare_commit = NULL, wt = 'json', raw = FALSE, ...) {
 
-  conn$update_json(files, name, commit, optimize, max_segments, 
-                   expunge_deletes, wait_searcher, soft_commit, prepare_commit, 
+	check_sr(conn)
+  conn$update_json(files, name, commit, optimize, max_segments,
+                   expunge_deletes, wait_searcher, soft_commit, prepare_commit,
                    wt, raw, ...)
 }

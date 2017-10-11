@@ -31,6 +31,22 @@ test_that("solr_stats works", {
   expect_equal(attr(c, "wt"), "json")
   expect_is(d, "list")
   expect_is(e, "list")
+
+  # solr_stats
+  expect_is(
+    solr_stats(conn_plos,
+      params = list(q='ecology',
+        stats.field=c('counter_total_all','alm_twitterCount'),
+                  stats.facet=c('journal','volume'))),
+    "list"
+  )
+  expect_is(
+    solr_stats(conn_plos,
+      params = list(q='ecology',
+        stats.field=c('counter_total_all','alm_twitterCount'),
+                  stats.facet=c('journal','volume')), raw=TRUE),
+    "sr_stats"
+  )
 })
 
 test_that("solr_stats works using wt=xml", {
@@ -79,25 +95,3 @@ test_that("solr_stats works with HathiTrust", {
   expect_is(b$data, "data.frame")
   expect_is(d, "list")
 })
-
-# test_that("solr_stats works with Datacite", {
-#   skip_on_cran()
-
-#   url_dc <- "http://search.datacite.org/api"
-#   invisible(solr_connect(url = url_dc, verbose = FALSE))
-
-#   a <- solr_stats(q='*:*', stats.field='publicationYear', raw=TRUE)
-#   b <- solr_stats(q='*:*', stats.field='publicationYear', stats.facet = "prefix")
-
-#   # correct dimenions
-#   expect_equal(length(a), 1)
-#   expect_equal(length(b), 2)
-#   expect_equal(nrow(b$data), 1)
-#   expect_equal(NCOL(b$facet$publicationYear), 5)
-
-#   # classes
-#   expect_is(a, "sr_stats")
-#   expect_is(b, "list")
-#   expect_is(b$data, "data.frame")
-#   expect_is(b$facet$publicationYear, "data.frame")
-# })

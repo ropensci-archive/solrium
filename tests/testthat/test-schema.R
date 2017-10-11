@@ -11,7 +11,7 @@ test_that("schema works against", {
 
   aa <- conn$schema(name = "gettingstarted")
   bb <- conn$schema(name = "gettingstarted", what = "fields")
-  
+
   expect_is(conn$schema(name = "gettingstarted", "dynamicfields"), "list")
   expect_is(conn$schema(name = "gettingstarted", "fieldtypes"), "list")
   expect_is(conn$schema(name = "gettingstarted", "copyfields"), "list")
@@ -24,7 +24,7 @@ test_that("schema works against", {
   expect_is(aa$responseHeader, "list")
   expect_is(aa$schema, "list")
   expect_is(aa$schema$name, "character")
-  
+
   expect_is(bb, "list")
   expect_is(bb$fields, "data.frame")
 })
@@ -32,7 +32,13 @@ test_that("schema works against", {
 test_that("schema fails well", {
   skip_on_cran()
   skip_if_not(!is_in_cloud_mode(conn))
-  
+
   expect_error(conn$schema(), "argument \"name\" is missing")
   expect_error(conn$schema(name = "gettingstarted", "stuff"), "Not Found")
+})
+
+test_that("schema old style works", {
+  expect_is(schema(conn, name = "gettingstarted"),
+    "list"
+  )
 })

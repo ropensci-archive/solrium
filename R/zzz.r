@@ -1,15 +1,15 @@
-#' Function to make make multiple args of the same name from a 
+#' Function to make make multiple args of the same name from a
 #' single input with length > 1
 #' @param x Value
 makemultiargs <- function(x){
   value <- get(x, envir = parent.frame(n = 2))
-  if ( length(value) == 0 ) { 
-    NULL 
+  if ( length(value) == 0 ) {
+    NULL
   } else {
-    if ( any(sapply(value, is.na)) ) { 
-      NULL 
+    if ( any(sapply(value, is.na)) ) {
+      NULL
     } else {
-      if ( !is.character(value) ) { 
+      if ( !is.character(value) ) {
         value <- as.character(value)
       }
       names(value) <- rep(x, length(value))
@@ -20,13 +20,13 @@ makemultiargs <- function(x){
 
 make_multiargs <- function(z, lst) {
   value <- lst[[z]]
-  if (length(value) == 0) { 
+  if (length(value) == 0) {
     return(NULL)
   } else {
-    if (any(sapply(value, is.na))) { 
+    if (any(sapply(value, is.na))) {
       return(NULL)
     } else {
-      if ( !is.character(value) ) { 
+      if ( !is.character(value) ) {
         value <- as.character(value)
       }
       names(value) <- rep(z, length(value))
@@ -62,16 +62,16 @@ solr_GET <- function(base, path, args, callopts = NULL, ...) {
 solr_error <- function(x) {
   if (grepl("html", x$response_headers$`content-type`)) {
     stat <- x$status_http()
-    stop(sprintf('(%s) %s - %s', 
+    stop(sprintf('(%s) %s - %s',
                  stat$status_code, stat$message, stat$explanation))
-  } else { 
+  } else {
     err <- jsonlite::fromJSON(x$parse("UTF-8"))
     erropt <- Sys.getenv("SOLR_ERRORS")
     if (erropt == "simple" || erropt == "") {
       stop(err$error$code, " - ", err$error$msg, call. = FALSE)
     } else {
-      stop(err$error$code, " - ", err$error$msg, 
-           "\nAPI stack trace\n", 
+      stop(err$error$code, " - ", err$error$msg,
+           "\nAPI stack trace\n",
            pluck_trace(err$error$trace), call. = FALSE)
     }
   }
@@ -95,11 +95,9 @@ solr_POST <- function(base, path, body, args, content, ...) {
 }
 
 # POST helper fxn - just a body
-solr_POST_body <- function(base, path, body, args, callopts, ...) {
+solr_POST_body <- function(base, path, body, args, ctype, callopts = list(), ...) {
   invisible(match.arg(args$wt, c("xml", "json")))
-  httpcli <- crul::HttpClient$new(
-    url = base, 
-    headers = list(`Content-Type` = "application/json"), opts = callopts)
+  httpcli <- crul::HttpClient$new(url = base, headers = ctype, opts = callopts)
   res <- httpcli$post(path = path, query = args, body = body, encode = "form")
   if (res$status_code > 201) solr_error(res) else res$parse("UTF-8")
 }
@@ -110,7 +108,7 @@ obj_POST <- function(base, path, body, args, ...) {
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
   body <- jsonlite::toJSON(body, auto_unbox = TRUE)
   cli <- crul::HttpClient$new(
-    url = base, 
+    url = base,
     headers = list(`Content-Type` = "application/json")
   )
   tt <- cli$post(path, query = args, body = body, encode = "form", ...)
@@ -125,20 +123,20 @@ stop_if_absent <- function(x) {
   }, logical(1))
   if (!any(tmp)) {
     stop(
-      x, 
-      " doesn't exist - create it first.\n See core_create()/collection_create()", 
+      x,
+      " doesn't exist - create it first.\n See core_create()/collection_create()",
       call. = FALSE)
   }
 }
 
 # helper for POSTing from R objects
 obj_proc <- function(base, path, body, args, raw, ...) {
-  out <- structure(obj_POST(base, path, body, args, ...), class = "update", 
+  out <- structure(obj_POST(base, path, body, args, ...), class = "update",
                    wt = args$wt)
   if (raw) {
     out
   } else {
-    solr_parse(out) 
+    solr_parse(out)
   }
 }
 
@@ -153,13 +151,13 @@ get_response <- function(x) {
 
 # small function to replace elements of length 0 with NULL
 replacelen0 <- function(x) {
-  if (length(x) < 1) { 
-    NULL 
-  } else { 
-    x 
+  if (length(x) < 1) {
+    NULL
+  } else {
+    x
   }
 }
-  
+
 sc <- function(l) Filter(Negate(is.null), l)
 
 asl <- function(z) {
@@ -179,7 +177,7 @@ asl <- function(z) {
 }
 
 docreate <- function(base, path, files, args, content, raw, ...) {
-  out <- structure(solr_POST(base, path, files, args, content, ...), 
+  out <- structure(solr_POST(base, path, files, args, content, ...),
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
@@ -187,14 +185,14 @@ docreate <- function(base, path, files, args, content, raw, ...) {
 
 doatomiccreate <- function(base, path, body, args, content, raw, ...) {
   ctype <- get_ctype(content)
-  out <- structure(solr_POST_body(base, path, body, args, ctype, ...), 
+  out <- structure(solr_POST_body(base, path, body, args, ctype, ...),
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
 }
 
 objcreate <- function(base, path, dat, args, raw, ...) {
-  out <- structure(solr_POST(base, path, dat, args, "json", ...), 
+  out <- structure(solr_POST(base, path, dat, args, "json", ...),
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
@@ -202,11 +200,11 @@ objcreate <- function(base, path, dat, args, raw, ...) {
 
 check_conn <- function(x) {
   if (!inherits(x, "solr_connection")) {
-    stop("Input to conn parameter must be an object of class solr_connection", 
+    stop("Input to conn parameter must be an object of class solr_connection",
          call. = FALSE)
   }
   if (is.null(x)) {
-    stop("You must provide a connection object", 
+    stop("You must provide a connection object",
          call. = FALSE)
   }
 }
@@ -214,9 +212,9 @@ check_conn <- function(x) {
 check_wt <- function(x) {
   if (!is.null(x)) {
     if (!x %in% c('json', 'xml', 'csv')) {
-      stop("wt must be one of: json, xml, csv", 
+      stop("wt must be one of: json, xml, csv",
            call. = FALSE)
-    }  
+    }
   }
 }
 
@@ -224,14 +222,14 @@ check_defunct <- function(...) {
   calls <- names(sapply(match.call(), deparse))[-1]
   calls_vec <- "verbose" %in% calls
   if (any(calls_vec)) {
-    stop("The parameter verbose has been removed - see ?solr_connect", 
+    stop("The parameter verbose has been removed - see ?solr_connect",
          call. = FALSE)
   }
 }
 
 is_in_cloud_mode <- function(x) {
   xx <- crul::HttpClient$new(url = x$make_url())
-  res <- xx$get("solr/admin/collections", 
+  res <- xx$get("solr/admin/collections",
                 query = list(action = 'LIST', wt = 'json'))
   if (res$status_code > 201) return(FALSE)
   msg <- jsonlite::fromJSON(res$parse("UTF-8"))$error$msg
@@ -268,5 +266,11 @@ url_handle <- function(name) {
     ""
   } else {
     file.path("solr", name, "select")
+  }
+}
+
+check_sr <- function(x) {
+  if (!inherits(x, "SolrClient")) {
+    stop("conn must be a SolrClient object, see ?SolrClient")
   }
 }

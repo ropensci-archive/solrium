@@ -3,7 +3,7 @@ test_that("solr_all works", {
   skip_on_cran()
 
   a <- conn_plos$all(params = list(q='*:*', rows=2, fl='id'))
-  b <- conn_plos$all(params = list(q='title:"ecology" AND body:"cell"', 
+  b <- conn_plos$all(params = list(q='title:"ecology" AND body:"cell"',
                               fl='title', rows=5))
 
   # correct dimensions
@@ -66,10 +66,18 @@ test_that("solr_all works with HathiTrust", {
 
 test_that("solr_all works with Datacite", {
   skip_on_cran()
-  
+
   a <- conn_dc$all(params = list(q = '*:*', rows = 2))
   b <- conn_dc$all(params = list(q = 'publisher:Data', rows = 5))
   # correct dimensions
   expect_equal(NROW(a$search), 2)
   expect_equal(NROW(b$search), 5)
+})
+
+
+test_that("solr_all old style works", {
+  expect_is(solr_all(conn_plos,
+    params = list(q='*:*', rows=2, fl='id')),
+    "list"
+  )
 })

@@ -31,3 +31,19 @@ test_that("solr_mlt works", {
   expect_is(outdf, "list")
   expect_is(outdf$mlt[[1]], "data.frame")
 })
+
+test_that("solr_mlt old style works", {
+  expect_is(
+    solr_mlt(conn_plos,
+      params = list(q='*:*', mlt.count=2,
+        mlt.fl='abstract', fl='score', fq="doc_type:full")),
+    "list"
+  )
+
+  expect_is(
+    solr_mlt(conn_plos,
+      params = list(q='ecology',
+        mlt.fl='abstract', fl='title', rows=5)),
+    "list"
+  )
+})

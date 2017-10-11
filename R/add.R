@@ -74,6 +74,7 @@ add <- function(x, conn, name, commit = TRUE, commit_within = NULL,
 add.list <- function(x, conn, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
 
+  check_sr(conn)
   if (!is.null(boost)) {
     x <- lapply(x, function(z) modifyList(z, list(boost = boost)))
   }
@@ -84,6 +85,7 @@ add.list <- function(x, conn, name, commit = TRUE, commit_within = NULL,
 add.data.frame <- function(x, conn, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
 
+  check_sr(conn)
   if (!is.null(boost)) x$boost <- boost
   x <- apply(x, 1, as.list)
   conn$add(x, name, commit, commit_within, overwrite, boost, wt, raw, ...)

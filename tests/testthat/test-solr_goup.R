@@ -35,3 +35,17 @@ test_that("solr_group works", {
   expect_is(d$journal, "data.frame")
   expect_is(e, "data.frame")
 })
+
+test_that("solr_group old style works", {
+  expect_is(solr_group(conn_plos,
+    params = list(q='ecology', group.field='journal',
+      group.limit=3, fl=c('id','score'))),
+    "data.frame"
+  )
+
+  expect_is(solr_group(conn_plos,
+    params = list(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),
+                  group.format='grouped', group.main='true')),
+    "data.frame"
+  )
+})

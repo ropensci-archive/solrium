@@ -41,9 +41,10 @@ update_csv <- function(conn, files, name, separator = ',', header = TRUE,
   encapsulator = NULL, escape = NULL, keepEmpty = FALSE, literal = NULL,
   map = NULL, split = NULL, rowid = NULL, rowidOffset = NULL, overwrite = NULL,
   commit = NULL, wt = 'json', raw = FALSE, ...) {
-  
-  conn$update_csv(files, name, separator, header, fieldnames, skip, 
+
+  check_sr(conn)
+  conn$update_csv(files, name, separator, header, fieldnames, skip,
                    skipLines, trim, encapsulator, escape, keepEmpty, literal,
-                   map, split, rowid, rowidOffset, overwrite, commit, 
+                   map, split, rowid, rowidOffset, overwrite, commit,
                    wt, raw, ...)
 }

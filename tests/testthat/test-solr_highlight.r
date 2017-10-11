@@ -3,10 +3,10 @@ context("solr_highlight")
 test_that("solr_highlight works", {
   skip_on_cran()
 
-  a <- conn_plos$highlight(params = list(q='alcohol', hl.fl = 'abstract', 
+  a <- conn_plos$highlight(params = list(q='alcohol', hl.fl = 'abstract',
                                          rows=10))
-  b <- conn_plos$highlight(params = list(q='alcohol', 
-                                         hl.fl = c('abstract','title'), 
+  b <- conn_plos$highlight(params = list(q='alcohol',
+                                         hl.fl = c('abstract','title'),
                                          rows=3))
 
   # correct dimensions
@@ -22,4 +22,17 @@ test_that("solr_highlight works", {
   expect_is(b, "tbl_df")
   expect_is(b$abstract, "character")
   expect_is(b$title, "character")
+})
+
+test_that("solr_highlight old style works", {
+  expect_is(solr_highlight(conn_plos,
+    params = list(q='alcohol', hl.fl = 'abstract', rows=10)),
+    "tbl_df"
+  )
+
+  expect_is(solr_highlight(conn_plos,
+    params = list(q='alcohol',
+      hl.fl = c('abstract','title'), rows=3)),
+    "tbl_df"
+  )
 })
