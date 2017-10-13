@@ -34,7 +34,7 @@ adjusted to the number of returned results by the same constraints.
 It will only be applied if rows parameter is higher
 than \code{minOptimizedRows}. Default: \code{TRUE}}
 
-\item{minOptimizedRows}{used by \code{optimizedMaxRows} parameter, the minimum
+\item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter, the minimum
 optimized rows. Default: 50000}
 
 \item{...}{Further args.}

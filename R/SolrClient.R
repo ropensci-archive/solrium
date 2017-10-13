@@ -9,33 +9,118 @@
 #' more of: url, port, username, password, and auth. See
 #' [crul::proxy] for  help, which is used to construct the
 #' proxy connection.
-#' @param errors (character) One of simple or complete. Simple gives http code
-#' and  error message on an error, while complete gives both http code and
-#' error message, and stack trace, if available.
+#' @param errors (character) One of `"simple"` or `"complete"`. Simple gives
+#' http code and  error message on an error, while complete gives both http
+#' code and error message, and stack trace, if available.
 #'
 #' @return Various output, see help files for each grouping of methods.
 #'
-#' @details \code{SolrClient} creates a R6 class object. The object is
+#' @details `SolrClient` creates a R6 class object. The object is
 #' not cloneable and is portable, so it can be inherited across packages
 #' without complication.
 #'
-#' \code{SolrClient} is used to initialize a client that knows about your
+#' `SolrClient` is used to initialize a client that knows about your
 #' Solr instance, with options for setting host, port, http scheme,
 #' and simple vs. complete error reporting
 #'
 #' @section SolrClient methods:
-#' \strong{Methods}
-#'   \describe{
-#'     \item{\code{ping()}}{
-#'      ping the Solr server
-#'     }
-#'     \item{\code{schema()}}{
-#'      get the schema info
-#'     }
-#'     \item{\code{search()}}{
-#'      search
-#'     }
-#'   }
+#' * `commit(name, expunge_deletes = FALSE, wait_searcher = TRUE,
+#' soft_commit = FALSE, wt = 'json', raw = FALSE, ...)`
+#' * `optimize(name, max_segments = 1, wait_searcher = TRUE,
+#' soft_commit = FALSE, wt = 'json', raw = FALSE, ...)`
+#' * `config_get(name, what = NULL, wt = "json", raw = FALSE, ...)`
+#' * `config_params(name, param = NULL, set = NULL, unset = NULL,
+#' update = NULL, ...)`
+#' * `config_overlay(name, omitHeader = FALSE, ...)`
+#' * `config_set(name, set = NULL, unset = NULL, ...)`
+#' * `collection_exists(name, ...)`
+#' * `collection_list(raw = FALSE, ...)`
+#' * `collection_create(name, numShards = 1, maxShardsPerNode = 1,
+#' createNodeSet = NULL, collection.configName = NULL, replicationFactor = 1,
+#' router.name = NULL, shards = NULL, createNodeSet.shuffle = TRUE,
+#' router.field = NULL, autoAddReplicas = FALSE, async = NULL, raw = FALSE,
+#' callopts=list(), ...)`
+#' * `collection_addreplica(name, shard = NULL, route = NULL, node = NULL,
+#' instanceDir = NULL, dataDir = NULL, async = NULL, raw = FALSE,
+#' callopts=list(), ...)`
+#' * `collection_addreplicaprop(name, shard, replica, property, property.value,
+#' shardUnique = FALSE, raw = FALSE, callopts=list())`
+#' * `collection_addrole(role = "overseer", node, raw = FALSE, ...)`
+#' * `collection_balanceshardunique(name, property, onlyactivenodes = TRUE,
+#' shardUnique = NULL, raw = FALSE, ...)`
+#' * `collection_clusterprop(name, val, raw = FALSE, callopts=list())`
+#' * `collection_clusterstatus(name = NULL, shard = NULL, raw = FALSE, ...)`
+#' * `collection_createalias(alias, collections, raw = FALSE, ...)`
+#' * `collection_createshard(name, shard, createNodeSet = NULL,
+#' raw = FALSE, ...)`
+#' * `collection_delete(name, raw = FALSE, ...)`
+#' * `collection_deletealias(alias, raw = FALSE, ...)`
+#' * `collection_deletereplica(name, shard = NULL, replica = NULL,
+#' onlyIfDown = FALSE, raw = FALSE, callopts=list(), ...)`
+#' * `collection_deletereplicaprop(name, shard, replica, property, raw = FALSE,
+#' callopts=list())`
+#' * `collection_deleteshard(name, shard, raw = FALSE, ...)`
+#' * `collection_migrate(name, target.collection, split.key,
+#' forward.timeout = NULL, async = NULL, raw = FALSE, ...)`
+#' * `collection_overseerstatus(raw = FALSE, ...)`
+#' * `collection_rebalanceleaders(name, maxAtOnce = NULL, maxWaitSeconds = NULL,
+#' raw = FALSE, ...)`
+#' * `collection_reload(name, raw = FALSE, ...)`
+#' * `collection_removerole(role = "overseer", node, raw = FALSE, ...)`
+#' * `collection_requeststatus(requestid, raw = FALSE, ...)`
+#' * `collection_splitshard(name, shard, ranges = NULL, split.key = NULL,
+#' async = NULL, raw = FALSE, ...)`
+#' * `core_status(name = NULL, indexInfo = TRUE, raw = FALSE, callopts=list())`
+#' * `core_exists(name, callopts = list())`
+#' * `core_create(name, instanceDir = NULL, config = NULL, schema = NULL,
+#' dataDir = NULL, configSet = NULL, collection = NULL, shard = NULL,
+#' async=NULL, raw = FALSE, callopts=list(), ...)`
+#' * `core_unload(name, deleteIndex = FALSE, deleteDataDir = FALSE,
+#' deleteInstanceDir = FALSE, async = NULL, raw = FALSE, callopts = list())`
+#' * `core_rename(name, other, async = NULL, raw = FALSE, callopts=list())`
+#' * `core_reload(name, raw = FALSE, callopts=list())`
+#' * `core_swap(name, other, async = NULL, raw = FALSE, callopts=list())`
+#' * `core_mergeindexes(name, indexDir = NULL, srcCore = NULL, async = NULL,
+#' raw = FALSE, callopts = list())`
+#' * `core_requeststatus(requestid, raw = FALSE, callopts = list())`
+#' * `core_split(name, path = NULL, targetCore = NULL, ranges = NULL,
+#' split.key = NULL, async = NULL, raw = FALSE, callopts=list())`
+#' * `search(name = NULL, params = NULL, body = NULL, callopts = list(),
+#' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
+#' * `facet(name = NULL, params = NULL, body = NULL, callopts = list(),
+#' raw = FALSE,  parsetype = 'df', concat = ',', ...)`
+#' * `stats(name = NULL, params = list(q = '*:*', stats.field = NULL,
+#' stats.facet = NULL), body = NULL, callopts=list(), raw = FALSE,
+#' parsetype = 'df', ...)`
+#' * `highlight(name = NULL, params = NULL, body = NULL, callopts=list(),
+#' raw = FALSE, parsetype = 'df', ...)`
+#' * `group(name = NULL, params = NULL, body = NULL, callopts=list(),
+#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' * `mlt(name = NULL, params = NULL, body = NULL, callopts=list(),
+#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' * `all(name = NULL, params = NULL, body = NULL, callopts=list(),
+#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' * `get(ids, name, fl = NULL, wt = 'json', raw = FALSE, ...)`
+#' * `add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
+#' boost = NULL, wt = 'json', raw = FALSE, ...)`
+#' * `delete_by_id(ids, name, commit = TRUE, commit_within = NULL,
+#' overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...)`
+#' * `delete_by_query(query, name, commit = TRUE, commit_within = NULL,
+#' overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...)`
+#' * `update_json(files, name, commit = TRUE, optimize = FALSE,
+#' max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
+#' soft_commit = FALSE, prepare_commit = NULL, wt = 'json', raw = FALSE, ...)`
+#' * `update_xml(files, name, commit = TRUE, optimize = FALSE, max_segments = 1,
+#' expunge_deletes = FALSE, wait_searcher = TRUE, soft_commit = FALSE,
+#' prepare_commit = NULL, wt = 'json', raw = FALSE, ...)`
+#' * `update_csv(files, name, separator = ',', header = TRUE, fieldnames = NULL,
+#' skip = NULL, skipLines = 0, trim = FALSE, encapsulator = NULL,
+#' escape = NULL, keepEmpty = FALSE, literal = NULL, map = NULL, split = NULL,
+#' rowid = NULL, rowidOffset = NULL, overwrite = NULL, commit = NULL,
+#' wt = 'json', raw = FALSE, ...)`
+#' * `update_atomic_json(body, name, wt = 'json', raw = FALSE, ...)`
+#' * `update_atomic_xml(body, name, wt = 'json', raw = FALSE, ...)`
 #'
 #' @format NULL
 #' @usage NULL

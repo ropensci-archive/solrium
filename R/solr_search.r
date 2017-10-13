@@ -14,7 +14,7 @@
 #' adjusted to the number of returned results by the same constraints.
 #' It will only be applied if rows parameter is higher
 #' than `minOptimizedRows`. Default: `TRUE`
-#' @param minOptimizedRows used by `optimizedMaxRows` parameter, the minimum
+#' @param minOptimizedRows (numeric) used by `optimizedMaxRows` parameter, the minimum
 #' optimized rows. Default: 50000
 #'
 #' @return XML, JSON, a list, or data.frame
