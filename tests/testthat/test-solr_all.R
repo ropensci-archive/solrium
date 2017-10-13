@@ -35,34 +35,34 @@ test_that("solr_all fails well", {
 
 })
 
-test_that("solr_all works with HathiTrust", {
-  skip_on_cran()
+# test_that("solr_all works with HathiTrust", {
+#   skip_on_cran()
 
-  a <- conn_hathi$all(params = list(q = '*:*', rows = 2, fl = 'id'))
-  b <- conn_hathi$all(params = list(q = 'language:Spanish', rows = 5))
+#   a <- conn_hathi$all(params = list(q = '*:*', rows = 2, fl = 'id'))
+#   b <- conn_hathi$all(params = list(q = 'language:Spanish', rows = 5))
 
-  # correct dimensions
-  expect_equal(NROW(a$search), 2)
-  expect_equal(NROW(b$search), 5)
+#   # correct dimensions
+#   expect_equal(NROW(a$search), 2)
+#   expect_equal(NROW(b$search), 5)
 
-  # correct classes
-  expect_is(a, "list")
-  expect_is(a$search, "data.frame")
-  expect_is(a$high, "data.frame")
-  expect_is(a$group, "data.frame")
-  expect_null(b$stats)
-  expect_null(b$facet)
+#   # correct classes
+#   expect_is(a, "list")
+#   expect_is(a$search, "data.frame")
+#   expect_is(a$high, "data.frame")
+#   expect_is(a$group, "data.frame")
+#   expect_null(b$stats)
+#   expect_null(b$facet)
 
-  expect_is(b, "list")
-  expect_is(a$search, "data.frame")
-  expect_is(b$high, "data.frame")
-  expect_is(b$group, "data.frame")
-  expect_null(b$stats)
-  expect_null(b$facet)
+#   expect_is(b, "list")
+#   expect_is(a$search, "data.frame")
+#   expect_is(b$high, "data.frame")
+#   expect_is(b$group, "data.frame")
+#   expect_null(b$stats)
+#   expect_null(b$facet)
 
-  # names
-  expect_named(a$search, "id")
-})
+#   # names
+#   expect_named(a$search, "id")
+# })
 
 test_that("solr_all works with Datacite", {
   skip_on_cran()

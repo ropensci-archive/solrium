@@ -38,30 +38,30 @@ test_that("solr_facet works", {
 })
 
 
-test_that("faceting works against HathiTrust", {
-  # regular facet
-  a <- conn_hathi$facet(params = list(q = '*:*', facet.field = 'genre'))
-  # pivot facet
-  c <- conn_hathi$facet(params = list(q = '*:*', facet.pivot = 'genre,publisher',
-                  facet.pivot.mincount = 10))
+# test_that("faceting works against HathiTrust", {
+#   # regular facet
+#   a <- conn_hathi$facet(params = list(q = '*:*', facet.field = 'genre'))
+#   # pivot facet
+#   c <- conn_hathi$facet(params = list(q = '*:*', facet.pivot = 'genre,publisher',
+#                   facet.pivot.mincount = 10))
 
-  expect_equal(length(a), 5)
-  expect_equal(length(a$facet_queries), 0)
-  expect_equal(NCOL(a$facet_fields$genre), 2)
+#   expect_equal(length(a), 5)
+#   expect_equal(length(a$facet_queries), 0)
+#   expect_equal(NCOL(a$facet_fields$genre), 2)
 
-  expect_equal(length(c), 5)
-  expect_equal(names(c$facet_pivot), c('genre', 'genre,publisher'))
-  expect_named(c$facet_pivot$genre, c('genre', 'count'))
-  expect_named(c$facet_pivot$`genre,publisher`, c('genre', 'publisher', 'count'))
-  expect_true(min(unlist(c$facet_pivot$`genre,publisher`$count)) >= 10)
+#   expect_equal(length(c), 5)
+#   expect_equal(names(c$facet_pivot), c('genre', 'genre,publisher'))
+#   expect_named(c$facet_pivot$genre, c('genre', 'count'))
+#   expect_named(c$facet_pivot$`genre,publisher`, c('genre', 'publisher', 'count'))
+#   expect_true(min(unlist(c$facet_pivot$`genre,publisher`$count)) >= 10)
 
-  # correct classes
-  expect_is(a, "list")
-  expect_is(c, "list")
-  expect_is(c$facet_pivot, "list")
-  expect_is(c$facet_pivot$genre, "data.frame")
-  expect_is(c$facet_pivot$`genre,publisher`, "data.frame")
-})
+#   # correct classes
+#   expect_is(a, "list")
+#   expect_is(c, "list")
+#   expect_is(c$facet_pivot, "list")
+#   expect_is(c$facet_pivot$genre, "data.frame")
+#   expect_is(c$facet_pivot$`genre,publisher`, "data.frame")
+# })
 
 test_that("solr_facet old style works", {
   expect_is(solr_facet(conn_plos,

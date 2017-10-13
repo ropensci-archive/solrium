@@ -4,7 +4,7 @@
 \alias{collection_create}
 \title{Add a collection}
 \usage{
-collection_create(conn, name, numShards = 2, maxShardsPerNode = 1,
+collection_create(conn, name, numShards = 1, maxShardsPerNode = 1,
   createNodeSet = NULL, collection.configName = NULL,
   replicationFactor = 1, router.name = NULL, shards = NULL,
   createNodeSet.shuffle = TRUE, router.field = NULL,

@@ -49,7 +49,7 @@
 #' @param raw (logical) If `TRUE`, returns raw data
 #' @param callopts curl options passed on to [crul::HttpClient]
 #' @param ... You can pass in parameters like `property.name=value`	to set
-#' core property name to value. See the section Defining core.properties for 
+#' core property name to value. See the section Defining core.properties for
 #' details on supported properties and values.
 #' (https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)
 #' @examples \dontrun{
@@ -74,7 +74,7 @@
 #' invisible(file.copy(files, path, recursive = TRUE))
 #' cli$collection_create(name = "newcore", collection.configName = "newcore")
 #' }
-collection_create <- function(conn, name, numShards = 2, maxShardsPerNode = 1,
+collection_create <- function(conn, name, numShards = 1, maxShardsPerNode = 1,
                        createNodeSet = NULL, collection.configName = NULL,
                        replicationFactor = 1, router.name = NULL, shards = NULL,
                        createNodeSet.shuffle = TRUE, router.field = NULL,

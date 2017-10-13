@@ -18,9 +18,9 @@ more of: url, port, username, password, and auth. See
 \link[crul:proxy]{crul::proxy} for  help, which is used to construct the
 proxy connection.}
 
-\item{errors}{(character) One of simple or complete. Simple gives http code
-and  error message on an error, while complete gives both http code and
-error message, and stack trace, if available.}
+\item{errors}{(character) One of \code{"simple"} or \code{"complete"}. Simple gives
+http code and  error message on an error, while complete gives both http
+code and error message, and stack trace, if available.}
 }
 \value{
 Various output, see help files for each grouping of methods.

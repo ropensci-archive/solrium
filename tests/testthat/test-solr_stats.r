@@ -73,25 +73,25 @@ test_that("solr_stats works using wt=xml", {
   expect_equal(attr(aa, "wt"), "xml")
 })
 
-test_that("solr_stats works with HathiTrust", {
-  skip_on_cran()
+# test_that("solr_stats works with HathiTrust", {
+#   skip_on_cran()
 
-  a <- conn_hathi$stats(params = list(q='*:*', stats.field = 'htrc_wordCount'), raw = TRUE)
-  b <- conn_hathi$stats(params = list(q = '*:*', stats.field = c('htrc_wordCount', 'htrc_pageCount')))
-  c <- conn_hathi$stats(params = list(q = '*:*', stats.field = 'htrc_charCount'))
-  d <- solr_parse(a) # list
+#   # a <- conn_hathi$stats(params = list(q='*:*', stats.field = 'htrc_wordCount'), raw = TRUE)
+#   # b <- conn_hathi$stats(params = list(q = '*:*', stats.field = c('htrc_wordCount', 'htrc_pageCount')))
+#   # c <- conn_hathi$stats(params = list(q = '*:*', stats.field = 'htrc_charCount'))
+#   # d <- solr_parse(a) # list
 
-  # correct dimenions
-  expect_equal(length(a), 1)
-  expect_equal(length(b), 2)
-  expect_equal(nrow(b$data), 2)
-  expect_equal(length(c), 2)
-  expect_equal(length(d), 2)
-  expect_equal(length(d$data$htrc_wordCount), 8)
+#   # correct dimenions
+#   expect_equal(length(a), 1)
+#   # expect_equal(length(b), 2)
+#   # expect_equal(nrow(b$data), 2)
+#   # expect_equal(length(c), 2)
+#   # expect_equal(length(d), 2)
+#   # expect_equal(length(d$data$htrc_wordCount), 8)
 
-  # classes
-  expect_is(a, "sr_stats")
-  expect_is(b, "list")
-  expect_is(b$data, "data.frame")
-  expect_is(d, "list")
-})
+#   # classes
+#   expect_is(a, "sr_stats")
+#   # expect_is(b, "list")
+#   # expect_is(b$data, "data.frame")
+#   # expect_is(d, "list")
+# })
