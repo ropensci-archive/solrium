@@ -2,12 +2,12 @@
 #'
 #' @param input Output from solr_facet
 #' @param parsetype One of 'list' or 'df' (data.frame)
-#' @param concat Character to conactenate strings by, e.g,. ',' (character). 
+#' @param concat Character to conactenate strings by, e.g,. ',' (character).
 #' Used in solr_parse.sr_search only.
-#' @details This is the parser used internally in solr_facet, but if you 
-#' output raw data from solr_facet using raw=TRUE, then you can use this 
-#' function to parse that data (a sr_facet S3 object) after the fact to a 
-#' list of data.frame's for easier consumption. The data format type is 
+#' @details This is the parser used internally in solr_facet, but if you
+#' output raw data from solr_facet using raw=TRUE, then you can use this
+#' function to parse that data (a sr_facet S3 object) after the fact to a
+#' list of data.frame's for easier consumption. The data format type is
 #' detected from the attribute "wt" on the sr_facet object.
 #' @export
 solr_parse <- function(input, parsetype = NULL, concat) {
@@ -30,9 +30,9 @@ solr_parse.update <- function(input, parsetype=NULL, concat=',') {
   wt <- attributes(input)$wt
   switch(wt,
          xml = xml2::read_xml(unclass(input)),
-         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, 
+         json = jsonlite::fromJSON(input, simplifyDataFrame = FALSE,
                                    simplifyMatrix = FALSE),
-         csv = jsonlite::fromJSON(input, simplifyDataFrame = FALSE, 
+         csv = jsonlite::fromJSON(input, simplifyDataFrame = FALSE,
                                   simplifyMatrix = FALSE)
   )
 }
@@ -43,7 +43,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     input <- parse_ch(input, parsetype, concat)
   }
   wt <- attributes(input)$wt
-  
+
   # Facet queries
   if (wt == 'json') {
     fqdat <- input$facet_counts$facet_queries
@@ -179,7 +179,11 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$highlight
-      df <- dplyr::bind_rows(lapply(dat, as_data_frame))
+      df <- dplyr::bind_rows(lapply(dat, function(z) {
+        as_data_frame(lapply(z, function(w) {
+          if (length(w) > 1) paste0(w, collapse = "")
+        }))
+      }))
       if (NROW(df) == 0) {
         highout <- tibble::data_frame()
       } else {
@@ -463,7 +467,7 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
       datout <- list(data = dat_reg, facet = dat_facet)
     }
   }
-  
+
   datout <- if (length(Filter(length, datout)) == 0) NULL else datout
   return( datout )
 }
