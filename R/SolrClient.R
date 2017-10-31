@@ -24,6 +24,14 @@
 #' and simple vs. complete error reporting
 #'
 #' @section SolrClient methods:
+#'
+#' Each of these methods also has a matching standalone exported
+#' function that you can use by passing in the connection object made
+#' by calling `SolrClient$new()`. Also, see the docs for each method for
+#' parameter definitions and their default values.
+#'
+#' * `ping(name, wt = 'json', raw = FALSE, ...)`
+#' * `schema(name, what = '', raw = FALSE, ...)`
 #' * `commit(name, expunge_deletes = FALSE, wait_searcher = TRUE,
 #' soft_commit = FALSE, wt = 'json', raw = FALSE, ...)`
 #' * `optimize(name, max_segments = 1, wait_searcher = TRUE,
