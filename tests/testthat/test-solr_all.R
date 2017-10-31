@@ -3,6 +3,7 @@ test_that("solr_all works", {
   skip_on_cran()
 
   a <- conn_plos$all(params = list(q='*:*', rows=2, fl='id'))
+  Sys.sleep(2)
   b <- conn_plos$all(params = list(q='title:"ecology" AND body:"cell"',
                               fl='title', rows=5))
 
@@ -25,8 +26,10 @@ test_that("solr_all fails well", {
   skip_on_cran()
 
   expect_error(conn_plos$all(params = list(q = "*:*", rows = "asdf")), "500 - For input string")
+  Sys.sleep(2)
   expect_error(conn_plos$all(params = list(q = "*:*", sort = "down")),
                "400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
+  Sys.sleep(2)
   expect_error(conn_plos$all(params = list(q='*:*', fl=c('alm_twitterCount','id'),
                            fq='alm_notafield:[5 TO 50]', rows=10)),
                "undefined field")

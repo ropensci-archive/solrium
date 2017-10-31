@@ -5,6 +5,7 @@ test_that("solr_highlight works", {
 
   a <- conn_plos$highlight(params = list(q='alcohol', hl.fl = 'abstract',
                                          rows=10))
+  Sys.sleep(2)
   b <- conn_plos$highlight(params = list(q='alcohol',
                                          hl.fl = c('abstract','title'),
                                          rows=3))

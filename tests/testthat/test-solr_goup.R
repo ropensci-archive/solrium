@@ -3,12 +3,17 @@ context("solr_group")
 test_that("solr_group works", {
   skip_on_cran()
 
-  a <- conn_plos$group(params = list(q='ecology', group.field='journal', group.limit=3, fl=c('id','score')))
-  b <- conn_plos$group(params = list(q='ecology', group.field='journal', group.limit=3,
-                  fl=c('id','score','alm_twitterCount'),
-                  group.sort='alm_twitterCount desc'))
-  out <- conn_plos$group(params = list(q='ecology', group.field=c('journal','article_type'), group.limit=3, fl='id'),
-                    raw=TRUE)
+  a <- conn_plos$group(params = list(q='ecology', group.field='journal',
+    group.limit=3, fl=c('id','score')))
+  Sys.sleep(2)
+  b <- conn_plos$group(params = list(q='ecology', group.field='journal',
+    group.limit=3, fl=c('id','score','alm_twitterCount'),
+    group.sort='alm_twitterCount desc'))
+  Sys.sleep(2)
+  out <- conn_plos$group(params = list(q='ecology',
+    group.field=c('journal','article_type'), group.limit=3, fl='id'),
+    raw=TRUE)
+  Sys.sleep(2)
   c <- out
   d <- solr_parse(out, 'df')
   e <- conn_plos$group(params = list(q='ecology', group.field='journal', group.limit=3, fl=c('id','score'),

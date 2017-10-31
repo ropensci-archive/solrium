@@ -4,7 +4,9 @@ test_that("solr_search works", {
   skip_on_cran()
 
   a <- conn_plos$search(params = list(q='*:*', rows=2, fl='id'))
+  Sys.sleep(2)
   b <- conn_plos$search(params = list(q='title:"ecology" AND body:"cell"', fl='title', rows=5))
+  Sys.sleep(2)
 
   # correct dimensions
   expect_that(length(a), equals(1))
@@ -64,6 +66,7 @@ test_that("solr_search works with Dryad", {
   skip_on_cran()
 
   a <- conn_dryad$search(params = list(q = '*:*', rows = 2))
+  Sys.sleep(2)
   b <- conn_dryad$search(params = list(q = 'dc.title.en:ecology', rows = 5))
 
   # correct dimensions

@@ -180,8 +180,8 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
     if (parsetype == 'df') {
       dat <- input$highlight
       df <- dplyr::bind_rows(lapply(dat, function(z) {
-        as_data_frame(lapply(z, function(w) {
-          if (length(w) > 1) paste0(w, collapse = "")
+        dplyr::as_data_frame(lapply(z, function(w) {
+          if (length(w) > 1) paste0(w, collapse = "") else w
         }))
       }))
       if (NROW(df) == 0) {
@@ -203,7 +203,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
       )
     })
     if (parsetype == 'df') {
-      highout <- bind_rows(lapply(tmptmp, as_data_frame))
+      highout <- dplyr::bind_rows(lapply(tmptmp, dplyr::as_data_frame))
     } else {
       highout <- tmptmp
     }
@@ -230,7 +230,7 @@ solr_parse.sr_search <- function(input, parsetype = 'list', concat = ',') {
           if (inherits(y, "list")) unlist(tmp) else tmp
         })
       })
-      datout <- bind_rows(lapply(dat2, as_data_frame))
+      datout <- dplyr::bind_rows(lapply(dat2, as_data_frame))
     } else {
       datout <- input$response$docs
     }
@@ -241,7 +241,7 @@ solr_parse.sr_search <- function(input, parsetype = 'list', concat = ',') {
       sapply(xml2::xml_children(x), nmtxt)
     })
     if (parsetype == 'df') {
-      datout <- bind_rows(lapply(tmptmp, as_data_frame))
+      datout <- dplyr::bind_rows(lapply(tmptmp, as_data_frame))
     } else {
       datout <- tmptmp
     }
@@ -283,7 +283,7 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
           }
         })
       })
-      resdat <- bind_rows(lapply(reslist, as_data_frame))
+      resdat <- dplyr::bind_rows(lapply(reslist, as_data_frame))
 
       dat <- input$moreLikeThis
       dat2 <- lapply(dat, function(x){
@@ -301,7 +301,7 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
       datmlt <- list()
       for (i in seq_along(dat)) {
         attsdf <- as_data_frame(popp(dat[[i]], "docs"))
-        df <- bind_rows(lapply(dat[[i]]$docs, function(y) {
+        df <- dplyr::bind_rows(lapply(dat[[i]]$docs, function(y) {
           as_data_frame(lapply(y, function(z) {
             if (length(z) > 1) {
               paste(z, collapse = concat)
@@ -324,7 +324,7 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
     }
   } else {
     res <- xml_find_all(input, '//result[@name="response"]//doc')
-    resdat <- bind_rows(lapply(res, function(x){
+    resdat <- dplyr::bind_rows(lapply(res, function(x){
       tmp <- sapply(xml_children(x), nmtxt)
       as_data_frame(tmp)
     }))
@@ -348,7 +348,7 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
 
     if (parsetype == 'df') {
       datmlt <- lapply(tmptmp, function(z) {
-        df <- bind_rows(lapply(z, as_data_frame))
+        df <- dplyr::bind_rows(lapply(z, as_data_frame))
         atts <- attributes(z)
         attsdf <- as_data_frame(atts)
         if (NROW(df) == 0) {
@@ -387,7 +387,7 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
         dat_facet <- lapply(dat, function(x){
           facetted <- x[names(x) %in% 'facets'][[1]]
           if (length(facetted) == 1) {
-            df <- bind_rows(
+            df <- dplyr::bind_rows(
               lapply(facetted[[1]], function(z) {
                 as_data_frame(
                   lapply(z[!names(z) %in% 'facets'], function(w) {
@@ -398,7 +398,7 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
             , .id = names(facetted))
           } else {
             df <- stats::setNames(lapply(seq.int(length(facetted)), function(n) {
-              bind_rows(lapply(facetted[[n]], function(b) {
+              dplyr::bind_rows(lapply(facetted[[n]], function(b) {
                 as_data_frame(
                   lapply(b[!names(b) %in% 'facets'], function(w) {
                     if (length(w) == 0) "" else w
@@ -437,14 +437,14 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
     temp <- xml_find_all(input, '//lst/lst[@name="stats_fields"]/lst')
     if (parsetype == 'df') {
       # w/o facets
-      dat_reg <- bind_rows(stats::setNames(lapply(temp, function(h){
+      dat_reg <- dplyr::bind_rows(stats::setNames(lapply(temp, function(h){
         as_data_frame(popp(sapply(xml_children(h), nmtxt), "facets"))
       }), xml_attr(temp, "name")), .id = "stat")
       # just facets
       dat_facet <- stats::setNames(lapply(temp, function(e){
         tt <- xml_find_first(e, 'lst[@name="facets"]')
         stats::setNames(lapply(xml_children(tt), function(f){
-          bind_rows(stats::setNames(lapply(xml_children(f), function(g){
+          dplyr::bind_rows(stats::setNames(lapply(xml_children(f), function(g){
             as_data_frame(popp(sapply(xml_children(g), nmtxt), "facets"))
           }), xml_attr(xml_children(f), "name")), .id = xml_attr(f, "name"))
         }), xml_attr(xml_children(tt), "name"))
@@ -554,9 +554,9 @@ solr_parse.sr_group <- function(input, parsetype = 'list', concat = ',') {
     if (parsetype == 'df') {
       datout <- stats::setNames(lapply(temp, function(e){
         tt <- xml_find_first(e, 'arr[@name="groups"]')
-        bind_rows(stats::setNames(lapply(xml_children(tt), function(f){
+        dplyr::bind_rows(stats::setNames(lapply(xml_children(tt), function(f){
           docc <- xml_find_all(f, 'result[@name="doclist"]/doc')
-          df <- bind_rows(lapply(docc, function(g){
+          df <- dplyr::bind_rows(lapply(docc, function(g){
             as_data_frame(sapply(xml_children(g), nmtxt))
           }))
           add_column(

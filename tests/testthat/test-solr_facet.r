@@ -4,6 +4,7 @@ test_that("solr_facet works", {
   skip_on_cran()
 
   a <- conn_plos$facet(params = list(q='*:*', facet.field='journal'))
+  Sys.sleep(2)
   # FIXME: this doesn't work anymore
   # b <- conn_plos$facet(params = list(q='*:*', facet.date='publication_date',
   #                 facet.date.start='NOW/DAY-90DAYS', facet.date.end='NOW',

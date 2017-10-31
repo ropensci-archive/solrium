@@ -4,10 +4,13 @@ test_that("solr_stats works", {
   skip_on_cran()
 
   a <- conn_plos$stats(params = list(q='science', stats.field='counter_total_all'), raw=TRUE)
+  Sys.sleep(2)
   b <- conn_plos$stats(params = list(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
                   stats.facet=c('journal','volume')))
+  Sys.sleep(2)
   c <- conn_plos$stats(params = list(q='ecology', stats.field=c('counter_total_all','alm_twitterCount'),
                   stats.facet=c('journal','volume')), raw=TRUE)
+  Sys.sleep(2)
   d <- solr_parse(c) # list
   e <- solr_parse(c, 'df') # data.frame
 
