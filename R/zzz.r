@@ -40,11 +40,10 @@ popp <- function(x, nms) {
 }
 
 # Function to make a list of args passing arg names through multiargs function
-collectargs <- function(x, lst){
+collectargs <- function(z, lst){
   outlist <- list()
-  for (i in seq_along(x)) {
-    #outlist[[i]] <- makemultiargs(x[[i]])
-    outlist[[i]] <- make_multiargs(x[[i]], lst)
+  for (i in seq_along(z)) {
+    outlist[[i]] <- make_multiargs(z[[i]], lst)
   }
   as.list(unlist(sc(outlist)))
 }

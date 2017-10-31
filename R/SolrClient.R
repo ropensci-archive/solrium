@@ -612,9 +612,10 @@ SolrClient <- R6::R6Class(
       if (!is.null(params)) params <- check_args_search(params, "fq", ...)
       if (!is.null(body)) body <- check_args_search(body, "fq", ...)
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(self$make_url(), url_handle(name),
-                                        body, params, callopts, self$proxy),
-                         class = "sr_search", wt = params$wt)
+        res <- solr_POST_body(self$make_url(),
+            if (!is.null(name)) url_handle(name) else self$path,
+            body, params, ctype_json(), callopts, self$proxy)
+        out <- structure(res, class = "sr_search", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                  if (!is.null(name)) url_handle(name) else self$path,
@@ -639,9 +640,10 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) body <- check_args_facet(body, keys_facet, ...)
 
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(self$make_url(), url_handle(name),
-                                        body, params, callopts, self$proxy),
-                         class = "sr_facet", wt = params$wt)
+        res <- solr_POST_body(self$make_url(),
+          if (!is.null(name)) url_handle(name) else self$path,
+          body, params, ctype_json(), callopts, self$proxy)
+        out <- structure(res, class = "sr_facet", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
@@ -666,9 +668,10 @@ SolrClient <- R6::R6Class(
       if (!is.null(params)) params <- check_args_stats(params, keys_stats, ...)
       if (!is.null(body)) body <- check_args_stats(body, keys_stats, ...)
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(self$make_url(), url_handle(name),
-                                        body, params, callopts, self$proxy),
-                         class = "sr_stats", wt = params$wt)
+        res <- solr_POST_body(self$make_url(),
+          if (!is.null(name)) url_handle(name) else self$path,
+          body, params, ctype_json(), callopts, self$proxy)
+        out <- structure(res, class = "sr_stats", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
@@ -692,9 +695,10 @@ SolrClient <- R6::R6Class(
       if (!is.null(params)) params <- check_args_high(params, keys_high, ...)
       if (!is.null(body)) body <- check_args_high(body, keys_high, ...)
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(self$make_url(), url_handle(name),
-                                        body, params, callopts, self$proxy),
-                         class = "sr_high", wt = params$wt)
+        res <- solr_POST_body(self$make_url(),
+          if (!is.null(name)) url_handle(name) else self$path,
+          body, params, callopts, self$proxy)
+        out <- structure(res, class = "sr_high", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
@@ -718,11 +722,11 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) body <- check_args_group(body, keys_group, ...)
 
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(
+        res <- solr_POST_body(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, callopts, self$proxy),
-          class = "sr_group", wt = body$wt)
+          body, params, ctype_json(), callopts, self$proxy)
+        out <- structure(res, class = "sr_group", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
@@ -746,11 +750,11 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) body <- check_args_mlt(body, keys_mlt, ...)
 
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(
+        res <- solr_POST_body(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, callopts, self$proxy),
-          class = "sr_mlt", wt = body$wt)
+          body, params, ctype_json(), callopts, self$proxy)
+        out <- structure(res, class = "sr_mlt", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
@@ -775,11 +779,11 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) body <- check_args_search(body, keys_all, ...)
 
       if (!is.null(body)) {
-        out <- structure(solr_POST_body(
+        res <- solr_POST_body(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, callopts, self$proxy),
-          class = "sr_all", wt = body$wt)
+          body, params, ctype_json(), callopts, self$proxy)
+        out <- structure(res, class = "sr_all", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,

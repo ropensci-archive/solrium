@@ -101,6 +101,12 @@
 #' solr_search(cli, params = list(q='_val_:"max(alm_twitterCount)"',
 #'    rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full'))
 #'
+#' ## many fq values
+#' solr_search(cli, params = list(q="*:*", fl=c('id','alm_twitterCount'),
+#'    fq=list('doc_type:full','subject:"Social networks"',
+#'            'alm_twitterCount:[100 TO 10000]'),
+#'    sort='counter_total_month desc'))
+#'
 #' ## using wt = csv
 #' solr_search(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
 #'   fq='doc_type:full', wt="csv"))
@@ -131,7 +137,7 @@
 #' }
 
 solr_search <- function(conn, name = NULL, params = list(q = '*:*'),
-  body = NULL, callopts = list(), raw = FALSE,  parsetype = 'df',
+  body = NULL, callopts = list(), raw = FALSE, parsetype = 'df',
   concat = ',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
 
   conn$search(name = name, params = params, body = body, callopts = callopts,

@@ -3,7 +3,9 @@ check_args_search <- function(x, reps, ...) {
   check_wt(x$wt)
   if (!is.null(x$fl)) x$fl <- paste0(x$fl, collapse = ",")
   # args that can be repeated
-  x <- c(x, collectargs(reps, x))
+  tmp <- x
+  for (i in reps) tmp[[i]] <- NULL
+  x <- c(tmp, collectargs(z = reps, lst = x))
   # additional parameters
   x <- c(x, list(...))
   return(x)
@@ -20,7 +22,7 @@ check_args_facet <- function(x, reps, ...) {
   x$fl <- 'DOES_NOT_EXIST'
   x$facet <- 'true'
   if (length(x[names(x) %in% "facet.pivot"]) > 1) {
-    xx <- paste0(unlist(unname(x[names(x) %in% "facet.pivot"])), 
+    xx <- paste0(unlist(unname(x[names(x) %in% "facet.pivot"])),
                  collapse = ",")
     x[names(x) %in% "facet.pivot"] <- NULL
     x$facet.pivot <- xx

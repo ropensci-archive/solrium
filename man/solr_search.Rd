@@ -181,6 +181,12 @@ solr_search(cli, params = list(q='_val_:"max(counter_total_all)"',
 solr_search(cli, params = list(q='_val_:"max(alm_twitterCount)"',
    rows=5, fl=c('id','alm_twitterCount'), fq='doc_type:full'))
 
+## many fq values
+solr_search(cli, params = list(q="*:*", fl=c('id','alm_twitterCount'),
+   fq=list('doc_type:full','subject:"Social networks"',
+           'alm_twitterCount:[100 TO 10000]'),
+   sort='counter_total_month desc'))
+
 ## using wt = csv
 solr_search(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
   fq='doc_type:full', wt="csv"))
