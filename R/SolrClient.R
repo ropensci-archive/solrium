@@ -97,18 +97,14 @@
 #' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
 #' minOptimizedRows = 50000L, ...)`
 #' * `facet(name = NULL, params = NULL, body = NULL, callopts = list(),
-#' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' raw = FALSE,  parsetype = 'df', concat = ',', ...)`
 #' * `stats(name = NULL, params = list(q = '*:*', stats.field = NULL,
 #' stats.facet = NULL), body = NULL, callopts=list(), raw = FALSE,
-#' parsetype = 'df', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' parsetype = 'df', ...)`
 #' * `highlight(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw = FALSE, parsetype = 'df', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' raw = FALSE, parsetype = 'df', ...)`
 #' * `group(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' raw=FALSE, parsetype='df', concat=',', ...)`
 #' * `mlt(name = NULL, params = NULL, body = NULL, callopts=list(),
 #' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
 #' minOptimizedRows = 50000L, ...)`
@@ -639,20 +635,13 @@ SolrClient <- R6::R6Class(
     },
 
     facet = function(name = NULL, params = NULL, body = NULL, callopts = list(),
-                     raw = FALSE,  parsetype = 'df', concat = ',',
-                     optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                     raw = FALSE,  parsetype = 'df', concat = ',', ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
       }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
-      if (!is.null(params) && length(params) > 0) {
-        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
-      }
-      if (!is.null(body) && length(body) > 0) {
-        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
-      }
       if (!is.null(params)) params <- check_args_facet(params, keys_facet, ...)
       if (!is.null(body)) body <- check_args_facet(body, keys_facet, ...)
 
@@ -678,20 +667,13 @@ SolrClient <- R6::R6Class(
 
     stats = function(name = NULL,
       params = list(q = '*:*', stats.field = NULL, stats.facet = NULL), body = NULL,
-      callopts=list(), raw = FALSE, parsetype = 'df',
-      optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+      callopts=list(), raw = FALSE, parsetype = 'df', ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
       }
       stopifnot(inherits(params, "list") || is.null(body))
       stopifnot(inherits(body, "list") || is.null(body))
-      if (!is.null(params) && length(params) > 0) {
-        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
-      }
-      if (!is.null(body) && length(body) > 0) {
-        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
-      }
       if (!is.null(params)) params <- check_args_stats(params, keys_stats, ...)
       if (!is.null(body)) body <- check_args_stats(body, keys_stats, ...)
       if (!is.null(body)) {
@@ -715,20 +697,13 @@ SolrClient <- R6::R6Class(
     },
 
     highlight = function(name = NULL, params = NULL, body = NULL,
-                         callopts=list(), raw = FALSE, parsetype = 'df',
-                         optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                         callopts=list(), raw = FALSE, parsetype = 'df', ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
       }
       stopifnot(inherits(params, "list") || is.null(body))
       stopifnot(inherits(body, "list") || is.null(body))
-      if (!is.null(params) && length(params) > 0) {
-        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
-      }
-      if (!is.null(body) && length(body) > 0) {
-        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
-      }
       if (!is.null(params)) params <- check_args_high(params, keys_high, ...)
       if (!is.null(body)) body <- check_args_high(body, keys_high, ...)
       if (!is.null(body)) {
@@ -753,19 +728,13 @@ SolrClient <- R6::R6Class(
 
     group = function(name = NULL, params = NULL, body = NULL,
                      callopts=list(), raw=FALSE, parsetype='df', concat=',',
-                     optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                     ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
       }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
-      if (!is.null(params) && length(params) > 0) {
-        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
-      }
-      if (!is.null(body) && length(body) > 0) {
-        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
-      }
       if (!is.null(params)) params <- check_args_group(params, keys_group, ...)
       if (!is.null(body)) body <- check_args_group(body, keys_group, ...)
 

@@ -87,10 +87,10 @@ parameter definitions and their default values.
 \item \code{core_requeststatus(requestid, raw = FALSE, callopts = list())}
 \item \code{core_split(name, path = NULL, targetCore = NULL, ranges = NULL, split.key = NULL, async = NULL, raw = FALSE, callopts=list())}
 \item \code{search(name = NULL, params = NULL, body = NULL, callopts = list(), raw = FALSE, parsetype = 'df', concat = ',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
-\item \code{facet(name = NULL, params = NULL, body = NULL, callopts = list(), raw = FALSE, parsetype = 'df', concat = ',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
-\item \code{stats(name = NULL, params = list(q = '*:*', stats.field = NULL, stats.facet = NULL), body = NULL, callopts=list(), raw = FALSE, parsetype = 'df', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
-\item \code{highlight(name = NULL, params = NULL, body = NULL, callopts=list(), raw = FALSE, parsetype = 'df', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
-\item \code{group(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
+\item \code{facet(name = NULL, params = NULL, body = NULL, callopts = list(), raw = FALSE, parsetype = 'df', concat = ',', ...)}
+\item \code{stats(name = NULL, params = list(q = '*:*', stats.field = NULL, stats.facet = NULL), body = NULL, callopts=list(), raw = FALSE, parsetype = 'df', ...)}
+\item \code{highlight(name = NULL, params = NULL, body = NULL, callopts=list(), raw = FALSE, parsetype = 'df', ...)}
+\item \code{group(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ...)}
 \item \code{mlt(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
 \item \code{all(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
 \item \code{get(ids, name, fl = NULL, wt = 'json', raw = FALSE, ...)}

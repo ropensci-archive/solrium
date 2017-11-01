@@ -52,3 +52,63 @@ test_that("solr_mlt old style works", {
     "list"
   )
 })
+
+
+
+
+
+test_that("solr_mlt optimize max rows with lower boundary", {
+  skip_on_cran()
+
+  a <- conn_plos$mlt(params = list(q='*:*', mlt.count=2, mlt.fl='abstract', rows=1))
+  query <- paste0('id:', a$docs$id)
+  b <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=1))
+  cc <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=-1))
+
+  expect_identical(b, cc)
+})
+
+test_that("solr_mlt optimize max rows with upper boundary", {
+  skip_on_cran()
+
+  a <- conn_plos$mlt(params = list(q='*:*', mlt.count=2, mlt.fl='abstract', rows=1))
+  query <- paste0('id:', a$docs$id)
+  b <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=1))
+  c <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=50000))
+
+  expect_identical(b, c)
+})
+
+test_that("solr_mlt optimize max rows with rows higher than upper boundary", {
+  skip_on_cran()
+
+  a <- conn_plos$mlt(params = list(q='ecology', mlt.count=2, mlt.fl='abstract', rows=1))
+  query <- paste0('id:', a$docs$id)
+  b <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=1))
+  c <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=50001))
+
+  expect_identical(b, c)
+})
+
+test_that("solr_mlt optimize max rows with rows=31 and minOptimizedRows=30", {
+  skip_on_cran()
+
+  a <- conn_plos$mlt(params = list(q='*:*', mlt.count=2, mlt.fl='abstract', rows=1))
+  query <- paste0('id:', a$docs$id)
+  b <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=1))
+  c <- conn_plos$mlt(params = list(q=query, mlt.count=2, mlt.fl='abstract', rows=31),
+    optimizeMaxRows=TRUE, minOptimizedRows=30)
+
+  expect_identical(b, c)
+})
+
+
+test_that("solr_mlt fails if optimize max rows is disabled with rows equal to -1", {
+  skip_on_cran()
+
+  expect_error(
+    conn_plos$mlt(params = list(q='*:*', mlt.count=2, mlt.fl='abstract', rows=-1),
+      optimizeMaxRows=FALSE),
+    "'rows' parameter cannot be negative"
+  )
+})

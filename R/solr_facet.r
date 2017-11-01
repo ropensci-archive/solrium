@@ -4,7 +4,6 @@
 #'
 #' @export
 #' @template facet
-#' @template optimizerows
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param params (list) a named list of parameters, results in a GET reqeust
 #' as long as no body parameters given
@@ -113,10 +112,8 @@
 #' }
 solr_facet <- function(conn, name = NULL, params = list(q = '*:*'),
   body = NULL, callopts = list(), raw = FALSE,  parsetype = 'df',
-  concat = ',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+  concat = ',', ...) {
 
   conn$facet(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype, concat = concat,
-             optimizeMaxRows = optimizeMaxRows,
-             minOptimizedRows = minOptimizedRows, ...)
+             raw = raw, parsetype = parsetype, concat = concat, ...)
 }

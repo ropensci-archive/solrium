@@ -4,7 +4,6 @@
 #'
 #' @export
 #' @template high
-#' @template optimizerows
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param params (list) a named list of parameters, results in a GET reqeust
 #' as long as no body parameters given
@@ -19,9 +18,10 @@
 #' (conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 #'
 #' # highlight search
-#' solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10))
+#' solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10),
+#'   parsetype = "list")
 #' solr_highlight(conn, params = list(q='alcohol', hl.fl = c('abstract','title'),
-#'   rows=3))
+#'   rows=3), parsetype = "list")
 #'
 #' # Raw data back
 #' ## json
@@ -31,17 +31,14 @@
 #' solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10,
 #'    wt='xml'), raw=TRUE)
 #' ## parse after getting data back
-#' out <- solr_highlight(conn, params = list(q='alcohol',
+#' out <- solr_highlight(conn, params = list(q='theoretical math',
 #'    hl.fl = c('abstract','title'), hl.fragsize=30, rows=10, wt='xml'),
 #'    raw=TRUE)
-#' solr_parse(out, parsetype='df')
+#' solr_parse(out, parsetype='list')
 #' }
 solr_highlight <- function(conn, name = NULL, params = NULL, body = NULL,
-                           callopts=list(), raw=FALSE, parsetype='df',
-                           optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                           callopts=list(), raw=FALSE, parsetype='df', ...) {
 
   conn$highlight(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype,
-             optimizeMaxRows = optimizeMaxRows,
-             minOptimizedRows = minOptimizedRows, ...)
+             raw = raw, parsetype = parsetype, ...)
 }

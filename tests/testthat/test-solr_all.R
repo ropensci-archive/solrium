@@ -32,35 +32,6 @@ test_that("solr_all fails well", {
 
 })
 
-# test_that("solr_all works with HathiTrust", {
-#   skip_on_cran()
-
-#   a <- conn_hathi$all(params = list(q = '*:*', rows = 2, fl = 'id'))
-#   b <- conn_hathi$all(params = list(q = 'language:Spanish', rows = 5))
-
-#   # correct dimensions
-#   expect_equal(NROW(a$search), 2)
-#   expect_equal(NROW(b$search), 5)
-
-#   # correct classes
-#   expect_is(a, "list")
-#   expect_is(a$search, "data.frame")
-#   expect_is(a$high, "data.frame")
-#   expect_is(a$group, "data.frame")
-#   expect_null(b$stats)
-#   expect_null(b$facet)
-
-#   expect_is(b, "list")
-#   expect_is(a$search, "data.frame")
-#   expect_is(b$high, "data.frame")
-#   expect_is(b$group, "data.frame")
-#   expect_null(b$stats)
-#   expect_null(b$facet)
-
-#   # names
-#   expect_named(a$search, "id")
-# })
-
 test_that("solr_all works with Datacite", {
   skip_on_cran()
 
@@ -76,5 +47,60 @@ test_that("solr_all old style works", {
   expect_is(solr_all(conn_plos,
     params = list(q='*:*', rows=2, fl='id')),
     "list"
+  )
+})
+
+
+test_that("solr_all optimize max rows with lower boundary", {
+  skip_on_cran()
+
+  a <- conn_plos$all(params = list(q='*:*', rows=1, fl='id'))
+  query <- paste0('id:', a$search$id)
+  b <- conn_plos$all(params = list(q=query, rows=1, fl='id'))
+  cc <- conn_plos$all(params = list(q=query, rows=-1, fl='id'))
+
+  expect_identical(b, cc)
+})
+
+test_that("solr_all optimize max rows with upper boundary", {
+  skip_on_cran()
+
+  a <- conn_plos$all(params = list(q='*:*', rows=1, fl='id'))
+  query <- paste0('id:', a$search$id)
+  b <- conn_plos$all(params = list(q=query, rows=1, fl='id'))
+  c <- conn_plos$all(params = list(q=query, rows=50000, fl='id'))
+
+  expect_identical(b, c)
+})
+
+test_that("solr_all optimize max rows with rows higher than upper boundary", {
+  skip_on_cran()
+
+  a <- conn_plos$all(params = list(q='*:*', rows=1, fl='id'))
+  query <- paste0('id:', a$search$id)
+  b <- conn_plos$all(params = list(q=query, rows=1, fl='id'))
+  c <- conn_plos$all(params = list(q=query, rows=50001, fl='id'))
+
+  expect_identical(b, c)
+})
+
+test_that("solr_all optimize max rows with rows=31 and minOptimizedRows=30", {
+  skip_on_cran()
+
+  a <- conn_plos$all(params = list(q='*:*', rows=1, fl='id'))
+  query <- paste0('id:', a$search$id)
+  b <- conn_plos$all(params = list(q=query, rows=1, fl='id'))
+  c <- conn_plos$all(params = list(q=query, rows=31, fl='id'), optimizeMaxRows=TRUE, minOptimizedRows=30)
+
+  expect_identical(b, c)
+})
+
+
+test_that("solr_all fails if optimize max rows is disabled with rows equal to -1", {
+  skip_on_cran()
+
+  expect_error(
+    conn_plos$all(params = list(q='*:*', rows=-1, fl='id'), optimizeMaxRows=FALSE),
+    "'rows' parameter cannot be negative"
   )
 })

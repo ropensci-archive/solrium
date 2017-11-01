@@ -6,8 +6,7 @@
 \usage{
 solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field = NULL,
   stats.facet = NULL), body = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df", optimizeMaxRows = TRUE, minOptimizedRows = 50000L,
-  ...)
+  parsetype = "df", ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -27,14 +26,6 @@ will be performed}
 wt param}
 
 \item{parsetype}{(character) One of 'list' or 'df'}
-
-\item{optimizeMaxRows}{(logical) If \code{TRUE}, then rows parameter will be
-adjusted to the number of returned results by the same constraints.
-It will only be applied if rows parameter is higher
-than \code{minOptimizedRows}. Default: \code{TRUE}}
-
-\item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter,
-the minimum optimized rows. Default: 50000}
 
 \item{...}{Further args to be combined into query}
 }

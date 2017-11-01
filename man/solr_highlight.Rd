@@ -5,8 +5,7 @@
 \title{Highlighting search}
 \usage{
 solr_highlight(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df",
-  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)
+  callopts = list(), raw = FALSE, parsetype = "df", ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -25,14 +24,6 @@ will be performed}
 parsed data returned.}
 
 \item{parsetype}{One of list of df (data.frame)}
-
-\item{optimizeMaxRows}{(logical) If \code{TRUE}, then rows parameter will be
-adjusted to the number of returned results by the same constraints.
-It will only be applied if rows parameter is higher
-than \code{minOptimizedRows}. Default: \code{TRUE}}
-
-\item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter,
-the minimum optimized rows. Default: 50000}
 
 \item{...}{Further args to be combined into query}
 }
@@ -164,9 +155,10 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 (conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 
 # highlight search
-solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10))
+solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10),
+  parsetype = "list")
 solr_highlight(conn, params = list(q='alcohol', hl.fl = c('abstract','title'),
-  rows=3))
+  rows=3), parsetype = "list")
 
 # Raw data back
 ## json
@@ -176,10 +168,10 @@ solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10),
 solr_highlight(conn, params = list(q='alcohol', hl.fl = 'abstract', rows=10,
    wt='xml'), raw=TRUE)
 ## parse after getting data back
-out <- solr_highlight(conn, params = list(q='alcohol',
+out <- solr_highlight(conn, params = list(q='theoretical math',
    hl.fl = c('abstract','title'), hl.fragsize=30, rows=10, wt='xml'),
    raw=TRUE)
-solr_parse(out, parsetype='df')
+solr_parse(out, parsetype='list')
 }
 }
 \references{

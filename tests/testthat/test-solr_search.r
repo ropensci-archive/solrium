@@ -90,6 +90,8 @@ test_that("solr_search works with Dryad", {
     "tbl_df")
 })
 
+
+
 test_that("solr_search optimize max rows with lower boundary", {
   skip_on_cran()
 

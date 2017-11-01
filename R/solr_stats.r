@@ -4,7 +4,6 @@
 #'
 #' @export
 #' @template stats
-#' @template optimizerows
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param params (list) a named list of parameters, results in a GET reqeust
 #' as long as no body parameters given
@@ -55,11 +54,8 @@
 #' }
 solr_stats <- function(conn, name = NULL, params = list(q = '*:*',
   stats.field = NULL, stats.facet = NULL), body = NULL, callopts=list(),
-  raw=FALSE, parsetype='df', optimizeMaxRows = TRUE,
-  minOptimizedRows = 50000L, ...) {
+  raw=FALSE, parsetype='df', ...) {
 
   conn$stats(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype,
-             optimizeMaxRows = optimizeMaxRows,
-             minOptimizedRows = minOptimizedRows, ...)
+             raw = raw, parsetype = parsetype, ...)
 }

@@ -54,3 +54,4 @@ test_that("solr_group old style works", {
     "data.frame"
   )
 })
+
