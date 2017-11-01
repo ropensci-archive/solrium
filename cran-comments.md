@@ -22,7 +22,7 @@
 
 -----
 
-This release includes xxxx
+This release includes a lot of big changes, and thus bumped to v1.
 
 Thanks!
 Scott Chamberlain
