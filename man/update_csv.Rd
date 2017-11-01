@@ -102,26 +102,23 @@ SOLR v1.2 was first version to support csv. See
 }
 \examples{
 \dontrun{
-# start Solr in Schemaless mode: bin/solr start -e schemaless
+# start Solr: bin/solr start -f -c -p 8983
 
 # connect
-(conn <- SolrClient$new())
+(cli <- SolrClient$new())
 
-path <- "~/solr-6.4.0/server/solr/newcore/conf"
-dir.create(path, recursive = TRUE)
-files <- list.files("~/solr-6.4.0/server/solr/configsets/data_driven_schema_configs/conf/",
-full.names = TRUE)
-invisible(file.copy(files, path, recursive = TRUE))
-core_create(name = "books", instanceDir = "newcore", configSet = "basic_configs")
+if (!cli$collection_exists("helloWorld")) {
+  cli$collection_create(name = "helloWorld", numShards = 2)
+}
 
 df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
 write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
-conn$update_csv("df.csv", "books", verbose = TRUE)
+conn$update_csv("df.csv", "helloWorld", verbose = TRUE)
 
-# give back xml
-update_csv("df.csv", "books", wt = "xml")
-## raw xml
-update_csv("df.csv", "books", wt = "xml", raw = FALSE)
+# give back raw xml
+conn$update_csv("df.csv", "helloWorld", wt = "xml")
+## raw json
+conn$update_csv("df.csv", "helloWorld", wt = "json", raw = TRUE)
 }
 }
 \seealso{

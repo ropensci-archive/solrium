@@ -4,7 +4,8 @@
 \alias{collection_createalias}
 \title{Create an alias for a collection}
 \usage{
-collection_createalias(conn, alias, collections, raw = FALSE, ...)
+collection_createalias(conn, alias, collections, raw = FALSE,
+  callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -16,7 +17,7 @@ to be aliased}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \code{\link[crul]{HttpClient}}}
 }
 \description{
 Create a new alias pointing to one or more collections. If an
@@ -26,8 +27,12 @@ alias, effectively acting like an atomic "MOVE" command.
 \examples{
 \dontrun{
 (conn <- SolrClient$new())
-conn$collection_create(name = "thingsstuff", numShards = 2)
+
+if (!conn$collection_exists("thingsstuff")) {
+  conn$collection_create(name = "thingsstuff")
+}
+
 conn$collection_createalias("tstuff", "thingsstuff")
-conn$collection_clusterstatus()$cluster$collections$thingsstuff$aliases 
+conn$collection_clusterstatus()$cluster$collections$thingsstuff$aliases
 }
 }

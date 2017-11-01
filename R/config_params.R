@@ -30,13 +30,10 @@
 #'
 #' # set a parameter set
 #' myFacets <- list(myFacets = list(facet = TRUE, facet.limit = 5))
-#' config_params("gettingstarted", set = myFacets)
+#' config_params(conn, "gettingstarted", set = myFacets)
 #'
 #' # check a parameter
-#' config_params("gettingstarted", param = "myFacets")
-#'
-#' # see all params
-#' config_params("gettingstarted")
+#' config_params(conn, "gettingstarted", param = "myFacets")
 #' }
 config_params <- function(conn, name, param = NULL, set = NULL,
                           unset = NULL, update = NULL, ...) {

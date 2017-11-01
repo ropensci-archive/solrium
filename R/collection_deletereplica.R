@@ -24,7 +24,9 @@
 #' (conn <- SolrClient$new())
 #'
 #' # create collection
-#' conn$collection_create(name = "foobar2", numShards = 2) # bin/solr create -c foobar2
+#' if (!conn$collection_exists("foobar2")) {
+#'   conn$collection_create(name = "foobar2", maxShardsPerNode = 2)
+#' }
 #'
 #' # status
 #' conn$collection_clusterstatus()$cluster$collections$foobar2$shards$shard1
@@ -34,7 +36,7 @@
 #'
 #' # delete replica
 #' ## get replica name
-#' nms <- names(collection_clusterstatus()$cluster$collections$foobar2$shards$shard1$replicas)
+#' nms <- names(conn$collection_clusterstatus()$cluster$collections$foobar2$shards$shard1$replicas)
 #' conn$collection_deletereplica(name = "foobar2", shard = "shard1", replica = nms[1])
 #'
 #' # status again

@@ -97,18 +97,24 @@
 #' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
 #' minOptimizedRows = 50000L, ...)`
 #' * `facet(name = NULL, params = NULL, body = NULL, callopts = list(),
-#' raw = FALSE,  parsetype = 'df', concat = ',', ...)`
+#' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
 #' * `stats(name = NULL, params = list(q = '*:*', stats.field = NULL,
 #' stats.facet = NULL), body = NULL, callopts=list(), raw = FALSE,
-#' parsetype = 'df', ...)`
+#' parsetype = 'df', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
 #' * `highlight(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw = FALSE, parsetype = 'df', ...)`
+#' raw = FALSE, parsetype = 'df', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
 #' * `group(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
 #' * `mlt(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
 #' * `all(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
+#' minOptimizedRows = 50000L, ...)`
 #' * `get(ids, name, fl = NULL, wt = 'json', raw = FALSE, ...)`
 #' * `add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
 #' boost = NULL, wt = 'json', raw = FALSE, ...)`
@@ -155,9 +161,8 @@
 #' cli$schema("gettingstarted", "version")$version
 #'
 #' # Search
-#' cli$search("gettingstarted")
-#' cli$search("gettingstarted", params = list(q = "features:notes"))
-#' cli$search("gettingstarted", body = list(q = "features:notes"))
+#' cli$search("gettingstarted", params = list(q = "*:*"))
+#' cli$search("gettingstarted", body = list(query = "*:*"))
 #'
 #' # set a different host
 #' SolrClient$new(host = 'stuff.com')
@@ -177,9 +182,7 @@
 #'
 #' # A remote Solr instance to which you don't have admin access
 #' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
-#' cli$search()
 #' cli$search(params = list(q = "memory"))
-#'
 #' }
 SolrClient <- R6::R6Class(
   "SolrClient",
@@ -244,7 +247,7 @@ SolrClient <- R6::R6Class(
     commit = function(name, expunge_deletes = FALSE, wait_searcher = TRUE,
                       soft_commit = FALSE, wt = 'json', raw = FALSE, ...) {
 
-      obj_proc(self$make_url, sprintf('solr/%s/update', name),
+      obj_proc(self$make_url(), sprintf('solr/%s/update', name),
                body = list(commit =
                              list(expungeDeletes = asl(expunge_deletes),
                                   waitSearcher = asl(wait_searcher),
@@ -286,14 +289,15 @@ SolrClient <- R6::R6Class(
         }
         res <- solr_GET(self$make_url(),
                         sprintf('solr/%s/config/params/%s', name, param),
-                        list(wt = "json"), self$proxy, ...)
+                        list(wt = "json"), list(...), self$proxy)
       } else {
         path <- sprintf('solr/%s/config/params', name)
         body <- sc(c(name_by(unbox_if(set, TRUE), "set"),
                      name_by(unbox_if(unset, TRUE), "unset"),
                      name_by(unbox_if(update, TRUE), "update")))
         res <- solr_POST_body(self$make_url(), path,
-                              body, list(wt = "json"), conn$proxy, ...)
+                              body, list(wt = "json"),
+                              ctype_json(), list(...), self$proxy)
       }
       jsonlite::fromJSON(res)
     },
@@ -311,7 +315,8 @@ SolrClient <- R6::R6Class(
                       `unset-property` = unset))
       res <- solr_POST_body(self$make_url(),
                             sprintf('solr/%s/config', name),
-                            body, list(wt = "json"), self$proxy, ...)
+                            body, list(wt = "json"), ctype_json(),
+                            list(...), self$proxy)
       jsonlite::fromJSON(res)
     },
 
@@ -321,16 +326,15 @@ SolrClient <- R6::R6Class(
       name %in% suppressMessages(self$collection_list(...))$collections
     },
 
-    collection_list = function(raw = FALSE, ...) {
-      private$coll_h(sc(list(action = 'LIST', wt = 'json')),
-                                raw = raw, ...)
+    collection_list = function(raw = FALSE, callopts = list()) {
+      private$coll_h(sc(list(action = 'LIST', wt = 'json')), callopts, raw)
     },
 
     collection_create = function(name, numShards = 1, maxShardsPerNode = 1,
       createNodeSet = NULL, collection.configName = NULL, replicationFactor = 1,
       router.name = NULL, shards = NULL, createNodeSet.shuffle = TRUE,
       router.field = NULL, autoAddReplicas = FALSE, async = NULL,
-      raw = FALSE, callopts=list(), ...) {
+      raw = FALSE, callopts=list()) {
 
       args <- sc(list(action = 'CREATE', name = name, numShards = numShards,
                       replicationFactor = replicationFactor,
@@ -340,17 +344,17 @@ SolrClient <- R6::R6Class(
                       createNodeSet.shuffle = asl(createNodeSet.shuffle),
                       router.field = router.field, autoAddReplicas = asl(autoAddReplicas),
                       async = async, wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_addreplica = function(name, shard = NULL, route = NULL,
       node = NULL, instanceDir = NULL, dataDir = NULL, async = NULL,
-      raw = FALSE, callopts=list(), ...) {
+      raw = FALSE, callopts=list()) {
 
       args <- sc(list(action = 'ADDREPLICA', collection = name, shard = shard,
                       route = route, node = node, instanceDir = instanceDir,
                       dataDir = dataDir, async = async, wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_addreplicaprop = function(name, shard, replica, property,
@@ -363,58 +367,65 @@ SolrClient <- R6::R6Class(
       private$coll_h(args, callopts, raw)
     },
 
-    collection_addrole = function(role = "overseer", node, raw = FALSE, ...) {
+    collection_addrole = function(role = "overseer", node, raw = FALSE,
+      callopts = list(), ...) {
+
       args <- sc(list(action = 'ADDROLE', role = role, node = node,
                       wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_balanceshardunique = function(name, property, onlyactivenodes = TRUE,
-                                              shardUnique = NULL, raw = FALSE, ...) {
+                        shardUnique = NULL, raw = FALSE, callopts = list()) {
+
       args <- sc(list(action = 'BALANCESHARDUNIQUE', collection = name,
                       property = property,
                       onlyactivenodes = asl(onlyactivenodes),
                       shardUnique = asl(shardUnique),
                       wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_clusterprop = function(name, val, raw = FALSE, callopts=list()) {
+
       args <- sc(list(action = 'CLUSTERPROP', name = name,
                       val = if (is.null(val)) "" else val, wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_clusterstatus = function(name = NULL, shard = NULL, raw = FALSE,
-                                        ...) {
+                                        callopts = list()) {
       shard <- check_shard(shard)
       args <- sc(list(action = 'CLUSTERSTATUS', collection = name,
                       shard = shard, wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
-    collection_createalias = function(alias, collections, raw = FALSE, ...) {
+    collection_createalias = function(alias, collections, raw = FALSE,
+      callopts = list()) {
+
       collections <- check_shard(collections)
       args <- sc(list(action = 'CREATEALIAS', name = alias,
                       collections = collections, wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_createshard = function(name, shard, createNodeSet = NULL,
-                                       raw = FALSE, ...) {
+                                       raw = FALSE, callopts = list()) {
+
       args <- sc(list(action = 'CREATESHARD', collection = name, shard = shard,
                       createNodeSet = createNodeSet, wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
-    collection_delete = function(name, raw = FALSE, ...) {
+    collection_delete = function(name, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'DELETE', name = name, wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
-    collection_deletealias = function(alias, raw = FALSE, ...) {
+    collection_deletealias = function(alias, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'DELETEALIAS', name = alias, wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_deletereplica = function(name, shard = NULL, replica = NULL,
@@ -423,7 +434,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(action = 'DELETEREPLICA', collection = name,
                       shard = shard, replica = replica,
                       onlyIfDown = asl(onlyIfDown), wt = 'json'))
-      private$coll_h(args, callopts, raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_deletereplicaprop = function(name, shard, replica, property,
@@ -434,59 +445,60 @@ SolrClient <- R6::R6Class(
       private$coll_h(args, callopts, raw)
     },
 
-    collection_deleteshard = function(name, shard, raw = FALSE, ...) {
+    collection_deleteshard = function(name, shard, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'DELETESHARD', collection = name, shard = shard,
                       wt = 'json'))
       private$coll_h(args, callopts, raw)
     },
 
     collection_migrate = function(name, target.collection, split.key, forward.timeout = NULL,
-                                   async = NULL, raw = FALSE, ...) {
+                                   async = NULL, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'MIGRATE', collection = name,
                       target.collection = target.collection,
                       split.key = split.key, forward.timeout = forward.timeout,
                       async = async, wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
-    collection_overseerstatus = function(raw = FALSE, ...) {
+    collection_overseerstatus = function(raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'OVERSEERSTATUS', wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_rebalanceleaders = function(name, maxAtOnce = NULL,
-      maxWaitSeconds = NULL, raw = FALSE, ...) {
+      maxWaitSeconds = NULL, raw = FALSE, callopts = list()) {
 
       args <- sc(list(action = 'REBALANCELEADERS', collection = name,
                       maxAtOnce = maxAtOnce,
                       maxWaitSeconds = maxWaitSeconds, wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
-    collection_reload = function(name, raw = FALSE, ...) {
+    collection_reload = function(name, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'RELOAD', name = name, wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_removerole = function(role = "overseer", node, raw = FALSE,
-                                     ...) {
+                                     callopts = list()) {
+
       args <- sc(list(action = 'REMOVEROLE', role = role, node = node,
                       wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
-    collection_requeststatus = function(requestid, raw = FALSE, ...) {
+    collection_requeststatus = function(requestid, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'REQUESTSTATUS', requestid = requestid,
                       wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
     collection_splitshard = function(name, shard, ranges = NULL, split.key = NULL,
-                                      async = NULL, raw = FALSE, ...) {
+                                      async = NULL, raw = FALSE, callopts = list()) {
       args <- sc(list(action = 'SPLITSHARD', collection = name, shard = shard,
                       ranges = do_ranges(ranges), split.key = split.key,
                       async = async, wt = 'json'))
-      private$coll_h(args, raw = raw, ...)
+      private$coll_h(args, callopts, raw)
     },
 
 
@@ -598,24 +610,11 @@ SolrClient <- R6::R6Class(
       }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
-      rows <- params$rows %||% body$rows %||% NULL
-      rows <- cn(rows)
-      if (!is.null(rows) && optimizeMaxRows) {
-        if (rows > minOptimizedRows || rows < 0) {
-          out <- self$search(
-            name=name,
-            params=list(q=params$q %||% body$q %||% NULL, rows=0, wt='json'),
-            raw=TRUE, optimizeMaxRows=FALSE)
-          outJson <- jsonlite::fromJSON(out)
-          if (rows > outJson$response$numFound || rows < 0) {
-            if (!is.null(params) && length(params) > 0) {
-              params$rows <- as.double(outJson$response$numFound)
-            }
-            if (!is.null(body) && length(body) > 0) {
-              body$rows <- as.double(outJson$response$numFound)
-            }
-          }
-        }
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
       }
       if (!is.null(params)) params <- check_args_search(params, "fq", ...)
       if (!is.null(body)) body <- check_args_search(body, "fq", ...)
@@ -633,17 +632,27 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return( out )
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_search"))
         solr_parse(parsed, parsetype, concat)
       }
     },
 
     facet = function(name = NULL, params = NULL, body = NULL, callopts = list(),
-                     raw = FALSE,  parsetype = 'df', concat = ',', ...) {
+                     raw = FALSE,  parsetype = 'df', concat = ',',
+                     optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
 
+      if (is.null(params)) {
+        if (is.null(body)) stop("if 'params' NULL, body must be given")
+      }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
+      }
       if (!is.null(params)) params <- check_args_facet(params, keys_facet, ...)
       if (!is.null(body)) body <- check_args_facet(body, keys_facet, ...)
 
@@ -661,7 +670,7 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return( out )
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_facet"))
         solr_parse(parsed)
       }
@@ -669,10 +678,20 @@ SolrClient <- R6::R6Class(
 
     stats = function(name = NULL,
       params = list(q = '*:*', stats.field = NULL, stats.facet = NULL), body = NULL,
-      callopts=list(), raw = FALSE, parsetype = 'df', ...) {
+      callopts=list(), raw = FALSE, parsetype = 'df',
+      optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
 
+      if (is.null(params)) {
+        if (is.null(body)) stop("if 'params' NULL, body must be given")
+      }
       stopifnot(inherits(params, "list") || is.null(body))
       stopifnot(inherits(body, "list") || is.null(body))
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
+      }
       if (!is.null(params)) params <- check_args_stats(params, keys_stats, ...)
       if (!is.null(body)) body <- check_args_stats(body, keys_stats, ...)
       if (!is.null(body)) {
@@ -689,17 +708,27 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return( out )
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_stats"))
         solr_parse(out, parsetype)
       }
     },
 
     highlight = function(name = NULL, params = NULL, body = NULL,
-                         callopts=list(), raw = FALSE, parsetype = 'df', ...) {
+                         callopts=list(), raw = FALSE, parsetype = 'df',
+                         optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
 
+      if (is.null(params)) {
+        if (is.null(body)) stop("if 'params' NULL, body must be given")
+      }
       stopifnot(inherits(params, "list") || is.null(body))
       stopifnot(inherits(body, "list") || is.null(body))
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
+      }
       if (!is.null(params)) params <- check_args_high(params, keys_high, ...)
       if (!is.null(body)) body <- check_args_high(body, keys_high, ...)
       if (!is.null(body)) {
@@ -716,16 +745,27 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return(out)
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_high"))
         solr_parse(out, parsetype)
       }
     },
 
     group = function(name = NULL, params = NULL, body = NULL,
-                     callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
+                     callopts=list(), raw=FALSE, parsetype='df', concat=',',
+                     optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+
+      if (is.null(params)) {
+        if (is.null(body)) stop("if 'params' NULL, body must be given")
+      }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
+      }
       if (!is.null(params)) params <- check_args_group(params, keys_group, ...)
       if (!is.null(body)) body <- check_args_group(body, keys_group, ...)
 
@@ -744,16 +784,27 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return(out)
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_group"))
         solr_parse(out, parsetype)
       }
     },
 
     mlt = function(name = NULL, params = NULL, body = NULL,
-                   callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
+                   callopts=list(), raw=FALSE, parsetype='df', concat=',',
+                   optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+
+      if (is.null(params)) {
+        if (is.null(body)) stop("if 'params' NULL, body must be given")
+      }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
+      }
       if (!is.null(params)) params <- check_args_mlt(params, keys_mlt, ...)
       if (!is.null(body)) body <- check_args_mlt(body, keys_mlt, ...)
 
@@ -772,17 +823,27 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return( out )
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_mlt"))
         solr_parse(parsed, parsetype, concat)
       }
     },
 
     all = function(name = NULL, params = NULL, body = NULL,
-                   callopts=list(), raw=FALSE, parsetype='df', concat=',', ...) {
+                   callopts=list(), raw=FALSE, parsetype='df', concat=',',
+                   optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
 
+      if (is.null(params)) {
+        if (is.null(body)) stop("if 'params' NULL, body must be given")
+      }
       stopifnot(inherits(params, "list") || is.null(params))
       stopifnot(inherits(body, "list") || is.null(body))
+      if (!is.null(params) && length(params) > 0) {
+        params$rows <- private$adjust_rows(params, optimizeMaxRows, minOptimizedRows, name)
+      }
+      if (!is.null(body) && length(body) > 0) {
+        body$rows <- private$adjust_rows(body, optimizeMaxRows, minOptimizedRows, name)
+      }
       if (!is.null(params)) params <- check_args_search(params, keys_all, ...)
       if (!is.null(body)) body <- check_args_search(body, keys_all, ...)
 
@@ -801,7 +862,7 @@ SolrClient <- R6::R6Class(
       if (raw) {
         return( out )
       } else {
-        parsed <- cont_parse(out, params$wt %||% body$wt)
+        parsed <- cont_parse(out, params$wt %||% body$wt %||% "json")
         parsed <- structure(parsed, class = c(class(parsed), "sr_all"))
         solr_parse(parsed, parsetype, concat)
       }
@@ -856,7 +917,8 @@ SolrClient <- R6::R6Class(
                       softCommit = asl(soft_commit),
                       prepareCommit = prepare_commit, wt = wt))
       docreate(self$make_url(), sprintf('solr/%s/update/json/docs', name),
-               crul::upload(files), args, 'json', raw, ...)
+               crul::upload(files), args, ctype_json(), raw, self$proxy,
+               ...)
     },
 
     update_xml = function(files, name, commit = TRUE, optimize = FALSE,
@@ -871,7 +933,7 @@ SolrClient <- R6::R6Class(
              waitSearcher = asl(wait_searcher), softCommit = asl(soft_commit),
              prepareCommit = prepare_commit, wt = wt))
       docreate(self$make_url(), sprintf('solr/%s/update', name),
-               crul::upload(files), args, 'xml', raw, ...)
+               crul::upload(files), args, ctype_xml(), raw, self$proxy, ...)
     },
 
     update_csv = function(files, name, separator = ',', header = TRUE,
@@ -890,19 +952,19 @@ SolrClient <- R6::R6Class(
              rowidOffset = rowidOffset, overwrite = overwrite,
              commit = commit, wt = wt))
       docreate(self$make_url(), sprintf('solr/%s/update/csv', name),
-               crul::upload(files), args, "csv", raw, ...)
+               crul::upload(files), args, ctype_csv(), raw, self$proxy, ...)
     },
 
     update_atomic_json = function(body, name, wt = 'json', raw = FALSE, ...) {
       private$stop_if_absent(name)
       doatomiccreate(self$make_url(), sprintf('solr/%s/update', name),
-                     body, list(wt = wt), "json", raw, ...)
+                     body, list(wt = wt), "json", raw, self$proxy, ...)
     },
 
     update_atomic_xml = function(body, name, wt = 'json', raw = FALSE, ...) {
       private$stop_if_absent(name)
       doatomiccreate(self$make_url(), sprintf('solr/%s/update', name),
-                     body, list(wt = wt), "xml", raw, ...)
+                     body, list(wt = wt), "xml", raw, self$proxy, ...)
     },
 
 
@@ -937,7 +999,7 @@ SolrClient <- R6::R6Class(
       if (x) return(y) else jsonlite::fromJSON(y)
     },
 
-    coll_h = function(args, callopts = list(), raw, ...) {
+    coll_h = function(args, callopts = list(), raw) {
       res <- solr_GET(self$make_url(), 'solr/admin/collections', args,
                       callopts,  self$proxy)
       private$give_data(raw, res)
@@ -957,6 +1019,26 @@ SolrClient <- R6::R6Class(
         stop("errors must be one of 'simple' or 'complete'")
       }
       return(x)
+    },
+
+    adjust_rows = function(x, optimizeMaxRows, minOptimizedRows, name) {
+      rows <- x$rows %||% NULL
+      rows <- cn(rows)
+      if (!is.null(rows) && optimizeMaxRows) {
+        if (rows > minOptimizedRows || rows < 0) {
+          out <- self$search(
+            name = name,
+            params = list(q = x$q %||% NULL, rows = 0, wt = 'json'),
+            raw = TRUE, optimizeMaxRows = FALSE)
+          oj <- jsonlite::fromJSON(out)
+          if (rows > oj$response$numFound || rows < 0) {
+            rows <- as.double(oj$response$numFound)
+          }
+        }
+      }
+
+      return(rows)
     }
+
   )
 )

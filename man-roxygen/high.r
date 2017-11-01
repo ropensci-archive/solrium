@@ -3,6 +3,7 @@
 #' 		parsed data returned.
 #' @param callopts Call options passed on to [crul::HttpClient]
 #' @param parsetype One of list of df (data.frame)
+#' @param ... Further args to be combined into query
 #'
 #' @section Facet parameters:
 #' \itemize{

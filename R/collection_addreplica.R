@@ -24,7 +24,7 @@
 #'
 #' # create collection
 #' if (!conn$collection_exists("foobar")) {
-#'   conn$collection_create(name = "foobar", numShards = 2) 
+#'   conn$collection_create(name = "foobar", numShards = 2)
 #'   # OR bin/solr create -c foobar
 #' }
 #'
@@ -44,7 +44,7 @@
 collection_addreplica <- function(conn, name, shard = NULL, route = NULL, node = NULL,
                               instanceDir = NULL, dataDir = NULL, async = NULL,
                               raw = FALSE, callopts=list(), ...) {
-  
-  conn$collection_addreplica(name, shard, route, node, instanceDir, dataDir, 
+
+  conn$collection_addreplica(name, shard, route, node, instanceDir, dataDir,
                              async, raw, callopts, ...)
 }

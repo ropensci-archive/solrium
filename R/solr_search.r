@@ -5,17 +5,12 @@
 #'
 #' @export
 #' @template search
+#' @template optimizerows
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param params (list) a named list of parameters, results in a GET reqeust
 #' as long as no body parameters given
 #' @param body (list) a named list of parameters, if given a POST request
 #' will be performed
-#' @param optimizeMaxRows (logical) If `TRUE`, then rows parameter will be
-#' adjusted to the number of returned results by the same constraints.
-#' It will only be applied if rows parameter is higher
-#' than `minOptimizedRows`. Default: `TRUE`
-#' @param minOptimizedRows (numeric) used by `optimizedMaxRows` parameter, the minimum
-#' optimized rows. Default: 50000
 #'
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
@@ -26,25 +21,24 @@
 #' @examples \dontrun{
 #' # Connect to a local Solr instance
 #' (cli <- SolrClient$new())
-#' cli$search("gettingstarted")
-#' cli$search("gettingstarted", q = "features:notes")
+#' cli$search("gettingstarted", params = list(q = "features:notes"))
 #'
 #' solr_search(cli, "gettingstarted")
 #' solr_search(cli, "gettingstarted", params = list(q = "features:notes"))
-#' solr_search(cli, "gettingstarted", body = list(q = "features:notes"))
+#' solr_search(cli, "gettingstarted", body = list(query = "features:notes"))
 #'
 #' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 #' cli$search(params = list(q = "*:*"))
 #' cli$search(params = list(q = "title:golgi", fl = c('id', 'title')))
 #'
-#' cli$search(params = list(q = "*:*", facet = TRUE))
+#' cli$search(params = list(q = "*:*", facet = "true"))
 #'
 #'
 #' # search
 #' solr_search(cli, params = list(q='*:*', rows=2, fl='id'))
 #'
 #' # search and return all rows
-#' solr_search(q='*:*', rows=-1, fl='id')
+#' solr_search(cli, params = list(q='*:*', rows=-1, fl='id'))
 #'
 #' # Search for word ecology in title and cell in the body
 #' solr_search(cli, params = list(q='title:"ecology" AND body:"cell"',
@@ -120,20 +114,8 @@
 #'
 #' # Pass on curl options to modify request
 #' ## verbose
-#' solr_search(q='*:*', rows=2, fl='id', callopts = list(verbose=TRUE))
-#' ## timeout
-#' # solr_search(q='*:*', rows=200, fl='id', callopts=list(timeout_ms=1))
-#'
-#' ## Searching Europeana
-#' ### They don't return the expected Solr output, so we can get raw data,
-#' ### then parse separately
-#' (cli <- SolrClient$new(host = "www.europeana.eu",
-#'   path = "api/v2/search.json", port = NULL))
-#' key <- getOption("eu_key")
-#' dat <- solr_search(cli, params = list(query='*:*', rows=5, wskey=key),
-#'   raw = TRUE)
-#' library('jsonlite')
-#' head( jsonlite::fromJSON(dat)$items )
+#' solr_search(cli, params = list(q='*:*', rows=2, fl='id'),
+#'   callopts = list(verbose=TRUE))
 #' }
 
 solr_search <- function(conn, name = NULL, params = list(q = '*:*'),

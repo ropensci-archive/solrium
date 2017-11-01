@@ -33,7 +33,7 @@ are up and running
 (conn <- SolrClient$new())
 
 # get list of nodes
-nodes <- collection_clusterstatus()$cluster$live_nodes
-collection_addrole(node = nodes[1])
+nodes <- conn$collection_clusterstatus()$cluster$live_nodes
+collection_addrole(conn, node = nodes[1])
 }
 }

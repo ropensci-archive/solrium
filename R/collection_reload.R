@@ -4,9 +4,13 @@
 #' @inheritParams collection_create
 #' @examples \dontrun{
 #' (conn <- SolrClient$new())
-#' conn$collection_create(name = "helloWorld")
+#'
+#' if (!conn$collection_exists("helloWorld")) {
+#'   conn$collection_create(name = "helloWorld")
+#' }
+#'
 #' conn$collection_reload(name = "helloWorld")
 #' }
-collection_reload <- function(conn, name, raw = FALSE, ...) {
-  conn$collection_reload(raw, ...)
+collection_reload <- function(conn, name, raw = FALSE, callopts) {
+  conn$collection_reload(name, raw, callopts)
 }

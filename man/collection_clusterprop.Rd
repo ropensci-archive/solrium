@@ -31,12 +31,12 @@ is \code{NULL} or empty the property is deleted (unset).
 (conn <- SolrClient$new())
 
 # add the value https to the property urlScheme
-collection_clusterprop(name = "urlScheme", val = "https")
+collection_clusterprop(conn, name = "urlScheme", val = "https")
 
 # status again
-collection_clusterstatus()$cluster$properties
+collection_clusterstatus(conn)$cluster$properties
 
 # delete the property urlScheme by setting val to NULL or a 0 length string
-collection_clusterprop(name = "urlScheme", val = "")
+collection_clusterprop(conn, name = "urlScheme", val = "")
 }
 }

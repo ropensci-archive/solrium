@@ -34,14 +34,16 @@ Deletes an arbitrary property from a particular replica.
 (conn <- SolrClient$new())
 
 # create collection
-conn$collection_create(name = "deleterep", numShards = 2) 
-# OR bin/solr create -c deleterep
+if (!conn$collection_exists("deleterep")) {
+  conn$collection_create(name = "deleterep")
+  # OR bin/solr create -c deleterep
+}
 
 # status
 conn$collection_clusterstatus()$cluster$collections$deleterep$shards
 
 # add the value bar to the property foo
-conn$collection_addreplicaprop(name = "deleterep", shard = "shard1", 
+conn$collection_addreplicaprop(name = "deleterep", shard = "shard1",
   replica = "core_node1", property = "foo", property.value = "bar")
 
 # check status

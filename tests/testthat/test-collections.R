@@ -10,7 +10,8 @@ test_that("collections works - no collections", {
   aa <- collections(conn)
 
   expect_is(aa, "character")
-  expect_equal(length(aa), 0)
+  expect_false("books" %in% aa)
+  expect_false("gettingstarted" %in% aa)
 })
 
 test_that("collections works - with some collections", {
@@ -23,7 +24,8 @@ test_that("collections works - with some collections", {
   aa <- collections(conn)
 
   expect_is(aa, "character")
-  expect_equal(length(aa), 2)
+  expect_true("books" %in% aa)
+  expect_true("gettingstarted" %in% aa)
 })
 
 test_that("collections works - new way of using", {

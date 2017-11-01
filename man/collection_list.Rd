@@ -20,8 +20,9 @@ List collections
 \examples{
 \dontrun{
 (conn <- SolrClient$new())
+
 conn$collection_list()
 conn$collection_list()$collections
-conn$collection_list(cli)
+collection_list(conn)
 }
 }

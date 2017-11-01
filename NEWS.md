@@ -1,3 +1,25 @@
+solrium 1.0.0
+=============
+
+### NEW FEATURES
+
+* xx (#xx)
+* xx (#xx)
+* xx (#xx)
+
+### MINOR IMPROVEMENTS
+
+* xx (#xx)
+* xx (#xx)
+* xx (#xx)
+
+### BUG FIXES
+
+* xx (#xx)
+* xx (#xx)
+* xx (#xx)
+
+
 solrium 0.4.0
 =============
 
@@ -10,7 +32,7 @@ solrium 0.4.0
 * Added examples and tests for a few more public Solr instances (#30)
 * Now using `tibble` to give back compact data.frame's
 * namespace all base package calls
-* Many changes to internal parsers to use `xml2` instead of `XML`, and 
+* Many changes to internal parsers to use `xml2` instead of `XML`, and
 improvements
 
 solrium 0.3.0

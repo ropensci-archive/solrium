@@ -6,12 +6,13 @@
 \usage{
 solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field = NULL,
   stats.facet = NULL), body = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df")
+  parsetype = "df", optimizeMaxRows = TRUE, minOptimizedRows = 50000L,
+  ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
 
-\item{name}{Name of a collection or core. Or leave as \code{NULL} if 
+\item{name}{Name of a collection or core. Or leave as \code{NULL} if
 not needed.}
 
 \item{params}{(list) a named list of parameters, results in a GET reqeust
@@ -22,10 +23,20 @@ will be performed}
 
 \item{callopts}{Call options passed on to [crul::HttpClient]}
 
-\item{raw}{(logical) If TRUE, returns raw data in format specified by 
+\item{raw}{(logical) If TRUE, returns raw data in format specified by
 wt param}
 
 \item{parsetype}{(character) One of 'list' or 'df'}
+
+\item{optimizeMaxRows}{(logical) If \code{TRUE}, then rows parameter will be
+adjusted to the number of returned results by the same constraints.
+It will only be applied if rows parameter is higher
+than \code{minOptimizedRows}. Default: \code{TRUE}}
+
+\item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter,
+the minimum optimized rows. Default: 50000}
+
+\item{...}{Further args to be combined into query}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -38,10 +49,10 @@ Returns only stat items
 \itemize{
  \item q Query terms, defaults to '*:*', or everything.
  \item stats.field The number of similar documents to return for each result.
- \item stats.facet You can not facet on multi-valued fields. 
- \item wt (character) Data type returned, defaults to 'json'. One of json 
- or xml. If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, 
- uses \code{\link[XML]{xmlParse}} to parse. csv is only supported in 
+ \item stats.facet You can not facet on multi-valued fields.
+ \item wt (character) Data type returned, defaults to 'json'. One of json
+ or xml. If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml,
+ uses \code{\link[XML]{xmlParse}} to parse. csv is only supported in
  \code{\link{solr_search}} and \code{\link{solr_all}}.
  \item start Record to start at, default to beginning.
  \item rows Number of records to return. Defaults to 10.
@@ -52,23 +63,23 @@ Returns only stat items
 \examples{
 \dontrun{
 # connect
-(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 
 # get stats
-solr_stats(cli, params = list(q='science', stats.field='counter_total_all'), 
+solr_stats(cli, params = list(q='science', stats.field='counter_total_all'),
   raw=TRUE)
 solr_stats(cli, params = list(q='title:"ecology" AND body:"cell"',
    stats.field=c('counter_total_all','alm_twitterCount')))
-solr_stats(cli, params = list(q='ecology', 
+solr_stats(cli, params = list(q='ecology',
   stats.field=c('counter_total_all','alm_twitterCount'),
   stats.facet='journal'))
-solr_stats(cli, params = list(q='ecology', 
+solr_stats(cli, params = list(q='ecology',
   stats.field=c('counter_total_all','alm_twitterCount'),
   stats.facet=c('journal','volume')))
 
 # Get raw data, then parse later if you feel like it
 ## json
-out <- solr_stats(cli, params = list(q='ecology', 
+out <- solr_stats(cli, params = list(q='ecology',
   stats.field=c('counter_total_all','alm_twitterCount'),
   stats.facet=c('journal','volume')), raw=TRUE)
 library("jsonlite")
@@ -77,7 +88,7 @@ solr_parse(out) # list
 solr_parse(out, 'df') # data.frame
 
 ## xml
-out <- solr_stats(cli, params = list(q='ecology', 
+out <- solr_stats(cli, params = list(q='ecology',
   stats.field=c('counter_total_all','alm_twitterCount'),
   stats.facet=c('journal','volume'), wt="xml"), raw=TRUE)
 library("xml2")

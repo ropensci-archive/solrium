@@ -13,13 +13,19 @@
 #' @param ... curl options passed on to [crul::HttpClient]
 #' @examples \dontrun{
 #' (conn <- SolrClient$new())
+#'
 #' # create collection
-#' # conn$collection_create(name = "buffalo") # bin/solr create -c buffalo
+#' if (!conn$collection_exists("buffalo")) {
+#'   conn$collection_create(name = "buffalo")
+#'   # OR: bin/solr create -c buffalo
+#' }
 #'
 #' # find shard names
 #' names(conn$collection_clusterstatus()$cluster$collections$buffalo$shards)
+#'
 #' # split a shard by name
-#' collection_splitshard(name = "buffalo", shard = "shard1")
+#' collection_splitshard(conn, name = "buffalo", shard = "shard1")
+#'
 #' # now we have three shards
 #' names(conn$collection_clusterstatus()$cluster$collections$buffalo$shards)
 #'

@@ -48,7 +48,7 @@ specified if the replica is to be created in a specific node
 
 # create collection
 if (!conn$collection_exists("foobar")) {
-  conn$collection_create(name = "foobar", numShards = 2) 
+  conn$collection_create(name = "foobar", numShards = 2)
   # OR bin/solr create -c foobar
 }
 

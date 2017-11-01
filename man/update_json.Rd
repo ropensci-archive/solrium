@@ -54,7 +54,7 @@ public Solr services, but should work locally.
 }
 \examples{
 \dontrun{
-# start Solr in Schemaless mode: bin/solr start -e schemaless
+# start Solr: bin/solr start -f -c -p 8983
 
 # connect
 (conn <- SolrClient$new())
@@ -70,22 +70,18 @@ update_json(conn, files = file, name = "books")
 file <- system.file("examples", "updatecommands_add.json",
   package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file, "books")
+conn$update_json(file, "books")
 
 ## Delete file
 file <- system.file("examples", "updatecommands_delete.json",
   package = "solrium")
 cat(readLines(file), sep = "\\n")
-update_json(file, "books")
+conn$update_json(file, "books")
 
 # Add and delete in the same document
 ## Add a document first, that we can later delete
 ss <- list(list(id = 456, name = "cat"))
-add(ss, "books")
-## Now add a new document, and delete the one we just made
-file <- system.file("examples", "add_delete.json", package = "solrium")
-cat(readLines(file), sep = "\\n")
-update_json(file, "books")
+conn$add(ss, "books")
 }
 }
 \seealso{

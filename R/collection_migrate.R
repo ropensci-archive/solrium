@@ -15,23 +15,29 @@
 #' (conn <- SolrClient$new())
 #'
 #' # create collection
-#' conn$collection_create(name = "migrate_from") # bin/solr create -c migrate_from
+#' if (!conn$collection_exists("migrate_from")) {
+#'   conn$collection_create(name = "migrate_from")
+#'   # OR: bin/solr create -c migrate_from
+#' }
 #'
 #' # create another collection
-#' conn$collection_create(name = "migrate_to") # bin/solr create -c migrate_to
+#' if (!conn$collection_exists("migrate_to")) {
+#'   conn$collection_create(name = "migrate_to")
+#'   # OR bin/solr create -c migrate_to
+#' }
 #'
 #' # add some documents
-#' file <- system.file("examples", "books.csv", package = "solr")
+#' file <- system.file("examples", "books.csv", package = "solrium")
 #' x <- read.csv(file, stringsAsFactors = FALSE)
 #' conn$add(x, "migrate_from")
 #'
 #' # migrate some documents from one collection to the other
 #' ## FIXME - not sure if this is actually working....
-#' conn$collection_migrate("migrate_from", "migrate_to", split.key = "05535")
+#' # conn$collection_migrate("migrate_from", "migrate_to", split.key = "05535")
 #' }
-collection_migrate <- function(conn, name, target.collection, split.key, 
-                               forward.timeout = NULL, async = NULL, 
-                               raw = FALSE, ...) {
-  conn$collection_migrate(name, target.collection, split.key, 
-                          forward.timeout, async, raw = FALSE, ...)
+collection_migrate <- function(conn, name, target.collection, split.key,
+                               forward.timeout = NULL, async = NULL,
+                               raw = FALSE, callopts = list()) {
+  conn$collection_migrate(name, target.collection, split.key,
+                          forward.timeout, async, raw = FALSE, callopts)
 }

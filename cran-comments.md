@@ -1,7 +1,7 @@
 ## Test environments
 
-* local OS X install, R 3.3.1
-* ubuntu 12.04 (on travis-ci), R 3.3.1
+* local OS X install, R 3.4.2 patched
+* ubuntu 12.04 (on travis-ci), R 3.4.2
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -11,18 +11,18 @@
    License components with restrictions and base license permitting such:
      MIT + file LICENSE
    File 'LICENSE':
-     YEAR: 2016
+     YEAR: 2017
      COPYRIGHT HOLDER: Scott Chamberlain
 
 ## Reverse dependencies
 
 * I have run R CMD check on the 2 downstream dependencies.
-  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>), 
+  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>),
   with no problems caused.
 
 -----
 
-This release includes many minor improvements
+This release includes xxxx
 
-Thanks! 
+Thanks!
 Scott Chamberlain

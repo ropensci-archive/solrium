@@ -7,13 +7,15 @@
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param files Path to a single file to load into Solr
 #' @examples \dontrun{
-#' # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
+#' # start Solr: bin/solr start -f -c -p 8983
 #'
 #' # connect
 #' (conn <- SolrClient$new())
 #'
 #' # create a collection
-#' conn$collection_create("books")
+#' if (!conn$collection_exists("books")) {
+#'   conn$collection_create(name = "books", numShards = 2)
+#' }
 #'
 #' # Add documents
 #' file <- system.file("examples", "books.xml", package = "solrium")
@@ -35,11 +37,11 @@
 #' ## Add and delete in the same document
 #' ## Add a document first, that we can later delete
 #' ss <- list(list(id = 456, name = "cat"))
-#' add(ss, "books")
+#' conn$add(ss, "books")
 #' ## Now add a new document, and delete the one we just made
 #' file <- system.file("examples", "add_delete.xml", package = "solrium")
 #' cat(readLines(file), sep = "\n")
-#' update_xml(file, "books")
+#' conn$update_xml(file, "books")
 #' }
 update_xml <- function(conn, files, name, commit = TRUE, optimize = FALSE,
   max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,

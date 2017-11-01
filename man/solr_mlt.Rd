@@ -5,7 +5,8 @@
 \title{"more like this" search}
 \usage{
 solr_mlt(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",")
+  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
+  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -27,6 +28,16 @@ will be performed}
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
+
+\item{optimizeMaxRows}{(logical) If \code{TRUE}, then rows parameter will be
+adjusted to the number of returned results by the same constraints.
+It will only be applied if rows parameter is higher
+than \code{minOptimizedRows}. Default: \code{TRUE}}
+
+\item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter,
+the minimum optimized rows. Default: 50000}
+
+\item{...}{Further args to be combined into query}
 }
 \value{
 XML, JSON, a list, or data.frame
@@ -72,19 +83,19 @@ parse. csv is only supported in \code{\link{solr_search}} and \code{\link{solr_a
 \examples{
 \dontrun{
 # connect
-(conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL)) 
+(conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 
 # more like this search
 conn$mlt(params = list(q='*:*', mlt.count=2, mlt.fl='abstract', fl='score',
   fq="doc_type:full"))
-conn$mlt(params = list(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1, 
+conn$mlt(params = list(q='*:*', rows=2, mlt.fl='title', mlt.mindf=1,
   mlt.mintf=1, fl='alm_twitterCount'))
-conn$mlt(params = list(q='title:"ecology" AND body:"cell"', mlt.fl='title', 
+conn$mlt(params = list(q='title:"ecology" AND body:"cell"', mlt.fl='title',
   mlt.mindf=1, mlt.mintf=1, fl='counter_total_all', rows=5))
 conn$mlt(params = list(q='ecology', mlt.fl='abstract', fl='title', rows=5))
-solr_mlt(conn, params = list(q='ecology', mlt.fl='abstract', 
+solr_mlt(conn, params = list(q='ecology', mlt.fl='abstract',
   fl=c('score','eissn'), rows=5))
-solr_mlt(conn, params = list(q='ecology', mlt.fl='abstract', 
+solr_mlt(conn, params = list(q='ecology', mlt.fl='abstract',
   fl=c('score','eissn'), rows=5, wt = "xml"))
 
 # get raw data, and parse later if needed

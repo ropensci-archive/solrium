@@ -43,14 +43,16 @@ with the new value.
 (conn <- SolrClient$new())
 
 # create collection
-conn$collection_create(name = "addrep", numShards = 1) 
-# OR bin/solr create -c addrep
+if (!conn$collection_exists("addrep")) {
+  conn$collection_create(name = "addrep", numShards = 1)
+  # OR bin/solr create -c addrep
+}
 
 # status
 conn$collection_clusterstatus()$cluster$collections$addrep$shards
 
 # add the value world to the property hello
-conn$collection_addreplicaprop(name = "addrep", shard = "shard1", 
+conn$collection_addreplicaprop(name = "addrep", shard = "shard1",
   replica = "core_node1", property = "hello", property.value = "world")
 
 # check status

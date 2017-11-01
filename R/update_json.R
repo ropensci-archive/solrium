@@ -7,7 +7,7 @@
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param files Path to a single file to load into Solr
 #' @examples \dontrun{
-#' # start Solr in Schemaless mode: bin/solr start -e schemaless
+#' # start Solr: bin/solr start -f -c -p 8983
 #'
 #' # connect
 #' (conn <- SolrClient$new())
@@ -23,22 +23,18 @@
 #' file <- system.file("examples", "updatecommands_add.json",
 #'   package = "solrium")
 #' cat(readLines(file), sep = "\n")
-#' update_json(file, "books")
+#' conn$update_json(file, "books")
 #'
 #' ## Delete file
 #' file <- system.file("examples", "updatecommands_delete.json",
 #'   package = "solrium")
 #' cat(readLines(file), sep = "\n")
-#' update_json(file, "books")
+#' conn$update_json(file, "books")
 #'
 #' # Add and delete in the same document
 #' ## Add a document first, that we can later delete
 #' ss <- list(list(id = 456, name = "cat"))
-#' add(ss, "books")
-#' ## Now add a new document, and delete the one we just made
-#' file <- system.file("examples", "add_delete.json", package = "solrium")
-#' cat(readLines(file), sep = "\n")
-#' update_json(file, "books")
+#' conn$add(ss, "books")
 #' }
 update_json <- function(conn, files, name, commit = TRUE, optimize = FALSE,
   max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,

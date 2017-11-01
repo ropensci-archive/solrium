@@ -5,7 +5,7 @@
 \title{Migrate documents to another collection}
 \usage{
 collection_migrate(conn, name, target.collection, split.key,
-  forward.timeout = NULL, async = NULL, raw = FALSE, ...)
+  forward.timeout = NULL, async = NULL, raw = FALSE, callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -27,10 +27,7 @@ asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{You can pass in parameters like \code{property.name=value}    to set
-core property name to value. See the section Defining core.properties for
-details on supported properties and values.
-(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Migrate documents to another collection
@@ -40,18 +37,24 @@ Migrate documents to another collection
 (conn <- SolrClient$new())
 
 # create collection
-conn$collection_create(name = "migrate_from") # bin/solr create -c migrate_from
+if (!conn$collection_exists("migrate_from")) {
+  conn$collection_create(name = "migrate_from")
+  # OR: bin/solr create -c migrate_from
+}
 
 # create another collection
-conn$collection_create(name = "migrate_to") # bin/solr create -c migrate_to
+if (!conn$collection_exists("migrate_to")) {
+  conn$collection_create(name = "migrate_to")
+  # OR bin/solr create -c migrate_to
+}
 
 # add some documents
-file <- system.file("examples", "books.csv", package = "solr")
+file <- system.file("examples", "books.csv", package = "solrium")
 x <- read.csv(file, stringsAsFactors = FALSE)
 conn$add(x, "migrate_from")
 
 # migrate some documents from one collection to the other
 ## FIXME - not sure if this is actually working....
-conn$collection_migrate("migrate_from", "migrate_to", split.key = "05535")
+# conn$collection_migrate("migrate_from", "migrate_to", split.key = "05535")
 }
 }

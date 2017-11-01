@@ -48,8 +48,9 @@ collectargs <- function(z, lst){
   as.list(unlist(sc(outlist)))
 }
 
-solr_GET <- function(base, path, args, callopts = NULL, ...) {
+solr_GET <- function(base, path, args, callopts = NULL, proxy = NULL) {
   cli <- crul::HttpClient$new(url = base, opts = callopts)
+  if (inherits(proxy, "proxy")) cli$proxies <- proxy
   res <- cli$get(path = path, query = args)
   if (res$status_code > 201) {
     solr_error(res)
@@ -85,31 +86,35 @@ pluck_trace <- function(x) {
 }
 
 # POST helper fxn
-solr_POST <- function(base, path, body, args, content, ...) {
+solr_POST <- function(base, path, body, args, ctype, proxy, ...) {
   invisible(match.arg(args$wt, c("xml", "json", "csv")))
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
-  cli <- crul::HttpClient$new(url = base, opts = list(...))
+  cli <- crul::HttpClient$new(url = base, headers = ctype, opts = list(...))
+  if (inherits(proxy, "proxy")) cli$proxies <- proxy
   tt <- cli$post(path, query = args, body = body)
   get_response(tt)
 }
 
 # POST helper fxn - just a body
-solr_POST_body <- function(base, path, body, args, ctype, callopts = list(), ...) {
+solr_POST_body <- function(base, path, body, args, ctype, callopts = list(), proxy) {
   invisible(match.arg(args$wt, c("xml", "json")))
   httpcli <- crul::HttpClient$new(url = base, headers = ctype, opts = callopts)
-  res <- httpcli$post(path = path, query = args, body = body, encode = "form")
+  if (inherits(proxy, "proxy")) httpcli$proxies <- proxy
+  res <- httpcli$post(path = path, query = args, body = body, encode = "json")
   if (res$status_code > 201) solr_error(res) else res$parse("UTF-8")
 }
 
 # POST helper fxn for R objects
-obj_POST <- function(base, path, body, args, ...) {
+obj_POST <- function(base, path, body, args, proxy, ...) {
   invisible(match.arg(args$wt, c("xml", "json", "csv")))
   args <- lapply(args, function(x) if (is.logical(x)) tolower(x) else x)
   body <- jsonlite::toJSON(body, auto_unbox = TRUE)
   cli <- crul::HttpClient$new(
     url = base,
-    headers = list(`Content-Type` = "application/json")
+    headers = list(`Content-Type` = "application/json"),
+    opts = list(...)
   )
+  if (inherits(proxy, "proxy")) httpcli$proxies <- proxy
   tt <- cli$post(path, query = args, body = body, encode = "form", ...)
   get_response(tt)
 }
@@ -129,8 +134,8 @@ stop_if_absent <- function(x) {
 }
 
 # helper for POSTing from R objects
-obj_proc <- function(base, path, body, args, raw, ...) {
-  out <- structure(obj_POST(base, path, body, args, ...), class = "update",
+obj_proc <- function(base, path, body, args, raw, proxy, ...) {
+  out <- structure(obj_POST(base, path, body, args, proxy, ...), class = "update",
                    wt = args$wt)
   if (raw) {
     out
@@ -175,16 +180,16 @@ asl <- function(z) {
   }
 }
 
-docreate <- function(base, path, files, args, content, raw, ...) {
-  out <- structure(solr_POST(base, path, files, args, content, ...),
+docreate <- function(base, path, files, args, ctype, raw, proxy, ...) {
+  out <- structure(solr_POST(base, path, files, args, ctype, proxy, ...),
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)
 }
 
-doatomiccreate <- function(base, path, body, args, content, raw, ...) {
+doatomiccreate <- function(base, path, body, args, content, raw, proxy, ...) {
   ctype <- get_ctype(content)
-  out <- structure(solr_POST_body(base, path, body, args, ctype, ...),
+  out <- structure(solr_POST_body(base, path, body, args, ctype, list(...), proxy),
                    class = "update", wt = args$wt)
   if (raw) return(out)
   solr_parse(out)

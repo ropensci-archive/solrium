@@ -20,8 +20,8 @@
 #' (conn <- SolrClient$new())
 #'
 #' # get list of nodes
-#' nodes <- collection_clusterstatus()$cluster$live_nodes
-#' collection_addrole(node = nodes[1])
+#' nodes <- conn$collection_clusterstatus()$cluster$live_nodes
+#' collection_addrole(conn, node = nodes[1])
 #' }
 collection_addrole <- function(conn, role = "overseer", node, raw = FALSE, ...) {
   conn$collection_addrole(role, node, raw, ...)

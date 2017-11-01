@@ -1,6 +1,8 @@
 check_args_search <- function(x, reps, ...) {
-  if (is.null(x$wt)) x$wt <- "json"
-  check_wt(x$wt)
+  if (deparse(substitute(x)) == "params") {
+    if (is.null(x$wt)) x$wt <- "json"
+    check_wt(x$wt)
+  }
   if (!is.null(x$fl)) x$fl <- paste0(x$fl, collapse = ",")
   # args that can be repeated
   tmp <- x
@@ -12,8 +14,10 @@ check_args_search <- function(x, reps, ...) {
 }
 
 check_args_facet <- function(x, reps, ...) {
-  if (is.null(x$wt)) x$wt <- "json"
-  check_wt(x$wt)
+  if (deparse(substitute(x)) == "params") {
+    if (is.null(x$wt)) x$wt <- "json"
+    check_wt(x$wt)
+  }
   if (!is.null(x$fl)) x$fl <- paste0(x$fl, collapse = ",")
   # args that can be repeated
   x <- collectargs(reps, x)
@@ -35,8 +39,10 @@ check_args_facet <- function(x, reps, ...) {
 }
 
 check_args_stats <- function(x, reps, ...) {
-  if (is.null(x$wt)) x$wt <- "json"
-  check_wt(x$wt)
+  if (deparse(substitute(x)) == "params") {
+    if (is.null(x$wt)) x$wt <- "json"
+    check_wt(x$wt)
+  }
   if (!is.null(x$fl)) x$fl <- paste0(x$fl, collapse = ",")
   # args that can be repeated
   x <- collectargs(reps, x)
@@ -47,8 +53,10 @@ check_args_stats <- function(x, reps, ...) {
 }
 
 check_args_high <- function(x, reps, ...) {
-  if (is.null(x$wt)) x$wt <- "json"
-  check_wt(x$wt)
+  if (deparse(substitute(x)) == "params") {
+    if (is.null(x$wt)) x$wt <- "json"
+    check_wt(x$wt)
+  }
   if (!is.null(x$fl)) x$fl <- paste0(x$fl, collapse = ",")
   if (!is.null(x$hl.fl)) names(x$hl.fl) <- rep("hl.fl", length(x$hl.fl))
   x <- c(popp(x, "hl.fl"), x$hl.fl)
@@ -61,8 +69,10 @@ check_args_high <- function(x, reps, ...) {
 }
 
 check_args_mlt <- function(x, reps, ...) {
-  if (is.null(x$wt)) x$wt <- "json"
-  check_wt(x$wt)
+  if (deparse(substitute(x)) == "params") {
+    if (is.null(x$wt)) x$wt <- "json"
+    check_wt(x$wt)
+  }
   fl_str <- paste0(x$fl, collapse = ",")
   if (any(grepl('id', x$fl))) {
     x$fl <- fl_str
@@ -78,8 +88,10 @@ check_args_mlt <- function(x, reps, ...) {
 }
 
 check_args_group <- function(x, reps, ...) {
-  if (is.null(x$wt)) x$wt <- "json"
-  check_wt(x$wt)
+  if (deparse(substitute(x)) == "params") {
+    if (is.null(x$wt)) x$wt <- "json"
+    check_wt(x$wt)
+  }
   if (!is.null(x$fl)) x$fl <- paste0(x$fl, collapse = ",")
   # args that can be repeated
   x <- collectargs(reps, x)

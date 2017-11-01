@@ -4,7 +4,7 @@
 \alias{collection_delete}
 \title{Add a collection}
 \usage{
-collection_delete(conn, name, raw = FALSE, ...)
+collection_delete(conn, name, raw = FALSE, callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -13,7 +13,7 @@ collection_delete(conn, name, raw = FALSE, ...)
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{callopts}{curl options passed on to \code{\link[crul]{HttpClient}}}
 }
 \description{
 Add a collection
@@ -21,7 +21,11 @@ Add a collection
 \examples{
 \dontrun{
 (conn <- SolrClient$new())
-conn$collection_create(name = "helloWorld")
-conn$collection_delete(name = "helloWorld")
+
+if (!conn$collection_exists("helloWorld")) {
+  conn$collection_create(name = "helloWorld")
+}
+
+collection_delete(conn, name = "helloWorld")
 }
 }

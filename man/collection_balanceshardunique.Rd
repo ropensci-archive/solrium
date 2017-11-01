@@ -43,12 +43,15 @@ is added.
 (conn <- SolrClient$new())
 
 # create collection
-collection_create(name = "mycollection") # bin/solr create -c mycollection
+if (!conn$collection_exists("addrep")) {
+  conn$collection_create(name = "mycollection")
+  # OR: bin/solr create -c mycollection
+}
 
 # balance preferredLeader property
-collection_balanceshardunique("mycollection", property = "preferredLeader")
+conn$collection_balanceshardunique("mycollection", property = "preferredLeader")
 
 # examine cluster status
-collection_clusterstatus()$cluster$collections$mycollection
+conn$collection_clusterstatus()$cluster$collections$mycollection
 }
 }

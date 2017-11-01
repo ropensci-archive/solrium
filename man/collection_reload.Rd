@@ -4,7 +4,7 @@
 \alias{collection_reload}
 \title{Reload a collection}
 \usage{
-collection_reload(conn, name, raw = FALSE, ...)
+collection_reload(conn, name, raw = FALSE, callopts)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -13,10 +13,7 @@ collection_reload(conn, name, raw = FALSE, ...)
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{You can pass in parameters like \code{property.name=value}    to set
-core property name to value. See the section Defining core.properties for
-details on supported properties and values.
-(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Reload a collection
@@ -24,7 +21,11 @@ Reload a collection
 \examples{
 \dontrun{
 (conn <- SolrClient$new())
-conn$collection_create(name = "helloWorld")
+
+if (!conn$collection_exists("helloWorld")) {
+  conn$collection_create(name = "helloWorld")
+}
+
 conn$collection_reload(name = "helloWorld")
 }
 }

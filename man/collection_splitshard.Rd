@@ -5,7 +5,7 @@
 \title{Create a shard}
 \usage{
 collection_splitshard(conn, name, shard, ranges = NULL, split.key = NULL,
-  async = NULL, raw = FALSE, ...)
+  async = NULL, raw = FALSE, callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -24,10 +24,7 @@ processed asynchronously}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{You can pass in parameters like \code{property.name=value}    to set
-core property name to value. See the section Defining core.properties for
-details on supported properties and values.
-(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Create a shard
@@ -37,11 +34,16 @@ Create a shard
 (conn <- SolrClient$new())
 
 # create collection
-conn$collection_create(name = "trees")
+if (!conn$collection_exists("trees")) {
+  conn$collection_create("trees")
+}
+
 # find shard names
 names(conn$collection_clusterstatus()$cluster$collections$trees$shards)
+
 # split a shard by name
 conn$collection_splitshard(name = "trees", shard = "shard1")
+
 # now we have three shards
 names(conn$collection_clusterstatus()$cluster$collections$trees$shards)
 }

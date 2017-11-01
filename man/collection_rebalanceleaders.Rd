@@ -40,7 +40,10 @@ property across active nodes
 (conn <- SolrClient$new())
 
 # create collection
-conn$collection_create(name = "mycollection2") # bin/solr create -c mycollection2
+if (!conn$collection_exists("mycollection2")) {
+  conn$collection_create(name = "mycollection2")
+  # OR: bin/solr create -c mycollection2
+}
 
 # balance preferredLeader property
 conn$collection_balanceshardunique("mycollection2", property = "preferredLeader")

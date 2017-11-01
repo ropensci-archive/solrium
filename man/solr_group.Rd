@@ -5,7 +5,8 @@
 \title{Grouped search}
 \usage{
 solr_group(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",", ...)
+  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
+  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -28,7 +29,15 @@ will be performed}
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
 
-\item{...}{Further args.}
+\item{optimizeMaxRows}{(logical) If \code{TRUE}, then rows parameter will be
+adjusted to the number of returned results by the same constraints.
+It will only be applied if rows parameter is higher
+than \code{minOptimizedRows}. Default: \code{TRUE}}
+
+\item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter,
+the minimum optimized rows. Default: 50000}
+
+\item{...}{Further args to be combined into query}
 }
 \value{
 XML, JSON, a list, or data.frame

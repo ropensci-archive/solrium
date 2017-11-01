@@ -4,7 +4,7 @@
 \alias{collection_deletealias}
 \title{Delete a collection alias}
 \usage{
-collection_deletealias(conn, alias, raw = FALSE, ...)
+collection_deletealias(conn, alias, raw = FALSE, callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -13,7 +13,7 @@ collection_deletealias(conn, alias, raw = FALSE, ...)
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data}
 
-\item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
+\item{callopts}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }
 \description{
 Delete a collection alias
@@ -21,7 +21,11 @@ Delete a collection alias
 \examples{
 \dontrun{
 (conn <- SolrClient$new())
-conn$collection_create(name = "thingsstuff", numShards = 2)
+
+if (!conn$collection_exists("thingsstuff")) {
+  conn$collection_create(name = "thingsstuff")
+}
+
 conn$collection_createalias("tstuff", "thingsstuff")
 conn$collection_clusterstatus()$cluster$collections$thingsstuff$aliases # new alias
 conn$collection_deletealias("tstuff")

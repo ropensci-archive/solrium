@@ -25,16 +25,3 @@ details on supported properties and values.
 Request the status of an already submitted Asynchronous
 Collection API call. This call is also used to clear up the stored statuses.
 }
-\examples{
-\dontrun{
-(conn <- SolrClient$new())
-
-# invalid requestid
-conn$collection_requeststatus(requestid = "xxx")
-
-# valid requestid
-conn$collection_requeststatus(requestid = "xxx")
-res$responseHeader
-res$xxx
-}
-}

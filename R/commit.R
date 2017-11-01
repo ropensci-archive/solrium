@@ -14,6 +14,7 @@
 #' @param raw (logical) If `TRUE`, returns raw data in format specified by
 #' `wt` param
 #' @param ... curl options passed on to [crul::HttpClient]
+#' @references <>
 #' @examples \dontrun{
 #' (conn <- SolrClient$new())
 #'
