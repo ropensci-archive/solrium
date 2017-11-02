@@ -39,8 +39,6 @@ to specifying curl options (#98)
 ### BUG FIXES
 
 * Fixed `solr_highlight` parsing to data.frame bug (#109)
-* xx (#xx)
-* xx (#xx)
 
 
 solrium 0.4.0
