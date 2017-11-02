@@ -38,6 +38,8 @@ test_that("solr_mlt works", {
 })
 
 test_that("solr_mlt old style works", {
+  skip_on_cran()
+
   expect_is(
     solr_mlt(conn_plos,
       params = list(q='*:*', mlt.count=2,
