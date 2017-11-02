@@ -23,17 +23,17 @@ before_install:
 
     "5.4.1")
       export SOLR_VERSION=5.4.1 ;
-      mkdir temp && cd temp && wget http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && tar -zxf solr-$SOLR_VERSION.tgz && cd solr-$SOLR_VERSION && bin/solr start -p 8983 && bin/solr create -c gettingstarted -p 8983 && bin/post -c gettingstarted example/exampledocs/*.xml && cd ../../
+      mkdir temp && cd temp && wget http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && tar -zxf solr-$SOLR_VERSION.tgz && cd solr-$SOLR_VERSION && bin/solr start -c -p 8983 && bin/solr create -c gettingstarted -p 8983 && bin/post -c gettingstarted example/exampledocs/*.xml && cd ../../
       ;;
 
     "6.0.0")
       export SOLR_VERSION=6.0.0 ;
-      mkdir temp && cd temp && wget http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && tar -zxf solr-$SOLR_VERSION.tgz && cd solr-$SOLR_VERSION && bin/solr start -p 8983 && bin/solr create -c gettingstarted -p 8983 && bin/post -c gettingstarted example/exampledocs/*.xml && cd ../../
+      mkdir temp && cd temp && wget http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && tar -zxf solr-$SOLR_VERSION.tgz && cd solr-$SOLR_VERSION && bin/solr start -c -p 8983 && bin/solr create -c gettingstarted -p 8983 && bin/post -c gettingstarted example/exampledocs/*.xml && cd ../../
       ;;
 
     "7.0.0")
       export SOLR_VERSION=7.0.0 ;
-      mkdir temp && cd temp && wget http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && tar -zxf solr-$SOLR_VERSION.tgz && cd solr-$SOLR_VERSION && bin/solr start -p 8983 && bin/solr create -c gettingstarted -p 8983 && bin/post -c gettingstarted example/exampledocs/*.xml && cd ../../
+      mkdir temp && cd temp && wget http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz && tar -zxf solr-$SOLR_VERSION.tgz && cd solr-$SOLR_VERSION && bin/solr start -c -p 8983 && bin/solr create -c gettingstarted -p 8983 && bin/post -c gettingstarted example/exampledocs/*.xml && cd ../../
       ;;
    esac
 
@@ -47,3 +47,4 @@ notifications:
     on_failure: change
   slack:
       secure: K0pppSYESNGYdlG3OsjjyJRboEGdcxsl6GxjbHvJE7EsxKTJ5mH506tv6YjeXUcYRJ76D5G1UoKV/sCDC5/Bfz6RpDTAkuzOQyIlAatjuFKSAvx1G+y/PZjaGywb3cBZhYO93oG2TbAehMlXpIAnQcptc3YqhmocJrItnsU9T0M=
+
