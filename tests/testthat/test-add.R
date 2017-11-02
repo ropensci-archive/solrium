@@ -1,12 +1,12 @@
 context("add")
 
-skip_on_cran()
+test_that("add works with a list and data.frame", {
+  skip_on_cran()
 
-if (!collection_exists(conn, "books")) {
-  collection_create(conn, name = "books")
-}
+  if (!collection_exists(conn, "books")) {
+    collection_create(conn, name = "books")
+  }
 
-test_that("add works with a list", {
   ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
   aa <- add(ss, conn, name = "books")
 
@@ -14,9 +14,8 @@ test_that("add works with a list", {
   expect_named(aa, c("responseHeader"))
   expect_is(conn$get(c(1, 2), "books"), "list")
   expect_named(conn$get(c(1, 2), "books"), "response")
-})
 
-test_that("add works with a data.frame", {
+
   df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
   aa <- add(df, conn, "books")
 

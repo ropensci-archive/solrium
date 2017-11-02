@@ -26,6 +26,8 @@ test_that("solr_highlight works", {
 })
 
 test_that("solr_highlight old style works", {
+  skip_on_cran()
+
   expect_is(solr_highlight(conn_plos,
     params = list(q='alcohol', hl.fl = 'abstract', rows=10)),
     "tbl_df"

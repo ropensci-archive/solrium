@@ -42,6 +42,8 @@ test_that("solr_group works", {
 })
 
 test_that("solr_group old style works", {
+  skip_on_cran()
+
   expect_is(solr_group(conn_plos,
     params = list(q='ecology', group.field='journal',
       group.limit=3, fl=c('id','score'))),

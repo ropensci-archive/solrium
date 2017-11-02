@@ -41,26 +41,6 @@ test_that("solr_search fails well", {
 
 })
 
-# test_that("solr_search works with HathiTrust", {
-#   skip_on_cran()
-
-#   a <- conn_hathi$search(params = list(q = '*:*', rows = 2, fl = 'id'))
-#   b <- conn_hathi$search(params = list(q = 'language:Spanish', rows = 5))
-
-#   # correct dimensions
-#   expect_equal(NROW(a), 2)
-#   expect_equal(NROW(b), 5)
-
-#   # correct classes
-#   expect_is(a, "data.frame")
-#   expect_is(a, "tbl_df")
-#   expect_is(b, "data.frame")
-#   expect_is(b, "tbl_df")
-
-#   # names
-#   expect_named(a, "id")
-# })
-
 
 test_that("solr_search works with Dryad", {
   skip_on_cran()

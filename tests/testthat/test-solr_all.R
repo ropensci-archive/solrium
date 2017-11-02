@@ -44,6 +44,8 @@ test_that("solr_all works with Datacite", {
 
 
 test_that("solr_all old style works", {
+  skip_on_cran()
+
   expect_is(solr_all(conn_plos,
     params = list(q='*:*', rows=2, fl='id')),
     "list"

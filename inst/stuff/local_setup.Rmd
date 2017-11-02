@@ -4,7 +4,7 @@
 %\VignetteEncoding{UTF-8}
 -->
 
-Local Solr setup 
+Local Solr setup
 ======
 
 ### OSX
@@ -29,7 +29,7 @@ bunch of documents
 
 #### Linuxbrew
 
-[Linuxbrew](http://brew.sh/linuxbrew/) is a port of Mac OS homebrew to linux.  Operation is essentially the same as for homebrew.  Follow the [installation instructions for linuxbrew](http://brew.sh/linuxbrew/#installation) and then the instructions for using homebrew (above) should work without modification.
+[Linuxbrew](http://linuxbrew.sh/) is a port of Mac OS homebrew to linux.  Operation is essentially the same as for homebrew.  Follow the installation instructions for linuxbrew and then the instructions for using homebrew (above) should work without modification.
 
 ### Windows
 

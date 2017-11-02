@@ -1,6 +1,8 @@
 context("schema - cloud mode")
 
 test_that("both R6 and normal function call work", {
+  skip_on_cran()
+
   expect_is(conn$schema, "function")
   expect_equal(names(formals(schema))[1], "conn")
 })
@@ -38,6 +40,8 @@ test_that("schema fails well", {
 })
 
 test_that("schema old style works", {
+  skip_on_cran()
+
   expect_is(schema(conn, name = "gettingstarted"),
     "list"
   )

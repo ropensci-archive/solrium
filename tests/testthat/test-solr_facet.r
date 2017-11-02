@@ -65,6 +65,8 @@ test_that("solr_facet works", {
 # })
 
 test_that("solr_facet old style works", {
+  skip_on_cran()
+
   expect_is(solr_facet(conn_plos,
     params = list(q='*:*', facet.field='journal')),
     "list"
