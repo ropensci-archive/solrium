@@ -37,14 +37,16 @@ Initialize connection. By default, you connect to `http://localhost:8983`
 
 
 ```r
-solr_connect()
+(conn <- SolrClient$new())
 ```
 
 ```
-#> <solr_connection>
-#>   url:    http://localhost:8983
+#> <Solr Client>
+#>   host: 127.0.0.1
+#>   path: 
+#>   port: 8983
+#>   scheme: http
 #>   errors: simple
-#>   verbose: TRUE
 #>   proxy:
 ```
 
@@ -57,7 +59,7 @@ For now, only lists and data.frame's supported.
 
 ```r
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(df, "books")
+conn$add(df, "books")
 ```
 
 ```
@@ -66,7 +68,7 @@ add(df, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 112
+#> [1] 51
 ```
 
 ### list
@@ -76,7 +78,7 @@ add(df, "books")
 
 ```r
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, "books")
+conn$add(ss, "books")
 ```
 
 ```
@@ -85,7 +87,7 @@ add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 16
+#> [1] 26
 ```
 
 ## Delete documents
@@ -101,7 +103,7 @@ Add some documents first
 docs <- list(list(id = 1, price = 100, name = "brown"),
              list(id = 2, price = 500, name = "blue"),
              list(id = 3, price = 2000L, name = "pink"))
-add(docs, "gettingstarted")
+conn$add(docs, "gettingstarted")
 ```
 
 ```
@@ -110,31 +112,30 @@ add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 18
+#> [1] 438
 ```
 
 And the documents are now in your Solr database
 
 
 ```r
-tail(solr_search(name = "gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search(name = "gettingstarted", params = list(q = "*:*", rows = 3))
 ```
 
 ```
-#> Source: local data frame [3 x 4]
-#> 
-#>      id price  name    _version_
-#>   (chr) (int) (chr)        (dbl)
-#> 1     1   100 brown 1.525729e+18
-#> 2     2   500  blue 1.525729e+18
-#> 3     3  2000  pink 1.525729e+18
+#> # A tibble: 3 x 4
+#>      id   title title_str  `_version_`
+#>   <chr>   <chr>     <chr>        <dbl>
+#> 1    10 adfadsf   adfadsf 1.582911e+18
+#> 2    12  though    though 1.582911e+18
+#> 3    14 animals   animals 1.582911e+18
 ```
 
 Now delete those documents just added
 
 
 ```r
-delete_by_id(ids = c(1, 2, 3), "gettingstarted")
+conn$delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 ```
 
 ```
@@ -143,18 +144,23 @@ delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 24
+#> [1] 129
 ```
 
 And now they are gone
 
 
 ```r
-tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search("gettingstarted", params = list(q = "*:*", rows = 4))
 ```
 
 ```
-#> Source: local data frame [0 x 0]
+#> # A tibble: 3 x 4
+#>      id   title title_str  `_version_`
+#>   <chr>   <chr>     <chr>        <dbl>
+#> 1    10 adfadsf   adfadsf 1.582911e+18
+#> 2    12  though    though 1.582911e+18
+#> 3    14 animals   animals 1.582911e+18
 ```
 
 ### By query
@@ -163,7 +169,7 @@ Add some documents first
 
 
 ```r
-add(docs, "gettingstarted")
+conn$add(docs, "gettingstarted")
 ```
 
 ```
@@ -172,31 +178,32 @@ add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 19
+#> [1] 620
 ```
 
 And the documents are now in your Solr database
 
 
 ```r
-tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ```
-#> Source: local data frame [3 x 4]
-#> 
-#>      id price  name    _version_
-#>   (chr) (int) (chr)        (dbl)
-#> 1     1   100 brown 1.525729e+18
-#> 2     2   500  blue 1.525729e+18
-#> 3     3  2000  pink 1.525729e+18
+#> # A tibble: 5 x 7
+#>      id   title title_str  `_version_` price  name name_str
+#>   <chr>   <chr>     <chr>        <dbl> <int> <chr>    <chr>
+#> 1    10 adfadsf   adfadsf 1.582911e+18    NA  <NA>     <NA>
+#> 2    12  though    though 1.582911e+18    NA  <NA>     <NA>
+#> 3    14 animals   animals 1.582911e+18    NA  <NA>     <NA>
+#> 4     1    <NA>      <NA> 1.582912e+18   100 brown    brown
+#> 5     2    <NA>      <NA> 1.582912e+18   500  blue     blue
 ```
 
 Now delete those documents just added
 
 
 ```r
-delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
+conn$delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 ```
 
 ```
@@ -205,22 +212,24 @@ delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 12
+#> [1] 45
 ```
 
 And now they are gone
 
 
 ```r
-tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ```
-#> Source: local data frame [1 x 4]
-#> 
-#>      id price  name    _version_
-#>   (chr) (int) (chr)        (dbl)
-#> 1     1   100 brown 1.525729e+18
+#> # A tibble: 4 x 7
+#>      id   title title_str  `_version_` price  name name_str
+#>   <chr>   <chr>     <chr>        <dbl> <int> <chr>    <chr>
+#> 1    10 adfadsf   adfadsf 1.582911e+18    NA  <NA>     <NA>
+#> 2    12  though    though 1.582911e+18    NA  <NA>     <NA>
+#> 3    14 animals   animals 1.582911e+18    NA  <NA>     <NA>
+#> 4     1    <NA>      <NA> 1.582912e+18   100 brown    brown
 ```
 
 ## Update documents from files
@@ -238,7 +247,7 @@ There are separate functions for each of the data types as they take slightly di
 
 ```r
 file <- system.file("examples", "books.json", package = "solrium")
-update_json(file, "books")
+conn$update_json(file, "books")
 ```
 
 ```
@@ -247,7 +256,7 @@ update_json(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 39
+#> [1] 58
 ```
 
 ### Add and delete in the same file
@@ -257,7 +266,7 @@ Add a document first, that we can later delete
 
 ```r
 ss <- list(list(id = 456, name = "cat"))
-add(ss, "books")
+conn$add(ss, "books")
 ```
 
 ```
@@ -266,7 +275,7 @@ add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 19
+#> [1] 49
 ```
 
 Now add a new document, and delete the one we just made
@@ -300,7 +309,7 @@ cat(readLines(file), sep = "\n")
 ```
 
 ```r
-update_xml(file, "books")
+conn$update_xml(file, "books")
 ```
 
 ```
@@ -309,7 +318,7 @@ update_xml(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 23
+#> [1] 32
 ```
 
 ### Notes

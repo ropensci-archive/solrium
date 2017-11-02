@@ -3,12 +3,12 @@ solrium
 
 
 
-[![Build Status](https://api.travis-ci.org/ropensci/solrium.png)](https://travis-ci.org/ropensci/solrium)
+[![Build Status](https://travis-ci.org/ropensci/solrium.svg?branch=master)](https://travis-ci.org/ropensci/solrium)
 [![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
+[![cran version](https://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
 
-**A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
+**A general purpose R interface to [Solr](https://lucene.apache.org/solr/)**
 
 Development is now following Solr v7 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v7.
 
@@ -21,18 +21,18 @@ Be aware that currently some functions will only work in certain Solr modes, e.g
 ## Solr info
 
 + [Solr home page](http://lucene.apache.org/solr/)
-+ [Highlighting help](http://wiki.apache.org/solr/HighlightingParameters)
++ [Highlighting help](https://lucene.apache.org/solr/guide/7_0/highlighting.html)
 + [Faceting help](http://wiki.apache.org/solr/SimpleFacetParameters)
 + [Solr stats](http://wiki.apache.org/solr/StatsComponent)
 + ['More like this' searches](http://wiki.apache.org/solr/MoreLikeThis)
 + [Grouping/Feild collapsing](http://wiki.apache.org/solr/FieldCollapsing)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
-+ [Solr csv writer](http://wiki.apache.org/solr/CSVResponseWriter)
++ [Solr csv writer](https://lucene.apache.org/solr/guide/7_0/response-writers.html#ResponseWriters-CSVResponseWriter)
 
 ## Package API and ways of using the package
 
 The first thing to look at is `SolrClient` to instantiate a client connection
-to your Solr instance. `ping` and `schema` are helpful functions to look 
+to your Solr instance. `ping` and `schema` are helpful functions to look
 at after instantiating your client.
 
 There are two ways to use `solrium`:
@@ -40,20 +40,20 @@ There are two ways to use `solrium`:
 1. Call functions on the `SolrClient` object
 2. Pass the `SolrClient` object to functions
 
-For example, if we instantiate a client like `conn <- SolrClient$new()`, then 
+For example, if we instantiate a client like `conn <- SolrClient$new()`, then
 to use the first way we can do `conn$search(...)`, and the second way by doing
-`solr_search(conn, ...)`. These two ways of using the package hopefully 
+`solr_search(conn, ...)`. These two ways of using the package hopefully
 make the package more user friendly for more people, those that prefer a more
 object oriented approach, and those that prefer more of a functional approach.
 
 **Collections**
 
-Functions that start with `collection` work with Solr collections when in 
-cloud mode. Note that these functions won't work when in Solr standard mode 
+Functions that start with `collection` work with Solr collections when in
+cloud mode. Note that these functions won't work when in Solr standard mode
 
 **Cores**
 
-Functions that start with `core` work with Solr cores when in standard Solr 
+Functions that start with `core` work with Solr cores when in standard Solr
 mode. Note that these functions won't work when in Solr cloud mode
 
 **Documents**
@@ -73,7 +73,7 @@ The following functions work with documents in Solr
 
 **Search**
 
-Search functions, including `solr_parse` for parsing results from different 
+Search functions, including `solr_parse` for parsing results from different
 functions appropriately
 
 ```
@@ -161,10 +161,10 @@ bin/post -c gettingstarted example/exampledocs/*.xml
 ```r
 cli$search(params = list(q='*:*', rows=2, fl='id'))
 #> # A tibble: 2 x 1
-#>                                        id
-#>                                     <chr>
-#> 1       10.1371/journal.pone.0079968/body
-#> 2 10.1371/journal.pone.0093791/references
+#>                                      id
+#>                                   <chr>
+#> 1    10.1371/journal.pone.0079536/title
+#> 2 10.1371/journal.pone.0079536/abstract
 ```
 
 ### Search grouped data
@@ -174,14 +174,14 @@ Most recent publication by journal
 
 ```r
 cli$group(params = list(q='*:*', group.field='journal', rows=5, group.limit=1,
-                        group.sort='publication_date desc', 
+                        group.sort='publication_date desc',
                         fl='publication_date, score'))
 #>                         groupValue numFound start     publication_date
-#> 1                         plos one  1559942     0 2017-10-06T00:00:00Z
-#> 2                   plos pathogens    52939     0 2017-10-06T00:00:00Z
-#> 3 plos neglected tropical diseases    46912     0 2017-10-06T00:00:00Z
-#> 4       plos computational biology    45166     0 2017-10-06T00:00:00Z
-#> 5                             none    63551     0 2012-10-23T00:00:00Z
+#> 1                         plos one  1572163     0 2017-11-01T00:00:00Z
+#> 2 plos neglected tropical diseases    47510     0 2017-11-01T00:00:00Z
+#> 3                    plos genetics    59871     0 2017-11-01T00:00:00Z
+#> 4                   plos pathogens    53246     0 2017-11-01T00:00:00Z
+#> 5                             none    63561     0 2012-10-23T00:00:00Z
 #>   score
 #> 1     1
 #> 2     1
@@ -195,20 +195,20 @@ First publication by journal
 
 ```r
 cli$group(params = list(q = '*:*', group.field = 'journal', group.limit = 1,
-                        group.sort = 'publication_date asc', 
+                        group.sort = 'publication_date asc',
                         fl = c('publication_date', 'score'),
                         fq = "publication_date:[1900-01-01T00:00:00Z TO *]"))
 #>                          groupValue numFound start     publication_date
-#> 1                          plos one  1559942     0 2006-12-20T00:00:00Z
-#> 2                    plos pathogens    52939     0 2005-07-22T00:00:00Z
-#> 3  plos neglected tropical diseases    46912     0 2007-08-30T00:00:00Z
-#> 4        plos computational biology    45166     0 2005-06-24T00:00:00Z
+#> 1                          plos one  1572163     0 2006-12-20T00:00:00Z
+#> 2  plos neglected tropical diseases    47510     0 2007-08-30T00:00:00Z
+#> 3                    plos pathogens    53246     0 2005-07-22T00:00:00Z
+#> 4        plos computational biology    45582     0 2005-06-24T00:00:00Z
 #> 5                              none    57532     0 2005-08-23T00:00:00Z
-#> 6                     plos genetics    59539     0 2005-06-17T00:00:00Z
-#> 7                      plos biology    32411     0 2003-08-18T00:00:00Z
-#> 8                     plos medicine    23375     0 2004-09-07T00:00:00Z
-#> 9              plos clinical trials      521     0 2006-04-21T00:00:00Z
-#> 10                     plos medicin        9     0 2012-04-17T00:00:00Z
+#> 6              plos clinical trials      521     0 2006-04-21T00:00:00Z
+#> 7                     plos genetics    59871     0 2005-06-17T00:00:00Z
+#> 8                     plos medicine    23519     0 2004-09-07T00:00:00Z
+#> 9                      plos medicin        9     0 2012-04-17T00:00:00Z
+#> 10                     plos biology    32513     0 2003-08-18T00:00:00Z
 #>    score
 #> 1      1
 #> 2      1
@@ -228,8 +228,8 @@ Search group query : Last 3 publications of 2013.
 ```r
 gq <- 'publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]'
 cli$group(
-  params = list(q='*:*', group.query = gq, 
-                group.limit = 3, group.sort = 'publication_date desc', 
+  params = list(q='*:*', group.query = gq,
+                group.limit = 3, group.sort = 'publication_date desc',
                 fl = 'publication_date'))
 #>   numFound start     publication_date
 #> 1   307076     0 2013-12-31T00:00:00Z
@@ -241,15 +241,15 @@ Search group with format simple
 
 
 ```r
-cli$group(params = list(q='*:*', group.field='journal', rows=5, 
+cli$group(params = list(q='*:*', group.field='journal', rows=5,
                         group.limit=3, group.sort='publication_date desc',
                         group.format='simple', fl='journal, publication_date'))
-#>   numFound start        journal     publication_date
-#> 1  1884365     0       PLOS ONE 2017-10-06T00:00:00Z
-#> 2  1884365     0       PLOS ONE 2017-10-06T00:00:00Z
-#> 3  1884365     0       PLOS ONE 2017-10-06T00:00:00Z
-#> 4  1884365     0 PLOS Pathogens 2017-10-06T00:00:00Z
-#> 5  1884365     0 PLOS Pathogens 2017-10-06T00:00:00Z
+#>   numFound start     publication_date  journal
+#> 1  1898495     0 2012-10-23T00:00:00Z     <NA>
+#> 2  1898495     0 2012-10-23T00:00:00Z     <NA>
+#> 3  1898495     0 2012-10-23T00:00:00Z     <NA>
+#> 4  1898495     0 2017-11-01T00:00:00Z PLOS ONE
+#> 5  1898495     0 2017-11-01T00:00:00Z PLOS ONE
 ```
 
 ### Facet
@@ -261,21 +261,21 @@ cli$facet(params = list(q='*:*', facet.field='journal', facet.query=c('cell', 'b
 #> # A tibble: 2 x 2
 #>    term  value
 #>   <chr>  <int>
-#> 1  cell 156660
-#> 2  bird  16271
+#> 1  cell 157652
+#> 2  bird  16385
 #> 
 #> $facet_fields
 #> $facet_fields$journal
 #> # A tibble: 9 x 2
 #>                               term   value
 #>                              <chr>   <chr>
-#> 1                         plos one 1559942
-#> 2                    plos genetics   59539
-#> 3                   plos pathogens   52939
-#> 4 plos neglected tropical diseases   46912
-#> 5       plos computational biology   45166
-#> 6                     plos biology   32411
-#> 7                    plos medicine   23375
+#> 1                         plos one 1572163
+#> 2                    plos genetics   59871
+#> 3                   plos pathogens   53246
+#> 4 plos neglected tropical diseases   47510
+#> 5       plos computational biology   45582
+#> 6                     plos biology   32513
+#> 7                    plos medicine   23519
 #> 8             plos clinical trials     521
 #> 9                     plos medicin       9
 #> 
@@ -298,8 +298,8 @@ cli$highlight(params = list(q='alcohol', hl.fl = 'abstract', rows=2))
 #> # A tibble: 2 x 2
 #>                          names
 #>                          <chr>
-#> 1 10.1371/journal.pmed.0040151
-#> 2 10.1371/journal.pone.0027752
+#> 1 10.1371/journal.pone.0185457
+#> 2 10.1371/journal.pone.0071284
 #> # ... with 1 more variables: abstract <chr>
 ```
 
@@ -314,11 +314,11 @@ out <- cli$stats(params = list(q='ecology', stats.field=c('counter_total_all','a
 ```r
 out$data
 #>                   min    max count missing       sum sumOfSquares
-#> counter_total_all   0 880122 40152       0 214426319 7.214749e+12
-#> alm_twitterCount    0   3391 40152       0    276142 6.975651e+07
+#> counter_total_all   0 920716 40497       0 219020039 7.604567e+12
+#> alm_twitterCount    0   3401 40497       0    281128 7.300081e+07
 #>                          mean      stddev
-#> counter_total_all 5340.364590 12295.12865
-#> alm_twitterCount     6.877416    41.11027
+#> counter_total_all 5408.302813 12591.07462
+#> alm_twitterCount     6.941946    41.88646
 ```
 
 ### More like this
@@ -336,11 +336,11 @@ out$docs
 #> # A tibble: 5 x 2
 #>                             id counter_total_all
 #>                          <chr>             <int>
-#> 1 10.1371/journal.pbio.1001805             21600
-#> 2 10.1371/journal.pbio.0020440             25228
-#> 3 10.1371/journal.pbio.1002559              9542
-#> 4 10.1371/journal.pone.0087217             11113
-#> 5 10.1371/journal.pbio.1002191             21732
+#> 1 10.1371/journal.pbio.1001805             21824
+#> 2 10.1371/journal.pbio.0020440             25424
+#> 3 10.1371/journal.pbio.1002559              9746
+#> 4 10.1371/journal.pone.0087217             11502
+#> 5 10.1371/journal.pbio.1002191             22013
 ```
 
 
@@ -350,51 +350,51 @@ out$mlt
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
 #>      <int> <int>                        <chr>             <int>
-#> 1     3790     0 10.1371/journal.pone.0082578              2860
-#> 2     3790     0 10.1371/journal.pone.0098876              3545
-#> 3     3790     0 10.1371/journal.pone.0102159              1979
-#> 4     3790     0 10.1371/journal.pcbi.1003408              9803
-#> 5     3790     0 10.1371/journal.pone.0087380              2997
+#> 1     3822     0 10.1371/journal.pone.0098876              3590
+#> 2     3822     0 10.1371/journal.pone.0082578              2893
+#> 3     3822     0 10.1371/journal.pone.0102159              2028
+#> 4     3822     0 10.1371/journal.pcbi.1002652              3819
+#> 5     3822     0 10.1371/journal.pcbi.1003408              9920
 #> 
 #> $`10.1371/journal.pbio.0020440`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
 #>      <int> <int>                        <chr>             <int>
-#> 1     1103     0 10.1371/journal.pone.0162651              2761
-#> 2     1103     0 10.1371/journal.pone.0035964              7548
-#> 3     1103     0 10.1371/journal.pone.0102679              4540
-#> 4     1103     0 10.1371/journal.pone.0003259              3204
-#> 5     1103     0 10.1371/journal.pntd.0003377              4249
+#> 1     1115     0 10.1371/journal.pone.0162651              2828
+#> 2     1115     0 10.1371/journal.pone.0003259              3225
+#> 3     1115     0 10.1371/journal.pntd.0003377              4267
+#> 4     1115     0 10.1371/journal.pone.0101568              4603
+#> 5     1115     0 10.1371/journal.pone.0068814              9042
 #> 
 #> $`10.1371/journal.pbio.1002559`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
 #>      <int> <int>                        <chr>             <int>
-#> 1     5445     0 10.1371/journal.pone.0155989              2455
-#> 2     5445     0 10.1371/journal.pbio.0060300             17247
-#> 3     5445     0 10.1371/journal.pone.0012852              2915
-#> 4     5445     0 10.1371/journal.pone.0173249               851
-#> 5     5445     0 10.1371/journal.pone.0164330               924
+#> 1     5482     0 10.1371/journal.pone.0155989              2519
+#> 2     5482     0 10.1371/journal.pone.0023086              8442
+#> 3     5482     0 10.1371/journal.pone.0155028              1547
+#> 4     5482     0 10.1371/journal.pone.0041684             22057
+#> 5     5482     0 10.1371/journal.pone.0164330               969
 #> 
 #> $`10.1371/journal.pone.0087217`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
 #>      <int> <int>                        <chr>             <int>
-#> 1     4543     0 10.1371/journal.pone.0175497              1005
-#> 2     4543     0 10.1371/journal.pone.0159131              4616
-#> 3     4543     0 10.1371/journal.pone.0131665              1171
-#> 4     4543     0 10.1371/journal.pcbi.0020092             24524
-#> 5     4543     0 10.1371/journal.pone.0133941              1303
+#> 1     4576     0 10.1371/journal.pone.0175497              1088
+#> 2     4576     0 10.1371/journal.pone.0159131              4937
+#> 3     4576     0 10.1371/journal.pcbi.0020092             24786
+#> 4     4576     0 10.1371/journal.pone.0133941              1336
+#> 5     4576     0 10.1371/journal.pone.0131665              1207
 #> 
 #> $`10.1371/journal.pbio.1002191`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
 #>      <int> <int>                        <chr>             <int>
-#> 1    12500     0 10.1371/journal.pbio.1002232              3029
-#> 2    12500     0 10.1371/journal.pone.0131700              2405
-#> 3    12500     0 10.1371/journal.pone.0070448              2184
-#> 4    12500     0 10.1371/journal.pone.0052330              9467
-#> 5    12500     0 10.1371/journal.pone.0028737             11044
+#> 1    12585     0 10.1371/journal.pbio.1002232              3055
+#> 2    12585     0 10.1371/journal.pone.0070448              2203
+#> 3    12585     0 10.1371/journal.pone.0131700              2493
+#> 4    12585     0 10.1371/journal.pone.0121680              4980
+#> 5    12585     0 10.1371/journal.pone.0041534              5701
 ```
 
 ### Parsing
@@ -407,7 +407,7 @@ For example:
 ```r
 (out <- cli$highlight(params = list(q='alcohol', hl.fl = 'abstract', rows=2),
                       raw=TRUE))
-#> [1] "{\"response\":{\"numFound\":25768,\"start\":0,\"maxScore\":1.0931722,\"docs\":[{\"id\":\"10.1371/journal.pmed.0040151\",\"journal\":\"PLoS Medicine\",\"eissn\":\"1549-1676\",\"publication_date\":\"2007-04-24T00:00:00Z\",\"article_type\":\"Research Article\",\"author_display\":[\"Donald A Brand\",\"Michaela Saisana\",\"Lisa A Rynn\",\"Fulvia Pennoni\",\"Albert B Lowenfels\"],\"abstract\":[\"Background: Alcohol consumption causes an estimated 4% of the global disease burden, prompting goverments to impose regulations to mitigate the adverse effects of alcohol. To assist public health leaders and policymakers, the authors developed a composite indicator—the Alcohol Policy Index—to gauge the strength of a country's alcohol control policies. Methods and Findings: The Index generates a score based on policies from five regulatory domains—physical availability of alcohol, drinking context, alcohol prices, alcohol advertising, and operation of motor vehicles. The Index was applied to the 30 countries that compose the Organization for Economic Cooperation and Development and regression analysis was used to examine the relationship between policy score and per capita alcohol consumption. Countries attained a median score of 42.4 of a possible 100 points, ranging from 14.5 (Luxembourg) to 67.3 (Norway). The analysis revealed a strong negative correlation between score and consumption (r = −0.57; p = 0.001): a 10-point increase in the score was associated with a one-liter decrease in absolute alcohol consumption per person per year (95% confidence interval, 0.4–1.5 l). A sensitivity analysis demonstrated the robustness of the Index by showing that countries' scores and ranks remained relatively stable in response to variations in methodological assumptions. Conclusions: The strength of alcohol control policies, as estimated by the Alcohol Policy Index, varied widely among 30 countries located in Europe, Asia, North America, and Australia. The study revealed a clear inverse relationship between policy strength and alcohol consumption. The Index provides a straightforward tool for facilitating international comparisons. In addition, it can help policymakers review and strengthen existing regulations aimed at minimizing alcohol-related harm and estimate the likely impact of policy changes. \\n        Using an index that gauges the strength of national alcohol policies, a clear inverse relationship was found between policy strength and alcohol consumption.\\n      Background.: Alcohol drinking is now recognized as one of the most important risks to human health. Previous research studies (see the research article by Rodgers et al., linked below) have predicted that around 4% of the burden of disease worldwide comes about as a result of drinking alcohol, which can be a factor in a wide range of health problems. These include chronic diseases such as cirrhosis of the liver and certain cancers, as well as poor health resulting from trauma, violence, and accidental injuries. For these reasons, most governments try to control the consumption of alcohol through laws, although very few countries ban alcohol entirely. Why Was This Study Done?: Although bodies such as the World Health Assembly have recommended that its member countries develop national control policies to prevent excessive alcohol use, there is a huge variation between national policies. It is also very unclear whether there is any link between the strictness of legislation regarding alcohol control in any given country and how much people in that country actually drink. What Did the Researchers Do and Find?: The researchers carrying out this study had two broad goals. First, they wanted to develop an index (or scoring system) that would allow them and others to rate the strength of any given country's alcohol control policy. Second, they wanted to see whether there is any link between the strength of control policies on this index and the amount of alcohol that is drunk by people on average in each country. In order to develop the alcohol control index, the researchers chose five main areas relating to alcohol control. These five areas related to the availability of alcohol, the “drinking context,” pricing, advertising, and vehicles. Within each policy area, specific policy topics relating to prevention of alcohol consumption and harm were identified. Then, each of 30 countries within the OECD (Organization for Economic Cooperation and Development) were rated on this index using recent data from public reports and databases. The researchers also collected data on alcohol consumption within each country from the World Health Organization and used this to estimate the average amount drunk per person in a year. When the researchers plotted scores on their index against the average amount drunk per person per year, they saw a negative correlation. That is, the stronger the alcohol control policy in any given country, the less people seemed to drink. This worked out at around roughly a 10-point increase on the index equating to a one-liter drop in alcohol consumption per person per year. However, some countries did not seem to fit these predictions very well. What Do These Findings Mean?: The finding that there is a link between the strength of alcohol control policies and amount of alcohol drinking does not necessarily mean that greater government control causes lower drinking rates. The relationship might just mean that some other variable (e.g., some cultural factor) plays a role in determining the amount that people drink as well as affecting national policies for alcohol control. However, the index developed here is a useful method for researchers and policy makers to measure changes in alcohol controls and therefore understand more clearly the factors that affect drinking rates. This study looked only at the connection between control measures and extent of alcohol consumption, and did not examine alcohol-related harm. Future research might focus on the links between controls and the harms caused by alcohol. Additional Information.: Please access these Web sites via the online version of this summary at http://dx.doi.org/10.1371/journal.pmed.0040151. \"],\"title_display\":\"Comparative Analysis of Alcohol Control Policies in 30 Countries\",\"score\":1.0931722},{\"id\":\"10.1371/journal.pone.0027752\",\"journal\":\"PLoS ONE\",\"eissn\":\"1932-6203\",\"publication_date\":\"2011-11-21T00:00:00Z\",\"article_type\":\"Research Article\",\"author_display\":[\"Beena Thomas\",\"Mohanarani Suhadev\",\"Jamuna Mani\",\"B. Gopala Ganapathy\",\"Asaithambi Armugam\",\"F. Faizunnisha\",\"Mohanasundari Chelliah\",\"Fraser Wares\"],\"abstract\":[\"Background: The negative influences of alcohol on TB management with regard to delays in seeking care as well as non compliance for treatment has been well documented. This study is part of a larger study on the prevalence of AUD (Alcohol Use Disorder) among TB patients which revealed that almost a quarter of TB patients who consumed alcohol could be classified as those who had AUD. However there is dearth of any effective alcohol intervention programme for TB patients with Alcohol Use Disorder (AUD). Methodology: This qualitative study using the ecological system model was done to gain insights into the perceived effect of alcohol use on TB treatment and perceived necessity of an intervention programme for TB patients with AUD. We used purposive sampling to select 44 men from 73 TB patients with an AUDIT score >8. Focus group discussions (FGDs) and interviews were conducted with TB patients with AUD, their family members and health providers. Results: TB patients with AUD report excessive alcohol intake as one of the reasons for their vulnerability for TB. Peer pressure has been reported by many as the main reason for alcohol consumption. The influences of alcohol use on TB treatment has been elaborated especially with regard to the fears around the adverse effects of alcohol on TB drugs and the fear of being reprimanded by health providers. The need for alcohol intervention programs was expressed by the TB patients, their families and health providers. Suggestions for the intervention programmes included individual and group sessions, involvement of family members, audiovisual aids and the importance of sensitization by health staff. Conclusions: The findings call for urgent need based interventions which need to be pilot tested with a randomized control trial to bring out a model intervention programme for TB patients with AUD. \"],\"title_display\":\"Feasibility of an Alcohol Intervention Programme for TB Patients with Alcohol Use Disorder (AUD) - A Qualitative Study from Chennai, South India\",\"score\":1.0918049}]},\"highlighting\":{\"10.1371/journal.pmed.0040151\":{\"abstract\":[\"Background: <em>Alcohol</em> consumption causes an estimated 4% of the global disease burden, prompting\"]},\"10.1371/journal.pone.0027752\":{\"abstract\":[\"Background: The negative influences of <em>alcohol</em> on TB management with regard to delays in seeking\"]}}}\n"
+#> [1] "{\"response\":{\"numFound\":25987,\"start\":0,\"maxScore\":4.705177,\"docs\":[{\"id\":\"10.1371/journal.pone.0185457\",\"journal\":\"PLOS ONE\",\"eissn\":\"1932-6203\",\"publication_date\":\"2017-09-28T00:00:00Z\",\"article_type\":\"Research Article\",\"author_display\":[\"Jacqueline Willmore\",\"Terry-Lynne Marko\",\"Darcie Taing\",\"Hugues Sampasa-Kanyinga\"],\"abstract\":[\"Objectives: Alcohol-related morbidity and mortality are significant public health issues. The purpose of this study was to describe the prevalence and trends over time of alcohol consumption and alcohol-related morbidity and mortality; and public attitudes of alcohol use impacts on families and the community in Ottawa, Canada. Methods: Prevalence (2013–2014) and trends (2000–2001 to 2013–2014) of alcohol use were obtained from the Canadian Community Health Survey. Data on paramedic responses (2015), emergency department (ED) visits (2013–2015), hospitalizations (2013–2015) and deaths (2007–2011) were used to quantify the acute and chronic health effects of alcohol in Ottawa. Qualitative data were obtained from the “Have Your Say” alcohol survey, an online survey of public attitudes on alcohol conducted in 2016. Results: In 2013–2014, an estimated 595,300 (83%) Ottawa adults 19 years and older drank alcohol, 42% reported binge drinking in the past year. Heavy drinking increased from 15% in 2000–2001 to 20% in 2013–2014. In 2015, the Ottawa Paramedic Service responded to 2,060 calls directly attributable to alcohol. Between 2013 and 2015, there were an average of 6,100 ED visits and 1,270 hospitalizations per year due to alcohol. Annually, alcohol use results in at least 140 deaths in Ottawa. Men have higher rates of alcohol-attributable paramedic responses, ED visits, hospitalizations and deaths than women, and young adults have higher rates of alcohol-attributable paramedic responses. Qualitative data of public attitudes indicate that alcohol misuse has greater repercussions not only on those who drink, but also on the family and community. Conclusions: Results highlight the need for healthy public policy intended to encourage a culture of drinking in moderation in Ottawa to support lower risk alcohol use, particularly among men and young adults. \"],\"title_display\":\"The burden of alcohol-related morbidity and mortality in Ottawa, Canada\",\"score\":4.705177},{\"id\":\"10.1371/journal.pone.0071284\",\"journal\":\"PLoS ONE\",\"eissn\":\"1932-6203\",\"publication_date\":\"2013-08-20T00:00:00Z\",\"article_type\":\"Research Article\",\"author_display\":[\"Petra Suchankova\",\"Pia Steensland\",\"Ida Fredriksson\",\"Jörgen A. Engel\",\"Elisabet Jerlhag\"],\"abstract\":[\"\\nAlcohol dependence is a heterogeneous disorder where several signalling systems play important roles. Recent studies implicate that the gut-brain hormone ghrelin, an orexigenic peptide, is a potential mediator of alcohol related behaviours. Ghrelin increases whereas a ghrelin receptor (GHS-R1A) antagonist decreases alcohol consumption as well as operant self-administration of alcohol in rodents that have consumed alcohol for twelve weeks. In the present study we aimed at investigating the effect of acute and repeated treatment with the GHS-R1A antagonist JMV2959 on alcohol intake in a group of rats following voluntarily alcohol consumption for two, five and eight months. After approximately ten months of voluntary alcohol consumption the expression of the GHS-R1A gene (Ghsr) as well as the degree of methylation of a CpG island found in Ghsr was examined in reward related brain areas. In a separate group of rats, we examined the effect of the JMV2959 on alcohol relapse using the alcohol deprivation paradigm. Acute JMV2959 treatment was found to decrease alcohol intake and the effect was more pronounced after five, compared to two months of alcohol exposure. In addition, repeated JMV2959 treatment decreased alcohol intake without inducing tolerance or rebound increase in alcohol intake after the treatment. The GHS-R1A antagonist prevented the alcohol deprivation effect in rats. There was a significant down-regulation of the Ghsr expression in the ventral tegmental area (VTA) in high- compared to low-alcohol consuming rats after approximately ten months of voluntary alcohol consumption. Further analysis revealed a negative correlation between Ghsr expression in the VTA and alcohol intake. No differences in methylation degree were found between high- compared to low-alcohol consuming rats. These findings support previous studies showing that the ghrelin signalling system may constitute a potential target for development of novel treatment strategies for alcohol dependence.\\n\"],\"title_display\":\"Ghrelin Receptor (GHS-R1A) Antagonism Suppresses Both Alcohol Consumption and the Alcohol Deprivation Effect in Rats following Long-Term Voluntary Alcohol Consumption\",\"score\":4.7050986}]},\"highlighting\":{\"10.1371/journal.pone.0185457\":{\"abstract\":[\"Objectives: <em>Alcohol</em>-related morbidity and mortality are significant public health issues\"]},\"10.1371/journal.pone.0071284\":{\"abstract\":[\"\\n<em>Alcohol</em> dependence is a heterogeneous disorder where several signalling systems play important\"]}}}\n"
 #> attr(,"class")
 #> [1] "sr_high"
 #> attr(,"wt")
@@ -422,8 +422,8 @@ solr_parse(out, 'df')
 #> # A tibble: 2 x 2
 #>                          names
 #>                          <chr>
-#> 1 10.1371/journal.pmed.0040151
-#> 2 10.1371/journal.pone.0027752
+#> 1 10.1371/journal.pone.0185457
+#> 2 10.1371/journal.pone.0071284
 #> # ... with 1 more variables: abstract <chr>
 ```
 
@@ -440,8 +440,8 @@ cli$search(params = list(q='_val_:"product(counter_total_all,alm_twitterCount)"'
 #>                          <chr>
 #> 1 10.1371/journal.pmed.0020124
 #> 2 10.1371/journal.pone.0141854
-#> 3 10.1371/journal.pone.0153419
-#> 4 10.1371/journal.pone.0073791
+#> 3 10.1371/journal.pone.0073791
+#> 4 10.1371/journal.pone.0153419
 #> 5 10.1371/journal.pone.0115069
 #> # ... with 1 more variables: title <chr>
 ```
@@ -472,10 +472,10 @@ cli$search(params = list(q='_val_:"max(alm_twitterCount)"',
 #> # A tibble: 5 x 2
 #>                             id alm_twitterCount
 #>                          <chr>            <int>
-#> 1 10.1371/journal.pone.0141854             3391
-#> 2 10.1371/journal.pmed.0020124             3164
-#> 3 10.1371/journal.pone.0115069             2867
-#> 4 10.1371/journal.pmed.1001953             2820
+#> 1 10.1371/journal.pone.0141854             3401
+#> 2 10.1371/journal.pmed.0020124             3207
+#> 3 10.1371/journal.pone.0115069             2873
+#> 4 10.1371/journal.pmed.1001953             2821
 #> 5 10.1371/journal.pone.0061981             2392
 ```
 

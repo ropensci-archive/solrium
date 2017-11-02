@@ -10,12 +10,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Build Status](https://api.travis-ci.org/ropensci/solrium.png)](https://travis-ci.org/ropensci/solrium)
+[![Build Status](https://travis-ci.org/ropensci/solrium.svg?branch=master)](https://travis-ci.org/ropensci/solrium)
 [![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
+[![cran version](https://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
 
-**A general purpose R interface to [Solr](http://lucene.apache.org/solr/)**
+**A general purpose R interface to [Solr](https://lucene.apache.org/solr/)**
 
 Development is now following Solr v7 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v7.
 
@@ -28,18 +28,18 @@ Be aware that currently some functions will only work in certain Solr modes, e.g
 ## Solr info
 
 + [Solr home page](http://lucene.apache.org/solr/)
-+ [Highlighting help](http://wiki.apache.org/solr/HighlightingParameters)
++ [Highlighting help](https://lucene.apache.org/solr/guide/7_0/highlighting.html)
 + [Faceting help](http://wiki.apache.org/solr/SimpleFacetParameters)
 + [Solr stats](http://wiki.apache.org/solr/StatsComponent)
 + ['More like this' searches](http://wiki.apache.org/solr/MoreLikeThis)
 + [Grouping/Feild collapsing](http://wiki.apache.org/solr/FieldCollapsing)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
-+ [Solr csv writer](http://wiki.apache.org/solr/CSVResponseWriter)
++ [Solr csv writer](https://lucene.apache.org/solr/guide/7_0/response-writers.html#ResponseWriters-CSVResponseWriter)
 
 ## Package API and ways of using the package
 
 The first thing to look at is `SolrClient` to instantiate a client connection
-to your Solr instance. `ping` and `schema` are helpful functions to look 
+to your Solr instance. `ping` and `schema` are helpful functions to look
 at after instantiating your client.
 
 There are two ways to use `solrium`:
@@ -47,20 +47,20 @@ There are two ways to use `solrium`:
 1. Call functions on the `SolrClient` object
 2. Pass the `SolrClient` object to functions
 
-For example, if we instantiate a client like `conn <- SolrClient$new()`, then 
+For example, if we instantiate a client like `conn <- SolrClient$new()`, then
 to use the first way we can do `conn$search(...)`, and the second way by doing
-`solr_search(conn, ...)`. These two ways of using the package hopefully 
+`solr_search(conn, ...)`. These two ways of using the package hopefully
 make the package more user friendly for more people, those that prefer a more
 object oriented approach, and those that prefer more of a functional approach.
 
 **Collections**
 
-Functions that start with `collection` work with Solr collections when in 
-cloud mode. Note that these functions won't work when in Solr standard mode 
+Functions that start with `collection` work with Solr collections when in
+cloud mode. Note that these functions won't work when in Solr standard mode
 
 **Cores**
 
-Functions that start with `core` work with Solr cores when in standard Solr 
+Functions that start with `core` work with Solr cores when in standard Solr
 mode. Note that these functions won't work when in Solr cloud mode
 
 **Documents**
@@ -80,7 +80,7 @@ The following functions work with documents in Solr
 
 **Search**
 
-Search functions, including `solr_parse` for parsing results from different 
+Search functions, including `solr_parse` for parsing results from different
 functions appropriately
 
 ```
@@ -154,7 +154,7 @@ Most recent publication by journal
 
 ```{r}
 cli$group(params = list(q='*:*', group.field='journal', rows=5, group.limit=1,
-                        group.sort='publication_date desc', 
+                        group.sort='publication_date desc',
                         fl='publication_date, score'))
 ```
 
@@ -162,7 +162,7 @@ First publication by journal
 
 ```{r}
 cli$group(params = list(q = '*:*', group.field = 'journal', group.limit = 1,
-                        group.sort = 'publication_date asc', 
+                        group.sort = 'publication_date asc',
                         fl = c('publication_date', 'score'),
                         fq = "publication_date:[1900-01-01T00:00:00Z TO *]"))
 ```
@@ -172,15 +172,15 @@ Search group query : Last 3 publications of 2013.
 ```{r}
 gq <- 'publication_date:[2013-01-01T00:00:00Z TO 2013-12-31T00:00:00Z]'
 cli$group(
-  params = list(q='*:*', group.query = gq, 
-                group.limit = 3, group.sort = 'publication_date desc', 
+  params = list(q='*:*', group.query = gq,
+                group.limit = 3, group.sort = 'publication_date desc',
                 fl = 'publication_date'))
 ```
 
 Search group with format simple
 
 ```{r}
-cli$group(params = list(q='*:*', group.field='journal', rows=5, 
+cli$group(params = list(q='*:*', group.field='journal', rows=5,
                         group.limit=3, group.sort='publication_date desc',
                         group.format='simple', fl='journal, publication_date'))
 ```

@@ -37,18 +37,20 @@ Initialize connection
 
 
 ```r
-solr_connect()
+(conn <- SolrClient$new())
 ```
 
 ```
-#> <solr_connection>
-#>   url:    http://localhost:8983
+#> <Solr Client>
+#>   host: 127.0.0.1
+#>   path: 
+#>   port: 8983
+#>   scheme: http
 #>   errors: simple
-#>   verbose: TRUE
 #>   proxy:
 ```
 
-## Cores 
+## Cores
 
 There are many operations you can do on cores, including:
 
@@ -67,53 +69,53 @@ There are many operations you can do on cores, including:
 
 
 ```r
-core_create()
+conn$core_create()
 ```
 
 ### Delete a core
 
 
 ```r
-core_unload()
+conn$core_unload()
 ```
 
 ## Collections
 
 There are many operations you can do on collections, including:
 
-* `collection_addreplica()` 
-* `collection_addreplicaprop()` 
-* `collection_addrole()` 
-* `collection_balanceshardunique()` 
-* `collection_clusterprop()` 
-* `collection_clusterstatus()` 
-* `collection_create()` 
-* `collection_createalias()` 
-* `collection_createshard()` 
-* `collection_delete()` 
-* `collection_deletealias()` 
-* `collection_deletereplica()` 
-* `collection_deletereplicaprop()` 
-* `collection_deleteshard()` 
-* `collection_list()` 
-* `collection_migrate()` 
-* `collection_overseerstatus()` 
-* `collection_rebalanceleaders()` 
-* `collection_reload()` 
-* `collection_removerole()` 
-* `collection_requeststatus()` 
-* `collection_splitshard()` 
+* `collection_addreplica()`
+* `collection_addreplicaprop()`
+* `collection_addrole()`
+* `collection_balanceshardunique()`
+* `collection_clusterprop()`
+* `collection_clusterstatus()`
+* `collection_create()`
+* `collection_createalias()`
+* `collection_createshard()`
+* `collection_delete()`
+* `collection_deletealias()`
+* `collection_deletereplica()`
+* `collection_deletereplicaprop()`
+* `collection_deleteshard()`
+* `collection_list()`
+* `collection_migrate()`
+* `collection_overseerstatus()`
+* `collection_rebalanceleaders()`
+* `collection_reload()`
+* `collection_removerole()`
+* `collection_requeststatus()`
+* `collection_splitshard()`
 
 ### Create a collection
 
 
 ```r
-collection_create()
+conn$collection_create()
 ```
 
 ### Delete a collection
 
 
 ```r
-collection_delete()
+conn$collection_delete()
 ```

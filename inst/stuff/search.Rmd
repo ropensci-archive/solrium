@@ -51,7 +51,7 @@ library("solrium")
 You can setup for a remote Solr instance or on your local machine.
 
 ```{r}
-solr_connect('http://api.plos.org/search')
+(conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
 ```
 
 ## Rundown
@@ -68,7 +68,7 @@ as long as you request those.
 `solr_search()` returns only docs. A basic search:
 
 ```{r}
-solr_search(q = '*:*', rows = 2, fl = 'id')
+conn$search(params = list(q = '*:*', rows = 2, fl = 'id'))
 ```
 
 __Search in specific fields with `:`__
@@ -76,7 +76,7 @@ __Search in specific fields with `:`__
 Search for word ecology in title and cell in the body
 
 ```{r}
-solr_search(q = 'title:"ecology" AND body:"cell"', fl = 'title', rows = 5)
+conn$search(params = list(q = 'title:"ecology" AND body:"cell"', fl = 'title', rows = 5))
 ```
 
 __Wildcards__
@@ -84,7 +84,7 @@ __Wildcards__
 Search for word that starts with "cell" in the title field
 
 ```{r}
-solr_search(q = 'title:"cell*"', fl = 'title', rows = 5)
+conn$search(params = list(q = 'title:"cell*"', fl = 'title', rows = 5))
 ```
 
 __Proximity search__
@@ -92,7 +92,7 @@ __Proximity search__
 Search for words "sports" and "alcohol" within four words of each other
 
 ```{r}
-solr_search(q = 'everything:"stem cell"~7', fl = 'title', rows = 3)
+conn$search(params = list(q = 'everything:"stem cell"~7', fl = 'title', rows = 3))
 ```
 
 __Range searches__
@@ -100,8 +100,7 @@ __Range searches__
 Search for articles with Twitter count between 5 and 10
 
 ```{r}
-solr_search(q = '*:*', fl = c('alm_twitterCount', 'id'), fq = 'alm_twitterCount:[5 TO 50]',
-rows = 10)
+conn$search(params = list(q = '*:*', fl = c('alm_twitterCount', 'id'), fq = 'alm_twitterCount:[5 TO 50]', rows = 10))
 ```
 
 __Boosts__
@@ -109,11 +108,11 @@ __Boosts__
 Assign higher boost to title matches than to body matches (compare the two calls)
 
 ```{r}
-solr_search(q = 'title:"cell" abstract:"science"', fl = 'title', rows = 3)
+conn$search(params = list(q = 'title:"cell" abstract:"science"', fl = 'title', rows = 3))
 ```
 
 ```{r}
-solr_search(q = 'title:"cell"^1.5 AND abstract:"science"', fl = 'title', rows = 3)
+conn$search(params = list(q = 'title:"cell"^1.5 AND abstract:"science"', fl = 'title', rows = 3))
 ```
 
 ## Search all
@@ -126,32 +125,32 @@ by default a list, whereas `solr_search()` by default returns a data.frame.
 A basic search, just docs output
 
 ```{r}
-solr_all(q = '*:*', rows = 2, fl = 'id')
+conn$all(params = list(q = '*:*', rows = 2, fl = 'id'))
 ```
 
 Get docs, mlt, and stats output
 
 ```{r}
-solr_all(q = 'ecology', rows = 2, fl = 'id', mlt = 'true', mlt.count = 2, mlt.fl = 'abstract', stats = 'true', stats.field = 'counter_total_all')
+conn$all(params = list(q = 'ecology', rows = 2, fl = 'id', mlt = 'true', mlt.count = 2, mlt.fl = 'abstract', stats = 'true', stats.field = 'counter_total_all'))
 ```
 
 
 ## Facet
 
 ```{r}
-solr_facet(q = '*:*', facet.field = 'journal', facet.query = c('cell', 'bird'))
+conn$facet(params = list(q = '*:*', facet.field = 'journal', facet.query = c('cell', 'bird')))
 ```
 
 ## Highlight
 
 ```{r}
-solr_highlight(q = 'alcohol', hl.fl = 'abstract', rows = 2)
+conn$highlight(params = list(q = 'alcohol', hl.fl = 'abstract', rows = 2))
 ```
 
 ## Stats
 
 ```{r}
-out <- solr_stats(q = 'ecology', stats.field = c('counter_total_all', 'alm_twitterCount'), stats.facet = c('journal', 'volume'))
+out <- conn$stats(params = list(q = 'ecology', stats.field = c('counter_total_all', 'alm_twitterCount'), stats.facet = c('journal', 'volume')))
 ```
 
 ```{r}
@@ -167,7 +166,7 @@ out$facet
 `solr_mlt` is a function to return similar documents to the one
 
 ```{r}
-out <- solr_mlt(q = 'title:"ecology" AND body:"cell"', mlt.fl = 'title', mlt.mindf = 1, mlt.mintf = 1, fl = 'counter_total_all', rows = 5)
+out <- conn$mlt(params = list(q = 'title:"ecology" AND body:"cell"', mlt.fl = 'title', mlt.mindf = 1, mlt.mintf = 1, fl = 'counter_total_all', rows = 5))
 out$docs
 ```
 
@@ -180,7 +179,7 @@ out$mlt
 `solr_groups()` is a function to return similar documents to the one
 
 ```{r}
-solr_group(q = 'ecology', group.field = 'journal', group.limit = 1, fl = c('id', 'alm_twitterCount'))
+conn$group(params = list(q = 'ecology', group.field = 'journal', group.limit = 1, fl = c('id', 'alm_twitterCount')))
 ```
 
 ## Parsing
@@ -190,7 +189,7 @@ solr_group(q = 'ecology', group.field = 'journal', group.limit = 1, fl = c('id',
 For example:
 
 ```{r}
-(out <- solr_highlight(q = 'alcohol', hl.fl = 'abstract', rows = 2, raw = TRUE))
+(out <- conn$highlight(params = list(q = 'alcohol', hl.fl = 'abstract', rows = 2), raw = TRUE))
 ```
 
 Then parse

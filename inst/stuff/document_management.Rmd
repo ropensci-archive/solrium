@@ -39,7 +39,7 @@ library("solrium")
 Initialize connection. By default, you connect to `http://localhost:8983`
 
 ```{r}
-solr_connect()
+(conn <- SolrClient$new())
 ```
 
 ## Create documents from R objects
@@ -50,18 +50,18 @@ For now, only lists and data.frame's supported.
 
 ```{r}
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-add(df, "books")
+conn$add(df, "books")
 ```
 
 ### list
 
 ```{r echo=FALSE, results='hide'}
-delete_by_id(1:2, "books")
+conn$delete_by_id(1:2, "books")
 ```
 
 ```{r}
 ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-add(ss, "books")
+conn$add(ss, "books")
 ```
 
 ## Delete documents
@@ -71,32 +71,32 @@ add(ss, "books")
 Add some documents first
 
 ```{r echo=FALSE, results='hide'}
-delete_by_id(1:3, "gettingstarted")
+conn$delete_by_id(1:3, "gettingstarted")
 ```
 
 ```{r}
 docs <- list(list(id = 1, price = 100, name = "brown"),
              list(id = 2, price = 500, name = "blue"),
              list(id = 3, price = 2000L, name = "pink"))
-add(docs, "gettingstarted")
+conn$add(docs, "gettingstarted")
 ```
 
 And the documents are now in your Solr database
 
 ```{r}
-tail(solr_search(name = "gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search(name = "gettingstarted", params = list(q = "*:*", rows = 3))
 ```
 
 Now delete those documents just added
 
 ```{r deleteid}
-delete_by_id(ids = c(1, 2, 3), "gettingstarted")
+conn$delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 ```
 
 And now they are gone
 
 ```{r}
-tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search("gettingstarted", params = list(q = "*:*", rows = 4))
 ```
 
 ### By query
@@ -104,25 +104,25 @@ tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/sel
 Add some documents first
 
 ```{r}
-add(docs, "gettingstarted")
+conn$add(docs, "gettingstarted")
 ```
 
 And the documents are now in your Solr database
 
 ```{r}
-tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 Now delete those documents just added
 
 ```{r deletequery}
-delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
+conn$delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 ```
 
 And now they are gone
 
 ```{r}
-tail(solr_search("gettingstarted", "*:*", base = "http://localhost:8983/solr/select", rows = 100))
+conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ## Update documents from files
@@ -139,7 +139,7 @@ There are separate functions for each of the data types as they take slightly di
 
 ```{r}
 file <- system.file("examples", "books.json", package = "solrium")
-update_json(file, "books")
+conn$update_json(file, "books")
 ```
 
 ### Add and delete in the same file
@@ -148,7 +148,7 @@ Add a document first, that we can later delete
 
 ```{r}
 ss <- list(list(id = 456, name = "cat"))
-add(ss, "books")
+conn$add(ss, "books")
 ```
 
 Now add a new document, and delete the one we just made
@@ -156,7 +156,7 @@ Now add a new document, and delete the one we just made
 ```{r}
 file <- system.file("examples", "add_delete.xml", package = "solrium")
 cat(readLines(file), sep = "\n")
-update_xml(file, "books")
+conn$update_xml(file, "books")
 ```
 
 ### Notes
