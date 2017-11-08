@@ -14,9 +14,7 @@ Development is now following Solr v7 and greater - which introduced many changes
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
-> Currently developing against Solr `v7.0.0`
-
-> Note that we recently changed the package name to `solrium`. A previous version of this package is on CRAN as `solr`, but next version will be up as `solrium`.
+Currently developing against Solr `v7.0.0`
 
 ## Solr info
 
@@ -120,7 +118,7 @@ Use `SolrClient$new()` to initialize your connection. These examples use a remot
 #> <Solr Client>
 #>   host: api.plos.org
 #>   path: search
-#>   port: 
+#>   port:
 #>   scheme: http
 #>   errors: simple
 #>   proxy:
@@ -141,7 +139,7 @@ cli
 #> <Solr Client>
 #>   host: api.plos.org
 #>   path: search
-#>   port: 
+#>   port:
 #>   scheme: http
 #>   errors: simple
 #>   proxy:
@@ -263,7 +261,7 @@ cli$facet(params = list(q='*:*', facet.field='journal', facet.query=c('cell', 'b
 #>   <chr>  <int>
 #> 1  cell 157652
 #> 2  bird  16385
-#> 
+#>
 #> $facet_fields
 #> $facet_fields$journal
 #> # A tibble: 9 x 2
@@ -278,14 +276,14 @@ cli$facet(params = list(q='*:*', facet.field='journal', facet.query=c('cell', 'b
 #> 7                    plos medicine   23519
 #> 8             plos clinical trials     521
 #> 9                     plos medicin       9
-#> 
-#> 
+#>
+#>
 #> $facet_pivot
 #> NULL
-#> 
+#>
 #> $facet_dates
 #> NULL
-#> 
+#>
 #> $facet_ranges
 #> NULL
 ```
@@ -355,7 +353,7 @@ out$mlt
 #> 3     3822     0 10.1371/journal.pone.0102159              2028
 #> 4     3822     0 10.1371/journal.pcbi.1002652              3819
 #> 5     3822     0 10.1371/journal.pcbi.1003408              9920
-#> 
+#>
 #> $`10.1371/journal.pbio.0020440`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
@@ -365,7 +363,7 @@ out$mlt
 #> 3     1115     0 10.1371/journal.pntd.0003377              4267
 #> 4     1115     0 10.1371/journal.pone.0101568              4603
 #> 5     1115     0 10.1371/journal.pone.0068814              9042
-#> 
+#>
 #> $`10.1371/journal.pbio.1002559`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
@@ -375,7 +373,7 @@ out$mlt
 #> 3     5482     0 10.1371/journal.pone.0155028              1547
 #> 4     5482     0 10.1371/journal.pone.0041684             22057
 #> 5     5482     0 10.1371/journal.pone.0164330               969
-#> 
+#>
 #> $`10.1371/journal.pone.0087217`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
@@ -385,7 +383,7 @@ out$mlt
 #> 3     4576     0 10.1371/journal.pcbi.0020092             24786
 #> 4     4576     0 10.1371/journal.pone.0133941              1336
 #> 5     4576     0 10.1371/journal.pone.0131665              1207
-#> 
+#>
 #> $`10.1371/journal.pbio.1002191`
 #> # A tibble: 5 x 4
 #>   numFound start                           id counter_total_all
