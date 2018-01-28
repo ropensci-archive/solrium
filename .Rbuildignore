@@ -19,3 +19,4 @@ solr-5.4.1
 ^revdep$
 .github
 
+^codemeta\.json$
