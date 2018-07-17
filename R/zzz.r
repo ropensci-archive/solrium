@@ -48,8 +48,11 @@ collectargs <- function(z, lst){
   as.list(unlist(sc(outlist)))
 }
 
-solr_GET <- function(base, path, args, callopts = NULL, proxy = NULL) {
-  cli <- crul::HttpClient$new(url = base, opts = callopts)
+solr_GET <- function(base, path, args, callopts = NULL, proxy = NULL, 
+  progress = NULL) {
+
+  cli <- crul::HttpClient$new(url = base, opts = callopts, 
+    progress = progress)
   if (inherits(proxy, "proxy")) cli$proxies <- proxy
   res <- cli$get(path = path, query = args)
   if (res$status_code > 201) {
@@ -96,9 +99,12 @@ solr_POST <- function(base, path, body, args, ctype, proxy, ...) {
 }
 
 # POST helper fxn - just a body
-solr_POST_body <- function(base, path, body, args, ctype, callopts = list(), proxy) {
+solr_POST_body <- function(base, path, body, args, ctype, callopts = list(), proxy, 
+  progress = NULL) {
+
   invisible(match.arg(args$wt, c("xml", "json")))
-  httpcli <- crul::HttpClient$new(url = base, headers = ctype, opts = callopts)
+  httpcli <- crul::HttpClient$new(url = base, headers = ctype, opts = callopts, 
+    progress = progress)
   if (inherits(proxy, "proxy")) httpcli$proxies <- proxy
   res <- httpcli$post(path = path, query = args, body = body, encode = "json")
   if (res$status_code > 201) solr_error(res) else res$parse("UTF-8")

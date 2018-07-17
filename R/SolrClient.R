@@ -599,7 +599,8 @@ SolrClient <- R6::R6Class(
     # Search methods
     search = function(name = NULL, params = NULL, body = NULL, callopts = list(),
                       raw = FALSE,  parsetype = 'df', concat = ',',
-                      optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                      optimizeMaxRows = TRUE, minOptimizedRows = 50000L, 
+                      progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -622,7 +623,7 @@ SolrClient <- R6::R6Class(
       } else {
         res <- solr_GET(self$make_url(),
                  if (!is.null(name)) url_handle(name) else self$path,
-                 params, callopts, self$proxy)
+                 params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_search", wt = params$wt)
       }
       if (raw) {
