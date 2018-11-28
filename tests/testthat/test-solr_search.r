@@ -42,33 +42,33 @@ test_that("solr_search fails well", {
 })
 
 
-test_that("solr_search works with Dryad", {
-  skip_on_cran()
+# test_that("solr_search works with Dryad", {
+#   skip_on_cran()
 
-  a <- conn_dryad$search(params = list(q = '*:*', rows = 2))
-  Sys.sleep(2)
-  b <- conn_dryad$search(params = list(q = 'dc.title.en:ecology', rows = 5))
+#   a <- conn_dryad$search(params = list(q = '*:*', rows = 2))
+#   Sys.sleep(2)
+#   b <- conn_dryad$search(params = list(q = 'dc.title.en:ecology', rows = 5))
 
-  # correct dimensions
-  expect_equal(NROW(a), 2)
-  expect_equal(NROW(b), 5)
+#   # correct dimensions
+#   expect_equal(NROW(a), 2)
+#   expect_equal(NROW(b), 5)
 
-  # correct classes
-  expect_is(a, "data.frame")
-  expect_is(a, "tbl_df")
-  expect_is(b, "data.frame")
-  expect_is(b, "tbl_df")
+#   # correct classes
+#   expect_is(a, "data.frame")
+#   expect_is(a, "tbl_df")
+#   expect_is(b, "data.frame")
+#   expect_is(b, "tbl_df")
 
-  # correct content
-  expect_true(all(grepl("ecolog", b$dc.title.en, ignore.case = TRUE)))
+#   # correct content
+#   expect_true(all(grepl("ecolog", b$dc.title.en, ignore.case = TRUE)))
 
-  # solr_search
-  expect_is(solr_search(conn_dryad, params = list(q = '*:*', rows = 2)),
-    "tbl_df")
-  expect_is(
-    solr_search(conn_dryad, params = list(q = 'dc.title.en:ecology', rows = 5)),
-    "tbl_df")
-})
+#   # solr_search
+#   expect_is(solr_search(conn_dryad, params = list(q = '*:*', rows = 2)),
+#     "tbl_df")
+#   expect_is(
+#     solr_search(conn_dryad, params = list(q = 'dc.title.en:ecology', rows = 5)),
+#     "tbl_df")
+# })
 
 
 

@@ -71,9 +71,11 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
   # facet fields
   if (wt == 'json') {
     ffout <- lapply(input$facet_counts$facet_fields, function(x) {
-      stats::setNames(as_data_frame(do.call(rbind, lapply(seq(1, length(x), by = 2), function(y) {
-        x[c(y, y + 1)]
-      }))), c('term', 'value'))
+      tibble::as_data_frame(
+        stats::setNames(
+          do.call(rbind.data.frame, lapply(seq(1, length(x), by = 2), function(y) {
+            x[c(y, y + 1)]
+          })), c('term', 'value')))
     })
   } else {
     nodes <- xml_find_all(input, '//lst[@name="facet_fields"]//lst')
@@ -143,9 +145,14 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     if (length(input$facet_counts$facet_ranges) != 0) {
       rangesout <- lapply(input$facet_counts$facet_ranges, function(x){
         x <- x[!names(x) %in% c('gap','start','end')]$counts
-        stats::setNames(as_data_frame(do.call(rbind, lapply(seq(1, length(x), by = 2), function(y){
-          x[c(y, y + 1)]
-        }))), c('term', 'value'))
+        tibble::as_data_frame(
+          stats::setNames(
+            do.call(rbind.data.frame, lapply(seq(1, length(x), by = 2), function(y){
+              x[c(y, y + 1)]
+            })), 
+            c('term', 'value')
+          )
+        )
       })
     }
   } else {

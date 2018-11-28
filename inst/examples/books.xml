@@ -8,7 +8,6 @@
     <field name="sequence_i">1</field>
     <field name="genre_s">fantasy</field>
     <field name="inStock">TRUE</field>
-    <field name="price">12.5</field>
     <field name="pages_i">384</field>
   </doc>
   <doc>
@@ -20,7 +19,6 @@
     <field name="sequence_i">2</field>
     <field name="genre_s">fantasy</field>
     <field name="inStock">TRUE</field>
-    <field name="price">6.5</field>
     <field name="pages_i">304</field>
   </doc>
   <doc>
@@ -32,7 +30,6 @@
     <field name="sequence_i">1</field>
     <field name="genre_s">fantasy</field>
     <field name="inStock">TRUE</field>
-    <field name="price">3.7</field>
     <field name="pages_i">64</field>
   </doc>
   <doc>
@@ -44,7 +41,6 @@
     <field name="sequence_i">1</field>
     <field name="genre_s">IT</field>
     <field name="inStock">TRUE</field>
-    <field name="price">30.5</field>
     <field name="pages_i">475</field>
   </doc>
 </add>
