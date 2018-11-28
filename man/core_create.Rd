@@ -4,9 +4,10 @@
 \alias{core_create}
 \title{Create a core}
 \usage{
-core_create(conn, name, instanceDir = NULL, config = NULL, schema = NULL,
-  dataDir = NULL, configSet = NULL, collection = NULL, shard = NULL,
-  async = NULL, raw = FALSE, callopts = list(), ...)
+core_create(conn, name, instanceDir = NULL, config = NULL,
+  schema = NULL, dataDir = NULL, configSet = NULL,
+  collection = NULL, shard = NULL, async = NULL, raw = FALSE,
+  callopts = list(), ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

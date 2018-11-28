@@ -4,9 +4,9 @@
 \alias{collection_addreplica}
 \title{Add a replica}
 \usage{
-collection_addreplica(conn, name, shard = NULL, route = NULL, node = NULL,
-  instanceDir = NULL, dataDir = NULL, async = NULL, raw = FALSE,
-  callopts = list(), ...)
+collection_addreplica(conn, name, shard = NULL, route = NULL,
+  node = NULL, instanceDir = NULL, dataDir = NULL, async = NULL,
+  raw = FALSE, callopts = list(), ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

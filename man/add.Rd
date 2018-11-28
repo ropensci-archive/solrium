@@ -4,8 +4,8 @@
 \alias{add}
 \title{Add documents from R objects}
 \usage{
-add(x, conn, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
-  boost = NULL, wt = "json", raw = FALSE, ...)
+add(x, conn, name, commit = TRUE, commit_within = NULL,
+  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
 }
 \arguments{
 \item{x}{Documents, either as rows in a data.frame, or a list.}

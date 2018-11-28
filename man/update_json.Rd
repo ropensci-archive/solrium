@@ -6,8 +6,8 @@
 \usage{
 update_json(conn, files, name, commit = TRUE, optimize = FALSE,
   max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
-  soft_commit = FALSE, prepare_commit = NULL, wt = "json", raw = FALSE,
-  ...)
+  soft_commit = FALSE, prepare_commit = NULL, wt = "json",
+  raw = FALSE, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -16,31 +16,31 @@ update_json(conn, files, name, commit = TRUE, optimize = FALSE,
 
 \item{name}{(character) Name of the core or collection}
 
-\item{commit}{(logical) If \code{TRUE}, documents immediately searchable. 
+\item{commit}{(logical) If \code{TRUE}, documents immediately searchable.
 Deafult: \code{TRUE}}
 
-\item{optimize}{Should index optimization be performed before the method returns. 
+\item{optimize}{Should index optimization be performed before the method returns.
 Default: \code{FALSE}}
 
 \item{max_segments}{optimizes down to at most this number of segments. Default: 1}
 
 \item{expunge_deletes}{merge segments with deletes away. Default: \code{FALSE}}
 
-\item{wait_searcher}{block until a new searcher is opened and registered as the 
+\item{wait_searcher}{block until a new searcher is opened and registered as the
 main query searcher, making the changes visible. Default: \code{TRUE}}
 
-\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the 
-index in a more performant manner, but without "on-disk" guarantees. 
+\item{soft_commit}{perform a soft commit - this will refresh the 'view' of the
+index in a more performant manner, but without "on-disk" guarantees.
 Default: \code{FALSE}}
 
-\item{prepare_commit}{The prepareCommit command is an expert-level API that 
+\item{prepare_commit}{The prepareCommit command is an expert-level API that
 calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
 
-\item{wt}{(character) One of json (default) or xml. If json, uses 
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses 
+\item{wt}{(character) One of json (default) or xml. If json, uses
+\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
 \code{\link[xml2]{read_xml}} to parse}
 
-\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by 
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
 \item{...}{curl options passed on to \code{\link[crul]{HttpClient}}}
@@ -49,7 +49,7 @@ calls Lucene's IndexWriter.prepareCommit(). Not passed by default}
 Update documents with JSON data
 }
 \details{
-You likely may not be able to run this function against many 
+You likely may not be able to run this function against many
 public Solr services, but should work locally.
 }
 \examples{
@@ -88,3 +88,4 @@ conn$add(ss, "books")
 Other update: \code{\link{update_csv}},
   \code{\link{update_xml}}
 }
+\concept{update}

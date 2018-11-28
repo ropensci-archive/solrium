@@ -4,8 +4,8 @@
 \alias{collection_clusterstatus}
 \title{Get cluster status}
 \usage{
-collection_clusterstatus(conn, name = NULL, shard = NULL, raw = FALSE,
-  ...)
+collection_clusterstatus(conn, name = NULL, shard = NULL,
+  raw = FALSE, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

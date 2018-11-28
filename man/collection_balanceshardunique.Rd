@@ -4,8 +4,8 @@
 \alias{collection_balanceshardunique}
 \title{Balance a property}
 \usage{
-collection_balanceshardunique(conn, name, property, onlyactivenodes = TRUE,
-  shardUnique = NULL, raw = FALSE, ...)
+collection_balanceshardunique(conn, name, property,
+  onlyactivenodes = TRUE, shardUnique = NULL, raw = FALSE, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

@@ -4,9 +4,9 @@
 \alias{solr_stats}
 \title{Solr stats}
 \usage{
-solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field = NULL,
-  stats.facet = NULL), body = NULL, callopts = list(), raw = FALSE,
-  parsetype = "df", ...)
+solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field =
+  NULL, stats.facet = NULL), body = NULL, callopts = list(),
+  raw = FALSE, parsetype = "df", ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -20,7 +20,7 @@ as long as no body parameters given}
 \item{body}{(list) a named list of parameters, if given a POST request
 will be performed}
 
-\item{callopts}{Call options passed on to [crul::HttpClient]}
+\item{callopts}{Call options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 
 \item{raw}{(logical) If TRUE, returns raw data in format specified by
 wt param}
@@ -38,16 +38,16 @@ Returns only stat items
 \section{Stats parameters}{
 
 \itemize{
- \item q Query terms, defaults to '*:*', or everything.
- \item stats.field The number of similar documents to return for each result.
- \item stats.facet You can not facet on multi-valued fields.
- \item wt (character) Data type returned, defaults to 'json'. One of json
- or xml. If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml,
- uses \code{\link[XML]{xmlParse}} to parse. csv is only supported in
- \code{\link{solr_search}} and \code{\link{solr_all}}.
- \item start Record to start at, default to beginning.
- \item rows Number of records to return. Defaults to 10.
- \item key API key, if needed.
+\item q Query terms, defaults to '\emph{:}', or everything.
+\item stats.field The number of similar documents to return for each result.
+\item stats.facet You can not facet on multi-valued fields.
+\item wt (character) Data type returned, defaults to 'json'. One of json
+or xml. If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml,
+uses \code{\link[XML]{xmlParse}} to parse. csv is only supported in
+\code{\link{solr_search}} and \code{\link{solr_all}}.
+\item start Record to start at, default to beginning.
+\item rows Number of records to return. Defaults to 10.
+\item key API key, if needed.
 }
 }
 
