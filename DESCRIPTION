@@ -21,10 +21,11 @@ Imports:
     crul (>= 0.4.0),
     xml2 (>= 1.0.0),
     jsonlite (>= 1.0),
-    tibble (>= 1.2),
+    tibble (>= 1.4.99.9006),
     R6
 Suggests:
     roxygen2 (>= 6.0.1),
     testthat,
     knitr
 RoxygenNote: 6.1.1
+Remotes: tidyverse/tibble 
