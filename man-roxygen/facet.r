@@ -18,8 +18,8 @@
 #' determine counts for arbitrary terms or expressions. This parameter can be
 #' specified multiple times to indicate that multiple queries should be used as
 #' separate facet constraints. It can be particularly useful for numeric range
-#' based facets, or prefix based facets -- see example below (i.e. price:[* TO 500]
-#' and  price:[501 TO *]).
+#' based facets, or prefix based facets -- see example below (i.e. 
+#' \code{price:[* TO 500]} and \code{price:[501 TO *]}).
 #'  \item facet.field This param allows you to specify a field which should be
 #' treated as a facet. It will iterate over each Term in the field and generate a
 #' facet count using that Term as the constraint. This parameter can be specified

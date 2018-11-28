@@ -65,7 +65,7 @@ DEFAULT_MAX_WORD_LENGTH = 0
 DEFAULT_MAX_QUERY_TERMS = 25
 \item mlt.maxntp maximum number of tokens to parse in each example doc field that is not stored
 with TermVector support. DEFAULT_MAX_NUM_TOKENS_PARSED = 5000
-\item mlt.boost \link{true/false} set if the query will be boosted by the interesting term relevance.
+\item mlt.boost (true/false) set if the query will be boosted by the interesting term relevance.
 DEFAULT_BOOST = false
 \item mlt.qf Query fields and their boosts using the same format as that used in
 DisMaxQParserPlugin. These fields must also be specified in mlt.fl.

@@ -61,8 +61,7 @@ and pageScore parameters to your request. These two parameters tell Solr (and Lu
 what the last result (Lucene internal docid and score) of the previous page was,
 so that when scoring the query for the next set of pages, it can ignore any results
 that occur higher than that item. To get the Lucene internal doc id, you will need
-to add \link{docid} to the &fl list.
-e.g., q=\emph{:}&start=10&pageDoc=5&pageScore=1.345&fl=\link{docid},score
+to add \code{docid} to the &fl list.
 \item pageScore See pageDoc notes.
 \item fq Filter query, this does not affect the search, only what gets returned.
 This parameter can accept multiple items in a lis or vector. You can't pass more than
