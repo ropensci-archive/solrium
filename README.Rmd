@@ -239,6 +239,16 @@ Then parse
 solr_parse(out, 'df')
 ```
 
+### Progress bars
+
+only supported in the core search methods: `search`, `facet`, `group`, `mlt`, `stats`, `high`, `all`
+
+```{r eval = FALSE}
+library(httr)
+invisible(cli$search(params = list(q='*:*', rows=100, fl='id'), progress = httr::progress()))
+|==============================================| 100%
+```
+
 ### Advanced: Function Queries
 
 Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to stort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"

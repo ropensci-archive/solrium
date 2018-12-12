@@ -81,9 +81,10 @@
 #'   fl='article_type', wt = "xml"), parsetype = "list")
 #' }
 solr_group <- function(conn, name = NULL, params = NULL, body = NULL,
-                       callopts=list(), raw=FALSE, parsetype='df',
-                       concat=',', ...) {
+  callopts=list(), raw=FALSE, parsetype='df', concat=',', 
+  progress = NULL, ...) {
 
   conn$group(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype, concat = concat, ...)
+             raw = raw, parsetype = parsetype, concat = concat, 
+             progress = progress, ...)
 }

@@ -37,8 +37,9 @@
 #' solr_parse(out, parsetype='list')
 #' }
 solr_highlight <- function(conn, name = NULL, params = NULL, body = NULL,
-                           callopts=list(), raw=FALSE, parsetype='df', ...) {
+  callopts=list(), raw=FALSE, parsetype='df', progress = NULL, ...) {
 
-  conn$highlight(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype, ...)
+  conn$highlight(name = name, params = params, body = body, 
+    callopts = callopts, raw = raw, parsetype = parsetype, 
+    progress = progress, ...)
 }

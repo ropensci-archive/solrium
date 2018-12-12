@@ -54,8 +54,8 @@
 #' }
 solr_stats <- function(conn, name = NULL, params = list(q = '*:*',
   stats.field = NULL, stats.facet = NULL), body = NULL, callopts=list(),
-  raw=FALSE, parsetype='df', ...) {
+  raw=FALSE, parsetype='df', progress = NULL, ...) {
 
   conn$stats(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype, ...)
+             raw = raw, parsetype = parsetype, progress = progress, ...)
 }

@@ -112,8 +112,9 @@
 #' }
 solr_facet <- function(conn, name = NULL, params = list(q = '*:*'),
   body = NULL, callopts = list(), raw = FALSE,  parsetype = 'df',
-  concat = ',', ...) {
+  concat = ',', progress = NULL, ...) {
 
   conn$facet(name = name, params = params, body = body, callopts = callopts,
-             raw = raw, parsetype = parsetype, concat = concat, ...)
+             raw = raw, parsetype = parsetype, concat = concat, 
+             progress = progress, ...)
 }

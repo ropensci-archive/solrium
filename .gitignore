@@ -3,3 +3,4 @@
 .Rhistory
 .httr-oauth
 .RData
+inst/ignore/progress_bars_notes.R

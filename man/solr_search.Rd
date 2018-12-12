@@ -6,7 +6,8 @@
 \usage{
 solr_search(conn, name = NULL, params = list(q = "*:*"), body = NULL,
   callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
-  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)
+  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, progress = NULL,
+  ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -36,6 +37,10 @@ than \code{minOptimizedRows}. Default: \code{TRUE}}
 
 \item{minOptimizedRows}{(numeric) used by \code{optimizedMaxRows} parameter,
 the minimum optimized rows. Default: 50000}
+
+\item{progress}{a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to \pkg{curl}. only supports
+\code{httr::progress} for now. See the README for an example.}
 
 \item{...}{Further args to be combined into query}
 }

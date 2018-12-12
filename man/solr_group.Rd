@@ -6,7 +6,7 @@
 \usage{
 solr_group(conn, name = NULL, params = NULL, body = NULL,
   callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
-  ...)
+  progress = NULL, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -28,6 +28,10 @@ will be performed}
 \item{concat}{(character) Character to concatenate elements of longer than length 1.
 Note that this only works reliably when data format is json (wt='json'). The parsing
 is more complicated in XML format, but you can do that on your own.}
+
+\item{progress}{a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to \pkg{curl}. only supports
+\code{httr::progress} for now. See the README for an example.}
 
 \item{...}{Further args to be combined into query}
 }

@@ -6,7 +6,7 @@
 \usage{
 solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field =
   NULL, stats.facet = NULL), body = NULL, callopts = list(),
-  raw = FALSE, parsetype = "df", ...)
+  raw = FALSE, parsetype = "df", progress = NULL, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -26,6 +26,10 @@ will be performed}
 wt param}
 
 \item{parsetype}{(character) One of 'list' or 'df'}
+
+\item{progress}{a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to \pkg{curl}. only supports
+\code{httr::progress} for now. See the README for an example.}
 
 \item{...}{Further args to be combined into query}
 }

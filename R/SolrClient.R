@@ -95,7 +95,7 @@
 #' split.key = NULL, async = NULL, raw = FALSE, callopts=list())`
 #' * `search(name = NULL, params = NULL, body = NULL, callopts = list(),
 #' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' minOptimizedRows = 50000L, progress = NULL, ...)`
 #' * `facet(name = NULL, params = NULL, body = NULL, callopts = list(),
 #' raw = FALSE,  parsetype = 'df', concat = ',', ...)`
 #' * `stats(name = NULL, params = list(q = '*:*', stats.field = NULL,
@@ -618,10 +618,11 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) {
         res <- solr_POST_body(self$make_url(),
             if (!is.null(name)) url_handle(name) else self$path,
-            body, params, ctype_json(), callopts, self$proxy)
+            body, params, ctype_json(), callopts, self$proxy, 
+            progress = progress)
         out <- structure(res, class = "sr_search", wt = params$wt)
       } else {
-        res <- solr_GET(self$make_url(),
+          res <- solr_GET(self$make_url(),
                  if (!is.null(name)) url_handle(name) else self$path,
                  params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_search", wt = params$wt)
@@ -636,7 +637,8 @@ SolrClient <- R6::R6Class(
     },
 
     facet = function(name = NULL, params = NULL, body = NULL, callopts = list(),
-                     raw = FALSE,  parsetype = 'df', concat = ',', ...) {
+                     raw = FALSE,  parsetype = 'df', concat = ',', 
+                     progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -649,12 +651,13 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) {
         res <- solr_POST_body(self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, ctype_json(), callopts, self$proxy)
+          body, params, ctype_json(), callopts, self$proxy, 
+            progress = progress)
         out <- structure(res, class = "sr_facet", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy)
+                        params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_facet", wt = params$wt)
       }
       if (raw) {
@@ -668,7 +671,7 @@ SolrClient <- R6::R6Class(
 
     stats = function(name = NULL,
       params = list(q = '*:*', stats.field = NULL, stats.facet = NULL), body = NULL,
-      callopts=list(), raw = FALSE, parsetype = 'df', ...) {
+      callopts=list(), raw = FALSE, parsetype = 'df', progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -680,12 +683,13 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) {
         res <- solr_POST_body(self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, ctype_json(), callopts, self$proxy)
+          body, params, ctype_json(), callopts, self$proxy, 
+            progress = progress)
         out <- structure(res, class = "sr_stats", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy)
+                        params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_stats", wt = params$wt)
       }
       if (raw) {
@@ -698,7 +702,8 @@ SolrClient <- R6::R6Class(
     },
 
     highlight = function(name = NULL, params = NULL, body = NULL,
-                         callopts=list(), raw = FALSE, parsetype = 'df', ...) {
+                         callopts=list(), raw = FALSE, parsetype = 'df', 
+                         progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -710,12 +715,12 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) {
         res <- solr_POST_body(self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, callopts, self$proxy)
+          body, params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_high", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy)
+                        params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_high", wt = params$wt)
       }
       if (raw) {
@@ -729,7 +734,7 @@ SolrClient <- R6::R6Class(
 
     group = function(name = NULL, params = NULL, body = NULL,
                      callopts=list(), raw=FALSE, parsetype='df', concat=',',
-                     ...) {
+                     progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -743,12 +748,13 @@ SolrClient <- R6::R6Class(
         res <- solr_POST_body(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, ctype_json(), callopts, self$proxy)
+          body, params, ctype_json(), callopts, self$proxy, 
+          progress = progress)
         out <- structure(res, class = "sr_group", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy)
+                        params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_group", wt = params$wt)
       }
       if (raw) {
@@ -762,7 +768,8 @@ SolrClient <- R6::R6Class(
 
     mlt = function(name = NULL, params = NULL, body = NULL,
                    callopts=list(), raw=FALSE, parsetype='df', concat=',',
-                   optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                   optimizeMaxRows = TRUE, minOptimizedRows = 50000L, 
+                   progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -782,12 +789,13 @@ SolrClient <- R6::R6Class(
         res <- solr_POST_body(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, ctype_json(), callopts, self$proxy)
+          body, params, ctype_json(), callopts, self$proxy, 
+          progress = progress)
         out <- structure(res, class = "sr_mlt", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy)
+                        params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_mlt", wt = params$wt)
       }
       if (raw) {
@@ -801,7 +809,8 @@ SolrClient <- R6::R6Class(
 
     all = function(name = NULL, params = NULL, body = NULL,
                    callopts=list(), raw=FALSE, parsetype='df', concat=',',
-                   optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...) {
+                   optimizeMaxRows = TRUE, minOptimizedRows = 50000L, 
+                   progress = NULL, ...) {
 
       if (is.null(params)) {
         if (is.null(body)) stop("if 'params' NULL, body must be given")
@@ -821,12 +830,13 @@ SolrClient <- R6::R6Class(
         res <- solr_POST_body(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, ctype_json(), callopts, self$proxy)
+          body, params, ctype_json(), callopts, self$proxy, 
+          progress = progress)
         out <- structure(res, class = "sr_all", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy)
+                        params, callopts, self$proxy, progress = progress)
         out <- structure(res, class = "sr_all", wt = params$wt)
       }
       if (raw) {

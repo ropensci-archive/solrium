@@ -3,6 +3,9 @@
 #' 		parsed data returned.
 #' @param callopts Call options passed on to [crul::HttpClient]
 #' @param parsetype One of list of df (data.frame)
+#' @param progress a function with logic for printing a progress
+#' bar for an HTTP request, ultimately passed down to \pkg{curl}. only supports 
+#' \code{httr::progress} for now. See the README for an example.
 #' @param ... Further args to be combined into query
 #'
 #' @section Facet parameters:

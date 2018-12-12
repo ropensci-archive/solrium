@@ -4,6 +4,9 @@
 #' @param raw (logical) If TRUE, returns raw data in format specified by
 #' wt param
 #' @param parsetype (character) One of 'list' or 'df'
+#' @param progress a function with logic for printing a progress
+#' bar for an HTTP request, ultimately passed down to \pkg{curl}. only supports 
+#' \code{httr::progress} for now. See the README for an example.
 #' @param ... Further args to be combined into query
 #'
 #' @section Stats parameters:

@@ -5,7 +5,8 @@
 \title{Highlighting search}
 \usage{
 solr_highlight(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", ...)
+  callopts = list(), raw = FALSE, parsetype = "df",
+  progress = NULL, ...)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -24,6 +25,10 @@ will be performed}
 parsed data returned.}
 
 \item{parsetype}{One of list of df (data.frame)}
+
+\item{progress}{a function with logic for printing a progress
+bar for an HTTP request, ultimately passed down to \pkg{curl}. only supports
+\code{httr::progress} for now. See the README for an example.}
 
 \item{...}{Further args to be combined into query}
 }
