@@ -111,6 +111,8 @@
 #' * `all(name = NULL, params = NULL, body = NULL, callopts=list(),
 #' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
 #' minOptimizedRows = 50000L, ...)`
+#' * `json_request(name = NULL, body = NULL, callopts=list(), 
+#' progress = NULL)`
 #' * `get(ids, name, fl = NULL, wt = 'json', raw = FALSE, ...)`
 #' * `add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE,
 #' boost = NULL, wt = 'json', raw = FALSE, ...)`
@@ -846,6 +848,19 @@ SolrClient <- R6::R6Class(
         parsed <- structure(parsed, class = c(class(parsed), "sr_all"))
         solr_parse(parsed, parsetype, concat)
       }
+    },
+
+
+    # JSON request API
+    json_request = function(name = NULL, body = NULL, callopts=list(), 
+      progress = NULL) {
+
+      stopifnot(inherits(body, "list") || is.character(body))
+      solr_POST_body(
+        self$make_url(),
+        if (!is.null(name)) url_handle(name) else self$path,
+        body, list(), ctype_json(), callopts, self$proxy, 
+        progress = progress)
     },
 
 

@@ -93,6 +93,7 @@ parameter definitions and their default values.
 \item \code{group(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', ...)}
 \item \code{mlt(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
 \item \code{all(name = NULL, params = NULL, body = NULL, callopts=list(), raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE, minOptimizedRows = 50000L, ...)}
+\item \code{json_request(name = NULL, body = NULL, callopts=list(),  progress = NULL)}
 \item \code{get(ids, name, fl = NULL, wt = 'json', raw = FALSE, ...)}
 \item \code{add(x, name, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...)}
 \item \code{delete_by_id(ids, name, commit = TRUE, commit_within = NULL, overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...)}
