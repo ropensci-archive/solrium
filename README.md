@@ -3,8 +3,7 @@ solrium
 
 
 
-[![Build Status](https://travis-ci.org/ropensci/solrium.svg?branch=master)](https://travis-ci.org/ropensci/solrium)
-[![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![cran checks](https://cranchecks.info/badges/worst/solrium)](https://cranchecks.info/pkgs/solrium)
 [![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/metacran/cranlogs.app)
 [![cran version](https://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
@@ -119,7 +118,7 @@ Use `SolrClient$new()` to initialize your connection. These examples use a remot
 #> <Solr Client>
 #>   host: api.plos.org
 #>   path: search
-#>   port:
+#>   port: 
 #>   scheme: http
 #>   errors: simple
 #>   proxy:
@@ -140,7 +139,7 @@ cli
 #> <Solr Client>
 #>   host: api.plos.org
 #>   path: search
-#>   port:
+#>   port: 
 #>   scheme: http
 #>   errors: simple
 #>   proxy:
@@ -160,10 +159,10 @@ bin/post -c gettingstarted example/exampledocs/*.xml
 ```r
 cli$search(params = list(q='*:*', rows=2, fl='id'))
 #> # A tibble: 2 x 1
-#>                                      id
-#>                                   <chr>
-#> 1    10.1371/journal.pone.0079536/title
-#> 2 10.1371/journal.pone.0079536/abstract
+#>   id                                                
+#>   <chr>                                             
+#> 1 10.1371/journal.pone.0058099/materials_and_methods
+#> 2 10.1371/journal.pone.0030394/introduction
 ```
 
 ### Search grouped data
@@ -175,18 +174,12 @@ Most recent publication by journal
 cli$group(params = list(q='*:*', group.field='journal', rows=5, group.limit=1,
                         group.sort='publication_date desc',
                         fl='publication_date, score'))
-#>                         groupValue numFound start     publication_date
-#> 1                         plos one  1572163     0 2017-11-01T00:00:00Z
-#> 2 plos neglected tropical diseases    47510     0 2017-11-01T00:00:00Z
-#> 3                    plos genetics    59871     0 2017-11-01T00:00:00Z
-#> 4                   plos pathogens    53246     0 2017-11-01T00:00:00Z
-#> 5                             none    63561     0 2012-10-23T00:00:00Z
-#>   score
-#> 1     1
-#> 2     1
-#> 3     1
-#> 4     1
-#> 5     1
+#>       groupValue numFound start     publication_date score
+#> 1       plos one  1754116     0 2018-12-12T00:00:00Z     1
+#> 2           none    65774     0 2012-10-23T00:00:00Z     1
+#> 3  plos genetics    65482     0 2018-12-12T00:00:00Z     1
+#> 4   plos biology    36181     0 2018-12-12T00:00:00Z     1
+#> 5 plos pathogens    58879     0 2018-12-10T00:00:00Z     1
 ```
 
 First publication by journal
@@ -198,16 +191,16 @@ cli$group(params = list(q = '*:*', group.field = 'journal', group.limit = 1,
                         fl = c('publication_date', 'score'),
                         fq = "publication_date:[1900-01-01T00:00:00Z TO *]"))
 #>                          groupValue numFound start     publication_date
-#> 1                          plos one  1572163     0 2006-12-20T00:00:00Z
-#> 2  plos neglected tropical diseases    47510     0 2007-08-30T00:00:00Z
-#> 3                    plos pathogens    53246     0 2005-07-22T00:00:00Z
-#> 4        plos computational biology    45582     0 2005-06-24T00:00:00Z
-#> 5                              none    57532     0 2005-08-23T00:00:00Z
-#> 6              plos clinical trials      521     0 2006-04-21T00:00:00Z
-#> 7                     plos genetics    59871     0 2005-06-17T00:00:00Z
-#> 8                     plos medicine    23519     0 2004-09-07T00:00:00Z
-#> 9                      plos medicin        9     0 2012-04-17T00:00:00Z
-#> 10                     plos biology    32513     0 2003-08-18T00:00:00Z
+#> 1                          plos one  1754116     0 2006-12-20T00:00:00Z
+#> 2                              none    57532     0 2005-08-23T00:00:00Z
+#> 3                     plos genetics    65482     0 2005-06-17T00:00:00Z
+#> 4                      plos biology    36181     0 2003-08-18T00:00:00Z
+#> 5                    plos pathogens    58879     0 2005-07-22T00:00:00Z
+#> 6        plos computational biology    51118     0 2005-06-24T00:00:00Z
+#> 7                     plos medicine    25913     0 2004-09-07T00:00:00Z
+#> 8  plos neglected tropical diseases    55287     0 2007-08-30T00:00:00Z
+#> 9              plos clinical trials      521     0 2006-04-21T00:00:00Z
+#> 10                     plos medicin        9     0 2012-04-17T00:00:00Z
 #>    score
 #> 1      1
 #> 2      1
@@ -243,12 +236,12 @@ Search group with format simple
 cli$group(params = list(q='*:*', group.field='journal', rows=5,
                         group.limit=3, group.sort='publication_date desc',
                         group.format='simple', fl='journal, publication_date'))
-#>   numFound start     publication_date  journal
-#> 1  1898495     0 2012-10-23T00:00:00Z     <NA>
-#> 2  1898495     0 2012-10-23T00:00:00Z     <NA>
-#> 3  1898495     0 2012-10-23T00:00:00Z     <NA>
-#> 4  1898495     0 2017-11-01T00:00:00Z PLOS ONE
-#> 5  1898495     0 2017-11-01T00:00:00Z PLOS ONE
+#>   numFound start  journal     publication_date
+#> 1  2113280     0 PLOS ONE 2018-12-12T00:00:00Z
+#> 2  2113280     0 PLOS ONE 2018-12-12T00:00:00Z
+#> 3  2113280     0 PLOS ONE 2018-12-12T00:00:00Z
+#> 4  2113280     0     <NA> 2012-10-23T00:00:00Z
+#> 5  2113280     0     <NA> 2012-10-23T00:00:00Z
 ```
 
 ### Facet
@@ -258,33 +251,33 @@ cli$group(params = list(q='*:*', group.field='journal', rows=5,
 cli$facet(params = list(q='*:*', facet.field='journal', facet.query=c('cell', 'bird')))
 #> $facet_queries
 #> # A tibble: 2 x 2
-#>    term  value
+#>   term   value
 #>   <chr>  <int>
-#> 1  cell 157652
-#> 2  bird  16385
-#>
+#> 1 cell  171895
+#> 2 bird   18193
+#> 
 #> $facet_fields
 #> $facet_fields$journal
 #> # A tibble: 9 x 2
-#>                               term   value
-#>                              <chr>   <chr>
-#> 1                         plos one 1572163
-#> 2                    plos genetics   59871
-#> 3                   plos pathogens   53246
-#> 4 plos neglected tropical diseases   47510
-#> 5       plos computational biology   45582
-#> 6                     plos biology   32513
-#> 7                    plos medicine   23519
-#> 8             plos clinical trials     521
-#> 9                     plos medicin       9
-#>
-#>
+#>   term                             value  
+#>   <fct>                            <fct>  
+#> 1 plos one                         1754116
+#> 2 plos genetics                    65482  
+#> 3 plos pathogens                   58879  
+#> 4 plos neglected tropical diseases 55287  
+#> 5 plos computational biology       51118  
+#> 6 plos biology                     36181  
+#> 7 plos medicine                    25913  
+#> 8 plos clinical trials             521    
+#> 9 plos medicin                     9      
+#> 
+#> 
 #> $facet_pivot
 #> NULL
-#>
+#> 
 #> $facet_dates
 #> NULL
-#>
+#> 
 #> $facet_ranges
 #> NULL
 ```
@@ -295,11 +288,10 @@ cli$facet(params = list(q='*:*', facet.field='journal', facet.query=c('cell', 'b
 ```r
 cli$highlight(params = list(q='alcohol', hl.fl = 'abstract', rows=2))
 #> # A tibble: 2 x 2
-#>                          names
-#>                          <chr>
-#> 1 10.1371/journal.pone.0185457
-#> 2 10.1371/journal.pone.0071284
-#> # ... with 1 more variables: abstract <chr>
+#>   names                 abstract                                           
+#>   <chr>                 <chr>                                              
+#> 1 10.1371/journal.pone… "\nAcute <em>alcohol</em> administration can lead …
+#> 2 10.1371/journal.pone… Objectives: <em>Alcohol</em>-related morbidity and…
 ```
 
 ### Stats
@@ -312,12 +304,12 @@ out <- cli$stats(params = list(q='ecology', stats.field=c('counter_total_all','a
 
 ```r
 out$data
-#>                   min    max count missing       sum sumOfSquares
-#> counter_total_all   0 920716 40497       0 219020039 7.604567e+12
-#> alm_twitterCount    0   3401 40497       0    281128 7.300081e+07
+#>                   min     max count missing       sum sumOfSquares
+#> counter_total_all   0 1113107 45873       0 244364194  9.57388e+12
+#> alm_twitterCount    0    3437 45873       0    297821  7.89253e+07
 #>                          mean      stddev
-#> counter_total_all 5408.302813 12591.07462
-#> alm_twitterCount     6.941946    41.88646
+#> counter_total_all 5326.972162 13428.74994
+#> alm_twitterCount     6.492294    40.96833
 ```
 
 ### More like this
@@ -333,13 +325,13 @@ out <- cli$mlt(params = list(q='title:"ecology" AND body:"cell"', mlt.fl='title'
 ```r
 out$docs
 #> # A tibble: 5 x 2
-#>                             id counter_total_all
-#>                          <chr>             <int>
-#> 1 10.1371/journal.pbio.1001805             21824
-#> 2 10.1371/journal.pbio.0020440             25424
-#> 3 10.1371/journal.pbio.1002559              9746
+#>   id                           counter_total_all
+#>   <chr>                                    <int>
+#> 1 10.1371/journal.pbio.1001805             22378
+#> 2 10.1371/journal.pbio.0020440             25560
+#> 3 10.1371/journal.pbio.1002559             11150
 #> 4 10.1371/journal.pone.0087217             11502
-#> 5 10.1371/journal.pbio.1002191             22013
+#> 5 10.1371/journal.pbio.1002191             24483
 ```
 
 
@@ -347,53 +339,53 @@ out$docs
 out$mlt
 #> $`10.1371/journal.pbio.1001805`
 #> # A tibble: 5 x 4
-#>   numFound start                           id counter_total_all
-#>      <int> <int>                        <chr>             <int>
-#> 1     3822     0 10.1371/journal.pone.0098876              3590
-#> 2     3822     0 10.1371/journal.pone.0082578              2893
-#> 3     3822     0 10.1371/journal.pone.0102159              2028
-#> 4     3822     0 10.1371/journal.pcbi.1002652              3819
-#> 5     3822     0 10.1371/journal.pcbi.1003408              9920
-#>
+#>   numFound start id                           counter_total_all
+#>      <int> <int> <chr>                                    <int>
+#> 1     4319     0 10.1371/journal.pone.0098876              3857
+#> 2     4319     0 10.1371/journal.pone.0082578              3140
+#> 3     4319     0 10.1371/journal.pone.0102159              2329
+#> 4     4319     0 10.1371/journal.pcbi.1002915             11767
+#> 5     4319     0 10.1371/journal.pcbi.1003408             10700
+#> 
 #> $`10.1371/journal.pbio.0020440`
 #> # A tibble: 5 x 4
-#>   numFound start                           id counter_total_all
-#>      <int> <int>                        <chr>             <int>
-#> 1     1115     0 10.1371/journal.pone.0162651              2828
-#> 2     1115     0 10.1371/journal.pone.0003259              3225
-#> 3     1115     0 10.1371/journal.pntd.0003377              4267
-#> 4     1115     0 10.1371/journal.pone.0101568              4603
-#> 5     1115     0 10.1371/journal.pone.0068814              9042
-#>
+#>   numFound start id                           counter_total_all
+#>      <int> <int> <chr>                                    <int>
+#> 1     1254     0 10.1371/journal.pone.0162651              3311
+#> 2     1254     0 10.1371/journal.pone.0003259              3310
+#> 3     1254     0 10.1371/journal.pntd.0003377              4406
+#> 4     1254     0 10.1371/journal.pone.0068814              9416
+#> 5     1254     0 10.1371/journal.pone.0101568              5600
+#> 
 #> $`10.1371/journal.pbio.1002559`
 #> # A tibble: 5 x 4
-#>   numFound start                           id counter_total_all
-#>      <int> <int>                        <chr>             <int>
-#> 1     5482     0 10.1371/journal.pone.0155989              2519
-#> 2     5482     0 10.1371/journal.pone.0023086              8442
-#> 3     5482     0 10.1371/journal.pone.0155028              1547
-#> 4     5482     0 10.1371/journal.pone.0041684             22057
-#> 5     5482     0 10.1371/journal.pone.0164330               969
-#>
+#>   numFound start id                           counter_total_all
+#>      <int> <int> <chr>                                    <int>
+#> 1     5962     0 10.1371/journal.pone.0023086              8442
+#> 2     5962     0 10.1371/journal.pone.0041684             24475
+#> 3     5962     0 10.1371/journal.pone.0155028              2662
+#> 4     5962     0 10.1371/journal.pone.0155989              2519
+#> 5     5962     0 10.1371/journal.pone.0129394              2111
+#> 
 #> $`10.1371/journal.pone.0087217`
 #> # A tibble: 5 x 4
-#>   numFound start                           id counter_total_all
-#>      <int> <int>                        <chr>             <int>
-#> 1     4576     0 10.1371/journal.pone.0175497              1088
-#> 2     4576     0 10.1371/journal.pone.0159131              4937
-#> 3     4576     0 10.1371/journal.pcbi.0020092             24786
-#> 4     4576     0 10.1371/journal.pone.0133941              1336
-#> 5     4576     0 10.1371/journal.pone.0131665              1207
-#>
+#>   numFound start id                           counter_total_all
+#>      <int> <int> <chr>                                    <int>
+#> 1     5111     0 10.1371/journal.pone.0204743                 0
+#> 2     5111     0 10.1371/journal.pone.0175497              1088
+#> 3     5111     0 10.1371/journal.pone.0159131              4937
+#> 4     5111     0 10.1371/journal.pcbi.0020092             25551
+#> 5     5111     0 10.1371/journal.pone.0133941              1336
+#> 
 #> $`10.1371/journal.pbio.1002191`
 #> # A tibble: 5 x 4
-#>   numFound start                           id counter_total_all
-#>      <int> <int>                        <chr>             <int>
-#> 1    12585     0 10.1371/journal.pbio.1002232              3055
-#> 2    12585     0 10.1371/journal.pone.0070448              2203
-#> 3    12585     0 10.1371/journal.pone.0131700              2493
-#> 4    12585     0 10.1371/journal.pone.0121680              4980
-#> 5    12585     0 10.1371/journal.pone.0041534              5701
+#>   numFound start id                           counter_total_all
+#>      <int> <int> <chr>                                    <int>
+#> 1    13747     0 10.1371/journal.pbio.1002232              3055
+#> 2    13747     0 10.1371/journal.pone.0070448              2203
+#> 3    13747     0 10.1371/journal.pone.0191705               800
+#> 4    13747     0 10.1371/journal.pone.0131700              3051
+#> 5    13747     0 10.1371/journal.pone.0121680              4980
 ```
 
 ### Parsing
@@ -406,7 +398,7 @@ For example:
 ```r
 (out <- cli$highlight(params = list(q='alcohol', hl.fl = 'abstract', rows=2),
                       raw=TRUE))
-#> [1] "{\"response\":{\"numFound\":25987,\"start\":0,\"maxScore\":4.705177,\"docs\":[{\"id\":\"10.1371/journal.pone.0185457\",\"journal\":\"PLOS ONE\",\"eissn\":\"1932-6203\",\"publication_date\":\"2017-09-28T00:00:00Z\",\"article_type\":\"Research Article\",\"author_display\":[\"Jacqueline Willmore\",\"Terry-Lynne Marko\",\"Darcie Taing\",\"Hugues Sampasa-Kanyinga\"],\"abstract\":[\"Objectives: Alcohol-related morbidity and mortality are significant public health issues. The purpose of this study was to describe the prevalence and trends over time of alcohol consumption and alcohol-related morbidity and mortality; and public attitudes of alcohol use impacts on families and the community in Ottawa, Canada. Methods: Prevalence (2013–2014) and trends (2000–2001 to 2013–2014) of alcohol use were obtained from the Canadian Community Health Survey. Data on paramedic responses (2015), emergency department (ED) visits (2013–2015), hospitalizations (2013–2015) and deaths (2007–2011) were used to quantify the acute and chronic health effects of alcohol in Ottawa. Qualitative data were obtained from the “Have Your Say” alcohol survey, an online survey of public attitudes on alcohol conducted in 2016. Results: In 2013–2014, an estimated 595,300 (83%) Ottawa adults 19 years and older drank alcohol, 42% reported binge drinking in the past year. Heavy drinking increased from 15% in 2000–2001 to 20% in 2013–2014. In 2015, the Ottawa Paramedic Service responded to 2,060 calls directly attributable to alcohol. Between 2013 and 2015, there were an average of 6,100 ED visits and 1,270 hospitalizations per year due to alcohol. Annually, alcohol use results in at least 140 deaths in Ottawa. Men have higher rates of alcohol-attributable paramedic responses, ED visits, hospitalizations and deaths than women, and young adults have higher rates of alcohol-attributable paramedic responses. Qualitative data of public attitudes indicate that alcohol misuse has greater repercussions not only on those who drink, but also on the family and community. Conclusions: Results highlight the need for healthy public policy intended to encourage a culture of drinking in moderation in Ottawa to support lower risk alcohol use, particularly among men and young adults. \"],\"title_display\":\"The burden of alcohol-related morbidity and mortality in Ottawa, Canada\",\"score\":4.705177},{\"id\":\"10.1371/journal.pone.0071284\",\"journal\":\"PLoS ONE\",\"eissn\":\"1932-6203\",\"publication_date\":\"2013-08-20T00:00:00Z\",\"article_type\":\"Research Article\",\"author_display\":[\"Petra Suchankova\",\"Pia Steensland\",\"Ida Fredriksson\",\"Jörgen A. Engel\",\"Elisabet Jerlhag\"],\"abstract\":[\"\\nAlcohol dependence is a heterogeneous disorder where several signalling systems play important roles. Recent studies implicate that the gut-brain hormone ghrelin, an orexigenic peptide, is a potential mediator of alcohol related behaviours. Ghrelin increases whereas a ghrelin receptor (GHS-R1A) antagonist decreases alcohol consumption as well as operant self-administration of alcohol in rodents that have consumed alcohol for twelve weeks. In the present study we aimed at investigating the effect of acute and repeated treatment with the GHS-R1A antagonist JMV2959 on alcohol intake in a group of rats following voluntarily alcohol consumption for two, five and eight months. After approximately ten months of voluntary alcohol consumption the expression of the GHS-R1A gene (Ghsr) as well as the degree of methylation of a CpG island found in Ghsr was examined in reward related brain areas. In a separate group of rats, we examined the effect of the JMV2959 on alcohol relapse using the alcohol deprivation paradigm. Acute JMV2959 treatment was found to decrease alcohol intake and the effect was more pronounced after five, compared to two months of alcohol exposure. In addition, repeated JMV2959 treatment decreased alcohol intake without inducing tolerance or rebound increase in alcohol intake after the treatment. The GHS-R1A antagonist prevented the alcohol deprivation effect in rats. There was a significant down-regulation of the Ghsr expression in the ventral tegmental area (VTA) in high- compared to low-alcohol consuming rats after approximately ten months of voluntary alcohol consumption. Further analysis revealed a negative correlation between Ghsr expression in the VTA and alcohol intake. No differences in methylation degree were found between high- compared to low-alcohol consuming rats. These findings support previous studies showing that the ghrelin signalling system may constitute a potential target for development of novel treatment strategies for alcohol dependence.\\n\"],\"title_display\":\"Ghrelin Receptor (GHS-R1A) Antagonism Suppresses Both Alcohol Consumption and the Alcohol Deprivation Effect in Rats following Long-Term Voluntary Alcohol Consumption\",\"score\":4.7050986}]},\"highlighting\":{\"10.1371/journal.pone.0185457\":{\"abstract\":[\"Objectives: <em>Alcohol</em>-related morbidity and mortality are significant public health issues\"]},\"10.1371/journal.pone.0071284\":{\"abstract\":[\"\\n<em>Alcohol</em> dependence is a heterogeneous disorder where several signalling systems play important\"]}}}\n"
+#> [1] "{\n  \"response\":{\"numFound\":29215,\"start\":0,\"maxScore\":4.6769786,\"docs\":[\n      {\n        \"id\":\"10.1371/journal.pone.0201042\",\n        \"journal\":\"PLOS ONE\",\n        \"eissn\":\"1932-6203\",\n        \"publication_date\":\"2018-07-26T00:00:00Z\",\n        \"article_type\":\"Research Article\",\n        \"author_display\":[\"Graeme Knibb\",\n          \"Carl. A. Roberts\",\n          \"Eric Robinson\",\n          \"Abi Rose\",\n          \"Paul Christiansen\"],\n        \"abstract\":[\"\\nAcute alcohol administration can lead to a loss of control over drinking. Several models argue that this ‘alcohol priming effect’ is mediated by the effect of alcohol on inhibitory control. Alternatively, beliefs about how alcohol affects behavioural regulation may also underlie alcohol priming and alcohol-induced inhibitory impairments. Here two studies examine the extent to which the alcohol priming effect and inhibitory impairments are moderated by beliefs regarding the effects of alcohol on the ability to control behaviour. In study 1, following a priming drink (placebo or .5g/kg of alcohol), participants were provided with bogus feedback regarding their performance on a measure of inhibitory control (stop-signal task; SST) suggesting that they had high or average self-control. However, the bogus feedback manipulation was not successful. In study 2, before a SST, participants were exposed to a neutral or experimental message suggesting acute doses of alcohol reduce the urge to drink and consumed a priming drink and this manipulation was successful. In both studies craving was assessed throughout and a bogus taste test which measured ad libitum drinking was completed. Results suggest no effect of beliefs on craving or ad lib consumption within either study. However, within study 2, participants exposed to the experimental message displayed evidence of alcohol-induced impairments of inhibitory control, while those exposed to the neutral message did not. These findings do not suggest beliefs about the effects of alcohol moderate the alcohol priming effect but do suggest beliefs may, in part, underlie the effect of alcohol on inhibitory control.\\n\"],\n        \"title_display\":\"The effect of beliefs about alcohol’s acute effects on alcohol priming and alcohol-induced impairments of inhibitory control\",\n        \"score\":4.6769786},\n      {\n        \"id\":\"10.1371/journal.pone.0185457\",\n        \"journal\":\"PLOS ONE\",\n        \"eissn\":\"1932-6203\",\n        \"publication_date\":\"2017-09-28T00:00:00Z\",\n        \"article_type\":\"Research Article\",\n        \"author_display\":[\"Jacqueline Willmore\",\n          \"Terry-Lynne Marko\",\n          \"Darcie Taing\",\n          \"Hugues Sampasa-Kanyinga\"],\n        \"abstract\":[\"Objectives: Alcohol-related morbidity and mortality are significant public health issues. The purpose of this study was to describe the prevalence and trends over time of alcohol consumption and alcohol-related morbidity and mortality; and public attitudes of alcohol use impacts on families and the community in Ottawa, Canada. Methods: Prevalence (2013–2014) and trends (2000–2001 to 2013–2014) of alcohol use were obtained from the Canadian Community Health Survey. Data on paramedic responses (2015), emergency department (ED) visits (2013–2015), hospitalizations (2013–2015) and deaths (2007–2011) were used to quantify the acute and chronic health effects of alcohol in Ottawa. Qualitative data were obtained from the “Have Your Say” alcohol survey, an online survey of public attitudes on alcohol conducted in 2016. Results: In 2013–2014, an estimated 595,300 (83%) Ottawa adults 19 years and older drank alcohol, 42% reported binge drinking in the past year. Heavy drinking increased from 15% in 2000–2001 to 20% in 2013–2014. In 2015, the Ottawa Paramedic Service responded to 2,060 calls directly attributable to alcohol. Between 2013 and 2015, there were an average of 6,100 ED visits and 1,270 hospitalizations per year due to alcohol. Annually, alcohol use results in at least 140 deaths in Ottawa. Men have higher rates of alcohol-attributable paramedic responses, ED visits, hospitalizations and deaths than women, and young adults have higher rates of alcohol-attributable paramedic responses. Qualitative data of public attitudes indicate that alcohol misuse has greater repercussions not only on those who drink, but also on the family and community. Conclusions: Results highlight the need for healthy public policy intended to encourage a culture of drinking in moderation in Ottawa to support lower risk alcohol use, particularly among men and young adults. \"],\n        \"title_display\":\"The burden of alcohol-related morbidity and mortality in Ottawa, Canada\",\n        \"score\":4.676675}]\n  },\n  \"highlighting\":{\n    \"10.1371/journal.pone.0201042\":{\n      \"abstract\":[\"\\nAcute <em>alcohol</em> administration can lead to a loss of control over drinking. Several models argue\"]},\n    \"10.1371/journal.pone.0185457\":{\n      \"abstract\":[\"Objectives: <em>Alcohol</em>-related morbidity and mortality are significant public health issues\"]}}}\n"
 #> attr(,"class")
 #> [1] "sr_high"
 #> attr(,"wt")
@@ -419,11 +411,21 @@ Then parse
 ```r
 solr_parse(out, 'df')
 #> # A tibble: 2 x 2
-#>                          names
-#>                          <chr>
-#> 1 10.1371/journal.pone.0185457
-#> 2 10.1371/journal.pone.0071284
-#> # ... with 1 more variables: abstract <chr>
+#>   names                 abstract                                           
+#>   <chr>                 <chr>                                              
+#> 1 10.1371/journal.pone… "\nAcute <em>alcohol</em> administration can lead …
+#> 2 10.1371/journal.pone… Objectives: <em>Alcohol</em>-related morbidity and…
+```
+
+### Progress bars
+
+only supported in the core search methods: `search`, `facet`, `group`, `mlt`, `stats`, `high`, `all`
+
+
+```r
+library(httr)
+invisible(cli$search(params = list(q='*:*', rows=100, fl='id'), progress = httr::progress()))
+|==============================================| 100%
 ```
 
 ### Advanced: Function Queries
@@ -435,14 +437,13 @@ Function Queries allow you to query on actual numeric fields in the SOLR databas
 cli$search(params = list(q='_val_:"product(counter_total_all,alm_twitterCount)"',
   rows=5, fl='id,title', fq='doc_type:full'))
 #> # A tibble: 5 x 2
-#>                             id
-#>                          <chr>
-#> 1 10.1371/journal.pmed.0020124
-#> 2 10.1371/journal.pone.0141854
-#> 3 10.1371/journal.pone.0073791
-#> 4 10.1371/journal.pone.0153419
-#> 5 10.1371/journal.pone.0115069
-#> # ... with 1 more variables: title <chr>
+#>   id                    title                                              
+#>   <chr>                 <chr>                                              
+#> 1 10.1371/journal.pmed… Why Most Published Research Findings Are False     
+#> 2 10.1371/journal.pone… A Multi-Level Bayesian Analysis of Racial Bias in …
+#> 3 10.1371/journal.pcbi… Ten simple rules for structuring papers            
+#> 4 10.1371/journal.pone… More than 75 percent decline over 27 years in tota…
+#> 5 10.1371/journal.pone… Long-Term Follow-Up of Transsexual Persons Undergo…
 ```
 
 Here, we search for the papers with the most citations
@@ -452,14 +453,13 @@ Here, we search for the papers with the most citations
 cli$search(params = list(q='_val_:"max(counter_total_all)"',
     rows=5, fl='id,counter_total_all', fq='doc_type:full'))
 #> # A tibble: 5 x 2
-#>                                                        id
-#>                                                     <chr>
-#> 1                            10.1371/journal.pmed.0020124
-#> 2 10.1371/annotation/80bd7285-9d2d-403a-8e6f-9c375bf977ca
-#> 3                            10.1371/journal.pcbi.1003149
-#> 4                            10.1371/journal.pone.0141854
-#> 5                            10.1371/journal.pcbi.0030102
-#> # ... with 1 more variables: counter_total_all <int>
+#>   id                                                      counter_total_all
+#>   <chr>                                                               <int>
+#> 1 10.1371/journal.pmed.0020124                                      2597075
+#> 2 10.1371/annotation/80bd7285-9d2d-403a-8e6f-9c375bf977ca           1235195
+#> 3 10.1371/journal.pcbi.1003149                                      1113107
+#> 4 10.1371/journal.pone.0141854                                       878333
+#> 5 10.1371/journal.pcbi.0030102                                       776907
 ```
 
 Or with the most tweets
@@ -469,13 +469,13 @@ Or with the most tweets
 cli$search(params = list(q='_val_:"max(alm_twitterCount)"',
     rows=5, fl='id,alm_twitterCount', fq='doc_type:full'))
 #> # A tibble: 5 x 2
-#>                             id alm_twitterCount
-#>                          <chr>            <int>
-#> 1 10.1371/journal.pone.0141854             3401
-#> 2 10.1371/journal.pmed.0020124             3207
-#> 3 10.1371/journal.pone.0115069             2873
-#> 4 10.1371/journal.pmed.1001953             2821
-#> 5 10.1371/journal.pone.0061981             2392
+#>   id                           alm_twitterCount
+#>   <chr>                                   <int>
+#> 1 10.1371/journal.pmed.0020124             3468
+#> 2 10.1371/journal.pone.0141854             3437
+#> 3 10.1371/journal.pcbi.1005619             3096
+#> 4 10.1371/journal.pone.0115069             3027
+#> 5 10.1371/journal.pmed.1001953             2825
 ```
 
 ### Using specific data sources
@@ -489,10 +489,10 @@ The occurrences service
 conn <- SolrClient$new(scheme = "https", host = "bison.usgs.gov", path = "solr/occurrences/select", port = NULL)
 conn$search(params = list(q = '*:*', fl = c('decimalLatitude','decimalLongitude','scientificName'), rows = 2))
 #> # A tibble: 2 x 3
-#>   decimalLongitude         scientificName decimalLatitude
-#>              <dbl>                  <chr>           <dbl>
-#> 1        -116.5694 Zonotrichia leucophrys        34.05072
-#> 2        -116.5694    Tyrannus vociferans        34.05072
+#>   decimalLongitude scientificName              decimalLatitude
+#>              <dbl> <chr>                                 <dbl>
+#> 1            -75.4 Setophaga coronata coronata            37.9
+#> 2            -75.4 Setophaga coronata coronata            37.9
 ```
 
 The species names service
@@ -502,18 +502,18 @@ The species names service
 conn <- SolrClient$new(scheme = "https", host = "bison.usgs.gov", path = "solr/scientificName/select", port = NULL)
 conn$search(params = list(q = '*:*'))
 #> # A tibble: 10 x 2
-#>                scientificName  `_version_`
-#>                         <chr>        <dbl>
-#>  1 Dictyopteris polypodioides 1.565325e+18
-#>  2           Lonicera iberica 1.565325e+18
-#>  3            Epuraea ambigua 1.565325e+18
-#>  4   Pseudopomala brachyptera 1.565325e+18
-#>  5    Didymosphaeria populina 1.565325e+18
-#>  6                   Sanoarca 1.565325e+18
-#>  7     Celleporina ventricosa 1.565325e+18
-#>  8         Trigonurus crotchi 1.565325e+18
-#>  9       Ceraticelus laticeps 1.565325e+18
-#> 10           Micraster acutus 1.565325e+18
+#>    scientificName             `_version_`
+#>    <chr>                            <dbl>
+#>  1 Dictyopteris polypodioides     1.57e18
+#>  2 Lonicera iberica               1.57e18
+#>  3 Epuraea ambigua                1.57e18
+#>  4 Pseudopomala brachyptera       1.57e18
+#>  5 Didymosphaeria populina        1.57e18
+#>  6 Sanoarca                       1.57e18
+#>  7 Celleporina ventricosa         1.57e18
+#>  8 Trigonurus crotchi             1.57e18
+#>  9 Ceraticelus laticeps           1.57e18
+#> 10 Micraster acutus               1.57e18
 ```
 
 __PLOS Search API__
