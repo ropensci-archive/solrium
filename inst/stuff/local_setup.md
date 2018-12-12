@@ -7,13 +7,15 @@
 Local Solr setup
 ======
 
+The Solr version you are working with my differ from below. Don't worry, just go with the version you want to use.
+
 ### OSX
 
-__Based on http://lucene.apache.org/solr/quickstart.html__
+__Based on http://lucene.apache.org/solr/guide/7_0/solr-tutorial.html__
 
-1. Download most recent version from an Apache mirror http://www.apache.org/dyn/closer.cgi/lucene/solr/5.4.1
-2. Unzip/untar the file. Move to your desired location. Now you have Solr `v.5.4.1`
-3. Go into the directory you just created: `cd solr-5.4.1`
+1. Download most recent version from an Apache mirror https://lucene.apache.org/solr/
+2. Unzip/untar the file. Move to your desired location. Now you have Solr `v.7.0.0`
+3. Go into the directory you just created: `cd solr-7.0.0`
 4. Launch Solr: `bin/solr start -e cloud -noprompt` - Sets up SolrCloud mode, rather
 than Standalone mode. As far as I can tell, SolrCloud mode seems more common.
 5. Once Step 4 completes, you can go to `http://localhost:8983/solr/` now, which is
@@ -37,13 +39,28 @@ You should be able to use the above instructions for OSX on a Windows machine, b
 
 ### `solrium` usage
 
+First, setup a connection object
+
+
+```r
+(conn <- SolrClient$new())
+```
+
+```
+## <Solr Client>
+##   host: 127.0.0.1
+##   path: 
+##   port: 8983
+##   scheme: http
+##   errors: simple
+##   proxy:
+```
+
 And we can now use the `solrium` R package to query the Solr database to get raw JSON data:
 
 
 ```r
-solr_connect('http://localhost:8983')
-solr_search("gettingstarted", q = '*:*', raw = TRUE, rows = 3)
-
+conn$search("gettingstarted", params = list(q = '*:*', rows = 3), raw = TRUE)
 #> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":8,\"params\":{\"q\":\"*:*\",\"rows\":\"3\",\"wt\":\"json\"}},\"response\":{\"numFound\":3577,\"start\":0,\"maxScore\":1.0,\"docs\":[{\"id\":\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmenter.html\",\"stream_size\":[9016],\"date\":[\"2015-06-10T00:00:00Z\"],\"x_parsed_by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"stream_content_type\":[\"text/html\"],\"dc_title\":[\"Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)\"],\"content_encoding\":[\"UTF-8\"],\"resourcename\":[\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmenter.html\"],\"title\":[\"Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)\"],\"content_type\":[\"text/html\"],\"_version_\":1507965023127863296},{\"id\":\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmentsBuilder.html\",\"stream_size\":[10336],\"date\":[\"2015-06-10T00:00:00Z\"],\"x_parsed_by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"stream_content_type\":[\"text/html\"],\"dc_title\":[\"Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)\"],\"content_encoding\":[\"UTF-8\"],\"resourcename\":[\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmentsBuilder.html\"],\"title\":[\"Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)\"],\"content_type\":[\"text/html\"],\"_version_\":1507965023153029120},{\"id\":\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/internal/csv/CSVParser.html\",\"stream_size\":[32427],\"date\":[\"2015-06-10T00:00:00Z\"],\"x_parsed_by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"stream_content_type\":[\"text/html\"],\"dc_title\":[\"CSVParser (Solr 5.2.1 API)\"],\"content_encoding\":[\"UTF-8\"],\"resourcename\":[\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/internal/csv/CSVParser.html\"],\"title\":[\"CSVParser (Solr 5.2.1 API)\"],\"content_type\":[\"text/html\"],\"_version_\":1507965023221186560}]}}\n"
 #> attr(,"class")
 #> [1] "sr_search"
@@ -55,8 +72,7 @@ Or parsed data to a data.frame (just looking at a few columns for brevity):
 
 
 ```r
-solr_search("gettingstarted", q = '*:*', fl = c('date', 'title'))
-
+conn$search("gettingstarted", params = list(q = '*:*', fl = c('date', 'title')))
 #> Source: local data frame [10 x 2]
 #>
 #>                    date                                                                         title
@@ -71,6 +87,8 @@ solr_search("gettingstarted", q = '*:*', fl = c('date', 'title'))
 #> 9  2015-06-10T00:00:00Z                                                    CSVConfig (Solr 5.2.1 API)
 #> 10 2015-06-10T00:00:00Z                                             CSVConfigGuesser (Solr 5.2.1 API)
 ```
+
+## Other Vignettes
 
 See the other vignettes for more thorough examples:
 

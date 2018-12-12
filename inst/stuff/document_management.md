@@ -68,7 +68,7 @@ conn$add(df, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 51
+#> [1] 36
 ```
 
 ### list
@@ -87,7 +87,7 @@ conn$add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 26
+#> [1] 37
 ```
 
 ## Delete documents
@@ -112,7 +112,7 @@ conn$add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 438
+#> [1] 42
 ```
 
 And the documents are now in your Solr database
@@ -124,11 +124,11 @@ conn$search(name = "gettingstarted", params = list(q = "*:*", rows = 3))
 
 ```
 #> # A tibble: 3 x 4
-#>      id   title title_str  `_version_`
-#>   <chr>   <chr>     <chr>        <dbl>
-#> 1    10 adfadsf   adfadsf 1.582911e+18
-#> 2    12  though    though 1.582911e+18
-#> 3    14 animals   animals 1.582911e+18
+#>   id    title   title_str `_version_`
+#>   <chr> <chr>   <chr>           <dbl>
+#> 1 10    adfadsf adfadsf       1.62e18
+#> 2 12    though  though        1.62e18
+#> 3 14    animals animals       1.62e18
 ```
 
 Now delete those documents just added
@@ -144,7 +144,7 @@ conn$delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 129
+#> [1] 19
 ```
 
 And now they are gone
@@ -156,11 +156,11 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 4))
 
 ```
 #> # A tibble: 3 x 4
-#>      id   title title_str  `_version_`
-#>   <chr>   <chr>     <chr>        <dbl>
-#> 1    10 adfadsf   adfadsf 1.582911e+18
-#> 2    12  though    though 1.582911e+18
-#> 3    14 animals   animals 1.582911e+18
+#>   id    title   title_str `_version_`
+#>   <chr> <chr>   <chr>           <dbl>
+#> 1 10    adfadsf adfadsf       1.62e18
+#> 2 12    though  though        1.62e18
+#> 3 14    animals animals       1.62e18
 ```
 
 ### By query
@@ -178,7 +178,7 @@ conn$add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 620
+#> [1] 33
 ```
 
 And the documents are now in your Solr database
@@ -190,13 +190,13 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 
 ```
 #> # A tibble: 5 x 7
-#>      id   title title_str  `_version_` price  name name_str
-#>   <chr>   <chr>     <chr>        <dbl> <int> <chr>    <chr>
-#> 1    10 adfadsf   adfadsf 1.582911e+18    NA  <NA>     <NA>
-#> 2    12  though    though 1.582911e+18    NA  <NA>     <NA>
-#> 3    14 animals   animals 1.582911e+18    NA  <NA>     <NA>
-#> 4     1    <NA>      <NA> 1.582912e+18   100 brown    brown
-#> 5     2    <NA>      <NA> 1.582912e+18   500  blue     blue
+#>   id    title   title_str `_version_` price name  name_str
+#>   <chr> <chr>   <chr>           <dbl> <int> <chr> <chr>   
+#> 1 10    adfadsf adfadsf       1.62e18    NA <NA>  <NA>    
+#> 2 12    though  though        1.62e18    NA <NA>  <NA>    
+#> 3 14    animals animals       1.62e18    NA <NA>  <NA>    
+#> 4 1     <NA>    <NA>          1.62e18   100 brown brown   
+#> 5 2     <NA>    <NA>          1.62e18   500 blue  blue
 ```
 
 Now delete those documents just added
@@ -212,7 +212,7 @@ conn$delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 45
+#> [1] 26
 ```
 
 And now they are gone
@@ -224,12 +224,12 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 
 ```
 #> # A tibble: 4 x 7
-#>      id   title title_str  `_version_` price  name name_str
-#>   <chr>   <chr>     <chr>        <dbl> <int> <chr>    <chr>
-#> 1    10 adfadsf   adfadsf 1.582911e+18    NA  <NA>     <NA>
-#> 2    12  though    though 1.582911e+18    NA  <NA>     <NA>
-#> 3    14 animals   animals 1.582911e+18    NA  <NA>     <NA>
-#> 4     1    <NA>      <NA> 1.582912e+18   100 brown    brown
+#>   id    title   title_str `_version_` price name  name_str
+#>   <chr> <chr>   <chr>           <dbl> <int> <chr> <chr>   
+#> 1 10    adfadsf adfadsf       1.62e18    NA <NA>  <NA>    
+#> 2 12    though  though        1.62e18    NA <NA>  <NA>    
+#> 3 14    animals animals       1.62e18    NA <NA>  <NA>    
+#> 4 1     <NA>    <NA>          1.62e18   100 brown brown
 ```
 
 ## Update documents from files
@@ -256,7 +256,7 @@ conn$update_json(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 58
+#> [1] 59
 ```
 
 ### Add and delete in the same file
@@ -275,7 +275,7 @@ conn$add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 49
+#> [1] 57
 ```
 
 Now add a new document, and delete the one we just made
@@ -298,7 +298,6 @@ cat(readLines(file), sep = "\n")
 #> 	    <field name="sequence_i">1</field>
 #> 	    <field name="genre_s">fantasy</field>
 #> 	    <field name="inStock">TRUE</field>
-#> 	    <field name="price">12.5</field>
 #> 	    <field name="pages_i">384</field>
 #> 	  </doc>
 #> 	</add>
@@ -318,7 +317,7 @@ conn$update_xml(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 32
+#> [1] 30
 ```
 
 ### Notes
