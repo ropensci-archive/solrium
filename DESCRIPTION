@@ -7,7 +7,8 @@ Description: Provides a set of functions for querying and parsing data
     creating, deleting, and updating documents in a 'Solr' 'database'.
 Version: 1.0.1.9421
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
-    email = "myrmecocystus@gmail.com")
+    email = "myrmecocystus@gmail.com", 
+    comment = c(ORCID="0000-0003-1444-9135"))
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/solrium
 BugReports: https://github.com/ropensci/solrium/issues
