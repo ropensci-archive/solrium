@@ -33,3 +33,6 @@ test_that("update_csv fails well", {
 
   expect_error(update_csv(5), "conn must be a SolrClient object")
 })
+
+# cleanup
+unlink("df.csv")

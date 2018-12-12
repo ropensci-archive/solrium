@@ -200,6 +200,24 @@ solr_search(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
 ## verbose
 solr_search(cli, params = list(q='*:*', rows=2, fl='id'),
   callopts = list(verbose=TRUE))
+
+# using a cursor for deep paging
+(cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
+## json, raw data
+res <- solr_search(cli, params = list(q = '*:*', rows = 100, sort = "id asc", cursorMark = "*"), 
+  parsetype = "json", raw = TRUE, callopts=list(verbose=TRUE))
+res
+## data.frame
+res <- solr_search(cli, params = list(q = '*:*', rows = 100, sort = "id asc", cursorMark = "*"))
+res
+attributes(res)
+attr(res, "nextCursorMark")
+## list
+res <- solr_search(cli, params = list(q = '*:*', rows = 100, sort = "id asc", cursorMark = "*"),
+  parsetype = "list")
+res
+attributes(res)
+attr(res, "nextCursorMark")
 }
 }
 \references{

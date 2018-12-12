@@ -106,3 +106,12 @@ test_that("solr_all fails if optimize max rows is disabled with rows equal to -1
     "'rows' parameter cannot be negative"
   )
 })
+
+
+test_that("solr_all: attributes", {
+  skip_on_cran()
+
+  a <- conn_dc$all(params = list(q = '*:*', rows = 2))
+  expect_is(attr(a, "responseHeader"), "list")
+  expect_named(attr(a, "responseHeader"), c("status", "QTime"))
+})

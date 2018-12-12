@@ -42,7 +42,10 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
   if (inherits(unclass(input), "character")) {
     input <- parse_ch(input, parsetype, concat)
   }
+  # collect attributes
   wt <- attributes(input)$wt
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
 
   # Facet queries
   if (wt == 'json') {
@@ -174,7 +177,16 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
               facet_pivot = replacelen0(fpout),
               facet_dates = replacelen0(datesout),
               facet_ranges = replacelen0(rangesout))
-  res <- if (length(sc(res)) == 0) NULL else res
+  res <- if (length(sc(res)) == 0) list() else res
+
+  # attributes
+  if (!is.null(next_cursor_mark)) {
+    res <- add_atts(res, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    res <- add_atts(res, list(responseHeader = response_header))
+  }
+
   return( res )
 }
 
@@ -182,7 +194,10 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
 #' @rdname solr_parse
 solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
   if (inherits(unclass(input), "character")) input <- parse_ch(input, parsetype, concat)
+  # collect attributes
   wt <- attributes(input)$wt
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$highlight
@@ -216,6 +231,14 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
     }
   }
 
+  # attributes
+  if (!is.null(next_cursor_mark)) {
+    highout <- add_atts(highout, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    highout <- add_atts(highout, list(responseHeader = response_header))
+  }
+
   return( highout )
 }
 
@@ -223,7 +246,10 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
 #' @rdname solr_parse
 solr_parse.sr_search <- function(input, parsetype = 'list', concat = ',') {
   if (inherits(unclass(input), "character")) input <- parse_ch(input, parsetype, concat)
+  # collect attributes
   wt <- attributes(input)$wt
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$response$docs
@@ -257,13 +283,20 @@ solr_parse.sr_search <- function(input, parsetype = 'list', concat = ',') {
     datout <- input
   }
 
+  if (!is.null(next_cursor_mark)) {
+    datout <- add_atts(datout, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    datout <- add_atts(datout, list(responseHeader = response_header))
+  }
+
   return( datout )
 }
 
 #' @export
 #' @rdname solr_parse
 solr_parse.sr_all <- function(input, parsetype = 'list', concat = ',') {
-  list(
+  tmp <- list(
     search = solr_parse.sr_search(unclass(input), parsetype, concat),
     facet = solr_parse.sr_facet(unclass(input), parsetype, concat),
     high = solr_parse.sr_high(unclass(input), parsetype, concat),
@@ -271,13 +304,31 @@ solr_parse.sr_all <- function(input, parsetype = 'list', concat = ',') {
     group = solr_parse.sr_group(unclass(input), parsetype, concat),
     stats = solr_parse.sr_stats(unclass(input), parsetype, concat)
   )
+  # drop attributes within each result, add to top level list
+  tmp <- lapply(tmp, function(z) {
+    attr(z, "nextCursorMark") <- NULL
+    attr(z, "responseHeader") <- NULL
+    z
+  })
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
+  if (!is.null(next_cursor_mark)) {
+    tmp <- add_atts(tmp, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    tmp <- add_atts(tmp, list(responseHeader = response_header))
+  }
+  return(tmp)
 }
 
 #' @export
 #' @rdname solr_parse
 solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
   if (inherits(unclass(input), "character")) input <- parse_ch(input, parsetype, concat)
+  # collect attributes
   wt <- attributes(input)$wt
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
   if (wt == 'json') {
     if (parsetype == 'df') {
       res <- input$response
@@ -370,6 +421,13 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
     }
   }
 
+  if (!is.null(next_cursor_mark)) {
+    datout <- add_atts(datout, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    datout <- add_atts(datout, list(responseHeader = response_header))
+  }
+
   return( datout )
 }
 
@@ -377,13 +435,19 @@ solr_parse.sr_mlt <- function(input, parsetype = 'list', concat = ',') {
 #' @rdname solr_parse
 solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
   if (inherits(unclass(input), "character")) input <- parse_ch(input, parsetype, concat)
+  # collect attributes
   wt <- attributes(input)$wt
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
   if (wt == 'json') {
     if (parsetype == 'df') {
       dat <- input$stats$stats_fields
 
-      dat2 <- lapply(dat, function(x){
-        data.frame(x[!names(x) %in% 'facets'])
+      dat2 <- lapply(dat, function(x) {
+        # fill null's first
+        tmp <- x[!names(x) %in% 'facets']
+        tmp[sapply(tmp, class) == "NULL"] <- NA_character_
+        data.frame(tmp, stringsAsFactors = FALSE)
       })
       dat_reg <- do.call(rbind, dat2)
 
@@ -423,11 +487,15 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
     } else {
       dat <- input$stats$stats_fields
       # w/o facets
-      dat_reg <- lapply(dat, function(x){
-        x[!names(x) %in% 'facets']
+      dat_reg <- lapply(dat, function(x) {
+        # fill null's first
+        tmp <- x[!names(x) %in% 'facets']
+        tmp[sapply(tmp, class) == "NULL"] <- NA_character_
+        tmp
       })
       # just facets
       dat_facet <- lapply(dat, function(x){
+        if (!'facets' %in% names(x)) return(list())
         facetted <- x[names(x) %in% 'facets'][[1]]
         if (length(facetted) == 1) {
           lapply(facetted[[1]], function(z) z[!names(z) %in% 'facets'])
@@ -475,6 +543,13 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
     }
   }
 
+  if (!is.null(next_cursor_mark)) {
+    datout <- add_atts(datout, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    datout <- add_atts(datout, list(responseHeader = response_header))
+  }
+
   datout <- if (length(Filter(length, datout)) == 0) NULL else datout
   return( datout )
 }
@@ -483,7 +558,10 @@ solr_parse.sr_stats <- function(input, parsetype = 'list', concat = ',') {
 #' @rdname solr_parse
 solr_parse.sr_group <- function(input, parsetype = 'list', concat = ',') {
   if (inherits(unclass(input), "character")) input <- parse_ch(input, parsetype, concat)
+  # collect attributes
   wt <- attributes(input)$wt
+  next_cursor_mark <- input$nextCursorMark
+  response_header <- input$responseHeader
 
   if (wt == 'json') {
     if (parsetype == 'df') {
@@ -592,6 +670,13 @@ solr_parse.sr_group <- function(input, parsetype = 'list', concat = ',') {
         }), vapply(xml_children(tt), function(z) xml_text(xml_find_first(z, "str")) %||% "", ""))
       }), xml_attr(temp, "name"))
     }
+  }
+
+  if (!is.null(next_cursor_mark)) {
+    datout <- add_atts(datout, list(nextCursorMark = next_cursor_mark))
+  }
+  if (!is.null(response_header)) {
+    datout <- add_atts(datout, list(responseHeader = response_header))
   }
 
   return( datout )
