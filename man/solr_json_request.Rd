@@ -29,6 +29,8 @@ search using the JSON request API
 \note{
 SOLR v7.1 was first version to support this. See
 \url{https://issues.apache.org/jira/browse/SOLR-11244}
+
+POST request only, no GET request available
 }
 \examples{
 \dontrun{
