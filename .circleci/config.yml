@@ -7,7 +7,6 @@ jobs:
       - image: solr:latest
     steps:
       - checkout
-      - setup_remote_docker
       - run: 
           name: start solr
           command: docker run --name my_solr -d -p 8983:8983 -t solr
