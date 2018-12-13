@@ -1,7 +1,7 @@
 ## Test environments
 
-* local OS X install, R 3.4.2 patched
-* ubuntu 12.04 (on travis-ci), R 3.4.2
+* local OS X install, R 3.5.1 patched
+* ubuntu 14.04 (on travis-ci), R 3.5.1
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -11,18 +11,17 @@
    License components with restrictions and base license permitting such:
      MIT + file LICENSE
    File 'LICENSE':
-     YEAR: 2017
+     YEAR: 2018
      COPYRIGHT HOLDER: Scott Chamberlain
 
 ## Reverse dependencies
 
-* I have run R CMD check on the 2 downstream dependencies.
-  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>),
-  with no problems caused.
+* I have run R CMD check on the 4 downstream dependencies.
+  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>), with no problems caused.
 
 -----
 
-This release includes a lot of big changes, and thus bumped to v1.
+This release includes a fix for an upcoming version of the tibble package and a few small features.
 
 Thanks!
 Scott Chamberlain

@@ -1,3 +1,17 @@
+solrium 1.0.2
+=============
+
+### NEW FEATURES
+
+* the major search methods on `SolrClient` and their function equivalents gain parameter `progress` that supports for now only `httr::progress()` (#115)
+* gains new method `$json_request()` on `SolrClient` and new function `solr_json_request()` for working with the JSON request API (#117)
+
+### MINOR IMPROVEMENTS
+
+* now returning `responseHeader` and `nextCursorMark` when available as attributes on the returned object (#114)
+* fixes for upcoming version of `tibble` (#116)
+
+
 solrium 1.0.0
 =============
 
