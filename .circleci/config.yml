@@ -5,6 +5,7 @@ jobs:
       - image: rocker/tidyverse:3.5.1
       - image: solr:latest
     steps:
+      - setup_remote_docker
       - checkout
       - run: 
           name: start solr
