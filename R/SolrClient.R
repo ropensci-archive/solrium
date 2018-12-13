@@ -97,20 +97,20 @@
 #' raw = FALSE,  parsetype = 'df', concat = ',', optimizeMaxRows = TRUE,
 #' minOptimizedRows = 50000L, progress = NULL, ...)`
 #' * `facet(name = NULL, params = NULL, body = NULL, callopts = list(),
-#' raw = FALSE,  parsetype = 'df', concat = ',', ...)`
+#' raw = FALSE,  parsetype = 'df', concat = ',', progress = NULL, ...)`
 #' * `stats(name = NULL, params = list(q = '*:*', stats.field = NULL,
 #' stats.facet = NULL), body = NULL, callopts=list(), raw = FALSE,
-#' parsetype = 'df', ...)`
+#' parsetype = 'df', progress = NULL, ...)`
 #' * `highlight(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw = FALSE, parsetype = 'df', ...)`
+#' raw = FALSE, parsetype = 'df', progress = NULL, ...)`
 #' * `group(name = NULL, params = NULL, body = NULL, callopts=list(),
-#' raw=FALSE, parsetype='df', concat=',', ...)`
+#' raw=FALSE, parsetype='df', concat=',', progress = NULL, ...)`
 #' * `mlt(name = NULL, params = NULL, body = NULL, callopts=list(),
 #' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' minOptimizedRows = 50000L, progress = NULL, ...)`
 #' * `all(name = NULL, params = NULL, body = NULL, callopts=list(),
 #' raw=FALSE, parsetype='df', concat=',', optimizeMaxRows = TRUE,
-#' minOptimizedRows = 50000L, ...)`
+#' minOptimizedRows = 50000L, progress = NULL, ...)`
 #' * `json_request(name = NULL, body = NULL, callopts=list(), 
 #' progress = NULL)`
 #' * `get(ids, name, fl = NULL, wt = 'json', raw = FALSE, ...)`
