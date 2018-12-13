@@ -2,8 +2,8 @@ version: 2
 jobs:
   build:
     machine:
-      - image: rocker/tidyverse:3.5.1
-      - image: solr:latest
+      image: rocker/tidyverse:3.5.1
+      image: solr:latest
     steps:
       - checkout
       - run: 
