@@ -1,11 +1,13 @@
 version: 2
 jobs:
   build:
-    machine:
-      image: rocker/tidyverse:3.5.1
-      image: solr:latest
+    docker:
+      - image: circleci/cci-demo-docker-primary:0.0.2
+      - image: rocker/tidyverse:3.5.1
+      - image: solr:latest
     steps:
       - checkout
+      - setup_remote_docker
       - run: 
           name: start solr
           command: docker run --name my_solr -d -p 8983:8983 -t solr
