@@ -1,35 +1,31 @@
-# Setup
+# Platform
 
-## Platform
+|field    |value                                       |
+|:--------|:-------------------------------------------|
+|version  |R version 3.5.1 Patched (2018-11-18 r75627) |
+|os       |macOS Mojave 10.14.1                        |
+|system   |x86_64, darwin15.6.0                        |
+|ui       |X11                                         |
+|language |(EN)                                        |
+|collate  |en_US.UTF-8                                 |
+|ctype    |en_US.UTF-8                                 |
+|tz       |US/Pacific                                  |
+|date     |2018-12-12                                  |
 
-|setting  |value                        |
-|:--------|:----------------------------|
-|version  |R version 3.3.1 (2016-06-21) |
-|system   |x86_64, darwin13.4.0         |
-|ui       |RStudio (1.0.1)              |
-|language |(EN)                         |
-|collate  |en_US.UTF-8                  |
-|tz       |America/Los_Angeles          |
-|date     |2016-10-05                   |
+# Dependencies
 
-## Packages
+|package |old   |new   |Δ  |
+|:-------|:-----|:-----|:--|
+|solrium |1.0.0 |1.0.2 |*  |
 
-|package |*  |version |date       |source                      |
-|:-------|:--|:-------|:----------|:---------------------------|
-|solrium |   |0.4.0   |2016-10-05 |local (ropensci/solrium@NA) |
+# Revdeps
 
-# Check results
-2 packages
+## All (4)
 
-## rdatacite (0.1.0)
-Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: https://github.com/ropensci/rdatacite/issues
-
-0 errors | 0 warnings | 0 notes
-
-## ritis (0.5.0)
-Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>  
-Bug reports: https://github.com/ropensci/ritis/issues
-
-0 errors | 0 warnings | 0 notes
+|package   |version |error |warning |note |
+|:---------|:-------|:-----|:-------|:----|
+|rdatacite |0.4.0   |      |        |     |
+|rdryad    |0.4.0   |      |        |     |
+|ritis     |0.7.2   |      |        |     |
+|rplos     |0.8.4   |      |        |     |
 

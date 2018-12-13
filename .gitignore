@@ -4,3 +4,6 @@
 .httr-oauth
 .RData
 inst/ignore/progress_bars_notes.R
+revdep/checks.noindex
+revdep/data.sqlite
+revdep/library.noindex

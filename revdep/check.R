@@ -1,1 +1,1 @@
-revdepcheck::revdep_check(threads = 4)
+revdepcheck::revdep_check(num_workers = 2)
