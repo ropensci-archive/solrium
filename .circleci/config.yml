@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: rocker/tidyverse:3.5.1
+      - image: solr:latest
+    steps:
+      - checkout
+      - run: 
+          name: start solr
+          command: docker run --name my_solr -d -p 8983:8983 -t solr
+      - run: 
+          name: load solr data
+          command: docker exec -it --user=solr my_solr bin/solr create_core -c gettingstarted
+      - run: 
+          name: solrium checks
+          command: R -e "devtools::check()"
+
