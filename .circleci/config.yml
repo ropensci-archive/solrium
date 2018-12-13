@@ -1,12 +1,13 @@
 version: 2
 jobs:
   build:
+    machine: true
     docker:
       - image: rocker/tidyverse:3.5.1
       - image: solr:latest
     steps:
-      - setup_remote_docker
       - checkout
+      - setup_remote_docker
       - run: 
           name: start solr
           command: docker run --name my_solr -d -p 8983:8983 -t solr
