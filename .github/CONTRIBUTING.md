@@ -1,7 +1,5 @@
 # CONTRIBUTING #
 
-## Please contribute!
-
 ## Bugs?
 
 * Submit an issue on the [Issues page](https://github.com/ropensci/solrium/issues) - be sure to include R session information and a reproducible example.
@@ -71,6 +69,4 @@ Be very conservative about adding new dependencies.
 
 ## Also, check out our [discussion forum](https://discuss.ropensci.org)
 
-## Prefer to Email? Get in touch: [scott@ropensci.org](mailto:scott@ropensci.org)
-
-## Thanks for contributing!
+### Prefer to Email? Get in touch: [myrmecocystus@gmail.com](mailto:myrmecocystus@gmail.com)
