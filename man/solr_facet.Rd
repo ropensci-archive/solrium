@@ -369,7 +369,7 @@ solr_facet(cli, params = list(q='*:*', facet.field='computedStateFips'))
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/SimpleFacetParameters} for
+See http://wiki.apache.org/solr/SimpleFacetParameters for
 more information on faceting.
 }
 \seealso{

@@ -12,28 +12,25 @@ documents.
 }
 \section{Important search functions}{
 
-
 \itemize{
-\item \code{\link{solr_search}} - General search, only returns documents
-\item \code{\link{solr_all}} - General search, including all non-documents
+\item \code{\link[=solr_search]{solr_search()}} - General search, only returns documents
+\item \code{\link[=solr_all]{solr_all()}} - General search, including all non-documents
 in addition to documents: facets, highlights, groups, mlt, stats.
-\item \code{\link{solr_facet}} - Faceting only (w/o general search)
-\item \code{\link{solr_highlight}} - Highlighting only (w/o general search)
-\item \code{\link{solr_mlt}} - More like this (w/o general search)
-\item \code{\link{solr_group}} - Group search (w/o general search)
-\item \code{\link{solr_stats}} - Stats search (w/o general search)
+\item \code{\link[=solr_facet]{solr_facet()}} - Faceting only (w/o general search)
+\item \code{\link[=solr_highlight]{solr_highlight()}} - Highlighting only (w/o general search)
+\item \code{\link[=solr_mlt]{solr_mlt()}} - More like this (w/o general search)
+\item \code{\link[=solr_group]{solr_group()}} - Group search (w/o general search)
+\item \code{\link[=solr_stats]{solr_stats()}} - Stats search (w/o general search)
 }
 }
 
 \section{Important Solr management functions}{
 
-
 \itemize{
-\item \code{\link{update_json}} - Add or delete documents using json in a
-file
-\item \code{\link{add}} - Add documents via an R list or data.frame
-\item \code{\link{delete_by_id}} - Delete documents by ID
-\item \code{\link{delete_by_query}} - Delete documents by query
+\item \code{\link[=update_json]{update_json()}} - Add or delete documents using json in a file
+\item \code{\link[=add]{add()}} - Add documents via an R list or data.frame
+\item \code{\link[=delete_by_id]{delete_by_id()}} - Delete documents by ID
+\item \code{\link[=delete_by_query]{delete_by_query()}} - Delete documents by query
 }
 }
 
@@ -55,11 +52,11 @@ in directly to a data.frame.
 The http library we use, \pkg{crul}, sets gzip compression header by
 default. As long as compression is used server side, you're good to go on
 compression, which should be a good peformance boost. See
-\url{https://wiki.apache.org/solr/SolrPerformanceFactors#Query_Response_Compression}
+https://wiki.apache.org/solr/SolrPerformanceFactors#Query_Response_Compression
 for notes on how to enable compression.
 
 There are other notes about Solr performance at
-\url{https://wiki.apache.org/solr/SolrPerformanceFactors} that can be
+https://wiki.apache.org/solr/SolrPerformanceFactors that can be
 used server side/in your Solr config, but aren't things to tune here in
 this R client.
 

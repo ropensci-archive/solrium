@@ -12,7 +12,7 @@
 #' Required.
 #' @param async	(character) Request ID to track this action which will be
 #' processed asynchronously
-#' @details Do not use \code{core_swap} with a SolrCloud node. It is not
+#' @details Do not use `core_swap` with a SolrCloud node. It is not
 #' supported and can result in the core being unusable. We'll try to stop
 #' you if you try.
 #' @examples \dontrun{

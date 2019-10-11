@@ -12,7 +12,7 @@
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
-#' @references See <http://wiki.apache.org/solr/#Search_and_Indexing> for
+#' @references See http://wiki.apache.org/solr/#Search_and_Indexing for
 #' more information.
 #' @examples \dontrun{
 #' # connect

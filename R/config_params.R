@@ -5,13 +5,13 @@
 #' @param conn A solrium connection object, see [SolrClient]
 #' @param name (character) The name of the core. If not given, all cores.
 #' @param param (character) Name of a parameter
-#' @param set (list) List of key:value pairs of what to set. Create or overwrite
-#' a parameter set map. Default: NULL (nothing passed)
-#' @param unset (list) One or more character strings of keys to unset. Default: NULL
-#' (nothing passed)
-#' @param update (list) List of key:value pairs of what to update. Updates a parameter
-#' set map. This essentially overwrites the old parameter set, so all parameters must
-#' be sent in each update request.
+#' @param set (list) List of key:value pairs of what to set. Create or
+#' overwrite a parameter set map. Default: NULL (nothing passed)
+#' @param unset (list) One or more character strings of keys to unset.
+#' Default: `NULL` (nothing passed)
+#' @param update (list) List of key:value pairs of what to update. Updates
+#' a parameter set map. This essentially overwrites the old parameter set,
+#' so all parameters must be sent in each update request.
 #' @param ... curl options passed on to [crul::HttpClient]
 #' @return A list with response from server
 #' @details The Request Parameters API allows creating parameter sets that can

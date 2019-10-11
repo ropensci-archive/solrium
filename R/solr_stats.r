@@ -11,7 +11,7 @@
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()], [solr_search()], [solr_mlt()]
-#' @references See <http://wiki.apache.org/solr/StatsComponent> for
+#' @references See http://wiki.apache.org/solr/StatsComponent for
 #' more information on Solr stats.
 #' @examples \dontrun{
 #' # connect

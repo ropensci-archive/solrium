@@ -53,7 +53,7 @@ including facets, groups, mlt, stats, and highlights.
 }
 \note{
 SOLR v1.2 was first version to support csv. See
-\url{https://issues.apache.org/jira/browse/SOLR-66}
+https://issues.apache.org/jira/browse/SOLR-66
 }
 \section{Parameters}{
 
@@ -226,7 +226,7 @@ attr(res, "nextCursorMark")
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/#Search_and_Indexing}
+See http://wiki.apache.org/solr/#Search_and_Indexing
 for more information.
 }
 \seealso{

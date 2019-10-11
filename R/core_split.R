@@ -8,21 +8,21 @@
 #' @export
 #'
 #' @inheritParams core_create
-#' @param path (character) Two or more target directory paths in which a piece of the
-#' index will be written
+#' @param path (character) Two or more target directory paths in which a piece
+#' of the index will be written
 #' @param targetCore (character) Two or more target Solr cores to which a piece
 #' of the index will be merged
-#' @param ranges (character) A list of number ranges, or hash ranges in hexadecimal format.
-#' If numbers, they get converted to hexidecimal format before being passed to
-#' your Solr server.
+#' @param ranges (character) A list of number ranges, or hash ranges in
+#' hexadecimal format. If numbers, they get converted to hexidecimal format
+#' before being passed to your Solr server.
 #' @param split.key (character) The key to be used for splitting the index
-#' @param async	(character) Request ID to track this action which will be processed
-#' asynchronously
-#' @details The core index will be split into as many pieces as the number of \code{path}
-#' or \code{targetCore} parameters.
+#' @param async	(character) Request ID to track this action which will be
+#' processed asynchronously
+#' @details The core index will be split into as many pieces as the number of
+#' `path` or `targetCore` parameters.
 #'
-#' Either \code{path} or \code{targetCore} parameter must be specified but not
-#' both. The \code{ranges} and \code{split.key} parameters are optional and only one of
+#' Either `path` or `targetCore` parameter must be specified but not
+#' both. The `ranges` and `split.key` parameters are optional and only one of
 #' the two should be specified, if at all required.
 #' @examples \dontrun{
 #' # start Solr with Schemaless mode via the schemaless eg: bin/solr start -e schemaless
@@ -56,12 +56,16 @@
 #' ### let's not make our lives any harder, so you can pass in numbers
 #' ### but you can still pass in hexidecimal if you want.
 #' rgs <- c('0-1f4', '1f5-3e8')
-#' conn$core_split("splitcoretest0", targetCore = c("splitcoretest1", "splitcoretest2"), ranges = rgs)
+#' conn$core_split("splitcoretest0",
+#'   targetCore = c("splitcoretest1", "splitcoretest2"), ranges = rgs)
 #' rgs <- list(c(0, 500), c(501, 1000))
-#' conn$core_split("splitcoretest0", targetCore = c("splitcoretest1", "splitcoretest2"), ranges = rgs)
+#' conn$core_split("splitcoretest0",
+#'   targetCore = c("splitcoretest1", "splitcoretest2"), ranges = rgs)
 #' }
-core_split <- function(conn, name, path = NULL, targetCore = NULL, ranges = NULL, split.key = NULL,
-                       async = NULL, raw = FALSE, callopts=list()) {
+core_split <- function(conn, name, path = NULL, targetCore = NULL,
+  ranges = NULL, split.key = NULL, async = NULL, raw = FALSE,
+  callopts=list()) {
+  
   conn$core_split(name, path, targetCore, ranges, async, raw, callopts)
 }
 

@@ -110,6 +110,6 @@ solr_parse(out, "df")
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/MoreLikeThis} for more
+See http://wiki.apache.org/solr/MoreLikeThis for more
 information.
 }

@@ -180,7 +180,7 @@ solr_parse(out, parsetype='list')
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/HighlightingParameters} for
+See http://wiki.apache.org/solr/HighlightingParameters for
 more information on highlighting.
 }
 \seealso{

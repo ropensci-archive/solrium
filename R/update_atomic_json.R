@@ -6,7 +6,7 @@
 #' @param body (character) JSON as a character string
 #' @inheritParams update_atomic_xml
 #' @references
-#' <https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html>
+#' https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html
 #' @examples \dontrun{
 #' # start Solr in Cloud mode: bin/solr start -e cloud -noprompt
 #'

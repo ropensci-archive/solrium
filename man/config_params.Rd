@@ -14,15 +14,15 @@ config_params(conn, name, param = NULL, set = NULL, unset = NULL,
 
 \item{param}{(character) Name of a parameter}
 
-\item{set}{(list) List of key:value pairs of what to set. Create or overwrite
-a parameter set map. Default: NULL (nothing passed)}
+\item{set}{(list) List of key:value pairs of what to set. Create or
+overwrite a parameter set map. Default: NULL (nothing passed)}
 
-\item{unset}{(list) One or more character strings of keys to unset. Default: NULL
-(nothing passed)}
+\item{unset}{(list) One or more character strings of keys to unset.
+Default: \code{NULL} (nothing passed)}
 
-\item{update}{(list) List of key:value pairs of what to update. Updates a parameter
-set map. This essentially overwrites the old parameter set, so all parameters must
-be sent in each update request.}
+\item{update}{(list) List of key:value pairs of what to update. Updates
+a parameter set map. This essentially overwrites the old parameter set,
+so all parameters must be sent in each update request.}
 
 \item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }

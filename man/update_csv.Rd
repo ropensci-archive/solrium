@@ -86,10 +86,9 @@ with &overwrite=false.}
 default is commit=false to avoid the potential performance impact of frequent commits.}
 
 \item{wt}{(character) One of json (default) or xml. If json, uses
-\code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[xml2]{read_xml}} to parse}
+\code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses \code{\link[xml2:read_xml]{xml2::read_xml()}} to parse}
 
-\item{raw}{(logical) If TRUE, returns raw data in format specified by
+\item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt} param}
 
 \item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
@@ -99,7 +98,7 @@ Update documents with CSV data
 }
 \note{
 SOLR v1.2 was first version to support csv. See
-\url{https://issues.apache.org/jira/browse/SOLR-66}
+https://issues.apache.org/jira/browse/SOLR-66
 }
 \examples{
 \dontrun{

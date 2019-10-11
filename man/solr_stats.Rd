@@ -97,7 +97,7 @@ solr_stats(cli, params = list(q='ecology', stats.field='alm_twitterCount'),
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/StatsComponent} for
+See http://wiki.apache.org/solr/StatsComponent for
 more information on Solr stats.
 }
 \seealso{

@@ -11,7 +11,7 @@
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
-#' @references See <http://wiki.apache.org/solr/FieldCollapsing> for more
+#' @references See http://wiki.apache.org/solr/FieldCollapsing for more
 #' information.
 #' @examples \dontrun{
 #' # connect

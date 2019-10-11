@@ -68,5 +68,5 @@ conn$get(ids = 343334534545, "books")
 }
 }
 \references{
-\url{https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html}
+https://lucene.apache.org/solr/guide/7_0/updating-parts-of-documents.html
 }

@@ -3,14 +3,14 @@
 #' @export
 #'
 #' @inheritParams core_create
-#' @param deleteIndex	(logical)	If `TRUE`, will remove the index when unloading
-#' the core. Default: `FALSE`
-#' @param deleteDataDir	(logical)	If `TRUE`, removes the data directory and all
-#' sub-directories. Default: `FALSE`
+#' @param deleteIndex (logical) If `TRUE`, will remove the index when
+#' unloading the core. Default: `FALSE`
+#' @param deleteDataDir	(logical)	If `TRUE`, removes the data directory
+#' and all sub-directories. Default: `FALSE`
 #' @param deleteInstanceDir	(logical)	If `TRUE`, removes everything related to
-#' the core, including the index directory, configuration files and other 
+#' the core, including the index directory, configuration files and other
 #' related files. Default: `FALSE`
-#' @param async	(character) Request ID to track this action which will be 
+#' @param async	(character) Request ID to track this action which will be
 #' processed asynchronously
 #' @examples \dontrun{
 #' # start Solr with Schemaless mode via the schemaless eg:
@@ -33,5 +33,5 @@ core_unload <- function(conn, name, deleteIndex = FALSE, deleteDataDir = FALSE,
                         raw = FALSE, callopts = list()) {
 
   conn$core_unload(name, deleteIndex, deleteDataDir, deleteInstanceDir, async,
-                   raw, callopts)
+    raw, callopts)
 }

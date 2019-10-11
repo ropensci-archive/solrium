@@ -158,7 +158,7 @@ solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
 }
 }
 \references{
-See \url{http://wiki.apache.org/solr/FieldCollapsing} for more
+See http://wiki.apache.org/solr/FieldCollapsing for more
 information.
 }
 \seealso{

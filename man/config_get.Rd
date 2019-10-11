@@ -15,8 +15,8 @@ config_get(conn, name, what = NULL, wt = "json", raw = FALSE, ...)
 schema. Default: solrconfig}
 
 \item{wt}{(character) One of json (default) or xml. Data type returned.
-If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-\code{\link[xml2]{read_xml}} to parse.}
+If json, uses \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} to parse. If xml, uses
+\code{\link[xml2:read_xml]{xml2::read_xml()}} to parse.}
 
 \item{raw}{(logical) If \code{TRUE}, returns raw data in format specified by
 \code{wt}}

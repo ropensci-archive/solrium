@@ -7,14 +7,14 @@
 #' @param what (character) What you want to look at. One of solrconfig or
 #' schema. Default: solrconfig
 #' @param wt (character) One of json (default) or xml. Data type returned.
-#' If json, uses \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses
-#' \code{\link[xml2]{read_xml}} to parse.
+#' If json, uses [jsonlite::fromJSON()] to parse. If xml, uses
+#' [xml2::read_xml()] to parse.
 #' @param raw (logical) If `TRUE`, returns raw data in format specified by
-#' \code{wt}
+#' `wt`
 #' @param ... curl options passed on to [crul::HttpClient]
-#' @return A list, \code{xml_document}, or character
-#' @details Note that if \code{raw=TRUE}, \code{what} is ignored. That is,
-#' you get all the data when \code{raw=TRUE}.
+#' @return A list, `xml_document`, or character
+#' @details Note that if `raw=TRUE`, `what` is ignored. That is,
+#' you get all the data when `raw=TRUE`.
 #' @examples \dontrun{
 #' # start Solr with Cloud mode via the schemaless eg: bin/solr -e cloud
 #' # you can create a new core like: bin/solr create -c corename

@@ -12,7 +12,7 @@
 #' @return Raw json or xml, or a list of length 4 parsed elements
 #' (usually data.frame's).
 #' @seealso [solr_search()], [solr_highlight()], [solr_parse()]
-#' @references See <http://wiki.apache.org/solr/SimpleFacetParameters> for
+#' @references See http://wiki.apache.org/solr/SimpleFacetParameters for
 #' more information on faceting.
 #' @examples \dontrun{
 #' # connect - local Solr instance

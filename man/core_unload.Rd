@@ -13,11 +13,11 @@ core_unload(conn, name, deleteIndex = FALSE, deleteDataDir = FALSE,
 
 \item{name}{(character) The name of the core to be created. Required}
 
-\item{deleteIndex}{(logical)    If \code{TRUE}, will remove the index when unloading
-the core. Default: \code{FALSE}}
+\item{deleteIndex}{(logical) If \code{TRUE}, will remove the index when
+unloading the core. Default: \code{FALSE}}
 
-\item{deleteDataDir}{(logical)    If \code{TRUE}, removes the data directory and all
-sub-directories. Default: \code{FALSE}}
+\item{deleteDataDir}{(logical)    If \code{TRUE}, removes the data directory
+and all sub-directories. Default: \code{FALSE}}
 
 \item{deleteInstanceDir}{(logical)    If \code{TRUE}, removes everything related to
 the core, including the index directory, configuration files and other

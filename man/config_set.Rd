@@ -11,11 +11,11 @@ config_set(conn, name, set = NULL, unset = NULL, ...)
 
 \item{name}{(character) The name of the core. If not given, all cores.}
 
-\item{set}{(list) List of key:value pairs of what to set. Default: NULL
-(nothing passed)}
+\item{set}{(list) List of key:value pairs of what to set.
+Default: \code{NULL} (nothing passed)}
 
-\item{unset}{(list) One or more character strings of keys to unset. Default: NULL
-(nothing passed)}
+\item{unset}{(list) One or more character strings of keys to unset.
+Default: \code{NULL} (nothing passed)}
 
 \item{...}{curl options passed on to \link[crul:HttpClient]{crul::HttpClient}}
 }

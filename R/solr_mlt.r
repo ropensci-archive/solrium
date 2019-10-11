@@ -11,7 +11,7 @@
 #' @param body (list) a named list of parameters, if given a POST request
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
-#' @references See \url{http://wiki.apache.org/solr/MoreLikeThis} for more
+#' @references See http://wiki.apache.org/solr/MoreLikeThis for more
 #' information.
 #' @examples \dontrun{
 #' # connect

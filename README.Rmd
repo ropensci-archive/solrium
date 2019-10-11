@@ -23,7 +23,7 @@ Development is now following Solr v7 and greater - which introduced many changes
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
-Currently developing against Solr `v7.4.0`
+Currently developing against Solr `v8.2.0`
 
 ## Solr info
 
