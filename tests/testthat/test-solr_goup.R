@@ -57,3 +57,12 @@ test_that("solr_group old style works", {
   )
 })
 
+test_that("solr_group works when no group results and responseHeader exists", {
+  skip_on_cran()
+
+  x <- SolrClient$new(host = "services.itis.gov", scheme = "https",
+    port = NULL, errors = "complete")
+  args <- list(q = "nameWOInd:/[A-Za-z0-9]*[%20]{1,1}[A-Za-z0-9]*/",
+    group.field = 'rank', group.limit = 3)
+  expect_null(x$group(params = args))
+})

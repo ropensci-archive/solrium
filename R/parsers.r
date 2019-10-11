@@ -688,6 +688,7 @@ nmtxt <- function(x) {
 }
 
 add_atts <- function(x, atts = NULL) {
+  if (is.null(x)) return(x)
   if (!is.null(atts)) {
     for (i in seq_along(atts)) {
       attr(x, names(atts)[i]) <- atts[[i]]
