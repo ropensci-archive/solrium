@@ -5,10 +5,14 @@ Description: Provides a set of functions for querying and parsing data
     remote), including search, 'faceting', 'highlighting', 'stats', and
     'more like this'. In addition, some functionality is included for
     creating, deleting, and updating documents in a 'Solr' 'database'.
-Version: 1.0.2.9210
-Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
-    email = "myrmecocystus@gmail.com", 
-    comment = c(ORCID="0000-0003-1444-9135"))
+Version: 1.1.0
+Authors@R: c(
+    person("Scott", "Chamberlain", role = c("aut", "cre"),
+        email = "myrmecocystus@gmail.com", 
+        comment = c(ORCID="0000-0003-1444-9135"),
+    person(given = "rOpenSci",
+        role = "fnd",
+        comment = "https://ropensci.org/"))
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/solrium
 BugReports: https://github.com/ropensci/solrium/issues
@@ -25,7 +29,7 @@ Imports:
     tibble (>= 1.4.2),
     R6
 Suggests:
-    roxygen2 (>= 6.0.1),
+    roxygen2 (>= 6.1.1),
     testthat,
     knitr
 RoxygenNote: 6.1.1

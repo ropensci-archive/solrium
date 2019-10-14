@@ -1,3 +1,16 @@
+solrium 1.1.0
+=============
+
+### MINOR IMPROVEMENTS
+
+* all `data_frame` and `as_data_frame` usage converted to `as_tibble` (#119)
+* change to markdown format docs
+
+### BUG FIXES
+
+* group queries were failing because when there were no group results AND when response metadata was available it lead to a bug because you can't set attributes on `NULL`  (#118)
+
+
 solrium 1.0.2
 =============
 
