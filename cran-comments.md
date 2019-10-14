@@ -11,7 +11,7 @@
 ## Reverse dependencies
 
 * I have run R CMD check on the 4 downstream dependencies.
-  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>), with no problems caused.
+  (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>), with no problems found.
 
 -----
 

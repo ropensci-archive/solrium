@@ -53,7 +53,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     if (length(fqdat) == 0) {
       fqout <- NULL
     } else {
-      fqout <- as_tibble(
+      fqout <- tibble::tibble(
         term = names(fqdat),
         value = do.call(c, fqdat)
       )
@@ -64,7 +64,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     if (length(nodes) == 0) {
       fqout <- NULL
     } else {
-      fqout <- as_tibble(
+      fqout <- tibble::tibble(
         term = xml2::xml_attr(nodes, "name"),
         value = xml2::xml_text(nodes)
       )
@@ -78,13 +78,18 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
         stats::setNames(
           do.call(rbind.data.frame, lapply(seq(1, length(x), by = 2), function(y) {
             x[c(y, y + 1)]
-          })), c('term', 'value')))
+          })), c('term', 'value')
+        )
+      )
     })
   } else {
     nodes <- xml_find_all(input, '//lst[@name="facet_fields"]//lst')
     ffout <- lapply(nodes, function(z) {
       ch <- xml_children(z)
-      as_tibble(term = vapply(ch, xml_attr, "", attr = "name"), value = vapply(ch, xml_text, ""))
+      tibble::tibble(
+        term = vapply(ch, xml_attr, "", attr = "name"), 
+        value = vapply(ch, xml_text, "")
+      )
     })
     names(ffout) <- xml_attr(nodes, "name")
   }
@@ -126,7 +131,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     if (length(input$facet_counts$facet_dates) != 0) {
       datesout <- lapply(input$facet_counts$facet_dates, function(x) {
         x <- x[!names(x) %in% c('gap','start','end')]
-        as_tibble(date = names(x), value = do.call(c, x))
+        tibble::tibble(date = names(x), value = do.call(c, x))
       })
     }
   } else {
@@ -134,7 +139,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     if (length(nodes) != 0) {
       datesout <- stats::setNames(lapply(xml_children(nodes), function(z) {
         z <- xml_find_all(z, 'int')
-        as_tibble(
+        tibble::tibble(
           date = xml2::xml_attr(z, "name"),
           value = xml2::xml_text(z)
         )
@@ -163,7 +168,7 @@ solr_parse.sr_facet <- function(input, parsetype = NULL, concat = ',') {
     if (length(nodes) != 0) {
       rangesout <- stats::setNames(lapply(nodes, function(z) {
         z <- xml_children(xml_find_first(z, 'lst[@name="counts"]'))
-        as_tibble(
+        tibble::tibble(
           term = xml2::xml_attr(z, "name"),
           value = xml2::xml_text(z)
         )
@@ -207,7 +212,7 @@ solr_parse.sr_high <- function(input, parsetype='list', concat=',') {
         }))
       }))
       if (NROW(df) == 0) {
-        highout <- tibble::as_tibble()
+        highout <- tibble::tibble()
       } else {
         highout <- tibble::add_column(df, names = names(dat), .before = TRUE)
       }
