@@ -181,17 +181,9 @@
   "contIntegration": "https://travis-ci.org/ropensci/solrium",
   "releaseNotes": "https://github.com/ropensci/solrium/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/solrium/blob/master/README.md",
-  "fileSize": "120.264KB",
+  "fileSize": "120.351KB",
   "developmentStatus": "https://www.repostatus.org/#active",
-  "keywords": [
-    "solr",
-    "solr-client",
-    "solr-search",
-    "rstats",
-    "database",
-    "r",
-    "r-package"
-  ],
+  "keywords": ["database", "search", "JSON", "XML", "API", "web", "solr", "solr-client", "solr-search", "rstats", "r", "r-package"],
   "contributor": {},
   "copyrightHolder": {},
   "funder": [
@@ -199,5 +191,7 @@
       "@type": "Organization",
       "name": "rOpenSci"
     }
-  ]
+  ],
+  "applicationCategory": "Databases",
+  "isPartOf": "https://ropensci.org"
 }
