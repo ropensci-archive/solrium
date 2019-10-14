@@ -10,14 +10,14 @@
   "codeRepository": "https://github.com/ropensci/solrium",
   "issueTracker": "https://github.com/ropensci/solrium/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.5.1",
+    "version": "3.6.1",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.5.1 Patched (2018-11-18 r75627)",
+  "runtimePlatform": "R version 3.6.1 Patched (2019-09-05 r77154)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -47,7 +47,7 @@
       "@type": "SoftwareApplication",
       "identifier": "roxygen2",
       "name": "roxygen2",
-      "version": ">= 6.0.1",
+      "version": ">= 6.1.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -181,7 +181,7 @@
   "contIntegration": "https://travis-ci.org/ropensci/solrium",
   "releaseNotes": "https://github.com/ropensci/solrium/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/solrium/blob/master/README.md",
-  "fileSize": "119.997KB",
+  "fileSize": "120.264KB",
   "developmentStatus": "https://www.repostatus.org/#active",
   "keywords": [
     "solr",
@@ -191,5 +191,13 @@
     "database",
     "r",
     "r-package"
+  ],
+  "contributor": {},
+  "copyrightHolder": {},
+  "funder": [
+    {
+      "@type": "Organization",
+      "name": "rOpenSci"
+    }
   ]
 }
