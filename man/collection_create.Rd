@@ -49,7 +49,7 @@ For more information, see also the section Document Routing. Default: \code{comp
 \item{shards}{(character) A comma separated list of shard names, e.g.,
 shard-x,shard-y,shard-z . This is a required parameter when using the 'implicit' router.}
 
-\item{createNodeSet.shuffle}{(logical)    Controls wether or not the shard-replicas created
+\item{createNodeSet.shuffle}{(logical)    Controls whether or not the shard-replicas created
 for this collection will be assigned to the nodes specified by the createNodeSet in a
 sequential manner, or if the list of nodes should be shuffled prior to creating individual
 replicas.  A 'false' value makes the results of a collection creation predictible and

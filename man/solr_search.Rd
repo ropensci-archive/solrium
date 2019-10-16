@@ -14,7 +14,7 @@ solr_search(conn, name = NULL, params = list(q = "*:*"), body = NULL,
 
 \item{name}{Name of a collection or core. Or leave as \code{NULL} if not needed.}
 
-\item{params}{(list) a named list of parameters, results in a GET reqeust
+\item{params}{(list) a named list of parameters, results in a GET request
 as long as no body parameters given}
 
 \item{body}{(list) a named list of parameters, if given a POST request

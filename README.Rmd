@@ -252,7 +252,7 @@ invisible(cli$search(params = list(q='*:*', rows=100, fl='id'), progress = httr:
 
 ### Advanced: Function Queries
 
-Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to stort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"
+Function Queries allow you to query on actual numeric fields in the SOLR database, and do addition, multiplication, etc on one or many fields to sort results. For example, here, we search on the product of counter_total_all and alm_twitterCount, using a new temporary field "_val_"
 
 ```{r}
 cli$search(params = list(q='_val_:"product(counter_total_all,alm_twitterCount)"',

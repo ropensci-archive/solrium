@@ -6,7 +6,7 @@
 #' @template mlt
 #' @template optimizerows
 #' @param conn A solrium connection object, see [SolrClient]
-#' @param params (list) a named list of parameters, results in a GET reqeust
+#' @param params (list) a named list of parameters, results in a GET request
 #' as long as no body parameters given
 #' @param body (list) a named list of parameters, if given a POST request
 #' will be performed

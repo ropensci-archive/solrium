@@ -652,7 +652,7 @@ parse_it <- function(x, wt) {
 #'
 #' @param df_w_pivot a \code{data.frame} with another
 #' \code{data.frame} nested inside representing a
-#' pivot reponse
+#' pivot response
 #' @return a \code{data.frame}
 #'
 #' @keywords internal
