@@ -5,7 +5,7 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "solrium",
-  "description": "Provides a set of functions for querying and parsing data\n    from 'Solr' (<http://lucene.apache.org/solr>) 'endpoints' (local and\n    remote), including search, 'faceting', 'highlighting', 'stats', and\n    'more like this'. In addition, some functionality is included for\n    creating, deleting, and updating documents in a 'Solr' 'database'.",
+  "description": "Provides a set of functions for querying and parsing data\n    from 'Solr' (<https://lucene.apache.org/solr>) 'endpoints' (local and\n    remote), including search, 'faceting', 'highlighting', 'stats', and\n    'more like this'. In addition, some functionality is included for\n    creating, deleting, and updating documents in a 'Solr' 'database'.",
   "name": "solrium: General Purpose R Interface to 'Solr'",
   "codeRepository": "https://github.com/ropensci/solrium",
   "issueTracker": "https://github.com/ropensci/solrium/issues",
@@ -181,7 +181,7 @@
   "contIntegration": "https://travis-ci.org/ropensci/solrium",
   "releaseNotes": "https://github.com/ropensci/solrium/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/solrium/blob/master/README.md",
-  "fileSize": "120.351KB",
+  "fileSize": "120.421KB",
   "developmentStatus": "https://www.repostatus.org/#active",
   "keywords": ["database", "search", "JSON", "XML", "API", "web", "solr", "solr-client", "solr-search", "rstats", "r", "r-package"],
   "contributor": {},
@@ -193,5 +193,6 @@
     }
   ],
   "applicationCategory": "Databases",
-  "isPartOf": "https://ropensci.org"
+  "isPartOf": "https://ropensci.org",
+  "relatedLink": "https://docs.ropensci.org/solrium/"
 }
