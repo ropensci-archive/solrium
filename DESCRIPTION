@@ -1,7 +1,7 @@
 Package: solrium
 Title: General Purpose R Interface to 'Solr'
 Description: Provides a set of functions for querying and parsing data
-    from 'Solr' (<http://lucene.apache.org/solr>) 'endpoints' (local and
+    from 'Solr' (<https://lucene.apache.org/solr>) 'endpoints' (local and
     remote), including search, 'faceting', 'highlighting', 'stats', and
     'more like this'. In addition, some functionality is included for
     creating, deleting, and updating documents in a 'Solr' 'database'.
@@ -14,7 +14,8 @@ Authors@R: c(
         role = "fnd",
         comment = "https://ropensci.org/"))
 License: MIT + file LICENSE
-URL: https://github.com/ropensci/solrium
+URL: https://github.com/ropensci/solrium (devel),
+    https://docs.ropensci.org/solrium/ (user manual)
 BugReports: https://github.com/ropensci/solrium/issues
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
