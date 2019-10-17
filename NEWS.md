@@ -5,6 +5,7 @@ solrium 1.1.0
 
 * all `data_frame` and `as_data_frame` usage converted to `as_tibble` (#119)
 * change to markdown format docs
+* fix some examples and update some broken URLs
 
 ### BUG FIXES
 
