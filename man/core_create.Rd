@@ -62,9 +62,9 @@ Create a core
 (conn <- SolrClient$new())
 
 # Create a core
-path <- "~/solr-7.0.0/server/solr/newcore/conf"
+path <- "~/solr-8.2.0/server/solr/newcore/conf"
 dir.create(path, recursive = TRUE)
-files <- list.files("~/solr-7.0.0/server/solr/configsets/sample_techproducts_configs/conf/",
+files <- list.files("~/solr-8.2.0/server/solr/configsets/sample_techproducts_configs/conf/",
 full.names = TRUE)
 invisible(file.copy(files, path, recursive = TRUE))
 conn$core_create(name = "newcore", instanceDir = "newcore",

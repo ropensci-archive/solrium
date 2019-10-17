@@ -29,7 +29,9 @@ Reload a core
 (conn <- SolrClient$new())
 
 # Status of particular cores
-conn$core_reload("gettingstarted")
-conn$core_status("gettingstarted")
+if (conn$core_exists("gettingstarted")) {
+  conn$core_reload("gettingstarted")
+  conn$core_status("gettingstarted")
+}
 }
 }

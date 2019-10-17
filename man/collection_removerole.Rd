@@ -19,7 +19,7 @@ role as of now is overseer (set as default).}
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
 core property name to value. See the section Defining core.properties for
 details on supported properties and values.
-(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
+(https://lucene.apache.org/solr/guide/8_2/defining-core-properties.html)}
 }
 \description{
 Remove an assigned role. This API is used to undo the roles

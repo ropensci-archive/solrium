@@ -15,10 +15,10 @@
 #' @param dataDir	(character)	The directory in which the core should be created
 #' @param async	(character) Request ID to track this action which will be processed
 #' asynchronously
-#' @param ... You can pass in parameters like \code{property.name=value}	to set
+#' @param ... You can pass in parameters like `property.name=value`	to set
 #' core property name to value. See the section Defining core.properties for details on
 #' supported properties and values.
-#' (https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)
+#' (https://lucene.apache.org/solr/guide/8_2/defining-core-properties.html)
 #' @examples \dontrun{
 #' (conn <- SolrClient$new())
 #'

@@ -145,7 +145,7 @@ solr_all(cli, params = list(q='*:*', rows=50, fl=c('id','score'),
 }
 }
 \references{
-See http://wiki.apache.org/solr/#Search_and_Indexing for
+See https://lucene.apache.org/solr/guide/8_2/searching.html for
 more information.
 }
 \seealso{

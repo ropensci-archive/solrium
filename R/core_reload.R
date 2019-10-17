@@ -13,8 +13,10 @@
 #' (conn <- SolrClient$new())
 #'
 #' # Status of particular cores
-#' conn$core_reload("gettingstarted")
-#' conn$core_status("gettingstarted")
+#' if (conn$core_exists("gettingstarted")) {
+#'   conn$core_reload("gettingstarted")
+#'   conn$core_status("gettingstarted")
+#' }
 #' }
 core_reload <- function(conn, name, raw = FALSE, callopts=list()) {
   conn$core_reload(name, raw, callopts)

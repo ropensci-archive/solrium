@@ -51,16 +51,16 @@
 #' @param ... You can pass in parameters like `property.name=value`	to set
 #' core property name to value. See the section Defining core.properties for
 #' details on supported properties and values.
-#' (https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)
+#' (https://lucene.apache.org/solr/guide/8_2/defining-core-properties.html)
 #' @examples \dontrun{
 #' # connect
-#' (cli <- SolrClient$new())
+#' (conn <- SolrClient$new())
 #'
-#' if (!cli$collection_exists("helloWorld")) {
-#'   cli$collection_create(name = "helloWorld")
+#' if (!conn$collection_exists("helloWorld")) {
+#'   conn$collection_create(name = "helloWorld")
 #' }
-#' if (!cli$collection_exists("tablesChairs")) {
-#'   cli$collection_create(name = "tablesChairs")
+#' if (!conn$collection_exists("tablesChairs")) {
+#'   conn$collection_create(name = "tablesChairs")
 #' }
 #' }
 collection_create <- function(conn, name, numShards = 1, maxShardsPerNode = 1,

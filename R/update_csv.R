@@ -17,10 +17,10 @@
 #' # start Solr: bin/solr start -f -c -p 8983
 #'
 #' # connect
-#' (cli <- SolrClient$new())
+#' (conn <- SolrClient$new())
 #'
-#' if (!cli$collection_exists("helloWorld")) {
-#'   cli$collection_create(name = "helloWorld", numShards = 2)
+#' if (!conn$collection_exists("helloWorld")) {
+#'   conn$collection_create(name = "helloWorld", numShards = 2)
 #' }
 #'
 #' df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))

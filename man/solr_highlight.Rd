@@ -180,8 +180,8 @@ solr_parse(out, parsetype='list')
 }
 }
 \references{
-See http://wiki.apache.org/solr/HighlightingParameters for
-more information on highlighting.
+See https://lucene.apache.org/solr/guide/8_2/highlighting.html
+for more information on highlighting.
 }
 \seealso{
 \code{\link[=solr_search]{solr_search()}}, \code{\link[=solr_facet]{solr_facet()}}

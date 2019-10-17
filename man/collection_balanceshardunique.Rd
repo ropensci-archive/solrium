@@ -29,7 +29,7 @@ an error message is returned}
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
 core property name to value. See the section Defining core.properties for
 details on supported properties and values.
-(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
+(https://lucene.apache.org/solr/guide/8_2/defining-core-properties.html)}
 }
 \description{
 Insures that a particular property is distributed evenly

@@ -158,8 +158,9 @@ solr_group(cli, params = list(q='ecology', group.field='journal', group.limit=3,
 }
 }
 \references{
-See http://wiki.apache.org/solr/FieldCollapsing for more
-information.
+See
+https://lucene.apache.org/solr/guide/8_2/collapse-and-expand-results.html
+for more information.
 }
 \seealso{
 \code{\link[=solr_highlight]{solr_highlight()}}, \code{\link[=solr_facet]{solr_facet()}}

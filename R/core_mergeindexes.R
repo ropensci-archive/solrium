@@ -23,12 +23,12 @@
 #' ## FIXME: not tested yet
 #'
 #' # use indexDir parameter
-#' conn$core_mergeindexes(core="new_core_name",
-#'    indexDir = c("/solr_home/core1/data/index",
-#'    "/solr_home/core2/data/index"))
+#' # conn$core_mergeindexes(core="new_core_name",
+#' #    indexDir = c("/solr_home/core1/data/index",
+#' #    "/solr_home/core2/data/index"))
 #'
 #' # use srcCore parameter
-#' conn$core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
+#' # conn$core_mergeindexes(name = "new_core_name", srcCore = c('core1', 'core2'))
 #' }
 core_mergeindexes <- function(conn, name, indexDir = NULL, srcCore = NULL,
                               async = NULL, raw = FALSE, callopts = list()) {

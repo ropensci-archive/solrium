@@ -29,7 +29,7 @@ time that the command may wait is 10 minutes. Default: 60}
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
 core property name to value. See the section Defining core.properties for
 details on supported properties and values.
-(https://lucene.apache.org/solr/guide/7_0/defining-core-properties.html)}
+(https://lucene.apache.org/solr/guide/8_2/defining-core-properties.html)}
 }
 \description{
 Reassign leaders in a collection according to the preferredLeader

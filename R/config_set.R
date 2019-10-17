@@ -26,9 +26,6 @@
 #' conn$config_set("gettingstarted", unset = "query.filterCache.size", 
 #'   verbose = TRUE)
 #'
-#' # both set a property and unset a property
-#' conn$config_set("gettingstarted", unset = "enableLazyFieldLoading")
-#'
 #' # many properties
 #' conn$config_set("gettingstarted", set = list(
 #'    query.filterCache.autowarmCount = 1000,

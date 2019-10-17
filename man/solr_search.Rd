@@ -226,7 +226,7 @@ attr(res, "nextCursorMark")
 }
 }
 \references{
-See http://wiki.apache.org/solr/#Search_and_Indexing
+See https://lucene.apache.org/solr/guide/8_2/searching.html
 for more information.
 }
 \seealso{

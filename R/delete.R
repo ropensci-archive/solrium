@@ -33,7 +33,7 @@
 #' cli$delete_by_id(ids = c(3, 4), "gettingstarted")
 #'
 #' # Delete by query
-#' cli$delete_by_query(query = "manu:bank", "gettingstarted")
+#' cli$delete_by_query(query = "title:animals", "gettingstarted")
 #' }
 
 #' @export

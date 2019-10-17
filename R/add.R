@@ -12,10 +12,10 @@
 #' Default: `TRUE`
 #' @param boost (numeric) Boost factor. Default: NULL
 #' @param wt (character) One of json (default) or xml. If json, uses
-#' \code{\link[jsonlite]{fromJSON}} to parse. If xml, uses \code{\link[xml2]{read_xml}} to
+#' [jsonlite::fromJSON()] to parse. If xml, uses [xml2::read_xml()] to
 #' parse
 #' @param raw (logical) If `TRUE`, returns raw data in format specified by
-#' \code{wt} param
+#' `wt` param
 #' @param ... curl options passed on to [crul::HttpClient]
 #'
 #' @details Works for Collections as well as Cores (in SolrCloud and Standalone
@@ -25,24 +25,24 @@
 #' \code{\link{update_csv}} for adding documents from files
 #'
 #' @examples \dontrun{
-#' (cli <- SolrClient$new())
+#' (conn <- SolrClient$new())
 #'
 #' # create the boooks collection
-#' if (!collection_exists(cli, "books")) {
-#'   collection_create(cli, name = "books", numShards = 1)
+#' if (!collection_exists(conn, "books")) {
+#'   collection_create(conn, name = "books", numShards = 1)
 #' }
 #'
 #' # Documents in a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
-#' add(ss, cli, name = "books")
-#' cli$get(c(1, 2), "books")
+#' add(ss, conn, name = "books")
+#' conn$get(c(1, 2), "books")
 #'
 #' # Documents in a data.frame
 #' ## Simple example
 #' df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
-#' add(df, cli, "books")
+#' add(df, conn, "books")
 #' df <- data.frame(id = c(77, 78), price = c(1, 2.40))
-#' add(df, "books")
+#' add(df, conn, "books")
 #'
 #' ## More complex example, get file from package examples
 #' # start Solr in Schemaless mode first: bin/solr start -e schemaless
@@ -50,20 +50,20 @@
 #' x <- read.csv(file, stringsAsFactors = FALSE)
 #' class(x)
 #' head(x)
-#' if (!collection_exists("mybooks")) {
-#'   collection_create(name = "mybooks", numShards = 2)
+#' if (!collection_exists(conn, "mybooks")) {
+#'   collection_create(conn, name = "mybooks", numShards = 2)
 #' }
-#' add(x, "mybooks")
+#' add(x, conn, "mybooks")
 #'
 #' # Use modifiers
-#' add(x, "mybooks", commit_within = 5000)
+#' add(x, conn, "mybooks", commit_within = 5000)
 #'
 #' # Get back XML instead of a list
 #' ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
 #' # parsed XML
-#' add(ss, name = "books", wt = "xml")
+#' add(ss, conn, name = "books", wt = "xml")
 #' # raw XML
-#' add(ss, name = "books", wt = "xml", raw = TRUE)
+#' add(ss, conn, name = "books", wt = "xml", raw = TRUE)
 #' }
 add <- function(x, conn, name, commit = TRUE, commit_within = NULL,
                 overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
