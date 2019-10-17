@@ -64,11 +64,14 @@ conn$add(df, "books")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 36
+#> [1] 319
 ```
 
 ### list
@@ -83,11 +86,14 @@ conn$add(ss, "books")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 37
+#> [1] 47
 ```
 
 ## Delete documents
@@ -108,11 +114,14 @@ conn$add(docs, "gettingstarted")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 42
+#> [1] 206
 ```
 
 And the documents are now in your Solr database
@@ -123,12 +132,12 @@ conn$search(name = "gettingstarted", params = list(q = "*:*", rows = 3))
 ```
 
 ```
-#> # A tibble: 3 x 4
-#>   id    title   title_str `_version_`
-#>   <chr> <chr>   <chr>           <dbl>
-#> 1 10    adfadsf adfadsf       1.62e18
-#> 2 12    though  though        1.62e18
-#> 3 14    animals animals       1.62e18
+#> # A tibble: 3 x 3
+#>   id    title   `_version_`
+#>   <chr> <chr>         <dbl>
+#> 1 10    adfadsf     1.65e18
+#> 2 12    though      1.65e18
+#> 3 14    animals     1.65e18
 ```
 
 Now delete those documents just added
@@ -140,11 +149,14 @@ conn$delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 19
+#> [1] 151
 ```
 
 And now they are gone
@@ -155,12 +167,12 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 4))
 ```
 
 ```
-#> # A tibble: 3 x 4
-#>   id    title   title_str `_version_`
-#>   <chr> <chr>   <chr>           <dbl>
-#> 1 10    adfadsf adfadsf       1.62e18
-#> 2 12    though  though        1.62e18
-#> 3 14    animals animals       1.62e18
+#> # A tibble: 3 x 3
+#>   id    title   `_version_`
+#>   <chr> <chr>         <dbl>
+#> 1 10    adfadsf     1.65e18
+#> 2 12    though      1.65e18
+#> 3 14    animals     1.65e18
 ```
 
 ### By query
@@ -174,11 +186,14 @@ conn$add(docs, "gettingstarted")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 33
+#> [1] 40
 ```
 
 And the documents are now in your Solr database
@@ -189,14 +204,14 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ```
-#> # A tibble: 5 x 7
-#>   id    title   title_str `_version_` price name  name_str
-#>   <chr> <chr>   <chr>           <dbl> <int> <chr> <chr>   
-#> 1 10    adfadsf adfadsf       1.62e18    NA <NA>  <NA>    
-#> 2 12    though  though        1.62e18    NA <NA>  <NA>    
-#> 3 14    animals animals       1.62e18    NA <NA>  <NA>    
-#> 4 1     <NA>    <NA>          1.62e18   100 brown brown   
-#> 5 2     <NA>    <NA>          1.62e18   500 blue  blue
+#> # A tibble: 5 x 5
+#>   id    title   `_version_` price name 
+#>   <chr> <chr>         <dbl> <int> <chr>
+#> 1 10    adfadsf     1.65e18    NA <NA> 
+#> 2 12    though      1.65e18    NA <NA> 
+#> 3 14    animals     1.65e18    NA <NA> 
+#> 4 1     <NA>        1.65e18   100 brown
+#> 5 2     <NA>        1.65e18   500 blue
 ```
 
 Now delete those documents just added
@@ -208,11 +223,14 @@ conn$delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 26
+#> [1] 74
 ```
 
 And now they are gone
@@ -223,13 +241,13 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ```
-#> # A tibble: 4 x 7
-#>   id    title   title_str `_version_` price name  name_str
-#>   <chr> <chr>   <chr>           <dbl> <int> <chr> <chr>   
-#> 1 10    adfadsf adfadsf       1.62e18    NA <NA>  <NA>    
-#> 2 12    though  though        1.62e18    NA <NA>  <NA>    
-#> 3 14    animals animals       1.62e18    NA <NA>  <NA>    
-#> 4 1     <NA>    <NA>          1.62e18   100 brown brown
+#> # A tibble: 4 x 5
+#>   id    title   `_version_` price name 
+#>   <chr> <chr>         <dbl> <int> <chr>
+#> 1 10    adfadsf     1.65e18    NA <NA> 
+#> 2 12    though      1.65e18    NA <NA> 
+#> 3 14    animals     1.65e18    NA <NA> 
+#> 4 1     <NA>        1.65e18   100 brown
 ```
 
 ## Update documents from files
@@ -252,11 +270,14 @@ conn$update_json(file, "books")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 59
+#> [1] 61
 ```
 
 ### Add and delete in the same file
@@ -271,11 +292,14 @@ conn$add(ss, "books")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 57
+#> [1] 43
 ```
 
 Now add a new document, and delete the one we just made
@@ -313,11 +337,14 @@ conn$update_xml(file, "books")
 
 ```
 #> $responseHeader
+#> $responseHeader$rf
+#> [1] 1
+#> 
 #> $responseHeader$status
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 30
+#> [1] 95
 ```
 
 ### Notes

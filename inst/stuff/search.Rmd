@@ -16,13 +16,13 @@ knitr::opts_chunk$set(
 Solr search
 ===========
 
-**A general purpose R interface to [Apache Solr](http://lucene.apache.org/solr/)**
+**A general purpose R interface to [Apache Solr](https://lucene.apache.org/solr/)**
 
 ## Solr info
 
-+ [Solr home page](http://lucene.apache.org/solr/)
-+ [Highlighting help](http://wiki.apache.org/solr/HighlightingParameters)
-+ [Faceting help](http://wiki.apache.org/solr/SimpleFacetParameters)
++ [Solr home page](https://lucene.apache.org/solr/)
++ [Highlighting help](https://lucene.apache.org/solr/guide/8_2/highlighting.html)
++ [Faceting help](https://lucene.apache.org/solr/guide/8_2/faceting.html)
 + [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 
 ## Installation

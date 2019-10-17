@@ -11,8 +11,8 @@
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_search()], [solr_facet()]
-#' @references See http://wiki.apache.org/solr/HighlightingParameters for
-#' more information on highlighting.
+#' @references See https://lucene.apache.org/solr/guide/8_2/highlighting.html
+#' for more information on highlighting.
 #' @examples \dontrun{
 #' # connect
 #' (conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))

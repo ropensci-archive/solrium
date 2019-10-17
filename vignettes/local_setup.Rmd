@@ -11,7 +11,7 @@ The Solr version you are working with my differ from below. Don't worry, just go
 
 ### OSX
 
-__Based on http://lucene.apache.org/solr/guide/7_0/solr-tutorial.html__
+__Based on https://lucene.apache.org/solr/guide/8_2/solr-tutorial.html__
 
 1. Download most recent version from an Apache mirror https://lucene.apache.org/solr/
 2. Unzip/untar the file. Move to your desired location. Now you have Solr `v.7.0.0`
@@ -31,11 +31,11 @@ bunch of documents
 
 #### Linuxbrew
 
-[Linuxbrew](http://linuxbrew.sh/) is a port of Mac OS homebrew to linux.  Operation is essentially the same as for homebrew.  Follow the installation instructions for linuxbrew and then the instructions for using homebrew (above) should work without modification.
+Linuxbrew (http://linuxbrew.sh/) is a port of Mac OS homebrew to linux.  Operation is essentially the same as for homebrew.  Follow the installation instructions for linuxbrew and then the instructions for using homebrew (above) should work without modification.
 
 ### Windows
 
-You should be able to use the above instructions for OSX on a Windows machine, but with some slight differences. For example, the `bin/post` tool for OSX and Linux doesn't work on Windows, but see https://cwiki.apache.org/confluence/display/solr/Post+Tool#PostTool-Windows for an equivalent.
+You should be able to use the above instructions for OSX on a Windows machine, but with some slight differences. For example, the `bin/post` tool for OSX and Linux doesn't work on Windows, but see https://lucene.apache.org/solr/guide/8_2/post-tool.html#PostTool-Windows for an equivalent.
 
 ### `solrium` usage
 

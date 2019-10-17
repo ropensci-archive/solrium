@@ -11,8 +11,9 @@
 #' will be performed
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
-#' @references See http://wiki.apache.org/solr/FieldCollapsing for more
-#' information.
+#' @references See 
+#' https://lucene.apache.org/solr/guide/8_2/collapse-and-expand-results.html
+#' for more information.
 #' @examples \dontrun{
 #' # connect
 #' (cli <- SolrClient$new())

@@ -14,7 +14,7 @@
 #'
 #' @return XML, JSON, a list, or data.frame
 #' @seealso [solr_highlight()], [solr_facet()]
-#' @references See http://wiki.apache.org/solr/#Search_and_Indexing
+#' @references See https://lucene.apache.org/solr/guide/8_2/searching.html
 #' for more information.
 #' @note SOLR v1.2 was first version to support csv. See
 #' https://issues.apache.org/jira/browse/SOLR-66
