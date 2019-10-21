@@ -27,7 +27,7 @@ is active. Default: \code{FALSE}}
 \item{...}{You can pass in parameters like \code{property.name=value}    to set
 core property name to value. See the section Defining core.properties for details on
 supported properties and values.
-(https://cwiki.apache.org/confluence/display/solr/Defining+core.properties)}
+(https://lucene.apache.org/solr/guide/8_2/defining-core-properties.html)}
 }
 \description{
 Delete a replica from a given collection and shard. If the
