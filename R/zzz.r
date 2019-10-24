@@ -120,7 +120,7 @@ obj_POST <- function(base, path, body, args, proxy, ...) {
     headers = list(`Content-Type` = "application/json"),
     opts = list(...)
   )
-  if (inherits(proxy, "proxy")) httpcli$proxies <- proxy
+  if (inherits(proxy, "proxy")) cli$proxies <- proxy
   tt <- cli$post(path, query = args, body = body, encode = "form", ...)
   get_response(tt)
 }

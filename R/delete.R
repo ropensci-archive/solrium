@@ -32,8 +32,10 @@
 #' ## Many IDs
 #' cli$delete_by_id(ids = c(3, 4), "gettingstarted")
 #'
-#' # Delete by query
-#' cli$delete_by_query(query = "title:animals", "gettingstarted")
+#' # Delete by query 
+#' cli$search("gettingstarted", params=list(q="*:*")) # apple is there
+#' cli$delete_by_query(query = 'id:apple', "gettingstarted") # delete it
+#' cli$search("gettingstarted", params=list(q='id:apple')) # apple is now gone
 #' }
 
 #' @export
