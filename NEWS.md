@@ -1,3 +1,11 @@
+solrium 1.1.4
+=============
+
+### BUG FIXES
+
+* fixed typo in code that made the `delete_by_query()`/`$delete_by_query()` method not work correctly (#121) thanks @abhik1368 for the report
+
+
 solrium 1.1.0
 =============
 

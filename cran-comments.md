@@ -15,9 +15,7 @@
 
 -----
 
-This release includes a bug fix and swaps out deprecated functions of a dependency package.
-
-This is a re-submission fixing broken links.
+This release includes a bug fix that prevented successful execution of delete by query in Solr.
 
 Thanks!
 Scott Chamberlain
