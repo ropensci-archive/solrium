@@ -7,3 +7,4 @@ inst/ignore/progress_bars_notes.R
 revdep/checks.noindex
 revdep/data.sqlite
 revdep/library.noindex
+inst/stuff/docker-compose.yml
