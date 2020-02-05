@@ -4,8 +4,16 @@
 \alias{collection_deletereplica}
 \title{Delete a replica}
 \usage{
-collection_deletereplica(conn, name, shard = NULL, replica = NULL,
-  onlyIfDown = FALSE, raw = FALSE, callopts = list(), ...)
+collection_deletereplica(
+  conn,
+  name,
+  shard = NULL,
+  replica = NULL,
+  onlyIfDown = FALSE,
+  raw = FALSE,
+  callopts = list(),
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

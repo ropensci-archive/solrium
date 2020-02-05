@@ -6,11 +6,31 @@
 \alias{delete_by_query}
 \title{Delete documents by ID or query}
 \usage{
-delete_by_id(conn, ids, name, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
+delete_by_id(
+  conn,
+  ids,
+  name,
+  commit = TRUE,
+  commit_within = NULL,
+  overwrite = TRUE,
+  boost = NULL,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 
-delete_by_query(conn, query, name, commit = TRUE, commit_within = NULL,
-  overwrite = TRUE, boost = NULL, wt = "json", raw = FALSE, ...)
+delete_by_query(
+  conn,
+  query,
+  name,
+  commit = TRUE,
+  commit_within = NULL,
+  overwrite = TRUE,
+  boost = NULL,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

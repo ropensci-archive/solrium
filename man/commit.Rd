@@ -4,8 +4,16 @@
 \alias{commit}
 \title{Commit}
 \usage{
-commit(conn, name, expunge_deletes = FALSE, wait_searcher = TRUE,
-  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
+commit(
+  conn,
+  name,
+  expunge_deletes = FALSE,
+  wait_searcher = TRUE,
+  soft_commit = FALSE,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

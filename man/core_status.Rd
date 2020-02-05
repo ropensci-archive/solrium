@@ -4,8 +4,13 @@
 \alias{core_status}
 \title{Get core status}
 \usage{
-core_status(conn, name = NULL, indexInfo = TRUE, raw = FALSE,
-  callopts = list())
+core_status(
+  conn,
+  name = NULL,
+  indexInfo = TRUE,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

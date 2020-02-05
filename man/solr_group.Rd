@@ -4,9 +4,18 @@
 \alias{solr_group}
 \title{Grouped search}
 \usage{
-solr_group(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
-  progress = NULL, ...)
+solr_group(
+  conn,
+  name = NULL,
+  params = NULL,
+  body = NULL,
+  callopts = list(),
+  raw = FALSE,
+  parsetype = "df",
+  concat = ",",
+  progress = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -57,7 +66,7 @@ field type that has a value source and works in a function query - such as
 ExternalFileField. Note: for Solr 3.x versions the field must by a string like
 field such as StrField or TextField, otherwise a http status 400 is returned.
 \item group.func (function query) Group based on the unique values of a function
-query. <!> Solr4.0 This parameter only is supported on 4.0
+query. Solr4.0 This parameter only is supported on 4.0
 \item group.query (query) Return a single group of documents that also match the
 given query.
 \item rows (number) The number of groups to return. Defaults to 10.
@@ -76,7 +85,7 @@ documents instead of numbers of groups.
 \item group.main (logical) If true, the result of the last field grouping command
 is used as the main result list in the response, using group.format=simple
 \item group.ngroups (logical) If true, includes the number of groups that have
-matched the query. Default is false. <!> Solr4.1 WARNING: If this parameter is set
+matched the query. Default is false. Solr4.1 WARNING: If this parameter is set
 to true on a sharded environment, all the documents that belong to the same group
 have to be located in the same shard, otherwise the count will be incorrect. If you
 are using SolrCloud, consider using "custom hashing"

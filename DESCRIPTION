@@ -5,7 +5,7 @@ Description: Provides a set of functions for querying and parsing data
     remote), including search, 'faceting', 'highlighting', 'stats', and
     'more like this'. In addition, some functionality is included for
     creating, deleting, and updating documents in a 'Solr' 'database'.
-Version: 1.1.4.9100
+Version: 1.1.5.91
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"),
         email = "myrmecocystus@gmail.com", 
@@ -18,7 +18,7 @@ URL: https://github.com/ropensci/solrium (devel),
     https://docs.ropensci.org/solrium/ (user manual)
 BugReports: https://github.com/ropensci/solrium/issues
 VignetteBuilder: knitr
-Roxygen: list(markdown = TRUE)
+Roxygen: list(markdown = TRUE, r6 = FALSE)
 Encoding: UTF-8
 Language: en-US
 Imports:
@@ -31,10 +31,9 @@ Imports:
     tibble (>= 1.4.2),
     R6
 Suggests:
-    roxygen2 (>= 6.1.1),
     testthat,
     knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 X-schema.org-applicationCategory: Databases
 X-schema.org-keywords: database, search, JSON, XML, API, web
 X-schema.org-isPartOf: https://ropensci.org

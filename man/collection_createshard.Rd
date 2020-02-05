@@ -4,8 +4,14 @@
 \alias{collection_createshard}
 \title{Create a shard}
 \usage{
-collection_createshard(conn, name, shard, createNodeSet = NULL,
-  raw = FALSE, ...)
+collection_createshard(
+  conn,
+  name,
+  shard,
+  createNodeSet = NULL,
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

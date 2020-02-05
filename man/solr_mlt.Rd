@@ -4,10 +4,20 @@
 \alias{solr_mlt}
 \title{"more like this" search}
 \usage{
-solr_mlt(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
-  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, progress = NULL,
-  ...)
+solr_mlt(
+  conn,
+  name = NULL,
+  params = NULL,
+  body = NULL,
+  callopts = list(),
+  raw = FALSE,
+  parsetype = "df",
+  concat = ",",
+  optimizeMaxRows = TRUE,
+  minOptimizedRows = 50000L,
+  progress = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

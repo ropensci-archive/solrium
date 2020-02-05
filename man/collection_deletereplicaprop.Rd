@@ -4,8 +4,15 @@
 \alias{collection_deletereplicaprop}
 \title{Delete a replica property}
 \usage{
-collection_deletereplicaprop(conn, name, shard, replica, property,
-  raw = FALSE, callopts = list())
+collection_deletereplicaprop(
+  conn,
+  name,
+  shard,
+  replica,
+  property,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

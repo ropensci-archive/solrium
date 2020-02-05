@@ -4,10 +4,21 @@
 \alias{update_json}
 \title{Update documents with JSON data}
 \usage{
-update_json(conn, files, name, commit = TRUE, optimize = FALSE,
-  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
-  soft_commit = FALSE, prepare_commit = NULL, wt = "json",
-  raw = FALSE, ...)
+update_json(
+  conn,
+  files,
+  name,
+  commit = TRUE,
+  optimize = FALSE,
+  max_segments = 1,
+  expunge_deletes = FALSE,
+  wait_searcher = TRUE,
+  soft_commit = FALSE,
+  prepare_commit = NULL,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -61,7 +72,7 @@ public Solr services, but should work locally.
 
 # Add documents
 file <- system.file("examples", "books2.json", package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_json(files = file, name = "books")
 update_json(conn, files = file, name = "books")
 
@@ -69,13 +80,13 @@ update_json(conn, files = file, name = "books")
 ## Add file
 file <- system.file("examples", "updatecommands_add.json",
   package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_json(file, "books")
 
 ## Delete file
 file <- system.file("examples", "updatecommands_delete.json",
   package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_json(file, "books")
 
 # Add and delete in the same document
@@ -85,7 +96,8 @@ conn$add(ss, "books")
 }
 }
 \seealso{
-Other update: \code{\link{update_csv}},
-  \code{\link{update_xml}}
+Other update: 
+\code{\link{update_csv}()},
+\code{\link{update_xml}()}
 }
 \concept{update}

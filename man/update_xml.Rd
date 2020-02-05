@@ -4,10 +4,21 @@
 \alias{update_xml}
 \title{Update documents with XML data}
 \usage{
-update_xml(conn, files, name, commit = TRUE, optimize = FALSE,
-  max_segments = 1, expunge_deletes = FALSE, wait_searcher = TRUE,
-  soft_commit = FALSE, prepare_commit = NULL, wt = "json",
-  raw = FALSE, ...)
+update_xml(
+  conn,
+  files,
+  name,
+  commit = TRUE,
+  optimize = FALSE,
+  max_segments = 1,
+  expunge_deletes = FALSE,
+  wait_searcher = TRUE,
+  soft_commit = FALSE,
+  prepare_commit = NULL,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -66,19 +77,19 @@ if (!conn$collection_exists("books")) {
 
 # Add documents
 file <- system.file("examples", "books.xml", package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_xml(file, "books")
 
 # Update commands - can include many varying commands
 ## Add files
 file <- system.file("examples", "books2_delete.xml", package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_xml(file, "books")
 
 ## Delete files
 file <- system.file("examples", "updatecommands_delete.xml",
 package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_xml(file, "books")
 
 ## Add and delete in the same document
@@ -87,12 +98,13 @@ ss <- list(list(id = 456, name = "cat"))
 conn$add(ss, "books")
 ## Now add a new document, and delete the one we just made
 file <- system.file("examples", "add_delete.xml", package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_xml(file, "books")
 }
 }
 \seealso{
-Other update: \code{\link{update_csv}},
-  \code{\link{update_json}}
+Other update: 
+\code{\link{update_csv}()},
+\code{\link{update_json}()}
 }
 \concept{update}

@@ -4,12 +4,30 @@
 \alias{update_csv}
 \title{Update documents with CSV data}
 \usage{
-update_csv(conn, files, name, separator = ",", header = TRUE,
-  fieldnames = NULL, skip = NULL, skipLines = 0, trim = FALSE,
-  encapsulator = NULL, escape = NULL, keepEmpty = FALSE,
-  literal = NULL, map = NULL, split = NULL, rowid = NULL,
-  rowidOffset = NULL, overwrite = NULL, commit = NULL, wt = "json",
-  raw = FALSE, ...)
+update_csv(
+  conn,
+  files,
+  name,
+  separator = ",",
+  header = TRUE,
+  fieldnames = NULL,
+  skip = NULL,
+  skipLines = 0,
+  trim = FALSE,
+  encapsulator = NULL,
+  escape = NULL,
+  keepEmpty = FALSE,
+  literal = NULL,
+  map = NULL,
+  split = NULL,
+  rowid = NULL,
+  rowidOffset = NULL,
+  overwrite = NULL,
+  commit = NULL,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -122,7 +140,8 @@ conn$update_csv("df.csv", "helloWorld", wt = "json", raw = TRUE)
 }
 }
 \seealso{
-Other update: \code{\link{update_json}},
-  \code{\link{update_xml}}
+Other update: 
+\code{\link{update_json}()},
+\code{\link{update_xml}()}
 }
 \concept{update}

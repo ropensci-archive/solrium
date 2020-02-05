@@ -4,8 +4,17 @@
 \alias{core_split}
 \title{Split a core}
 \usage{
-core_split(conn, name, path = NULL, targetCore = NULL, ranges = NULL,
-  split.key = NULL, async = NULL, raw = FALSE, callopts = list())
+core_split(
+  conn,
+  name,
+  path = NULL,
+  targetCore = NULL,
+  ranges = NULL,
+  split.key = NULL,
+  async = NULL,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

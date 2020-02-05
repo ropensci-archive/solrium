@@ -36,7 +36,7 @@
 #' \code{'id,title'}
 #'  \item defType Specify the query parser to use with this request.
 #'  \item timeAllowed The time allowed for a search to finish. This value only applies
-#' to the search and not to requests in general. Time is in milliseconds. Values <= 0
+#' to the search and not to requests in general. Time is in milliseconds. Values \code{<= 0}
 #' mean no time restriction. Partial results may be returned (if there are any).
 #'  \item qt Which query handler used. Options: dismax, others?
 #'  \item NOW Set a fixed time for evaluating Date based expresions

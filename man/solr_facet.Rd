@@ -4,9 +4,18 @@
 \alias{solr_facet}
 \title{Faceted search}
 \usage{
-solr_facet(conn, name = NULL, params = list(q = "*:*"), body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
-  progress = NULL, ...)
+solr_facet(
+  conn,
+  name = NULL,
+  params = list(q = "*:*"),
+  body = NULL,
+  callopts = list(),
+  raw = FALSE,
+  parsetype = "df",
+  concat = ",",
+  progress = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

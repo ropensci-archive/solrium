@@ -4,8 +4,7 @@
 \alias{core_rename}
 \title{Rename a core}
 \usage{
-core_rename(conn, name, other, async = NULL, raw = FALSE,
-  callopts = list())
+core_rename(conn, name, other, async = NULL, raw = FALSE, callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

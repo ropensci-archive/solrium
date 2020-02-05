@@ -4,8 +4,13 @@
 \alias{solr_json_request}
 \title{Solr json request}
 \usage{
-solr_json_request(conn, name = NULL, body = NULL, callopts = list(),
-  progress = NULL)
+solr_json_request(
+  conn,
+  name = NULL,
+  body = NULL,
+  callopts = list(),
+  progress = NULL
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

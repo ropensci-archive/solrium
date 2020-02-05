@@ -4,8 +4,14 @@
 \alias{collection_rebalanceleaders}
 \title{Rebalance leaders}
 \usage{
-collection_rebalanceleaders(conn, name, maxAtOnce = NULL,
-  maxWaitSeconds = NULL, raw = FALSE, ...)
+collection_rebalanceleaders(
+  conn,
+  name,
+  maxAtOnce = NULL,
+  maxWaitSeconds = NULL,
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

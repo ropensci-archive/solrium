@@ -39,7 +39,7 @@
 #' }
 
 #' @export
-#' @name delete
+#' @rdname delete
 delete_by_id <- function(conn, ids, name, commit = TRUE, commit_within = NULL,
   overwrite = TRUE, boost = NULL, wt = 'json', raw = FALSE, ...) {
 
@@ -49,7 +49,7 @@ delete_by_id <- function(conn, ids, name, commit = TRUE, commit_within = NULL,
 }
 
 #' @export
-#' @name delete
+#' @rdname delete
 delete_by_query <- function(conn, query, name, commit = TRUE,
   commit_within = NULL, overwrite = TRUE, boost = NULL, wt = 'json',
   raw = FALSE, ...) {

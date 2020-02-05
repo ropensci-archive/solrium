@@ -4,10 +4,20 @@
 \alias{solr_all}
 \title{All purpose search}
 \usage{
-solr_all(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df", concat = ",",
-  optimizeMaxRows = TRUE, minOptimizedRows = 50000L, progress = NULL,
-  ...)
+solr_all(
+  conn,
+  name = NULL,
+  params = NULL,
+  body = NULL,
+  callopts = list(),
+  raw = FALSE,
+  parsetype = "df",
+  concat = ",",
+  optimizeMaxRows = TRUE,
+  minOptimizedRows = 50000L,
+  progress = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -77,7 +87,7 @@ or a single character vector with one or more comma separated names, like
 \code{'id,title'}
 \item defType Specify the query parser to use with this request.
 \item timeAllowed The time allowed for a search to finish. This value only applies
-to the search and not to requests in general. Time is in milliseconds. Values <= 0
+to the search and not to requests in general. Time is in milliseconds. Values \code{<= 0}
 mean no time restriction. Partial results may be returned (if there are any).
 \item qt Which query handler used. Options: dismax, others?
 \item NOW Set a fixed time for evaluating Date based expresions

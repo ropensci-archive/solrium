@@ -4,8 +4,16 @@
 \alias{collection_splitshard}
 \title{Create a shard}
 \usage{
-collection_splitshard(conn, name, shard, ranges = NULL,
-  split.key = NULL, async = NULL, raw = FALSE, callopts = list())
+collection_splitshard(
+  conn,
+  name,
+  shard,
+  ranges = NULL,
+  split.key = NULL,
+  async = NULL,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

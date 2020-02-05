@@ -4,9 +4,17 @@
 \alias{collection_addreplicaprop}
 \title{Add a replica property}
 \usage{
-collection_addreplicaprop(conn, name, shard, replica, property,
-  property.value, shardUnique = FALSE, raw = FALSE,
-  callopts = list())
+collection_addreplicaprop(
+  conn,
+  name,
+  shard,
+  replica,
+  property,
+  property.value,
+  shardUnique = FALSE,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

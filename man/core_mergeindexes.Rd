@@ -4,8 +4,15 @@
 \alias{core_mergeindexes}
 \title{Merge indexes (cores)}
 \usage{
-core_mergeindexes(conn, name, indexDir = NULL, srcCore = NULL,
-  async = NULL, raw = FALSE, callopts = list())
+core_mergeindexes(
+  conn,
+  name,
+  indexDir = NULL,
+  srcCore = NULL,
+  async = NULL,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

@@ -4,8 +4,13 @@
 \alias{collection_createalias}
 \title{Create an alias for a collection}
 \usage{
-collection_createalias(conn, alias, collections, raw = FALSE,
-  callopts = list())
+collection_createalias(
+  conn,
+  alias,
+  collections,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

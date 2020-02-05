@@ -4,9 +4,17 @@
 \alias{solr_highlight}
 \title{Highlighting search}
 \usage{
-solr_highlight(conn, name = NULL, params = NULL, body = NULL,
-  callopts = list(), raw = FALSE, parsetype = "df",
-  progress = NULL, ...)
+solr_highlight(
+  conn,
+  name = NULL,
+  params = NULL,
+  body = NULL,
+  callopts = list(),
+  raw = FALSE,
+  parsetype = "df",
+  progress = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
@@ -89,11 +97,11 @@ post text snippet. This parameter accepts per-field overrides. This parameter ma
 sense for the original Highlighter only.
 \item hl.simple.pre The text which appears before and after a highlighted term when using
 the simple formatter. This parameter accepts per-field overrides. The default values are
-"<em>" and "</em>" This parameter makes sense for the original Highlighter only. Use
+\code{<em>} and \code{</em>} This parameter makes sense for the original Highlighter only. Use
 hl.tag.pre and hl.tag.post for FastVectorHighlighter (see example under hl.fragmentsBuilder)
 \item hl.simple.post The text which appears before and after a highlighted term when using
 the simple formatter. This parameter accepts per-field overrides. The default values are
-"<em>" and "</em>" This parameter makes sense for the original Highlighter only. Use
+\code{<em>} and \code{</em>} This parameter makes sense for the original Highlighter only. Use
 hl.tag.pre and hl.tag.post for FastVectorHighlighter (see example under hl.fragmentsBuilder)
 \item hl.fragmenter Specify a text snippet generator for highlighted text. The standard
 fragmenter is gap (which is so called because it creates fixed-sized fragments with gaps

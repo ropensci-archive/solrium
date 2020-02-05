@@ -39,7 +39,7 @@ if (!conn$collection_exists("books")) {
 
 # Add documents
 file <- system.file("examples", "books2.json", package = "solrium")
-cat(readLines(file), sep = "\\n")
+cat(readLines(file), sep = "\n")
 conn$update_json(file, "books")
 
 # get a document

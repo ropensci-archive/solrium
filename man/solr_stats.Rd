@@ -4,9 +4,17 @@
 \alias{solr_stats}
 \title{Solr stats}
 \usage{
-solr_stats(conn, name = NULL, params = list(q = "*:*", stats.field =
-  NULL, stats.facet = NULL), body = NULL, callopts = list(),
-  raw = FALSE, parsetype = "df", progress = NULL, ...)
+solr_stats(
+  conn,
+  name = NULL,
+  params = list(q = "*:*", stats.field = NULL, stats.facet = NULL),
+  body = NULL,
+  callopts = list(),
+  raw = FALSE,
+  parsetype = "df",
+  progress = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

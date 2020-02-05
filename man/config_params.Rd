@@ -4,8 +4,15 @@
 \alias{config_params}
 \title{Set Solr configuration params}
 \usage{
-config_params(conn, name, param = NULL, set = NULL, unset = NULL,
-  update = NULL, ...)
+config_params(
+  conn,
+  name,
+  param = NULL,
+  set = NULL,
+  unset = NULL,
+  update = NULL,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

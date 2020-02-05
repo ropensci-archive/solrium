@@ -4,8 +4,7 @@
 \alias{core_swap}
 \title{Swap a core}
 \usage{
-core_swap(conn, name, other, async = NULL, raw = FALSE,
-  callopts = list())
+core_swap(conn, name, other, async = NULL, raw = FALSE, callopts = list())
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

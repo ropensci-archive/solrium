@@ -58,15 +58,10 @@ Make sure if you change what packages or even functions within packages are impo
 
 Be very conservative about adding new dependencies.
 
-
 ### Style
 
 * Make sure code, documentation, and comments are no more than 80 characters in width.
 * Use `<-` instead of `=` for assignment
 * Always use `snake_case` (and all lowercase) instead of `camelCase`
 
-
-
 ## Also, check out our [discussion forum](https://discuss.ropensci.org)
-
-### Prefer to Email? Get in touch: [myrmecocystus@gmail.com](mailto:myrmecocystus@gmail.com)

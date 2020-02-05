@@ -4,9 +4,16 @@
 \alias{collection_migrate}
 \title{Migrate documents to another collection}
 \usage{
-collection_migrate(conn, name, target.collection, split.key,
-  forward.timeout = NULL, async = NULL, raw = FALSE,
-  callopts = list())
+collection_migrate(
+  conn,
+  name,
+  target.collection,
+  split.key,
+  forward.timeout = NULL,
+  async = NULL,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

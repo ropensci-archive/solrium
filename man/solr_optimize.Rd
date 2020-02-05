@@ -4,8 +4,16 @@
 \alias{solr_optimize}
 \title{Optimize}
 \usage{
-solr_optimize(conn, name, max_segments = 1, wait_searcher = TRUE,
-  soft_commit = FALSE, wt = "json", raw = FALSE, ...)
+solr_optimize(
+  conn,
+  name,
+  max_segments = 1,
+  wait_searcher = TRUE,
+  soft_commit = FALSE,
+  wt = "json",
+  raw = FALSE,
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

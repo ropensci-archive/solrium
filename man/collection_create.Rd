@@ -4,12 +4,24 @@
 \alias{collection_create}
 \title{Add a collection}
 \usage{
-collection_create(conn, name, numShards = 1, maxShardsPerNode = 1,
-  createNodeSet = NULL, collection.configName = NULL,
-  replicationFactor = 1, router.name = NULL, shards = NULL,
-  createNodeSet.shuffle = TRUE, router.field = NULL,
-  autoAddReplicas = FALSE, async = NULL, raw = FALSE,
-  callopts = list(), ...)
+collection_create(
+  conn,
+  name,
+  numShards = 1,
+  maxShardsPerNode = 1,
+  createNodeSet = NULL,
+  collection.configName = NULL,
+  replicationFactor = 1,
+  router.name = NULL,
+  shards = NULL,
+  createNodeSet.shuffle = TRUE,
+  router.field = NULL,
+  autoAddReplicas = FALSE,
+  async = NULL,
+  raw = FALSE,
+  callopts = list(),
+  ...
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}

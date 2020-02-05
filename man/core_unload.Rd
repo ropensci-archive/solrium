@@ -4,9 +4,16 @@
 \alias{core_unload}
 \title{Unload (delete) a core}
 \usage{
-core_unload(conn, name, deleteIndex = FALSE, deleteDataDir = FALSE,
-  deleteInstanceDir = FALSE, async = NULL, raw = FALSE,
-  callopts = list())
+core_unload(
+  conn,
+  name,
+  deleteIndex = FALSE,
+  deleteDataDir = FALSE,
+  deleteInstanceDir = FALSE,
+  async = NULL,
+  raw = FALSE,
+  callopts = list()
+)
 }
 \arguments{
 \item{conn}{A solrium connection object, see \link{SolrClient}}
