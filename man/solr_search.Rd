@@ -116,6 +116,17 @@ tested in, thus it's the default value for \code{wt}
 }
 }
 
+\section{number of results}{
+
+Because \code{solr_search()} returns a data.frame, metadata doesn't fit into the
+output data.frame itself. You can access number of results (\code{numFound}) in
+the attributes of the results. For example, \code{attr(x, "numFound")} for
+number of results, and \code{attr(x, "start")} for the offset value (if one
+was given). Or you can get all attributes like \code{attributes(x)}. These
+metadata are not in the attributes when \code{raw=TRUE} as those metadata
+are in the payload (unless \code{wt="csv"}).
+}
+
 \examples{
 \dontrun{
 # Connect to a local Solr instance

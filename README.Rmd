@@ -107,7 +107,7 @@ install.packages("solrium")
 Or development version from GitHub
 
 ```{r eval=FALSE}
-devtools::install_github("ropensci/solrium")
+remotes::install_github("ropensci/solrium")
 ```
 
 ```{r}
@@ -145,8 +145,15 @@ bin/post -c gettingstarted example/exampledocs/*.xml
 ## Search
 
 ```{r}
-cli$search(params = list(q='*:*', rows=2, fl='id'))
+(res <- cli$search(params = list(q='*:*', rows=2, fl='id')))
 ```
+
+And you can get search metadata from the attributes:
+
+```{r}
+attributes(res)
+```
+
 
 ### Search grouped data
 

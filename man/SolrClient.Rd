@@ -105,6 +105,18 @@ parameter definitions and their default values.
 }
 }
 
+\section{number of results}{
+
+When the \verb{$search()} method returns a data.frame, metadata doesn't fit
+into the output data.frame itself. You can access number of results
+(\code{numFound}) in the attributes of the results. For example,
+\code{attr(x, "numFound")} for number of results, and \code{attr(x, "start")}
+for the offset value (if one was given). Or you can get all
+attributes like \code{attributes(x)}. These metadata are not in the
+attributes when requesting raw xml or json though as those metadata
+are in the payload (unless \code{wt="csv"}).
+}
+
 \examples{
 \dontrun{
 # make a client
@@ -149,6 +161,10 @@ cli$proxy
 
 # A remote Solr instance to which you don't have admin access
 (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
-cli$search(params = list(q = "memory"))
+res <- cli$search(params = list(q = "memory"))
+res
+attr(res, "numFound")
+attr(res, "start")
+attr(res, "maxScore")
 }
 }

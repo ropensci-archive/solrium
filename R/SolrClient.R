@@ -133,6 +133,16 @@
 #' wt = 'json', raw = FALSE, ...)`
 #' * `update_atomic_json(body, name, wt = 'json', raw = FALSE, ...)`
 #' * `update_atomic_xml(body, name, wt = 'json', raw = FALSE, ...)`
+#' 
+#' @section number of results:
+#' When the `$search()` method returns a data.frame, metadata doesn't fit
+#' into the output data.frame itself. You can access number of results
+#' (`numFound`) in the attributes of the results. For example,
+#' `attr(x, "numFound")` for number of results, and `attr(x, "start")`
+#' for the offset value (if one was given). Or you can get all
+#' attributes like `attributes(x)`. These metadata are not in the 
+#' attributes when requesting raw xml or json though as those metadata
+#' are in the payload (unless `wt="csv"`).
 #'
 #' @format NULL
 #' @usage NULL
@@ -180,7 +190,11 @@
 #'
 #' # A remote Solr instance to which you don't have admin access
 #' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
-#' cli$search(params = list(q = "memory"))
+#' res <- cli$search(params = list(q = "memory"))
+#' res
+#' attr(res, "numFound")
+#' attr(res, "start")
+#' attr(res, "maxScore")
 #' }
 SolrClient <- R6::R6Class(
   "SolrClient",

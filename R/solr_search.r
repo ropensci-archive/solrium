@@ -18,6 +18,14 @@
 #' for more information.
 #' @note SOLR v1.2 was first version to support csv. See
 #' https://issues.apache.org/jira/browse/SOLR-66
+#' @section number of results:
+#' Because `solr_search()` returns a data.frame, metadata doesn't fit into the
+#' output data.frame itself. You can access number of results (`numFound`) in
+#' the attributes of the results. For example, `attr(x, "numFound")` for 
+#' number of results, and `attr(x, "start")` for the offset value (if one 
+#' was given). Or you can get all attributes like `attributes(x)`. These
+#' metadata are not in the attributes when `raw=TRUE` as those metadata
+#' are in the payload (unless `wt="csv"`).
 #' @examples \dontrun{
 #' # Connect to a local Solr instance
 #' (cli <- SolrClient$new())
