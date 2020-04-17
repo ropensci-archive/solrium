@@ -1,5 +1,9 @@
 # CONTRIBUTING #
 
+## Do not send the maintainer an email
+
+Please open an issue instead of e-mailing the maintainer. E-mails will be a very low priority to answer.
+
 ## Bugs?
 
 * Submit an issue on the [Issues page](https://github.com/ropensci/solrium/issues) - be sure to include R session information and a reproducible example.
