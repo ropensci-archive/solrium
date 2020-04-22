@@ -1,11 +1,20 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Local Solr setup}
-%\VignetteEncoding{UTF-8}
--->
+---
+title: Local Solr setup
+author: Scott Chamberlain
+date: "2020-04-22"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Local Solr setup}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
 
-Local Solr setup
-======
+<!--
+to run this vignette:
+docker run -d -p 8983:8983 --name my_solr solr:latest solr-precreate gettingstarted
+docker exec  -it <container id> /bin/bash # go into container
+bin/post -c gettingstarted example/exampledocs/ 
+-->
 
 The Solr version you are working with my differ from below. Don't worry, just go with the version you want to use.
 
@@ -43,6 +52,7 @@ First, setup a connection object
 
 
 ```r
+library(solrium)
 (conn <- SolrClient$new())
 ```
 
@@ -61,31 +71,37 @@ And we can now use the `solrium` R package to query the Solr database to get raw
 
 ```r
 conn$search("gettingstarted", params = list(q = '*:*', rows = 3), raw = TRUE)
-#> [1] "{\"responseHeader\":{\"status\":0,\"QTime\":8,\"params\":{\"q\":\"*:*\",\"rows\":\"3\",\"wt\":\"json\"}},\"response\":{\"numFound\":3577,\"start\":0,\"maxScore\":1.0,\"docs\":[{\"id\":\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmenter.html\",\"stream_size\":[9016],\"date\":[\"2015-06-10T00:00:00Z\"],\"x_parsed_by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"stream_content_type\":[\"text/html\"],\"dc_title\":[\"Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)\"],\"content_encoding\":[\"UTF-8\"],\"resourcename\":[\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmenter.html\"],\"title\":[\"Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)\"],\"content_type\":[\"text/html\"],\"_version_\":1507965023127863296},{\"id\":\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmentsBuilder.html\",\"stream_size\":[10336],\"date\":[\"2015-06-10T00:00:00Z\"],\"x_parsed_by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"stream_content_type\":[\"text/html\"],\"dc_title\":[\"Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)\"],\"content_encoding\":[\"UTF-8\"],\"resourcename\":[\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/highlight/class-use/SolrFragmentsBuilder.html\"],\"title\":[\"Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)\"],\"content_type\":[\"text/html\"],\"_version_\":1507965023153029120},{\"id\":\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/internal/csv/CSVParser.html\",\"stream_size\":[32427],\"date\":[\"2015-06-10T00:00:00Z\"],\"x_parsed_by\":[\"org.apache.tika.parser.DefaultParser\",\"org.apache.tika.parser.html.HtmlParser\"],\"stream_content_type\":[\"text/html\"],\"dc_title\":[\"CSVParser (Solr 5.2.1 API)\"],\"content_encoding\":[\"UTF-8\"],\"resourcename\":[\"/Users/sacmac/solr-5.2.1/docs/solr-core/org/apache/solr/internal/csv/CSVParser.html\"],\"title\":[\"CSVParser (Solr 5.2.1 API)\"],\"content_type\":[\"text/html\"],\"_version_\":1507965023221186560}]}}\n"
-#> attr(,"class")
-#> [1] "sr_search"
-#> attr(,"wt")
-#> [1] "json"
+```
+
+```
+## [1] "{\n  \"responseHeader\":{\n    \"status\":0,\n    \"QTime\":5,\n    \"params\":{\n      \"q\":\"*:*\",\n      \"rows\":\"3\",\n      \"wt\":\"json\"}},\n  \"response\":{\"numFound\":48,\"start\":0,\"docs\":[\n      {\n        \"id\":\"TWINX2048-3200PRO\",\n        \"name\":[\"CORSAIR  XMS 2GB (2 x 1GB) 184-Pin DDR SDRAM Unbuffered DDR 400 (PC 3200) Dual Channel Kit System Memory - Retail\"],\n        \"manu\":[\"Corsair Microsystems Inc.\"],\n        \"manu_id_s\":\"corsair\",\n        \"cat\":[\"electronics\",\n          \"memory\"],\n        \"features\":[\"CAS latency 2,  2-3-3-6 timing, 2.75v, unbuffered, heat-spreader\"],\n        \"price\":[185.0],\n        \"popularity\":[5],\n        \"inStock\":[true],\n        \"store\":[\"37.7752,-122.4232\"],\n        \"manufacturedate_dt\":\"2006-02-13T15:26:37Z\",\n        \"payloads\":[\"electronics|6.0 memory|3.0\"],\n        \"_version_\":1664688417970061312},\n      {\n        \"id\":\"VS1GB400C3\",\n        \"name\":[\"CORSAIR ValueSelect 1GB 184-Pin DDR SDRAM Unbuffered DDR 400 (PC 3200) System Memory - Retail\"],\n        \"manu\":[\"Corsair Microsystems Inc.\"],\n        \"manu_id_s\":\"corsair\",\n        \"cat\":[\"electronics\",\n          \"memory\"],\n        \"price\":[74.99],\n        \"popularity\":[7],\n        \"inStock\":[true],\n        \"store\":[\"37.7752,-100.0232\"],\n        \"manufacturedate_dt\":\"2006-02-13T15:26:37Z\",\n        \"payloads\":[\"electronics|4.0 memory|2.0\"],\n        \"_version_\":1664688418109521920},\n      {\n        \"id\":\"VDBDB1A16\",\n        \"name\":[\"A-DATA V-Series 1GB 184-Pin DDR SDRAM Unbuffered DDR 400 (PC 3200) System Memory - OEM\"],\n        \"manu\":[\"A-DATA Technology Inc.\"],\n        \"manu_id_s\":\"corsair\",\n        \"cat\":[\"electronics\",\n          \"memory\"],\n        \"features\":[\"CAS latency 3,   2.7v\"],\n        \"popularity\":[0],\n        \"inStock\":[true],\n        \"store\":[\"45.18414,-93.88141\"],\n        \"manufacturedate_dt\":\"2006-02-13T15:26:37Z\",\n        \"payloads\":[\"electronics|0.9 memory|0.1\"],\n        \"_version_\":1664688418113716224}]\n  }}\n"
+## attr(,"class")
+## [1] "sr_search"
+## attr(,"wt")
+## [1] "json"
 ```
 
 Or parsed data to a data.frame (just looking at a few columns for brevity):
 
 
 ```r
-conn$search("gettingstarted", params = list(q = '*:*', fl = c('date', 'title')))
-#> Source: local data frame [10 x 2]
-#>
-#>                    date                                                                         title
-#> 1  2015-06-10T00:00:00Z   Uses of Interface org.apache.solr.highlight.SolrFragmenter (Solr 5.2.1 API)
-#> 2  2015-06-10T00:00:00Z Uses of Class org.apache.solr.highlight.SolrFragmentsBuilder (Solr 5.2.1 API)
-#> 3  2015-06-10T00:00:00Z                                                    CSVParser (Solr 5.2.1 API)
-#> 4  2015-06-10T00:00:00Z                                                     CSVUtils (Solr 5.2.1 API)
-#> 5  2015-06-10T00:00:00Z                                 org.apache.solr.internal.csv (Solr 5.2.1 API)
-#> 6  2015-06-10T00:00:00Z                 org.apache.solr.internal.csv Class Hierarchy (Solr 5.2.1 API)
-#> 7  2015-06-10T00:00:00Z       Uses of Class org.apache.solr.internal.csv.CSVStrategy (Solr 5.2.1 API)
-#> 8  2015-06-10T00:00:00Z          Uses of Class org.apache.solr.internal.csv.CSVUtils (Solr 5.2.1 API)
-#> 9  2015-06-10T00:00:00Z                                                    CSVConfig (Solr 5.2.1 API)
-#> 10 2015-06-10T00:00:00Z                                             CSVConfigGuesser (Solr 5.2.1 API)
+conn$search("gettingstarted", params = list(q = '*:*', fl = c('id', 'address_s')))
+```
+
+```
+## # A tibble: 10 x 2
+##    id                address_s                                                 
+##    <chr>             <chr>                                                     
+##  1 TWINX2048-3200PRO <NA>                                                      
+##  2 VS1GB400C3        <NA>                                                      
+##  3 VDBDB1A16         <NA>                                                      
+##  4 SOLR1000          <NA>                                                      
+##  5 adata             46221 Landing Parkway Fremont, CA 94538                   
+##  6 apple             1 Infinite Way, Cupertino CA                              
+##  7 asus              800 Corporate Way Fremont, CA 94539                       
+##  8 ati               33 Commerce Valley Drive East Thornhill, ON L3T 7N6 Canada
+##  9 belkin            12045 E. Waterfront Drive Playa Vista, CA 90094           
+## 10 canon             One Canon Plaza Lake Success, NY 11042
 ```
 
 ## Other Vignettes

@@ -1,13 +1,21 @@
+---
+title: Document management
+author: Scott Chamberlain
+date: "2020-04-22"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Document management}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+
+
 <!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Document management}
-%\VignetteEncoding{UTF-8}
+to run this vignette:
+cd vignettes/docker
+docker-compose up -d
 -->
-
-
-
-Document management
-===================
 
 ## Installation
 
@@ -22,8 +30,7 @@ Or the development version from GitHub
 
 
 ```r
-install.packages("devtools")
-devtools::install_github("ropensci/solrium")
+remotes::install_github("ropensci/solrium")
 ```
 
 Load
@@ -58,6 +65,40 @@ For now, only lists and data.frame's supported.
 
 
 ```r
+if (!collection_exists(conn, "books")) {
+  collection_create(conn, name = "books", numShards = 1)
+}
+```
+
+```
+#> $responseHeader
+#> $responseHeader$status
+#> [1] 0
+#> 
+#> $responseHeader$QTime
+#> [1] 6513
+#> 
+#> 
+#> $success
+#> $success$`172.20.0.5:8983_solr`
+#> $success$`172.20.0.5:8983_solr`$responseHeader
+#> $success$`172.20.0.5:8983_solr`$responseHeader$status
+#> [1] 0
+#> 
+#> $success$`172.20.0.5:8983_solr`$responseHeader$QTime
+#> [1] 5024
+#> 
+#> 
+#> $success$`172.20.0.5:8983_solr`$core
+#> [1] "books_shard1_replica_n1"
+#> 
+#> 
+#> 
+#> $warning
+#> [1] "Using _default configset. Data driven schema functionality is enabled by default, which is NOT RECOMMENDED for production use. To turn it off: curl http://{host:port}/solr/books/config -d '{\"set-user-property\": {\"update.autoCreateFields\":\"false\"}}'"
+```
+
+```r
 df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
 conn$add(df, "books")
 ```
@@ -71,7 +112,7 @@ conn$add(df, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 319
+#> [1] 987
 ```
 
 ### list
@@ -93,12 +134,49 @@ conn$add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 47
+#> [1] 61
 ```
 
 ## Delete documents
 
 ### By id
+
+Create collection if it doesn't exist yet
+
+
+```r
+if (!collection_exists(conn, "gettingstarted")) {
+  collection_create(conn, name = "gettingstarted", numShards = 1)
+}
+```
+
+```
+#> $responseHeader
+#> $responseHeader$status
+#> [1] 0
+#> 
+#> $responseHeader$QTime
+#> [1] 6446
+#> 
+#> 
+#> $success
+#> $success$`172.20.0.7:8983_solr`
+#> $success$`172.20.0.7:8983_solr`$responseHeader
+#> $success$`172.20.0.7:8983_solr`$responseHeader$status
+#> [1] 0
+#> 
+#> $success$`172.20.0.7:8983_solr`$responseHeader$QTime
+#> [1] 5112
+#> 
+#> 
+#> $success$`172.20.0.7:8983_solr`$core
+#> [1] "gettingstarted_shard1_replica_n1"
+#> 
+#> 
+#> 
+#> $warning
+#> [1] "Using _default configset. Data driven schema functionality is enabled by default, which is NOT RECOMMENDED for production use. To turn it off: curl http://{host:port}/solr/gettingstarted/config -d '{\"set-user-property\": {\"update.autoCreateFields\":\"false\"}}'"
+```
 
 Add some documents first
 
@@ -121,7 +199,7 @@ conn$add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 206
+#> [1] 1108
 ```
 
 And the documents are now in your Solr database
@@ -132,12 +210,12 @@ conn$search(name = "gettingstarted", params = list(q = "*:*", rows = 3))
 ```
 
 ```
-#> # A tibble: 3 x 3
-#>   id    title   `_version_`
-#>   <chr> <chr>         <dbl>
-#> 1 10    adfadsf     1.65e18
-#> 2 12    though      1.65e18
-#> 3 14    animals     1.65e18
+#> # A tibble: 3 x 4
+#>   id    price name  `_version_`
+#>   <chr> <int> <chr>       <dbl>
+#> 1 1       100 brown     1.66e18
+#> 2 2       500 blue      1.66e18
+#> 3 3      2000 pink      1.66e18
 ```
 
 Now delete those documents just added
@@ -156,7 +234,7 @@ conn$delete_by_id(ids = c(1, 2, 3), "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 151
+#> [1] 48
 ```
 
 And now they are gone
@@ -167,12 +245,7 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 4))
 ```
 
 ```
-#> # A tibble: 3 x 3
-#>   id    title   `_version_`
-#>   <chr> <chr>         <dbl>
-#> 1 10    adfadsf     1.65e18
-#> 2 12    though      1.65e18
-#> 3 14    animals     1.65e18
+#> # A tibble: 0 x 0
 ```
 
 ### By query
@@ -193,7 +266,7 @@ conn$add(docs, "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 40
+#> [1] 72
 ```
 
 And the documents are now in your Solr database
@@ -204,14 +277,12 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ```
-#> # A tibble: 5 x 5
-#>   id    title   `_version_` price name 
-#>   <chr> <chr>         <dbl> <int> <chr>
-#> 1 10    adfadsf     1.65e18    NA <NA> 
-#> 2 12    though      1.65e18    NA <NA> 
-#> 3 14    animals     1.65e18    NA <NA> 
-#> 4 1     <NA>        1.65e18   100 brown
-#> 5 2     <NA>        1.65e18   500 blue
+#> # A tibble: 3 x 4
+#>   id    price name  `_version_`
+#>   <chr> <int> <chr>       <dbl>
+#> 1 1       100 brown     1.66e18
+#> 2 2       500 blue      1.66e18
+#> 3 3      2000 pink      1.66e18
 ```
 
 Now delete those documents just added
@@ -230,7 +301,7 @@ conn$delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 74
+#> [1] 122
 ```
 
 And now they are gone
@@ -241,13 +312,10 @@ conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
 ```
 
 ```
-#> # A tibble: 4 x 5
-#>   id    title   `_version_` price name 
-#>   <chr> <chr>         <dbl> <int> <chr>
-#> 1 10    adfadsf     1.65e18    NA <NA> 
-#> 2 12    though      1.65e18    NA <NA> 
-#> 3 14    animals     1.65e18    NA <NA> 
-#> 4 1     <NA>        1.65e18   100 brown
+#> # A tibble: 1 x 4
+#>   id    price name  `_version_`
+#>   <chr> <int> <chr>       <dbl>
+#> 1 1       100 brown     1.66e18
 ```
 
 ## Update documents from files
@@ -277,7 +345,7 @@ conn$update_json(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 61
+#> [1] 782
 ```
 
 ### Add and delete in the same file
@@ -299,7 +367,7 @@ conn$add(ss, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 43
+#> [1] 100
 ```
 
 Now add a new document, and delete the one we just made
@@ -344,7 +412,7 @@ conn$update_xml(file, "books")
 #> [1] 0
 #> 
 #> $responseHeader$QTime
-#> [1] 95
+#> [1] 279
 ```
 
 ### Notes

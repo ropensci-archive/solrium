@@ -1,0 +1,202 @@
+---
+title: solr search
+author: Scott Chamberlain
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{solr search}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+**A general purpose R interface to [Apache Solr](https://lucene.apache.org/solr/)**
+
+## Solr info
+
++ [Solr home page](https://lucene.apache.org/solr/)
++ [Highlighting help](https://lucene.apache.org/solr/guide/8_2/highlighting.html)
++ [Faceting help](https://lucene.apache.org/solr/guide/8_2/faceting.html)
++ [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
+
+## Installation
+
+Stable version from CRAN
+
+```{r eval=FALSE}
+install.packages("solrium")
+```
+
+Or the development version from GitHub
+
+```{r, eval=FALSE}
+remotes::install_github("ropensci/solrium")
+```
+
+Load
+
+```{r}
+library("solrium")
+```
+
+## Setup connection
+
+You can setup for a remote Solr instance or on your local machine.
+
+```{r}
+(conn <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
+```
+
+## Rundown
+
+`solr_search()` only returns the `docs` element of a Solr response body. If `docs` is
+all you need, then this function will do the job. If you need facet data only, or mlt
+data only, see the appropriate functions for each of those below. Another function,
+`solr_all()` has a similar interface in terms of parameter as `solr_search()`, but
+returns all parts of the response body, including, facets, mlt, groups, stats, etc.
+as long as you request those.
+
+## Search docs
+
+`solr_search()` returns only docs. A basic search:
+
+```{r}
+conn$search(params = list(q = '*:*', rows = 2, fl = 'id'))
+```
+
+__Search in specific fields with `:`__
+
+Search for word ecology in title and cell in the body
+
+```{r}
+conn$search(params = list(q = 'title:"ecology" AND body:"cell"', fl = 'title', rows = 5))
+```
+
+__Wildcards__
+
+Search for word that starts with "cell" in the title field
+
+```{r}
+conn$search(params = list(q = 'title:"cell*"', fl = 'title', rows = 5))
+```
+
+__Proximity search__
+
+Search for words "sports" and "alcohol" within four words of each other
+
+```{r}
+conn$search(params = list(q = 'everything:"stem cell"~7', fl = 'title', rows = 3))
+```
+
+__Range searches__
+
+Search for articles with Twitter count between 5 and 10
+
+```{r}
+conn$search(params = list(q = '*:*', fl = c('alm_twitterCount', 'id'), fq = 'alm_twitterCount:[5 TO 50]', rows = 10))
+```
+
+__Boosts__
+
+Assign higher boost to title matches than to body matches (compare the two calls)
+
+```{r}
+conn$search(params = list(q = 'title:"cell" abstract:"science"', fl = 'title', rows = 3))
+```
+
+```{r}
+conn$search(params = list(q = 'title:"cell"^1.5 AND abstract:"science"', fl = 'title', rows = 3))
+```
+
+## Search all
+
+`solr_all()` differs from `solr_search()` in that it allows specifying facets, mlt, groups,
+stats, etc, and returns all of those. It defaults to `parsetype = "list"` and `wt="json"`,
+whereas `solr_search()` defaults to `parsetype = "df"` and `wt="csv"`. `solr_all()` returns
+by default a list, whereas `solr_search()` by default returns a data.frame.
+
+A basic search, just docs output
+
+```{r}
+conn$all(params = list(q = '*:*', rows = 2, fl = 'id'))
+```
+
+Get docs, mlt, and stats output
+
+```{r}
+conn$all(params = list(q = 'ecology', rows = 2, fl = 'id', mlt = 'true', mlt.count = 2, mlt.fl = 'abstract', stats = 'true', stats.field = 'counter_total_all'))
+```
+
+
+## Facet
+
+```{r}
+conn$facet(params = list(q = '*:*', facet.field = 'journal', facet.query = c('cell', 'bird')))
+```
+
+## Highlight
+
+```{r}
+conn$highlight(params = list(q = 'alcohol', hl.fl = 'abstract', rows = 2))
+```
+
+## Stats
+
+```{r}
+out <- conn$stats(params = list(q = 'ecology', stats.field = c('counter_total_all', 'alm_twitterCount'), stats.facet = c('journal', 'volume')))
+```
+
+```{r}
+out$data
+```
+
+```{r}
+out$facet
+```
+
+## More like this
+
+`solr_mlt` is a function to return similar documents to the one
+
+```{r}
+out <- conn$mlt(params = list(q = 'title:"ecology" AND body:"cell"', mlt.fl = 'title', mlt.mindf = 1, mlt.mintf = 1, fl = 'counter_total_all', rows = 5))
+out$docs
+```
+
+```{r}
+out$mlt
+```
+
+## Groups
+
+`solr_groups()` is a function to return similar documents to the one
+
+```{r}
+conn$group(params = list(q = 'ecology', group.field = 'journal', group.limit = 1, fl = c('id', 'alm_twitterCount')))
+```
+
+## Parsing
+
+`solr_parse()` is a general purpose parser function with extension methods for parsing outputs from functions in `solr`. `solr_parse()` is used internally within functions to do parsing after retrieving data from the server. You can optionally get back raw `json`, `xml`, or `csv` with the `raw=TRUE`, and then parse afterwards with `solr_parse()`.
+
+For example:
+
+```{r}
+(out <- conn$highlight(params = list(q = 'alcohol', hl.fl = 'abstract', rows = 2), raw = TRUE))
+```
+
+Then parse
+
+```{r}
+solr_parse(out, 'df')
+```
+
+[Please report any issues or bugs](https://github.com/ropensci/solrium/issues).

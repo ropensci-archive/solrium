@@ -1,0 +1,183 @@
+---
+title: Document management
+author: Scott Chamberlain
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Document management}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+<!--
+to run this vignette:
+cd vignettes/docker
+docker-compose up -d
+-->
+
+## Installation
+
+Stable version from CRAN
+
+```{r eval=FALSE}
+install.packages("solrium")
+```
+
+Or the development version from GitHub
+
+```{r, eval=FALSE}
+remotes::install_github("ropensci/solrium")
+```
+
+Load
+
+```{r}
+library("solrium")
+```
+
+Initialize connection. By default, you connect to `http://localhost:8983`
+
+```{r}
+(conn <- SolrClient$new())
+```
+
+## Create documents from R objects
+
+For now, only lists and data.frame's supported.
+
+### data.frame
+
+```{r}
+if (!collection_exists(conn, "books")) {
+  collection_create(conn, name = "books", numShards = 1)
+}
+df <- data.frame(id = c(67, 68), price = c(1000, 500000000))
+conn$add(df, "books")
+```
+
+### list
+
+```{r echo=FALSE, results='hide'}
+conn$delete_by_id(1:2, "books")
+```
+
+```{r}
+ss <- list(list(id = 1, price = 100), list(id = 2, price = 500))
+conn$add(ss, "books")
+```
+
+## Delete documents
+
+### By id
+
+Create collection if it doesn't exist yet
+
+```{r}
+if (!collection_exists(conn, "gettingstarted")) {
+  collection_create(conn, name = "gettingstarted", numShards = 1)
+}
+```
+
+Add some documents first
+
+```{r echo=FALSE, results='hide'}
+conn$delete_by_id(1:3, "gettingstarted")
+```
+
+```{r}
+docs <- list(list(id = 1, price = 100, name = "brown"),
+             list(id = 2, price = 500, name = "blue"),
+             list(id = 3, price = 2000L, name = "pink"))
+conn$add(docs, "gettingstarted")
+```
+
+And the documents are now in your Solr database
+
+```{r}
+conn$search(name = "gettingstarted", params = list(q = "*:*", rows = 3))
+```
+
+Now delete those documents just added
+
+```{r deleteid}
+conn$delete_by_id(ids = c(1, 2, 3), "gettingstarted")
+```
+
+And now they are gone
+
+```{r}
+conn$search("gettingstarted", params = list(q = "*:*", rows = 4))
+```
+
+### By query
+
+Add some documents first
+
+```{r}
+conn$add(docs, "gettingstarted")
+```
+
+And the documents are now in your Solr database
+
+```{r}
+conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
+```
+
+Now delete those documents just added
+
+```{r deletequery}
+conn$delete_by_query(query = "(name:blue OR name:pink)", "gettingstarted")
+```
+
+And now they are gone
+
+```{r}
+conn$search("gettingstarted", params = list(q = "*:*", rows = 5))
+```
+
+## Update documents from files
+
+This approach is best if you have many different things you want to do at once, e.g., delete and add files and set any additional options. The functions are:
+
+* `update_xml()`
+* `update_json()`
+* `update_csv()`
+
+There are separate functions for each of the data types as they take slightly different parameters - and to make it more clear that those are the three input options for data types.
+
+### JSON
+
+```{r}
+file <- system.file("examples", "books.json", package = "solrium")
+conn$update_json(file, "books")
+```
+
+### Add and delete in the same file
+
+Add a document first, that we can later delete
+
+```{r}
+ss <- list(list(id = 456, name = "cat"))
+conn$add(ss, "books")
+```
+
+Now add a new document, and delete the one we just made
+
+```{r}
+file <- system.file("examples", "add_delete.xml", package = "solrium")
+cat(readLines(file), sep = "\n")
+conn$update_xml(file, "books")
+```
+
+### Notes
+
+Note that `update_xml()` and `update_json()` have exactly the same parameters, but simply use different data input formats. `update_csv()` is different in that you can't provide document or field level boosts or other modifications. In addition `update_csv()` can accept not just csv, but tsv and other types of separators.
+

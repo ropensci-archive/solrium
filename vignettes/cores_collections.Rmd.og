@@ -1,7 +1,7 @@
 ---
 title: Cores/collections management
 author: Scott Chamberlain
-date: "2020-04-22"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{Cores/collections management}
@@ -9,47 +9,39 @@ vignette: >
     %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
 
 
 ## Installation
 
 Stable version from CRAN
 
-
-```r
+```{r eval=FALSE}
 install.packages("solrium")
 ```
 
 Or the development version from GitHub
 
-
-```r
+```{r, eval=FALSE}
 remotes::install_github("ropensci/solrium")
 ```
 
 Load
 
-
-```r
+```{r}
 library("solrium")
 ```
 
 Initialize connection
 
-
-```r
+```{r}
 (conn <- SolrClient$new())
-```
-
-```
-#> <Solr Client>
-#>   host: 127.0.0.1
-#>   path: 
-#>   port: 8983
-#>   scheme: http
-#>   errors: simple
-#>   proxy:
 ```
 
 ## Cores
@@ -69,15 +61,13 @@ There are many operations you can do on cores, including:
 
 ### Create a core
 
-
-```r
+```{r eval=FALSE}
 conn$core_create()
 ```
 
 ### Delete a core
 
-
-```r
+```{r eval=FALSE}
 conn$core_unload()
 ```
 
@@ -110,14 +100,12 @@ There are many operations you can do on collections, including:
 
 ### Create a collection
 
-
-```r
+```{r eval=FALSE}
 conn$collection_create()
 ```
 
 ### Delete a collection
 
-
-```r
+```{r eval=FALSE}
 conn$collection_delete()
 ```

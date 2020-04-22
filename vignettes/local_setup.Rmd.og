@@ -1,0 +1,76 @@
+---
+title: Local Solr setup
+author: Scott Chamberlain
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Local Solr setup}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+<!--
+to run this vignette:
+docker run -d -p 8983:8983 --name my_solr solr:latest solr-precreate gettingstarted
+docker exec  -it <container id> /bin/bash # go into container
+bin/post -c gettingstarted example/exampledocs/ 
+-->
+
+The Solr version you are working with my differ from below. Don't worry, just go with the version you want to use.
+
+### OSX
+
+__Based on https://lucene.apache.org/solr/guide/8_2/solr-tutorial.html__
+
+1. Download most recent version from an Apache mirror https://lucene.apache.org/solr/
+2. Unzip/untar the file. Move to your desired location. Now you have Solr `v.7.0.0`
+3. Go into the directory you just created: `cd solr-7.0.0`
+4. Launch Solr: `bin/solr start -e cloud -noprompt` - Sets up SolrCloud mode, rather
+than Standalone mode. As far as I can tell, SolrCloud mode seems more common.
+5. Once Step 4 completes, you can go to `http://localhost:8983/solr/` now, which is
+the admin interface for Solr.
+6. Load some documents: `bin/post -c gettingstarted docs/`
+7. Once Step 6 is complete (will take a few minutes), navigate in your browser to `http://localhost:8983/solr/gettingstarted/select?q=*:*&wt=json` and you should see a
+bunch of documents
+
+
+### Linux
+
+> You should be able to use the above instructions for OSX on a Linux machine.
+
+#### Linuxbrew
+
+Linuxbrew (http://linuxbrew.sh/) is a port of Mac OS homebrew to linux.  Operation is essentially the same as for homebrew.  Follow the installation instructions for linuxbrew and then the instructions for using homebrew (above) should work without modification.
+
+### Windows
+
+You should be able to use the above instructions for OSX on a Windows machine, but with some slight differences. For example, the `bin/post` tool for OSX and Linux doesn't work on Windows, but see https://lucene.apache.org/solr/guide/8_2/post-tool.html#PostTool-Windows for an equivalent.
+
+### `solrium` usage
+
+First, setup a connection object
+
+```{r}
+library(solrium)
+(conn <- SolrClient$new())
+```
+
+And we can now use the `solrium` R package to query the Solr database to get raw JSON data:
+
+```{r}
+conn$search("gettingstarted", params = list(q = '*:*', rows = 3), raw = TRUE)
+```
+
+Or parsed data to a data.frame (just looking at a few columns for brevity):
+
+```{r}
+conn$search("gettingstarted", params = list(q = '*:*', fl = c('id', 'address_s')))
+```
+
+## Other Vignettes
+
+See the other vignettes for more thorough examples:
+
+* `Document management`
+* `Cores/collections management`
+* `Solr Search`
