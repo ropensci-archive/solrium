@@ -20,3 +20,4 @@ solr-5.4.1
 .github
 ^codemeta\.json$
 ^LICENSE\.md$
+docker-compose.yml
