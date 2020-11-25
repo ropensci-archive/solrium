@@ -25,6 +25,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Spin up Solr
+        run: docker-compose up -d
+
+      - name: Verify Solr is up
+        run: |
+          curl -fsSL --retry 5 --retry-max-time 40 --retry-connrefused http://localhost:8983/solr/gettingstarted/admin/ping/ 
+
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
@@ -52,13 +59,6 @@ jobs:
           do
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(pak::local_system_requirements("ubuntu", "16.04"))')
-
-      - name: Spin up Solr
-        run: docker-compose up -d
-
-      - name: Verify Solr is up
-        run: |
-          curl -fsSL http://localhost:8983/solr/gettingstarted/admin/ping/
 
       - name: Install dependencies
         run: |
