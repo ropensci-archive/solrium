@@ -9,5 +9,9 @@ services:
     command:
       - solr-precreate
       - gettingstarted
+    healthcheck:
+      test: >-
+        curl -s -A 'healthcheck'  http://localhost:8983/solr/gettingstarted/admin/ping?wt=json \
+        | grep -q '"status":"OK"'
 volumes:
   data:
