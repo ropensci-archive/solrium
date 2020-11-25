@@ -30,7 +30,7 @@ jobs:
 
       - name: Verify Solr is up
         run: |
-          curl -fsSL --retry 5 --retry-max-time 40 --retry-connrefused http://localhost:8983/solr/gettingstarted/admin/ping/ 
+          curl -fsSL --retry 5 --retry-max-time 40 --connect-timeout 10 http://localhost:8983/solr/gettingstarted/admin/ping/ 
 
       - uses: r-lib/actions/setup-r@v1
         with:
