@@ -3,6 +3,7 @@ solrium 1.2.0
 
 ### MINOR IMPROVEMENTS
 
+* fix vignette titles (#123)
 * vignette dependency fix
 
 
