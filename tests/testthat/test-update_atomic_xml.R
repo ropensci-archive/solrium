@@ -1,5 +1,7 @@
 context("update_atomic_xml")
 
+skip_if(solr_missing(conn))
+
 library(xml2)
 
 test_that("update_atomic_xml works", {

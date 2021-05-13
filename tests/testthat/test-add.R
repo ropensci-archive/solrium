@@ -1,5 +1,7 @@
 context("add")
 
+skip_if(solr_missing(conn))
+
 test_that("add works with a list and data.frame", {
   skip_on_cran()
 

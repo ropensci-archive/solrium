@@ -5,8 +5,6 @@ conn_comp <- SolrClient$new(host = 'api.plos.org', path = 'search',
                             port = NULL, errors = "complete")
 conn_hathi <- SolrClient$new(
   host = "chinkapin.pti.indiana.edu", path = "solr/meta/select", port = 9994)
-conn_dc <- SolrClient$new(scheme = "https", host = "search.datacite.org", 
-    path = "api", port = NULL)
 conn_dryad <- SolrClient$new(host = "datadryad.org", path = "solr/search/select",
                              port = NULL)
 
@@ -16,4 +14,10 @@ if (!inherits(up, "error")) {
   if (!conn$collection_exists("gettingstarted")) {
     conn$collection_create("gettingstarted")
   }
+}
+
+# fxn to determine if Solr instance is available or not
+solr_missing <- function(con) {
+  x <- tryCatch(suppressWarnings(readLines(con$make_url())), error = function(e) e)
+  inherits(x, "error")
 }

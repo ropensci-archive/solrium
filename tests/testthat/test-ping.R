@@ -1,4 +1,7 @@
 context("ping - regular mode")
+
+skip_if(solr_missing(conn))
+
 test_that("ping works", {
   skip_on_cran()
   skip_if_not(!is_in_cloud_mode(conn))

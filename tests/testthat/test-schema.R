@@ -1,5 +1,7 @@
 context("schema - cloud mode")
 
+skip_if(solr_missing(conn))
+
 test_that("both R6 and normal function call work", {
   skip_on_cran()
 

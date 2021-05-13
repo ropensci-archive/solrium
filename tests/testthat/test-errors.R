@@ -33,7 +33,7 @@ test_that("setting error levels gives correct effect - complete errors", {
   expect_error(conn_comp$search(params = list(q = "*:*", rows = "asdf")),
                "rows should be a numeric or integer class value")
   expect_error(conn_comp$search(params = list(q = "*:*", start = "asdf")),
-               "500 - For input string: \"asdf\"")
+               "400 - For input string: \"asdf\"")
   expect_error(conn_comp$search(params = list(q = "*:*", sort = "down")),
     "400 - Can't determine a Sort Order \\(asc or desc\\) in sort spec 'down'")
 })

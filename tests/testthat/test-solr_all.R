@@ -32,17 +32,6 @@ test_that("solr_all fails well", {
 
 })
 
-test_that("solr_all works with Datacite", {
-  skip_on_cran()
-
-  a <- conn_dc$all(params = list(q = '*:*', rows = 2))
-  b <- conn_dc$all(params = list(q = 'publisher:Data', rows = 5))
-  # correct dimensions
-  expect_equal(NROW(a$search), 2)
-  expect_equal(NROW(b$search), 5)
-})
-
-
 test_that("solr_all old style works", {
   skip_on_cran()
 
@@ -105,13 +94,4 @@ test_that("solr_all fails if optimize max rows is disabled with rows equal to -1
     conn_plos$all(params = list(q='*:*', rows=-1, fl='id'), optimizeMaxRows=FALSE),
     "'rows' parameter cannot be negative"
   )
-})
-
-
-test_that("solr_all: attributes", {
-  skip_on_cran()
-
-  a <- conn_dc$all(params = list(q = '*:*', rows = 2))
-  expect_is(attr(a, "responseHeader"), "list")
-  expect_named(attr(a, "responseHeader"), c("status", "QTime"))
 })

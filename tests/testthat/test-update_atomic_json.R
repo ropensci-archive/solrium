@@ -1,5 +1,7 @@
 context("update_atomic_json")
 
+skip_if(solr_missing(conn))
+
 test_that("update_atomic_json works", {
   skip_on_cran()
 

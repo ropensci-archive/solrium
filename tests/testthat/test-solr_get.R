@@ -1,5 +1,7 @@
 context("get")
 
+skip_if(solr_missing(conn))
+
 test_that("get works with a single id", {
   skip_on_cran()
 

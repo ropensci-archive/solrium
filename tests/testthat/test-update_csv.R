@@ -1,5 +1,7 @@
 context("update_csv")
 
+skip_if(solr_missing(conn))
+
 df <- data.frame(id=1:3, name=c('red', 'blue', 'green'))
 write.csv(df, file="df.csv", row.names=FALSE, quote = FALSE)
 

@@ -1,5 +1,7 @@
 context("delete_by_id")
 
+skip_if(solr_missing(conn))
+
 test_that("delete by ", {
   skip_on_cran()
 
