@@ -14,7 +14,7 @@
 
 \item{proxy}{List of arguments for a proxy connection, including one or
 more of: url, port, username, password, and auth. See
-\link[crul:proxy]{crul::proxy} for  help, which is used to construct the
+\link[crul:proxies]{crul::proxy} for  help, which is used to construct the
 proxy connection.}
 
 \item{errors}{(character) One of \code{"simple"} or \code{"complete"}. Simple gives
