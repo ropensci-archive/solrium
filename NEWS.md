@@ -1,3 +1,11 @@
+solrium 1.2.0
+=============
+
+### MINOR IMPROVEMENTS
+
+* vignette dependency fix
+
+
 solrium 1.1.4
 =============
 

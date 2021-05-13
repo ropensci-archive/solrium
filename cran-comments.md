@@ -1,7 +1,7 @@
 ## Test environments
 
-* local OS X install, R 3.6.1 patched
-* ubuntu 14.04 (on travis-ci), R 3.6.1
+* local macOS install, R 4.0.5 patched
+* ubuntu 14.04 (on GitHub Actions), R 4.0.5
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -10,12 +10,12 @@
 
 ## Reverse dependencies
 
-* I have run R CMD check on the 4 downstream dependencies.
+* I have run R CMD check on the 2 downstream dependencies.
   (Summary at <https://github.com/ropensci/solrium/blob/master/revdep/README.md>), with no problems found.
 
 -----
 
-This release includes a bug fix that prevented successful execution of delete by query in Solr.
+This version fixes the rmarkdown/markdown dependency issue for vignettes that Kurt emailed maintainers about.
 
 Thanks!
 Scott Chamberlain
