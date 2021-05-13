@@ -1,6 +1,7 @@
 context("update_json")
 
 skip_if(solr_missing(conn))
+skip_on_ci()
 
 test_that("update_json works", {
   skip_on_cran()

@@ -1,6 +1,7 @@
 context("ping - regular mode")
 
 skip_if(solr_missing(conn))
+skip_on_ci()
 
 test_that("ping works", {
   skip_on_cran()

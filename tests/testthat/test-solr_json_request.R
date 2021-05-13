@@ -1,6 +1,7 @@
 context("solr_json_request")
 
 skip_if(solr_missing(conn))
+skip_on_ci()
 
 test_that("solr_json_request works", {
   skip_on_cran()

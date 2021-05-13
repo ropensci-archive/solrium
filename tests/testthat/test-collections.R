@@ -1,6 +1,7 @@
 context("collections")
 
 skip_if(solr_missing(conn))
+skip_on_ci()
 
 test_that("collections works - no collections", {
   skip_on_cran()

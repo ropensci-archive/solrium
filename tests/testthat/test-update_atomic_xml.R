@@ -1,6 +1,7 @@
 context("update_atomic_xml")
 
 skip_if(solr_missing(conn))
+skip_on_ci()
 
 library(xml2)
 

@@ -1,6 +1,7 @@
 context("update_xml")
 
 skip_if(solr_missing(conn))
+skip_on_ci()
 
 test_that("update_xml works", {
   skip_on_cran()
