@@ -20,8 +20,6 @@ The Solr version you are working with my differ from below. Don't worry, just go
 
 ### OSX
 
-__Based on https://solr.apache.org/guide/8_2/solr-tutorial.html__
-
 1. Download most recent version from an Apache mirror https://solr.apache.org/
 2. Unzip/untar the file. Move to your desired location. Now you have Solr `v.7.0.0`
 3. Go into the directory you just created: `cd solr-7.0.0`

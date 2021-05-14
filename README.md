@@ -26,7 +26,6 @@ Currently developing against Solr `v8.2.0`
 + [Solr stats](https://lucene.apache.org/solr/guide/8_2/the-stats-component.html)
 + ['More like this' searches](https://lucene.apache.org/solr/guide/8_2/morelikethis.html)
 + [Grouping/Feild collapsing](https://lucene.apache.org/solr/guide/8_2/collapse-and-expand-results.html)
-+ [Install and Setup SOLR in OSX, including running Solr](http://risnandar.wordpress.com/2013/09/08/how-to-install-and-setup-apache-lucene-solr-in-osx/)
 + [Solr csv writer](https://lucene.apache.org/solr/guide/8_2/response-writers.html#csv-response-writer)
 
 ## Package API and ways of using the package
