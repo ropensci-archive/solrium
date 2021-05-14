@@ -35,7 +35,7 @@
 #' field "foo" \code{f.foo.map=RemoveMe:&f.foo.keepEmpty=false }
 #' @param split If TRUE, the field value is split into multiple values by another 
 #' CSV parser. The CSV parsing rules such as separator and encapsulator may be specified 
-#' as field parameters. See \url{https://wiki.apache.org/solr/UpdateCSV#split} for examples.
+#' as field parameters.
 #' @param rowid If not null, add a new field to the document where the passed in parameter 
 #' name is the field name to be added and the current line/rowid is the value. This is 
 #' useful if your CSV doesn't have a unique id already in it and you want to use the line 

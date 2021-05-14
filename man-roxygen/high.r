@@ -21,8 +21,7 @@
 #' This parameter accepts per-field overrides. Default: 1.
 #'  \item hl.fragsize The size, in characters, of the snippets (aka fragments) created by
 #' the highlighter. In the original Highlighter, "0" indicates that the whole field value
-#' should be used with no fragmenting. See
-#' \url{http://wiki.apache.org/solr/HighlightingParameters} for more info.
+#' should be used with no fragmenting. 
 #'  \item hl.q Set a query request to be highlighted. It overrides q parameter for
 #' highlighting. Solr query syntax is acceptable for this parameter.
 #'  \item hl.mergeContiguous Collapse contiguous fragments into a single fragment. "true"
