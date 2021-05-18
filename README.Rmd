@@ -10,30 +10,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-<!-- [![Build Status](https://travis-ci.org/ropensci/solrium.svg?branch=master)](https://travis-ci.org/ropensci/solrium)
-[![codecov.io](https://codecov.io/github/ropensci/solrium/coverage.svg?branch=master)](https://codecov.io/github/ropensci/solrium?branch=master) -->
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![cran checks](https://cranchecks.info/badges/worst/solrium)](https://cranchecks.info/pkgs/solrium)
 [![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/solrium?color=2ED968)](https://github.com/r-hub/cranlogs.app)
 [![cran version](https://www.r-pkg.org/badges/version/solrium)](https://cran.r-project.org/package=solrium)
 
-**A general purpose R interface to [Solr](https://lucene.apache.org/solr/)**
+**A general purpose R interface to [Solr](https://solr.apache.org/)**
 
 Development is now following Solr v7 and greater - which introduced many changes, which means many functions here may not work with your Solr installation older than v7.
 
 Be aware that currently some functions will only work in certain Solr modes, e.g, `collection_create()` won't work when you are not in Solrcloud mode. But, you should get an error message stating that you aren't.
 
 Currently developing against Solr `v8.2.0`
-
-## Solr info
-
-+ [Solr home page](https://lucene.apache.org/solr/)
-+ [Highlighting help](https://lucene.apache.org/solr/guide/8_2/highlighting.html)
-+ [Faceting help](https://lucene.apache.org/solr/guide/8_2/faceting.html)
-+ [Solr stats](https://lucene.apache.org/solr/guide/8_2/the-stats-component.html)
-+ ['More like this' searches](https://lucene.apache.org/solr/guide/8_2/morelikethis.html)
-+ [Grouping/Feild collapsing](https://lucene.apache.org/solr/guide/8_2/collapse-and-expand-results.html)
-+ [Solr csv writer](https://lucene.apache.org/solr/guide/8_2/response-writers.html#csv-response-writer)
 
 ## Package API and ways of using the package
 

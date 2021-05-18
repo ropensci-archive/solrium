@@ -18,13 +18,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-**A general purpose R interface to [Apache Solr](https://lucene.apache.org/solr/)**
+**A general purpose R interface to [Apache Solr](https://solr.apache.org/)**
 
-## Solr info
-
-+ [Solr home page](https://lucene.apache.org/solr/)
-+ [Highlighting help](https://lucene.apache.org/solr/guide/8_2/highlighting.html)
-+ [Faceting help](https://lucene.apache.org/solr/guide/8_2/faceting.html)
 
 ## Installation
 
