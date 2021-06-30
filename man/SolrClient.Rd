@@ -20,6 +20,8 @@ proxy connection.}
 \item{errors}{(character) One of \code{"simple"} or \code{"complete"}. Simple gives
 http code and  error message on an error, while complete gives both http
 code and error message, and stack trace, if available.}
+
+\item{auth}{an object of class \code{auth}, created by calling \code{\link[crul:auth]{crul::auth()}}}
 }
 \value{
 Various output, see help files for each grouping of methods.
@@ -158,6 +160,9 @@ SolrClient$new(proxy = list(url = "187.62.207.130:3128"))
 prox <- list(url = "187.62.207.130:3128", user = "foo", pwd = "bar")
 cli <- SolrClient$new(proxy = prox)
 cli$proxy
+
+# set simple authentication details
+SolrClient$new(auth = crul::auth(user = "hello", pwd = "world"))
 
 # A remote Solr instance to which you don't have admin access
 (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))

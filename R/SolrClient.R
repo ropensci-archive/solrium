@@ -12,6 +12,7 @@
 #' @param errors (character) One of `"simple"` or `"complete"`. Simple gives
 #' http code and  error message on an error, while complete gives both http
 #' code and error message, and stack trace, if available.
+#' @param auth an object of class `auth`, created by calling [crul::auth()]
 #'
 #' @return Various output, see help files for each grouping of methods.
 #'
@@ -187,6 +188,9 @@
 #' prox <- list(url = "187.62.207.130:3128", user = "foo", pwd = "bar")
 #' cli <- SolrClient$new(proxy = prox)
 #' cli$proxy
+#' 
+#' # set simple authentication details
+#' SolrClient$new(auth = crul::auth(user = "hello", pwd = "world"))
 #'
 #' # A remote Solr instance to which you don't have admin access
 #' (cli <- SolrClient$new(host = "api.plos.org", path = "search", port = NULL))
@@ -206,15 +210,17 @@ SolrClient <- R6::R6Class(
     path = NULL,
     scheme = 'http',
     proxy = NULL,
+    auth = NULL,
     errors = "simple",
 
-    initialize = function(host, path, port, scheme, proxy, errors) {
+    initialize = function(host, path, port, scheme, proxy, errors, auth) {
       if (!missing(host)) self$host <- host
       if (!missing(path)) self$path <- path
       if (!missing(port)) self$port <- port
       if (!missing(scheme)) self$scheme <- scheme
       if (!missing(proxy)) self$proxy <- private$make_proxy(proxy)
       if (!missing(errors)) self$errors <- private$lint_errors(errors)
+      if (!missing(auth)) self$auth <- private$make_auth(auth)
     },
 
     print = function(...) {
@@ -224,9 +230,10 @@ SolrClient <- R6::R6Class(
       cat(paste0('  port: ', self$port), sep = "\n")
       cat(paste0('  scheme: ', self$scheme), sep = "\n")
       cat(paste0('  errors: ', self$errors), sep = "\n")
+      hideup <- if (is.null(self$auth)) "" else "********"
+      cat(paste0("  userpwd: ", hideup), sep = "\n")
       cat("  proxy:", sep = "\n")
-      if (is.null(self$proxy)) {
-      } else {
+      if (!is.null(self$proxy)) {
         cat(paste0("    url:  ", self$proxy$proxy), sep = "\n")
         cat(paste0("    port: ", self$proxy$proxyport))
       }
@@ -237,7 +244,7 @@ SolrClient <- R6::R6Class(
       path <- sprintf('solr/%s/admin/ping', name)
       res <- tryCatch(
         solr_GET(self$make_url(), path = path, args = list(wt = wt),
-                 callopts = list(...)),
+                 callopts = list(...), auth = self$auth),
         error = function(e) e
       )
       if (inherits(res, "error")) {
@@ -251,7 +258,7 @@ SolrClient <- R6::R6Class(
 
     schema = function(name, what = '', raw = FALSE, ...) {
       res <- solr_GET(self$make_url(), sprintf('solr/%s/schema/%s', name, what),
-                      list(wt = "json"), ...)
+                      list(wt = "json"), auth = self$auth, ...)
       if (raw) return(res)
       jsonlite::fromJSON(res)
     },
@@ -266,7 +273,8 @@ SolrClient <- R6::R6Class(
                                   softCommit = asl(soft_commit))),
                args = list(wt = wt),
                raw = raw,
-               self$proxy, ...)
+               self$proxy, 
+               self$auth, ...)
     },
 
     optimize = function(name, max_segments = 1, wait_searcher = TRUE,
@@ -279,14 +287,15 @@ SolrClient <- R6::R6Class(
                                   softCommit = asl(soft_commit))),
                args = list(wt = wt),
                raw = raw,
-               self$proxy, ...)
+               self$proxy, 
+               self$auth, ...)
     },
 
 
 
     config_get = function(name, what = NULL, wt = "json", raw = FALSE, ...) {
       res <- solr_GET(self$make_url(), sprintf('solr/%s/config', name),
-                      sc(list(wt = wt)), self$proxy, ...)
+                      sc(list(wt = wt)), self$proxy, auth = self$auth, ...)
       config_parse(res, what, wt, raw)
     },
 
@@ -301,7 +310,7 @@ SolrClient <- R6::R6Class(
         }
         res <- solr_GET(self$make_url(),
                         sprintf('solr/%s/config/params/%s', name, param),
-                        list(wt = "json"), list(...), self$proxy)
+                        list(wt = "json"), list(...), self$proxy, auth = self$auth)
       } else {
         path <- sprintf('solr/%s/config/params', name)
         body <- sc(c(name_by(unbox_if(set, TRUE), "set"),
@@ -309,7 +318,8 @@ SolrClient <- R6::R6Class(
                      name_by(unbox_if(update, TRUE), "update")))
         res <- solr_POST_body(self$make_url(), path,
                               body, list(wt = "json"),
-                              ctype_json(), list(...), self$proxy)
+                              ctype_json(), list(...), self$proxy,
+                              auth = self$auth)
       }
       jsonlite::fromJSON(res)
     },
@@ -318,7 +328,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(wt = "json", omitHeader = asl(omitHeader)))
       res <- solr_GET(self$make_url(),
                       sprintf('solr/%s/config/overlay', name), args,
-                      self$proxy, ...)
+                      self$proxy, auth = self$auth, ...)
       jsonlite::fromJSON(res)
     },
 
@@ -328,7 +338,7 @@ SolrClient <- R6::R6Class(
       res <- solr_POST_body(self$make_url(),
                             sprintf('solr/%s/config', name),
                             body, list(wt = "json"), ctype_json(),
-                            list(...), self$proxy)
+                            list(...), self$prox, auth = self$auth)
       jsonlite::fromJSON(res)
     },
 
@@ -520,7 +530,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(action = 'STATUS', core = name,
                       indexInfo = asl(indexInfo), wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -538,7 +548,7 @@ SolrClient <- R6::R6Class(
                       configSet = configSet, collection = collection,
                       shard = shard, async = async, wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -552,7 +562,7 @@ SolrClient <- R6::R6Class(
                       deleteInstanceDir = asl(deleteInstanceDir),
                       async = async, wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -561,14 +571,14 @@ SolrClient <- R6::R6Class(
       args <- sc(list(action = 'RENAME', core = name, other = other,
                       async = async, wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
     core_reload = function(name, raw = FALSE, callopts=list()) {
       args <- sc(list(action = 'RELOAD', core = name, wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -578,7 +588,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(action = 'SWAP', core = name, other = other,
                       async = async, wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -588,7 +598,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(action = 'MERGEINDEXES', core = name, indexDir = indexDir,
                       srcCore = srcCore, async = async, wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -596,7 +606,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(action = 'REQUESTSTATUS', requestid = requestid,
                       wt = 'json'))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -607,7 +617,7 @@ SolrClient <- R6::R6Class(
                       split.key = split.key, async = async, wt = 'json'))
       args <- c(args, make_args(path), make_args(targetCore))
       res <- solr_GET(self$make_url(), 'solr/admin/cores', args, callopts,
-                      self$proxy)
+                      self$proxy, auth = self$auth)
       if (raw) res else jsonlite::fromJSON(res)
     },
 
@@ -635,12 +645,13 @@ SolrClient <- R6::R6Class(
         res <- solr_POST_body(self$make_url(),
             if (!is.null(name)) url_handle(name) else self$path,
             body, params, ctype_json(), callopts, self$proxy, 
-            progress = progress)
+            progress = progress, auth = self$auth)
         out <- structure(res, class = "sr_search", wt = params$wt)
       } else {
           res <- solr_GET(self$make_url(),
                  if (!is.null(name)) url_handle(name) else self$path,
-                 params, callopts, self$proxy, progress = progress)
+                 params, callopts, self$proxy, progress = progress,
+                 auth = self$auth)
         out <- structure(res, class = "sr_search", wt = params$wt)
       }
       if (raw) {
@@ -668,12 +679,13 @@ SolrClient <- R6::R6Class(
         res <- solr_POST_body(self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
           body, params, ctype_json(), callopts, self$proxy, 
-            progress = progress)
+            progress = progress, auth = self$auth)
         out <- structure(res, class = "sr_facet", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy, progress = progress)
+                        params, callopts, self$proxy, progress = progress,
+                        auth = self$auth)
         out <- structure(res, class = "sr_facet", wt = params$wt)
       }
       if (raw) {
@@ -700,12 +712,13 @@ SolrClient <- R6::R6Class(
         res <- solr_POST_body(self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
           body, params, ctype_json(), callopts, self$proxy, 
-            progress = progress)
+            progress = progress, auth = self$auth)
         out <- structure(res, class = "sr_stats", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy, progress = progress)
+                        params, callopts, self$proxy, progress = progress,
+                        auth = self$auth)
         out <- structure(res, class = "sr_stats", wt = params$wt)
       }
       if (raw) {
@@ -731,12 +744,14 @@ SolrClient <- R6::R6Class(
       if (!is.null(body)) {
         res <- solr_POST_body(self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
-          body, params, callopts, self$proxy, progress = progress)
+          body, params, callopts, self$proxy, progress = progress,
+          auth = self$auth)
         out <- structure(res, class = "sr_high", wt = params$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy, progress = progress)
+                        params, callopts, self$proxy, progress = progress,
+                        auth = self$auth)
         out <- structure(res, class = "sr_high", wt = params$wt)
       }
       if (raw) {
@@ -765,12 +780,13 @@ SolrClient <- R6::R6Class(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
           body, params, ctype_json(), callopts, self$proxy, 
-          progress = progress)
+          progress = progress, auth = self$auth)
         out <- structure(res, class = "sr_group", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy, progress = progress)
+                        params, callopts, self$proxy, progress = progress,
+                        auth = self$auth)
         out <- structure(res, class = "sr_group", wt = params$wt)
       }
       if (raw) {
@@ -806,12 +822,13 @@ SolrClient <- R6::R6Class(
           self$make_url(),
           if (!is.null(name)) url_handle(name) else self$path,
           body, params, ctype_json(), callopts, self$proxy, 
-          progress = progress)
+          progress = progress, auth = self$auth)
         out <- structure(res, class = "sr_mlt", wt = body$wt)
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy, progress = progress)
+                        params, callopts, self$proxy, progress = progress,
+                        auth = self$auth)
         out <- structure(res, class = "sr_mlt", wt = params$wt)
       }
       if (raw) {
@@ -852,7 +869,8 @@ SolrClient <- R6::R6Class(
       } else {
         res <- solr_GET(self$make_url(),
                         if (!is.null(name)) url_handle(name) else self$path,
-                        params, callopts, self$proxy, progress = progress)
+                        params, callopts, self$proxy, progress = progress, 
+                        auth = self$auth)
         out <- structure(res, class = "sr_all", wt = params$wt)
       }
       if (raw) {
@@ -883,7 +901,7 @@ SolrClient <- R6::R6Class(
       if (!is.null(fl)) fl <- paste0(fl, collapse = ",")
       args <- sc(list(ids = paste0(ids, collapse = ","), fl = fl, wt = wt))
       res <- solr_GET(self$make_url(), sprintf('solr/%s/get', name),
-                      args, self$proxy, ...)
+                      args, self$proxy, auth = self$auth, ...)
       config_parse(res, wt = wt, raw = raw)
     },
 
@@ -892,7 +910,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(commit = asl(commit), commitWithin = commit_within,
                       overwrite = asl(overwrite), wt = wt))
       obj_proc(self$make_url(), sprintf('solr/%s/update/json/docs', name),
-               x, args, raw, self$proxy, ...)
+               x, args, raw, self$proxy, self$auth, ...)
     },
 
     delete_by_id = function(ids, name, commit = TRUE, commit_within = NULL,
@@ -901,7 +919,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(commit = asl(commit), wt = wt))
       body <- list(delete = lapply(ids, function(z) list(id = z)))
       obj_proc(self$make_url(), sprintf('solr/%s/update/json', name), body,
-               args, raw, self$proxy, ...)
+               args, raw, self$proxy, self$auth, ...)
     },
 
     delete_by_query = function(query, name, commit = TRUE, commit_within = NULL,
@@ -910,7 +928,7 @@ SolrClient <- R6::R6Class(
       args <- sc(list(commit = asl(commit), wt = wt))
       body <- list(delete = list(query = query))
       obj_proc(self$make_url(), sprintf('solr/%s/update/json', name), body,
-               args, raw, self$proxy, ...)
+               args, raw, self$proxy, self$auth, ...)
     },
 
     update_json = function(files, name, commit = TRUE, optimize = FALSE,
@@ -927,7 +945,7 @@ SolrClient <- R6::R6Class(
                       prepareCommit = prepare_commit, wt = wt))
       docreate(self$make_url(), sprintf('solr/%s/update/json/docs', name),
                crul::upload(files), args, ctype_json(), raw, self$proxy,
-               ...)
+               self$auth, ...)
     },
 
     update_xml = function(files, name, commit = TRUE, optimize = FALSE,
@@ -942,7 +960,8 @@ SolrClient <- R6::R6Class(
              waitSearcher = asl(wait_searcher), softCommit = asl(soft_commit),
              prepareCommit = prepare_commit, wt = wt))
       docreate(self$make_url(), sprintf('solr/%s/update', name),
-               crul::upload(files), args, ctype_xml(), raw, self$proxy, ...)
+               crul::upload(files), args, ctype_xml(), raw, self$proxy,
+               self$auth, ...)
     },
 
     update_csv = function(files, name, separator = ',', header = TRUE,
@@ -961,19 +980,22 @@ SolrClient <- R6::R6Class(
              rowidOffset = rowidOffset, overwrite = overwrite,
              commit = commit, wt = wt))
       docreate(self$make_url(), sprintf('solr/%s/update/csv', name),
-               crul::upload(files), args, ctype_csv(), raw, self$proxy, ...)
+               crul::upload(files), args, ctype_csv(), raw, self$proxy,
+               self$auth, ...)
     },
 
     update_atomic_json = function(body, name, wt = 'json', raw = FALSE, ...) {
       private$stop_if_absent(name)
       doatomiccreate(self$make_url(), sprintf('solr/%s/update', name),
-                     body, list(wt = wt), "json", raw, self$proxy, ...)
+                     body, list(wt = wt), "json", raw, self$proxy, 
+                     self$auth, ...)
     },
 
     update_atomic_xml = function(body, name, wt = 'json', raw = FALSE, ...) {
       private$stop_if_absent(name)
       doatomiccreate(self$make_url(), sprintf('solr/%s/update', name),
-                     body, list(wt = wt), "xml", raw, self$proxy, ...)
+                     body, list(wt = wt), "xml", raw, self$proxy,
+                     self$auth, ...)
     },
 
 
@@ -1010,7 +1032,7 @@ SolrClient <- R6::R6Class(
 
     coll_h = function(args, callopts = list(), raw) {
       res <- solr_GET(self$make_url(), 'solr/admin/collections', args,
-                      callopts,  self$proxy)
+                      callopts, self$proxy, auth = self$auth)
       private$give_data(raw, res)
     },
 
@@ -1028,6 +1050,15 @@ SolrClient <- R6::R6Class(
         stop("errors must be one of 'simple' or 'complete'")
       }
       return(x)
+    },
+
+    make_auth = function(x) {
+      if (is.null(x)) {
+        NULL
+      } else {
+        stopifnot(inherits(x, "auth"))
+        return(x)
+      }
     },
 
     adjust_rows = function(x, optimizeMaxRows, minOptimizedRows, name) {
